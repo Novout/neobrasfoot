@@ -53,16 +53,6 @@ function refreshLeague() {
   selectedId.value = null
 }
 
-/** Exporta a carreira em andamento (elencos como estão agora) ou a liga usada nas carreiras novas. */
-function exportLeague() {
-  const source = game.hasCareer ? game.teams : teams.value
-  const suffix = game.hasCareer ? `temporada-${game.season}` : new Date().toISOString().slice(0, 10)
-  downloadJson(teamsToLeagueFile(source), `neobrasfoot-liga-${suffix}.json`)
-  leagueMessage.value = game.hasCareer
-    ? `Exportados os ${source.length} clubes da carreira atual (temporada ${game.season}).`
-    : `Exportados os ${source.length} clubes da liga ${isCustomLeague.value ? 'importada' : 'padrão'}.`
-}
-
 async function importLeague(event: Event) {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
