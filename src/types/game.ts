@@ -11,6 +11,8 @@ export interface Player {
   salary: number
   starter: boolean
   forSale: boolean
+  /** Jogador estrela: OVR acima do normal e gasta menos energia. Ausente em saves antigos. */
+  star?: boolean
 }
 
 export type DivisionId = 'A' | 'B' | 'C' | 'D'
@@ -44,6 +46,7 @@ export interface MatchEvent {
   teamId: string
   type: 'gol'
   playerName: string
+  star?: boolean
 }
 
 export type Competition = 'league' | 'cup'

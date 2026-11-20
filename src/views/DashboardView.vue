@@ -2,11 +2,12 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
+import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS, tableZone } from '../data/divisions'
 import { stadiumUpkeep } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
-import { marketValue, useGameStore } from '../stores/game'
+import { canTrain, marketValue, trainingEnergyCost, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { useTransferStore } from '../stores/transfers'
 import type { DivisionId, Position } from '../types/game'
@@ -83,7 +84,7 @@ function standingPoints(row: { wins: number; draws: number }) {
             <tr v-for="p in squad" :key="p.id" :class="{ 'for-sale': p.forSale }">
               <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
               <td>
-                {{ p.name }}
+                {{ p.name }}<StarMark :star="p.star" />
                 <span v-if="p.starter" class="tag" title="Titular">T</span>
                 <span v-if="p.forSale" class="tag tag--sale">À venda</span>
               </td>
@@ -96,8 +97,8 @@ function standingPoints(row: { wins: number; draws: number }) {
               <td class="actions">
                 <button
                   class="btn btn--sm"
-                  :disabled="game.trainedThisRound.includes(p.id) || p.energy < 20"
-                  title="Chance de evoluir; gasta 15 de energia (1x por rodada)"
+                  :disabled="game.trainedThisRound.includes(p.id) || !canTrain(p)"
+                  :title="`Chance de evoluir; gasta ${trainingEnergyCost(p)} de energia (1x por rodada)`"
                   @click="game.trainPlayer(p.id)"
                 >
                   Treinar

@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
+import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
@@ -76,7 +77,7 @@ function play() {
           >
             <input type="checkbox" :checked="p.starter" tabindex="-1" />
             <span class="name">
-              {{ p.name }}
+              {{ p.name }}<StarMark :star="p.star" />
               <span v-if="p.forSale" class="for-sale" title="Listado para venda">à venda</span>
             </span>
             <span class="muted">{{ p.age }}a</span>

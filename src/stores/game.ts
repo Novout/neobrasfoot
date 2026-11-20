@@ -4,6 +4,7 @@ import {
   createCup, CUP_NAME, CUP_PRIZES, CUP_RUNNER_UP_PRIZE, drawNextRound, inRound, simulatePenalties, tieWinner,
 } from '../data/cup'
 import { generateFixtures } from '../data/fixtures'
+import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import {
   AWAY_GAME_INCOME, buildRounds, createStadium, estimateGate, homeAdvantageBonus, MAX_TICKET_PRICE, MAX_UPGRADE_LEVEL,
@@ -14,7 +15,7 @@ import {
   RELEGATION_SPOTS, REPUTATION_SWING, tableZone,
 } from '../data/divisions'
 import {
-  createTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
+  assignStarsToLegacyTeams, createTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
   Competition, CupState, CupTie, DivisionId, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
@@ -29,9 +30,22 @@ export const MIN_GOALKEEPERS = 2
 const BASE_HOME_ADVANTAGE = 1.1
 const AI_TACTIC: Tactic = { formation: '4-4-2', style: 'equilibrado' }
 
+const TRAINING_ENERGY = 15
+
+/** Energia que um treino consome (estrelas gastam menos). */
+export function trainingEnergyCost(player: Player) {
+  return energyCost(TRAINING_ENERGY, player.star)
+}
+
+/** O jogador precisa de uma folga de energia além do custo do treino. */
+export function canTrain(player: Player) {
+  return player.energy >= trainingEnergyCost(player) + 5
+}
+
 export function marketValue(player: Player) {
   const ageFactor = player.age <= 23 ? 1.3 : player.age >= 31 ? 0.6 : 1
-  return Math.round((player.overall ** 2.5 * 20 * ageFactor) / 1000) * 1000
+  const starFactor = player.star ? STAR_VALUE_FACTOR : 1
+  return Math.round((player.overall ** 2.5 * 20 * ageFactor * starFactor) / 1000) * 1000
 }
 
 /** Rendimento efetivo do jogador considerando energia e moral. */
@@ -115,6 +129,15 @@ export const useGameStore = defineStore('game', () => {
 
   // Saves anteriores à Copa: cria a Copa da temporada atual, encaixada nas rodadas restantes.
   if (hasCareer.value && !cup.value) cup.value = createCup(teams.value, season.value, round.value)
+  // Saves anteriores às estrelas: sorteia as estrelas dos elencos existentes uma única vez.
+  if (hasCareer.value && assignStarsToLegacyTeams(teams.value)) {
+    const mine = teams.value.find((t) => t.id === managedTeamId.value)?.players.filter((p) => p.star) ?? []
+    news.value.unshift(
+      mine.length
+        ? `Novidade: jogadores estrela! Seu elenco tem ${mine.map((p) => p.name).join(', ')}.`
+        : 'Novidade: jogadores estrela chegaram à liga. Procure-os no mercado!',
+    )
+  }
 
   const cupFinished = computed(() => !cup.value || cup.value.championId !== null)
   const currentCupRound = computed(() => (cupFinished.value ? null : (cup.value!.rounds[cup.value!.currentRound] ?? null)))
@@ -311,9 +334,9 @@ export const useGameStore = defineStore('game', () => {
 
   function trainPlayer(playerId: string) {
     const player = findManagedPlayer(playerId)
-    if (!player || trainedThisRound.value.includes(playerId) || player.energy < 20) return
+    if (!player || trainedThisRound.value.includes(playerId) || !canTrain(player)) return
     trainedThisRound.value.push(playerId)
-    player.energy = clamp(player.energy - 15, 0, 100)
+    player.energy = clamp(player.energy - trainingEnergyCost(player), 0, 100)
     const chance = player.age <= 23 ? 0.45 : player.age <= 29 ? 0.25 : 0.1
     if (Math.random() < chance) {
       player.overall = clamp(player.overall + 1, MIN_PLAYER_OVERALL, MAX_PLAYER_OVERALL)
@@ -595,7 +618,7 @@ export const useGameStore = defineStore('game', () => {
     const team = getTeam(teamId)
     if (!team) return
     for (const p of team.players) {
-      if (p.starter) p.energy = clamp(p.energy - (p.age >= 30 ? 30 : 22), 0, 100)
+      if (p.starter) p.energy = clamp(p.energy - energyCost(p.age >= 30 ? 30 : 22, p.star), 0, 100)
       else p.energy = clamp(p.energy + 20, 0, 100)
       p.morale = clamp(p.morale + result * 5, 0, 100)
     }

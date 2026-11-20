@@ -15,9 +15,14 @@ function pickScorer(starters: Player[]) {
   let roll = Math.random() * total
   for (const p of starters) {
     roll -= SCORER_WEIGHT[p.position]
-    if (roll <= 0) return p.name
+    if (roll <= 0) return p
   }
-  return starters[0]?.name ?? 'Desconhecido'
+  return starters[0]
+}
+
+function scorerInfo(starters: Player[] | undefined) {
+  const scorer = pickScorer(starters ?? [])
+  return { playerName: scorer?.name ?? 'Desconhecido', star: scorer?.star ?? false }
 }
 
 function goalChance(attack: number, defense: number) {
@@ -76,11 +81,11 @@ export const useMatchStore = defineStore('match', () => {
     for (const m of matches.value) {
       if (Math.random() < goalChance(m.homeAttack, m.awayDefense)) {
         m.homeGoals++
-        m.events.push({ minute: minute.value, teamId: m.homeId, type: 'gol', playerName: pickScorer(lineups.value[m.homeId] ?? []) })
+        m.events.push({ minute: minute.value, teamId: m.homeId, type: 'gol', ...scorerInfo(lineups.value[m.homeId]) })
       }
       if (Math.random() < goalChance(m.awayAttack, m.homeDefense)) {
         m.awayGoals++
-        m.events.push({ minute: minute.value, teamId: m.awayId, type: 'gol', playerName: pickScorer(lineups.value[m.awayId] ?? []) })
+        m.events.push({ minute: minute.value, teamId: m.awayId, type: 'gol', ...scorerInfo(lineups.value[m.awayId]) })
       }
     }
     if (isFinished.value) {

@@ -1,6 +1,7 @@
 import type { DivisionId, Player, Position, Team } from '../types/game'
 import { createRng, hashString } from '../utils/random'
 import { MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from './divisions'
+import { STAR_CHANCE, STAR_OVERALL_BOOST, STAR_SALARY_FACTOR, starBoost } from './stars'
 
 type TeamSeed = Omit<Team, 'players'>
 
@@ -78,6 +79,8 @@ export interface PlayerDraft {
    * Usado pelo editor de clube para recalcular o OVR quando o nível muda.
    */
   talent?: number
+  /** Jogador estrela (o bônus de OVR já está incluído em `overall`). */
+  star?: boolean
 }
 
 type Rng = ReturnType<typeof createRng>
@@ -92,8 +95,14 @@ export function randomPlayerName(rng: Rng = createRng(Date.now())) {
 
 /** Jogador aleatório em torno de um nível (reputação) informado. */
 export function randomPlayerDraft(position: Position, level: number, rng: Rng): PlayerDraft {
-  const overall = clampOverall(level + rng.int(-12, 8))
-  return { name: randomPlayerName(rng), position, age: rng.int(18, 35), overall }
+  const star = rollStar(rng)
+  const overall = clampOverall(level + rng.int(-12, 8) + starBoost(star))
+  return { name: randomPlayerName(rng), position, age: rng.int(18, 35), overall, star }
+}
+
+/** Sorteio raro de jogador estrela. */
+function rollStar(rng: Rng) {
+  return rng.next() < STAR_CHANCE
 }
 
 // --- Modelo de força usado no editor de clube ---
@@ -125,20 +134,21 @@ function randomTalent(rng: Rng) {
   return Math.round(Math.max(-14, Math.min(12, bell * 30)) * 10) / 10
 }
 
-/** OVR de um jogador para um nível de elenco, considerando talento e idade. */
-export function overallForLevel(level: number, talent: number, age: number) {
-  return clampOverall(level + talent + ageEffect(age))
+/** OVR de um jogador para um nível de elenco, considerando talento, idade e o bônus de estrela. */
+export function overallForLevel(level: number, talent: number, age: number, star = false) {
+  return clampOverall(level + talent + ageEffect(age) + starBoost(star))
 }
 
 /** Talento implícito de um jogador com OVR definido manualmente, para um dado nível. */
-export function talentFromOverall(overall: number, level: number, age: number) {
-  return overall - level - ageEffect(age)
+export function talentFromOverall(overall: number, level: number, age: number, star = false) {
+  return overall - level - ageEffect(age) - starBoost(star)
 }
 
 export function realisticPlayerDraft(position: Position, level: number, rng: Rng): PlayerDraft {
   const age = rng.int(18, 35)
   const talent = randomTalent(rng)
-  return { name: randomPlayerName(rng), position, age, talent, overall: overallForLevel(level, talent, age) }
+  const star = rollStar(rng)
+  return { name: randomPlayerName(rng), position, age, talent, star, overall: overallForLevel(level, talent, age, star) }
 }
 
 /** Elenco de 22 jogadores cuja média fica próxima do nível informado. */
@@ -157,10 +167,28 @@ export function buildPlayer(draft: PlayerDraft, id: string, morale: number): Pla
     overall,
     energy: 100,
     morale,
-    salary: Math.round((overall * overall) / 10) * 10,
+    salary: Math.round((overall * overall * (draft.star ? STAR_SALARY_FACTOR : 1)) / 10) * 10,
     starter: false,
     forSale: false,
+    star: draft.star ?? false,
   }
+}
+
+/**
+ * Saves anteriores às estrelas: sorteia estrelas uma única vez nos elencos existentes,
+ * com a mesma chance e o mesmo bônus da geração normal.
+ */
+export function assignStarsToLegacyTeams(teams: Team[]) {
+  if (teams.some((t) => t.players.some((p) => p.star !== undefined))) return false
+  const rng = createRng(Date.now())
+  for (const p of teams.flatMap((t) => t.players)) {
+    p.star = rollStar(rng)
+    if (p.star) {
+      p.overall = clampOverall(p.overall + STAR_OVERALL_BOOST)
+      p.salary = Math.round((p.overall * p.overall * STAR_SALARY_FACTOR) / 10) * 10
+    }
+  }
+  return true
 }
 
 function generatePlayers(seed: TeamSeed): Player[] {

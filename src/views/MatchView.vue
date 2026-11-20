@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
 import type { DivisionId } from '../types/game'
@@ -117,7 +118,7 @@ onBeforeUnmount(() => match.stop())
         </div>
         <ul v-if="m.events.length" class="events">
           <li v-for="(e, i) in m.events" :key="i" :class="e.teamId === m.homeId ? 'home' : 'away'">
-            ⚽ {{ e.minute }}' {{ e.playerName }}
+            ⚽ {{ e.minute }}' {{ e.playerName }}<StarMark :star="e.star" />
           </li>
         </ul>
       </article>

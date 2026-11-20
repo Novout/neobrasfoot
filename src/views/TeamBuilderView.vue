@@ -14,6 +14,7 @@ import { useMatchStore } from '../stores/match'
 import type { DivisionId, Position } from '../types/game'
 import { createRng, formatMoney } from '../utils/random'
 import { persistRefs } from '../utils/storage'
+import { STAR_OVERALL_BOOST } from '../data/stars'
 
 const game = useGameStore()
 const match = useMatchStore()
@@ -60,13 +61,13 @@ persistRefs('team-builder', { draft, managerName, targetLevel })
 if (draft.value.players.some((p) => p.talent === undefined)) {
   const players = draft.value.players
   targetLevel.value = Math.round(players.reduce((sum, p) => sum + p.overall, 0) / Math.max(players.length, 1))
-  players.forEach((p) => (p.talent ??= talentFromOverall(p.overall, targetLevel.value, p.age)))
+  players.forEach((p) => (p.talent ??= talentFromOverall(p.overall, targetLevel.value, p.age, p.star)))
 }
 
 // A barra recalcula o OVR de todos: nível do elenco + talento do jogador + efeito da idade.
 watch(targetLevel, (level) => {
   for (const p of draft.value.players) {
-    p.overall = overallForLevel(level, p.talent ?? 0, p.age)
+    p.overall = overallForLevel(level, p.talent ?? 0, p.age, p.star)
   }
 })
 
@@ -74,7 +75,7 @@ watch(targetLevel, (level) => {
 function syncTalent(index: number) {
   const p = draft.value.players[index]
   if (!p || !Number.isFinite(p.overall) || !Number.isFinite(p.age)) return
-  p.talent = talentFromOverall(p.overall, targetLevel.value, p.age)
+  p.talent = talentFromOverall(p.overall, targetLevel.value, p.age, p.star)
 }
 
 const squadAverage = computed(() => {
@@ -123,6 +124,14 @@ function addPlayer(position: Position) {
 
 function removePlayer(index: number) {
   draft.value.players.splice(index, 1)
+}
+
+/** Estrela soma (ou tira) o bônus de OVR mantendo o talento do jogador. */
+function toggleStar(index: number) {
+  const p = draft.value.players[index]
+  if (!p) return
+  p.star = !p.star
+  p.overall = overallForLevel(targetLevel.value, p.talent ?? 0, p.age, p.star)
 }
 
 function rerollName(index: number) {
@@ -316,6 +325,14 @@ function startCareer() {
               <td class="name-cell">
                 <input v-model="p.name" type="text" maxlength="28" :class="{ invalid: !p.name.trim() }" />
                 <button class="icon-btn" title="Sortear outro nome" @click="rerollName(i)">🎲</button>
+                <button
+                  class="icon-btn star-toggle"
+                  :class="{ on: p.star }"
+                  :title="p.star ? `Remover estrela (−${STAR_OVERALL_BOOST} OVR)` : `Tornar estrela (+${STAR_OVERALL_BOOST} OVR, gasta metade da energia)`"
+                  @click="toggleStar(i)"
+                >
+                  {{ p.star ? '★' : '☆' }}
+                </button>
               </td>
               <td class="num">
                 <input v-model.number="p.age" type="number" :min="MIN_AGE" :max="MAX_AGE" class="num-input"
@@ -539,6 +556,10 @@ input[type='range'] {
   font-size: 0.95rem;
   padding: 0.2rem 0.35rem;
   border-radius: 4px;
+}
+.star-toggle.on {
+  color: #fbbf24;
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.6);
 }
 .icon-btn:hover {
   background: var(--surface-2);

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
 import { POSITION_ORDER } from '../data/tactics'
@@ -47,6 +48,7 @@ watch(divisionFilter, (division) => {
   if (division && game.getTeam(teamFilter.value)?.division !== division) teamFilter.value = ''
 })
 const affordableOnly = ref(false)
+const starsOnly = ref(false)
 const sortKey = ref<SortKey>('overall')
 const visibleCount = ref(PAGE_SIZE)
 
@@ -58,7 +60,8 @@ const filteredPlayers = computed(() => {
       (!divisionFilter.value || team.division === divisionFilter.value) &&
       (!teamFilter.value || team.id === teamFilter.value) &&
       (!name || player.name.toLowerCase().includes(name)) &&
-      (!affordableOnly.value || value <= game.budget),
+      (!affordableOnly.value || value <= game.budget) &&
+      (!starsOnly.value || !!player.star),
   )
   const sorters: Record<SortKey, (a: (typeof list)[number], b: (typeof list)[number]) => number> = {
     overall: (a, b) => b.player.overall - a.player.overall,
@@ -69,7 +72,7 @@ const filteredPlayers = computed(() => {
   return list.sort(sorters[sortKey.value])
 })
 
-watch([positionFilter, divisionFilter, teamFilter, nameFilter, affordableOnly, sortKey], () => (visibleCount.value = PAGE_SIZE))
+watch([positionFilter, divisionFilter, teamFilter, nameFilter, affordableOnly, starsOnly, sortKey], () => (visibleCount.value = PAGE_SIZE))
 
 const selectedId = ref<string | null>(null)
 const offerAmount = ref(0)
@@ -183,6 +186,7 @@ function quickSell(playerId: string, playerName: string) {
             <option value="age">Mais jovens</option>
           </select>
           <label class="check"><input v-model="affordableOnly" type="checkbox" /> Cabe no caixa</label>
+          <label class="check"><input v-model="starsOnly" type="checkbox" /> Só estrelas ★</label>
         </div>
 
         <table>
@@ -205,7 +209,7 @@ function quickSell(playerId: string, playerName: string) {
             >
               <td><span class="pos" :class="`pos--${player.position}`">{{ player.position }}</span></td>
               <td>
-                {{ player.name }}
+                {{ player.name }}<StarMark :star="player.star" />
                 <span v-if="player.starter" class="tag" title="Titular no clube atual">T</span>
               </td>
               <td>
@@ -240,7 +244,7 @@ function quickSell(playerId: string, playerName: string) {
           <div class="negotiation__player">
             <TeamBadge :team="selected.team" :size="44" />
             <div>
-              <strong>{{ selected.player.name }}</strong>
+              <strong>{{ selected.player.name }}<StarMark :star="selected.player.star" /></strong>
               <small class="muted">
                 {{ selected.player.position }} · {{ selected.player.age }} anos · OVR {{ selected.player.overall }}
               </small>
@@ -318,7 +322,7 @@ function quickSell(playerId: string, playerName: string) {
             <tr v-for="{ offer, player, buyer } in receivedOffers" :key="offer.id">
               <td>
                 <span class="pos" :class="`pos--${player!.position}`">{{ player!.position }}</span>
-                {{ player!.name }} <span class="muted">({{ player!.overall }})</span>
+                {{ player!.name }}<StarMark :star="player!.star" /> <span class="muted">({{ player!.overall }})</span>
               </td>
               <td><span class="club"><TeamBadge :team="buyer!" :size="22" /> {{ buyer!.name }}</span></td>
               <td class="num muted">{{ formatMoney(marketValue(player!)) }}</td>
@@ -355,7 +359,7 @@ function quickSell(playerId: string, playerName: string) {
             <tr v-for="p in mySquad" :key="p.id" :class="{ listed: p.forSale }">
               <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
               <td>
-                {{ p.name }}
+                {{ p.name }}<StarMark :star="p.star" />
                 <span v-if="p.starter" class="tag">T</span>
                 <span v-if="p.forSale" class="tag tag--sale">À venda</span>
               </td>
