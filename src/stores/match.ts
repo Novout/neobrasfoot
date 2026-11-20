@@ -7,7 +7,6 @@ import { useTransferStore } from './transfers'
 
 const MATCH_LENGTH = 90
 const BASE_GOAL_CHANCE = 0.015
-const HOME_ADVANTAGE = 1.1
 const SCORER_WEIGHT: Record<Player['position'], number> = { GOL: 0, DEF: 1, MEI: 3, ATA: 6 }
 
 function pickScorer(starters: Player[]) {
@@ -55,7 +54,7 @@ export const useMatchStore = defineStore('match', () => {
         awayId: f.awayId,
         homeGoals: 0,
         awayGoals: 0,
-        homeAttack: home.attack * HOME_ADVANTAGE,
+        homeAttack: home.attack * game.homeAdvantage(f.homeId),
         homeDefense: home.defense,
         awayAttack: away.attack,
         awayDefense: away.defense,

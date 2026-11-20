@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
 import TeamBadge from '../components/TeamBadge.vue'
+import { stadiumUpkeep } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
 import { marketValue, useGameStore } from '../stores/game'
 import { useTransferStore } from '../stores/transfers'
@@ -130,6 +131,13 @@ function standingPoints(row: { wins: number; draws: number }) {
         <h3>Finanças</h3>
         <p>Caixa: <strong>{{ formatMoney(game.budget) }}</strong></p>
         <p class="muted">Folha por rodada: {{ formatMoney(game.payroll) }}</p>
+        <template v-if="game.stadium && game.gateEstimate">
+          <p class="muted">Manutenção do estádio: {{ formatMoney(stadiumUpkeep(game.stadium)) }}</p>
+          <p>Renda por jogo em casa: <strong class="good">{{ formatMoney(game.gateEstimate.total) }}</strong></p>
+          <RouterLink class="btn btn--ghost btn--sm" :to="{ name: 'stadium' }">
+            {{ game.stadium.construction ? '🚧 Ver obras do estádio' : 'Gerenciar estádio' }}
+          </RouterLink>
+        </template>
       </div>
 
       <div class="card">
@@ -215,6 +223,9 @@ function standingPoints(row: { wins: number; draws: number }) {
 .tag--sale {
   background: rgba(239, 68, 68, 0.15);
   color: var(--bad);
+}
+.good {
+  color: var(--good);
 }
 .offers-link {
   text-decoration: none;

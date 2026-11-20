@@ -35,6 +35,10 @@ function quit() {
           {{ game.transferOffers.length }}
         </span>
       </RouterLink>
+      <RouterLink :to="{ name: 'stadium' }">
+        Estádio
+        <span v-if="game.stadium?.construction" class="nav-badge nav-badge--build" title="Obra em andamento">🚧</span>
+      </RouterLink>
       <RouterLink :to="{ name: 'pre-match' }">Pré-jogo</RouterLink>
       <RouterLink v-if="match.isReady" :to="{ name: 'matches' }">Partidas</RouterLink>
     </nav>
@@ -97,6 +101,9 @@ function quit() {
   color: #1a1400;
   font-size: 0.7rem;
   font-weight: 800;
+}
+.nav-badge--build {
+  background: transparent;
 }
 .app-header__meta {
   display: flex;

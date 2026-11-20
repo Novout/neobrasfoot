@@ -79,6 +79,26 @@ export type NegotiationResult =
   | { status: 'counter'; message: string; askingPrice: number }
   | { status: 'rejected'; message: string }
 
+export type StadiumUpgradeKey = 'seats' | 'comfort' | 'shops' | 'pitch'
+
+export interface GateRecord {
+  season: number
+  round: number
+  opponentId: string
+  attendance: number
+  capacity: number
+  revenue: number
+}
+
+export interface Stadium {
+  name: string
+  baseCapacity: number
+  ticketPrice: number
+  levels: Record<StadiumUpgradeKey, number>
+  construction: { key: StadiumUpgradeKey; roundsLeft: number; totalRounds: number } | null
+  history: GateRecord[]
+}
+
 export interface StandingRow {
   teamId: string
   played: number

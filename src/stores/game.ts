@@ -2,16 +2,22 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { generateFixtures } from '../data/fixtures'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
+import {
+  AWAY_GAME_INCOME, buildRounds, createStadium, estimateGate, homeAdvantageBonus, MAX_TICKET_PRICE, MAX_UPGRADE_LEVEL,
+  MIN_TICKET_PRICE, STADIUM_UPGRADES, stadiumUpkeep, upgradeCost, type GateContext,
+} from '../data/stadium'
 import { createTeams } from '../data/teams'
 import type {
-  Fixture, Formation, LiveMatch, Player, PlayStyle, StandingRow, Tactic, Team, TransferOffer, TransferRecord,
+  Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  TransferRecord,
 } from '../types/game'
-import { clamp } from '../utils/random'
+import { clamp, formatMoney } from '../utils/random'
 import { persistRefs } from '../utils/storage'
 
 export const MIN_SQUAD_SIZE = 16
 export const MAX_SQUAD_SIZE = 30
 export const MIN_GOALKEEPERS = 2
+const BASE_HOME_ADVANTAGE = 1.1
 const AI_TACTIC: Tactic = { formation: '4-4-2', style: 'equilibrado' }
 
 export function marketValue(player: Player) {
@@ -83,10 +89,11 @@ export const useGameStore = defineStore('game', () => {
   const transferHistory = ref<TransferRecord[]>([])
   /** Propostas já feitas por jogador nesta rodada (limita a barganha). */
   const negotiationAttempts = ref<Record<string, number>>({})
+  const stadium = ref<Stadium | null>(null)
 
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
-    transferOffers, transferHistory, negotiationAttempts,
+    transferOffers, transferHistory, negotiationAttempts, stadium,
   })
 
   const hasCareer = computed(() => managedTeamId.value !== null)
@@ -104,6 +111,20 @@ export const useGameStore = defineStore('game', () => {
     return getTeam(f.homeId === managedTeamId.value ? f.awayId : f.homeId)
   })
   const payroll = computed(() => managedTeam.value?.players.reduce((sum, p) => sum + p.salary, 0) ?? 0)
+
+  // Saves anteriores ao estádio: cria um estádio padrão para a carreira existente.
+  if (managedTeam.value && !stadium.value) stadium.value = createStadium(managedTeam.value)
+
+  /** Contexto usado para estimar o público: reputação e posição atual na tabela. */
+  const gateContext = computed<GateContext>(() => {
+    const position = sortedStandings.value.findIndex((r) => r.teamId === managedTeamId.value) + 1
+    return {
+      reputation: managedTeam.value?.reputation ?? 0,
+      tablePosition: position || Math.ceil(teams.value.length / 2),
+      totalTeams: teams.value.length,
+    }
+  })
+  const gateEstimate = computed(() => (stadium.value ? estimateGate(stadium.value, gateContext.value) : null))
 
   const sortedStandings = computed(() =>
     [...standings.value].sort((a, b) => {
@@ -149,6 +170,7 @@ export const useGameStore = defineStore('game', () => {
     startSeason()
     const team = managedTeam.value!
     budget.value = team.reputation * 100_000
+    stadium.value = createStadium(team)
     addNews(`${managerName.value} assume o comando do ${team.name}!`)
   }
 
@@ -278,9 +300,55 @@ export const useGameStore = defineStore('game', () => {
     return lineupStrength(team.players.filter((p) => p.starter), isManaged ? tactic.value : AI_TACTIC)
   }
 
+  /** Multiplicador de força do mandante; o clube gerenciado ganha bônus pelo gramado. */
+  function homeAdvantage(teamId: string) {
+    const bonus = teamId === managedTeamId.value && stadium.value ? homeAdvantageBonus(stadium.value) : 0
+    return BASE_HOME_ADVANTAGE + bonus
+  }
+
+  // --- Estádio ---
+
+  function setTicketPrice(price: number) {
+    if (stadium.value) stadium.value.ticketPrice = clamp(Math.round(price), MIN_TICKET_PRICE, MAX_TICKET_PRICE)
+  }
+
+  /** Motivo pelo qual a obra não pode começar, ou null se pode. */
+  function upgradeBlocker(key: StadiumUpgradeKey): string | null {
+    const st = stadium.value
+    if (!st) return 'Sem estádio.'
+    if (st.construction) return 'Já há uma obra em andamento.'
+    if (st.levels[key] >= MAX_UPGRADE_LEVEL) return 'Nível máximo atingido.'
+    if (budget.value < upgradeCost(key, st.levels[key])) return 'Caixa insuficiente.'
+    return null
+  }
+
+  function startStadiumUpgrade(key: StadiumUpgradeKey) {
+    const st = stadium.value
+    if (!st || upgradeBlocker(key)) return false
+    const level = st.levels[key]
+    const rounds = buildRounds(level)
+    budget.value -= upgradeCost(key, level)
+    st.construction = { key, roundsLeft: rounds, totalRounds: rounds }
+    addNews(`Obras iniciadas: ${STADIUM_UPGRADES[key].label} nível ${level + 1} (${rounds} rodada${rounds > 1 ? 's' : ''}).`)
+    return true
+  }
+
+  function advanceConstruction() {
+    const st = stadium.value
+    if (!st?.construction) return
+    st.construction.roundsLeft--
+    if (st.construction.roundsLeft > 0) return
+    const { key } = st.construction
+    st.levels[key]++
+    st.construction = null
+    addNews(`Obra concluída: ${STADIUM_UPGRADES[key].label} agora está no nível ${st.levels[key]}!`)
+  }
+
   // --- Pós-rodada ---
 
   function applyRoundResults(matches: LiveMatch[]) {
+    // Público calculado com a posição na tabela antes da rodada.
+    const gateCtx = gateContext.value
     for (const m of matches) {
       const home = standings.value.find((s) => s.teamId === m.homeId)!
       const away = standings.value.find((s) => s.teamId === m.awayId)!
@@ -301,12 +369,34 @@ export const useGameStore = defineStore('game', () => {
       if (m.homeId === managedTeamId.value || m.awayId === managedTeamId.value) {
         const isHome = m.homeId === managedTeamId.value
         const result = isHome ? homeResult : -homeResult
-        budget.value += (isHome ? 300_000 : 80_000) + (result > 0 ? 100_000 : 0)
-        budget.value -= payroll.value
         const opp = getTeam(isHome ? m.awayId : m.homeId)!
         const verb = result > 0 ? 'Vitória' : result < 0 ? 'Derrota' : 'Empate'
         addNews(`${verb} contra o ${opp.name}: ${m.homeGoals} x ${m.awayGoals}.`)
+
+        budget.value += result > 0 ? 100_000 : 0
+        budget.value -= payroll.value
+        if (isHome && stadium.value) {
+          const gate = estimateGate(stadium.value, gateCtx)
+          budget.value += gate.total
+          stadium.value.history.unshift({
+            season: season.value,
+            round: round.value + 1,
+            opponentId: opp.id,
+            attendance: gate.attendance,
+            capacity: gate.capacity,
+            revenue: gate.total,
+          })
+          stadium.value.history = stadium.value.history.slice(0, 15)
+          addNews(`Público de ${gate.attendance.toLocaleString('pt-BR')} torcedores rendeu ${formatMoney(gate.total)}.`)
+        } else {
+          budget.value += AWAY_GAME_INCOME
+        }
       }
+    }
+
+    if (stadium.value) {
+      budget.value -= stadiumUpkeep(stadium.value)
+      advanceConstruction()
     }
 
     round.value++
@@ -332,9 +422,10 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
-    transferOffers, transferHistory, negotiationAttempts,
+    transferOffers, transferHistory, negotiationAttempts, stadium,
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
-    payroll, sortedStandings,
+    payroll, sortedStandings, gateContext, gateEstimate,
+    homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, nextSeason, endCareer,
     addNews, trainPlayer, restPlayer, toggleForSale,
     releaseBlocker, hasSquadRoom, transferPlayer,

@@ -27,6 +27,12 @@ const router = createRouter({
       meta: { requiresCareer: true, title: 'Mercado' },
     },
     {
+      path: '/estadio',
+      name: 'stadium',
+      component: () => import('../views/StadiumView.vue'),
+      meta: { requiresCareer: true, title: 'Estádio' },
+    },
+    {
       path: '/pre-jogo',
       name: 'pre-match',
       component: () => import('../views/PreMatchView.vue'),
