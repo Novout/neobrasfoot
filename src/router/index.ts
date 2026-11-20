@@ -81,12 +81,24 @@ const router = createRouter({
         if (!useMatchStore().isReady) return { name: 'pre-match' }
       },
     },
+    {
+      path: '/demitido',
+      name: 'dismissed',
+      component: () => import('../views/DismissedView.vue'),
+      meta: { requiresCareer: true, title: 'Demitido' },
+      beforeEnter: () => {
+        if (!useGameStore().dismissal) return { name: 'dashboard' }
+      },
+    },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })
 
 router.beforeEach((to) => {
-  if (to.meta.requiresCareer && !useGameStore().hasCareer) return { name: 'home' }
+  const game = useGameStore()
+  if (to.meta.requiresCareer && !game.hasCareer) return { name: 'home' }
+  // Demitido: o jogo fica na tela de demissão até escolher um clube novo ou encerrar a carreira.
+  if (game.dismissal && to.meta.requiresCareer && to.name !== 'dismissed') return { name: 'dismissed' }
 })
 
 router.afterEach((to) => {

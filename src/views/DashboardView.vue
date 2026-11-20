@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
+import ConfidenceMeters from '../components/ConfidenceMeters.vue'
 import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
@@ -178,6 +179,19 @@ function standingPoints(row: { wins: number; draws: number }) {
       </div>
 
       <div class="card">
+        <h3>Confiança no técnico</h3>
+        <ConfidenceMeters :confidence="game.confidence" />
+        <p class="muted small-note">Se qualquer um chegar a 0%, você é demitido.</p>
+        <ul v-if="game.confidenceLog.length" class="confidence-log">
+          <li v-for="(c, i) in game.confidenceLog.slice(0, 5)" :key="i">
+            <span class="log-reason">{{ c.reason }}</span>
+            <span v-if="c.board" :class="c.board > 0 ? 'good' : 'bad'" title="Diretoria">👔{{ c.board > 0 ? '+' : '' }}{{ c.board }}</span>
+            <span v-if="c.club" :class="c.club > 0 ? 'good' : 'bad'" title="Clube">📣{{ c.club > 0 ? '+' : '' }}{{ c.club }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
         <h3>Finanças</h3>
         <p>Caixa: <strong>{{ formatMoney(game.budget) }}</strong></p>
         <p class="muted">Folha por rodada: {{ formatMoney(game.payroll) }}</p>
@@ -322,6 +336,28 @@ a.tag {
   font-size: 0.7rem;
   font-weight: 600;
   opacity: 0.8;
+}
+.small-note {
+  font-size: 0.75rem;
+  margin: 0.5rem 0;
+}
+.confidence-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.78rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.confidence-log li {
+  display: flex;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+.log-reason {
+  flex: 1;
+  color: var(--muted);
 }
 .cup-title {
   color: var(--warn);

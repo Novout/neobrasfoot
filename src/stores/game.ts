@@ -3,6 +3,9 @@ import { computed, ref } from 'vue'
 import {
   createCup, CUP_NAME, CUP_PRIZES, CUP_RUNNER_UP_PRIZE, drawNextRound, inRound, simulatePenalties, tieWinner,
 } from '../data/cup'
+import {
+  leagueMatchDelta, NEW_JOB_CONFIDENCE, seasonEndDelta, START_CONFIDENCE, tableDriftDelta, WARNING_CONFIDENCE,
+} from '../data/confidence'
 import { generateFixtures } from '../data/fixtures'
 import {
   DIRECT_RED_SUSPENSION, injuryGames, isAvailable, SECOND_YELLOW_SUSPENSION, YELLOWS_FOR_SUSPENSION,
@@ -13,7 +16,7 @@ import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import {
-  AWAY_GAME_INCOME, bestTicketPrice, buildRounds, createStadium, estimateGate, gateRevenue, homeAdvantageBonus,
+  AWAY_GAME_INCOME, bestTicketPrice, idealTicketPrice, buildRounds, createStadium, estimateGate, gateRevenue, homeAdvantageBonus,
   matchAttendance,
   MAX_TICKET_PRICE, MAX_UPGRADE_LEVEL, stadiumCapacity,
   MIN_TICKET_PRICE, STADIUM_UPGRADES, stadiumUpkeep, upgradeCost, type GateContext,
@@ -26,7 +29,7 @@ import {
   assignStarsToLegacyTeams, createTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
-  Competition, CupState, CupTie, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  Competition, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord,
 } from '../types/game'
 import { clamp, formatMoney } from '../utils/random'
@@ -150,11 +153,17 @@ export const useGameStore = defineStore('game', () => {
   const managers = ref<Manager[]>([])
   /** Última temporada cujos troféus já foram entregues (evita premiar duas vezes). */
   const trophiesAwardedSeason = ref(0)
+  /** Confiança da diretoria e do clube (torcida e vestiário), de 0 a 100. Chegar a 0 = demissão. */
+  const confidence = ref<Confidence>({ board: START_CONFIDENCE, club: START_CONFIDENCE })
+  const confidenceLog = ref<ConfidenceChange[]>([])
+  /** Preenchido quando o técnico é demitido; o jogo fica na tela de demissão até ele escolher. */
+  const dismissal = ref<Dismissal | null>(null)
 
   // Versão 2: introdução das divisões (saves de divisão única são descartados).
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers, managers, trophiesAwardedSeason,
+    confidence, confidenceLog, dismissal,
   }, 2)
 
   const hasCareer = computed(() => managedTeamId.value !== null)
@@ -334,6 +343,8 @@ export const useGameStore = defineStore('game', () => {
     stadium.value = createStadium(team)
     managers.value = createManagers(teams.value, teamId, managerName.value)
     trophiesAwardedSeason.value = 0
+    resetConfidence(START_CONFIDENCE)
+    dismissal.value = null
     addNews(`${managerName.value} assume o comando do ${team.name}!`)
   }
 
@@ -443,6 +454,7 @@ export const useGameStore = defineStore('game', () => {
     if (me) me.teamId = newTeam.id
     addNews(`🤝 ${managerName.value} deixa o ${oldTeam.name} e é o novo técnico do ${newTeam.name}!`)
     if (replaced) addNews(`${replaced.name} deixa o ${newTeam.name} e assume o ${oldTeam.name}.`)
+    resetConfidence(NEW_JOB_CONFIDENCE)
   }
 
   /** Vira a temporada; com `newTeamId`, o técnico assume outro clube (janela de técnicos). */
@@ -463,7 +475,82 @@ export const useGameStore = defineStore('game', () => {
     addNews(`Começa a temporada ${season.value}, agora na ${DIVISION_LABELS[managedDivision.value]}!`)
   }
 
+  // --- Confiança e demissão ---
+
+  function resetConfidence(value: number) {
+    confidence.value = { board: value, club: value }
+    confidenceLog.value = []
+  }
+
+  /** Altera os medidores, registra o motivo, avisa quando o cargo fica ameaçado e demite em 0%. */
+  function changeConfidence(board: number, club: number, reason: string) {
+    if (!managedTeamId.value || dismissal.value || (board === 0 && club === 0)) return
+    const before = { ...confidence.value }
+    confidence.value = {
+      board: clamp(Math.round(before.board + board), 0, 100),
+      club: clamp(Math.round(before.club + club), 0, 100),
+    }
+    confidenceLog.value.unshift({ season: season.value, round: round.value + 1, board, club, reason })
+    confidenceLog.value = confidenceLog.value.slice(0, 20)
+
+    const crossed = (key: keyof Confidence) => before[key] > WARNING_CONFIDENCE && confidence.value[key] <= WARNING_CONFIDENCE
+    if (crossed('board')) addNews('⚠️ A diretoria está insatisfeita: seu cargo está ameaçado.')
+    if (crossed('club')) addNews('⚠️ A torcida e o vestiário perderam a paciência: seu cargo está ameaçado.')
+
+    if (confidence.value.board <= 0) dismiss('A diretoria perdeu a confiança no seu trabalho.')
+    else if (confidence.value.club <= 0) dismiss('A torcida e o elenco não aceitam mais o seu comando.')
+  }
+
+  /** Posição que a diretoria espera: o ranking de reputação do clube dentro da série. */
+  function expectedPosition(teamId: string) {
+    const team = getTeam(teamId)
+    if (!team) return 0
+    return teamsByDivision(teams.value, team.division)
+      .sort((a, b) => b.reputation - a.reputation)
+      .findIndex((t) => t.id === teamId) + 1
+  }
+
+  /** Demitido: clubes da mesma série ou de séries abaixo oferecem vaga (ou o técnico encerra a carreira). */
+  function dismiss(reason: string) {
+    const team = managedTeam.value
+    if (!team) return
+    // Rodada como o jogador vê (1 a N); no balanço do fim da temporada fica na última.
+    dismissal.value = { teamId: team.id, season: season.value, round: Math.min(round.value + 1, totalRounds.value), reason }
+    addNews(`❌ ${managerName.value} foi demitido do ${team.name}. ${reason}`)
+    jobOffers.value = generateJobOffers(teams.value, team.id, (id) => getTeam(id)?.division ?? 'D', -2)
+  }
+
+  /** Depois da demissão: assume outro clube (no meio ou no fim da temporada). */
+  function acceptJobAfterDismissal(teamId: string) {
+    if (!dismissal.value) return
+    if (isSeasonOver.value) nextSeason(teamId)
+    else {
+      switchClub(teamId)
+      jobOffers.value = []
+      relineupAiTeams()
+      if (managedTeam.value) applyLineup(managedTeam.value, tactic.value.formation)
+    }
+    dismissal.value = null
+  }
+
+  /** Reação do clube a uma transferência do seu elenco. */
+  function reactToTransfer(player: Player, direction: 'in' | 'out') {
+    const team = managedTeam.value
+    if (!team) return
+    const others = team.players.filter((p) => p.id !== player.id)
+    const average = others.reduce((sum, p) => sum + p.overall, 0) / Math.max(others.length, 1)
+    if (direction === 'out') {
+      const topThree = [...team.players, player].sort((a, b) => b.overall - a.overall).slice(0, 3).some((p) => p.id === player.id)
+      if (player.star || topThree) changeConfidence(0, player.star ? -8 : -5, `Venda de ${player.name}, um dos destaques`)
+    } else if (player.star) {
+      changeConfidence(1, 6, `Chegada da estrela ${player.name}`)
+    } else if (player.overall >= average + 5) {
+      changeConfidence(0, 3, `Reforço de peso: ${player.name}`)
+    }
+  }
+
   function endCareer() {
+    dismissal.value = null
     managedTeamId.value = null
     teams.value = []
     fixtures.value = []
@@ -719,8 +806,26 @@ export const useGameStore = defineStore('game', () => {
         budget.value += result > 0 ? 100_000 : 0
         budget.value -= payroll.value
         collectMatchIncome(isHome, opp.id, gateCtx, 'league', m.venue)
+
+        // Favorito ou azarão, pela força dos times no começo do jogo.
+        const mine = isHome ? (m.homeAttack + m.homeDefense) / 2 : (m.awayAttack + m.awayDefense) / 2
+        const theirs = isHome ? (m.awayAttack + m.awayDefense) / 2 : (m.homeAttack + m.homeDefense) / 2
+        const delta = leagueMatchDelta(result, isHome, Math.abs(m.homeGoals - m.awayGoals), mine - theirs)
+        changeConfidence(delta.board, delta.club, `${verb} contra o ${opp.name} (${m.homeGoals} x ${m.awayGoals})`)
+        // Ingresso muito acima do que a torcida acha justo irrita quem vai ao estádio.
+        if (isHome && stadium.value && stadium.value.ticketPrice > idealTicketPrice(stadium.value) * 1.3) {
+          changeConfidence(0, -2, 'Torcida reclama do preço do ingresso')
+        }
       }
     }
+
+    if (managedTeamId.value && round.value >= 2) {
+      // A diretoria acompanha a tabela: acima do esperado agrada, abaixo preocupa.
+      const position = divisionStandings(managedDivision.value).findIndex((r) => r.teamId === managedTeamId.value) + 1
+      const drift = tableDriftDelta(expectedPosition(managedTeamId.value), position)
+      if (drift) changeConfidence(drift, 0, drift > 0 ? `Campanha acima do esperado (${position}º)` : `Campanha abaixo do esperado (${position}º)`)
+    }
+    if (managedTeamId.value && budget.value < 0) changeConfidence(-5, 0, 'Clube no vermelho')
 
     if (stadium.value) {
       budget.value -= stadiumUpkeep(stadium.value)
@@ -849,6 +954,10 @@ export const useGameStore = defineStore('game', () => {
         const pens = tie.penalties ? ` (pênaltis ${tie.penalties.home} x ${tie.penalties.away})` : ''
         const score = `${m.homeGoals} x ${m.awayGoals}${pens}`
         collectMatchIncome(isHome, opp.id, gateCtx, 'cup', m.venue)
+        // Cair na Copa para um clube de série abaixo é vexame; avançar sempre anima.
+        const upset = DIVISIONS.indexOf(opp.division) > DIVISIONS.indexOf(managedDivision.value)
+        if (tie.winnerId === id) changeConfidence(2, 3, `Classificação na Copa contra o ${opp.name}`)
+        else if (!isFinal) changeConfidence(upset ? -6 : -2, upset ? -6 : -3, `Eliminação na Copa para o ${opp.name}`)
         if (tie.winnerId === id) {
           budget.value += prize
           addNews(
@@ -910,8 +1019,15 @@ export const useGameStore = defineStore('game', () => {
       const zone = tableZone(division, position, sortedStandings.value.length)
       if (zone === 'promotion') addNews(`Seu time terminou em ${position}º e garantiu o acesso!`)
       if (zone === 'relegation') addNews(`Seu time terminou em ${position}º e será rebaixado.`)
+      // O balanço da temporada vale uma vez só (mesma trava da entrega de troféus).
+      const firstTime = trophiesAwardedSeason.value !== season.value
       awardTrophies()
-      ensureJobOffers()
+      if (firstTime && managedTeamId.value) {
+        const delta = seasonEndDelta(zone, position, expectedPosition(managedTeamId.value), cup.value?.championId === managedTeamId.value)
+        changeConfidence(delta.board, delta.club, `Balanço da temporada ${season.value}: ${position}º lugar`)
+      }
+      // Demitido no balanço: as propostas já são as de quem perdeu o emprego.
+      if (!dismissal.value) ensureJobOffers()
     }
   }
 
@@ -934,6 +1050,7 @@ export const useGameStore = defineStore('game', () => {
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
     seasonReview, projectedDivision, ensureJobOffers, managers, managerOf,
+    confidence, confidenceLog, dismissal, expectedPosition, changeConfidence, acceptJobAfterDismissal, reactToTransfer,
     addNews, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
     roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,

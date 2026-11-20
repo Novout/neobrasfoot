@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { formatMoney } from '../utils/random'
+import ConfidenceMeters from './ConfidenceMeters.vue'
 import TeamBadge from './TeamBadge.vue'
 
 const game = useGameStore()
@@ -53,6 +54,7 @@ function quit() {
     </nav>
 
     <div class="app-header__meta">
+      <ConfidenceMeters v-if="!game.dismissal" :confidence="game.confidence" compact />
       <span class="money">{{ formatMoney(game.budget) }}</span>
       <button class="btn btn--ghost" @click="quit">Sair</button>
     </div>

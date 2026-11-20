@@ -132,6 +132,28 @@ export interface MatchVenue {
   capacity: number
 }
 
+export interface Confidence {
+  /** Diretoria: cobra resultados, posição na tabela e finanças. */
+  board: number
+  /** Clube: torcida e vestiário. */
+  club: number
+}
+
+export interface ConfidenceChange {
+  season: number
+  round: number
+  board: number
+  club: number
+  reason: string
+}
+
+export interface Dismissal {
+  teamId: string
+  season: number
+  round: number
+  reason: string
+}
+
 export type TrophyKind = 'league' | 'cup'
 
 export interface Trophy {

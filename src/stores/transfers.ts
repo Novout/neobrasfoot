@@ -122,6 +122,7 @@ export const useTransferStore = defineStore('transfers', () => {
     if (amount >= asking) {
       game.transferPlayer(playerId, sellerTeamId, buyerId, amount)
       recordTransfer(player, sellerTeamId, buyerId, amount)
+      game.reactToTransfer(player, 'in')
       game.addNews(`${player.name} é o novo reforço! Contratado do ${seller.name} por ${formatMoney(amount)}.`)
       return { status: 'accepted', message: `Proposta aceita! ${player.name} agora é seu jogador.` }
     }
@@ -148,6 +149,7 @@ export const useTransferStore = defineStore('transfers', () => {
     const player = game.transferPlayer(offer.playerId, sellerId, offer.fromTeamId, offer.amount)
     if (!player) return 'Jogador não encontrado.'
     recordTransfer(player, sellerId, offer.fromTeamId, offer.amount)
+    game.reactToTransfer(player, 'out')
     game.addNews(`${player.name} foi vendido ao ${game.getTeam(offer.fromTeamId)?.name} por ${formatMoney(offer.amount)}.`)
     return null
   }
@@ -174,6 +176,7 @@ export const useTransferStore = defineStore('transfers', () => {
     const price = quickSalePrice(player)
     game.transferPlayer(playerId, sellerId, buyer.id, price)
     recordTransfer(player, sellerId, buyer.id, price)
+    game.reactToTransfer(player, 'out')
     game.addNews(`${player.name} foi negociado às pressas com o ${buyer.name} por ${formatMoney(price)}.`)
     return null
   }
@@ -284,6 +287,7 @@ export const useTransferStore = defineStore('transfers', () => {
     if (buyer && !game.releaseBlocker(sellerId, player.id)) {
       game.transferPlayer(player.id, sellerId, buyer.team.id, asking)
       recordTransfer(player, sellerId, buyer.team.id, asking)
+      game.reactToTransfer(player, 'out')
       game.addNews(`💰 ${player.name} foi vendido ao ${buyer.team.name} pelo preço pedido: ${formatMoney(asking)}.`)
       return
     }
