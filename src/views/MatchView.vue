@@ -68,11 +68,13 @@ onBeforeUnmount(() => match.stop())
     <section class="card clock">
       <div class="clock__time">
         <span class="minute">{{ match.minute }}'</span>
-        <span class="muted">{{ match.isFinished ? 'Fim de jogo' : match.halftime ? 'Intervalo' : match.running ? 'Bola rolando' : 'Pausado' }}</span>
+        <span class="muted">{{ match.isFinished ? 'Fim de jogo' : match.halftime ? 'Intervalo' : match.injuryBreak ? 'Parado: lesão' : match.running ? 'Bola rolando' : 'Pausado' }}</span>
       </div>
       <div class="progress"><div :style="{ width: `${(match.minute / 90) * 100}%` }" /></div>
       <div class="controls">
-        <span v-if="match.halftime" class="muted">Faça as substituições abaixo e comece o 2º tempo.</span>
+        <span v-if="match.paused" class="muted">
+          {{ match.halftime ? 'Faça as substituições abaixo e comece o 2º tempo.' : 'Um jogador se machucou: escolha quem entra abaixo.' }}
+        </span>
         <template v-else-if="!match.isFinished">
           <button class="btn btn--ghost" @click="match.running ? match.stop() : match.start()">
             {{ match.running ? '⏸ Pausar' : '▶ Continuar' }}
@@ -92,7 +94,7 @@ onBeforeUnmount(() => match.stop())
       </div>
     </section>
 
-    <HalftimePanel v-if="match.halftime" />
+    <HalftimePanel v-if="match.paused" :key="match.injuryBreak ? 'lesao-' + match.injuryBreak.minute : 'intervalo'" />
 
     <h2 class="round-title" :class="{ 'round-title--cup': isCup }">{{ isCup ? '🏆 ' : '' }}{{ game.nextEventLabel }}</h2>
 
@@ -139,7 +141,7 @@ onBeforeUnmount(() => match.stop())
             {{ EVENT_ICONS[e.type] }} {{ e.minute }}' {{ e.playerName }}<StarMark :star="e.star" />
             <small v-if="e.type === 'vermelho' && e.secondYellow" class="muted"> (2º amarelo)</small>
             <small v-else-if="e.type === 'lesao'" class="muted"> (fora {{ e.games }} jogo{{ (e.games ?? 1) > 1 ? 's' : '' }})</small>
-            <small v-else-if="e.type === 'sub'" class="muted"> {{ e.outName ? `(sai ${e.outName})` : '(vaga de lesionado)' }}</small>
+            <small v-else-if="e.type === 'sub'" class="muted"> {{ e.replacesInjured ? `(no lugar de ${e.outName}, lesionado)` : e.outName ? `(sai ${e.outName})` : '(vaga de lesionado)' }}</small>
           </li>
         </ul>
       </article>

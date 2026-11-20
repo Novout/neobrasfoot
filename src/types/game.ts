@@ -80,6 +80,8 @@ export interface MatchEvent {
   /** Substituição: quem saiu (ausente quando o jogador entrou na vaga de um lesionado). */
   outName?: string
   outId?: string
+  /** Substituição: entrou no lugar de um jogador que se lesionou. */
+  replacesInjured?: boolean
 }
 
 export type Competition = 'league' | 'cup'

@@ -105,6 +105,9 @@ function pickBestLineup(players: Player[], formation: Formation): Set<string> {
   return chosen
 }
 
+/** Força perdida quando os titulares não batem com a formação escolhida. */
+export const FORMATION_MISMATCH_PENALTY = 0.92
+
 export function lineupStrength(starters: Player[], tactic: Tactic) {
   const byPos = (pos: Player['position']) => starters.filter((p) => p.position === pos).map(effectiveRating)
   const gol = byPos('GOL')
@@ -118,8 +121,8 @@ export function lineupStrength(starters: Player[], tactic: Tactic) {
   const required = FORMATIONS[tactic.formation]
   const matchesFormation = POSITION_ORDER.every((pos) => byPos(pos).length === required[pos])
   if (!matchesFormation) {
-    attack *= 0.92
-    defense *= 0.92
+    attack *= FORMATION_MISMATCH_PENALTY
+    defense *= FORMATION_MISMATCH_PENALTY
   }
   if (gol.length === 0) defense *= 0.6
   if (starters.length < 11) {
@@ -1071,12 +1074,14 @@ export const useGameStore = defineStore('game', () => {
    * e quem entrou também (perde metade, em vez de recuperar como reserva).
    */
   function applySubstitutionFatigue(m: LiveMatch) {
+    // Proporcional aos minutos: quem entrou aos 60' jogou 1/3 do jogo; quem saiu devolve esse terço.
     for (const e of m.events.filter((x) => x.type === 'sub')) {
+      const remaining = Math.max(0, 90 - e.minute) / 90
       const team = getTeam(e.teamId)
       const incoming = team?.players.find((p) => p.id === e.playerId)
       const outgoing = e.outId ? team?.players.find((p) => p.id === e.outId) : null
-      if (incoming) incoming.energy = clamp(incoming.energy - 20 - Math.round(matchEnergyCost(incoming) / 2), 0, 100)
-      if (outgoing) outgoing.energy = clamp(outgoing.energy + Math.round(matchEnergyCost(outgoing) / 2), 0, 100)
+      if (incoming) incoming.energy = clamp(incoming.energy - 20 - Math.round(matchEnergyCost(incoming) * remaining), 0, 100)
+      if (outgoing) outgoing.energy = clamp(outgoing.energy + Math.round(matchEnergyCost(outgoing) * remaining), 0, 100)
     }
   }
 

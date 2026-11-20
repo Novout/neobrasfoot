@@ -12,7 +12,8 @@ const game = useGameStore()
 const match = useMatchStore()
 
 /** Quem sai: id do jogador em campo, ou 'vaga' para preencher o lugar de um lesionado. */
-const outSelection = ref<string | null>(null)
+// Parada por lesão já abre com a vaga do lesionado selecionada.
+const outSelection = ref<string | null>(match.injuryBreak ? 'vaga' : null)
 const inSelection = ref<string | null>(null)
 
 const m = computed(() => match.managedMatch)
@@ -36,7 +37,17 @@ const booked = computed(
   () => new Set(m.value?.events.filter((e) => e.teamId === myId.value && e.type === 'amarelo').map((e) => e.playerId) ?? []),
 )
 /** Quem se machucou no 1º tempo e deixou vaga. */
-const injured = computed(() => m.value?.events.filter((e) => e.teamId === myId.value && e.type === 'lesao') ?? [])
+/** Lesionados cujo lugar ainda está vago. */
+const injured = computed(() => {
+  const events = m.value?.events.filter((e) => e.teamId === myId.value) ?? []
+  const replaced = new Set(events.filter((e) => e.type === 'sub').map((e) => e.outId))
+  return events.filter((e) => e.type === 'lesao' && !replaced.has(e.playerId))
+})
+
+const resumeLabel = computed(() => {
+  const short = match.vacancies > 0 ? ' com um a menos' : ''
+  return match.injuryBreak ? `▶ Continuar o jogo${short}` : `▶ Começar o 2º tempo${short}`
+})
 
 const subsLeft = computed(() => MAX_SUBSTITUTIONS - match.subsUsed)
 const canConfirm = computed(
@@ -58,7 +69,8 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
   <section v-if="m && opponent" class="card halftime">
     <header class="halftime__header">
       <div>
-        <h2>⏸ Intervalo</h2>
+        <h2 v-if="match.injuryBreak">🩹 {{ match.injuryBreak.playerName }} se lesionou ({{ match.injuryBreak.minute }}')</h2>
+        <h2 v-else>⏸ Intervalo</h2>
         <p class="muted">
           <TeamBadge :team="game.managedTeam!" :size="20" /> {{ game.managedTeam?.shortName }}
           <strong class="score">{{ score }}</strong>
@@ -66,7 +78,9 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
         </p>
       </div>
       <div class="halftime__meta">
-        <span :class="subsLeft ? 'good' : 'muted'">Substituições: {{ match.subsUsed }}/{{ MAX_SUBSTITUTIONS }}</span>
+        <span :class="subsLeft ? 'good' : 'bad'">
+          {{ subsLeft ? `Substituições restantes: ${subsLeft} de ${MAX_SUBSTITUTIONS}` : 'Sem substituições restantes' }}
+        </span>
         <div class="styles">
           <span class="muted small">Estilo:</span>
           <button
@@ -133,12 +147,12 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
 
     <p v-if="noGoalkeeper" class="warn small">⚠️ Seu time está sem goleiro: a defesa vai sofrer muito no 2º tempo.</p>
     <p v-if="match.vacancies" class="muted small">
-      Vagas de lesionados não preenchidas recebem o melhor reserva da posição ao recomeçar (sem gastar troca).
+      Vaga aberta: se ninguém entrar, o time segue com um a menos (a força cai como numa expulsão).
     </p>
 
     <footer class="halftime__actions">
       <button class="btn btn--ghost" :disabled="!canConfirm" @click="confirmSub">🔄 Fazer substituição</button>
-      <button class="btn" @click="match.resumeSecondHalf()">▶ Começar o 2º tempo</button>
+      <button class="btn" @click="match.resumeSecondHalf()">{{ resumeLabel }}</button>
     </footer>
   </section>
 </template>
@@ -240,6 +254,9 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
 }
 .good {
   color: var(--good);
+}
+.bad {
+  color: var(--bad);
 }
 .warn {
   color: var(--warn);

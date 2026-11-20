@@ -8,7 +8,7 @@ import {
   YELLOW_CHANCE,
 } from '../data/discipline'
 import { persistRefs } from '../utils/storage'
-import { effectiveRating, lineupStrength, useGameStore } from './game'
+import { effectiveRating, FORMATION_MISMATCH_PENALTY, lineupStrength, useGameStore } from './game'
 import { useTransferStore } from './transfers'
 
 const MATCH_LENGTH = 90
@@ -52,9 +52,11 @@ export const useMatchStore = defineStore('match', () => {
   const halftime = ref(false)
   /** O intervalo desta rodada já foi resolvido (não para de novo). */
   const halftimeDone = ref(false)
+  /** Um jogador do seu time se lesionou: o jogo para para você decidir a substituição. */
+  const injuryBreak = ref<{ playerName: string; minute: number } | null>(null)
 
   // A rodada em andamento também é salva, para que recarregar a página não refaça o resultado.
-  persistRefs('round', { matches, lineups, minute, tickMs, halftime, halftimeDone }, 2)
+  persistRefs('round', { matches, lineups, minute, tickMs, halftime, halftimeDone, injuryBreak }, 2)
 
   const isReady = computed(() => matches.value.length > 0)
   const isFinished = computed(() => minute.value >= MATCH_LENGTH)
@@ -87,7 +89,13 @@ export const useMatchStore = defineStore('match', () => {
     return (team?.players ?? []).filter((p) => isAvailable(p) && !onPitch.has(p.id) && !usedUp.has(p.id))
   }
 
-  /** Troca: `outId` null = entra na vaga de um lesionado. */
+  /** Lesionados cujo lugar ainda não foi ocupado por ninguém. */
+  function unreplacedInjured(m: LiveMatch, teamId: string) {
+    const replaced = new Set(teamEvents(m, teamId, 'sub').map((e) => e.outId))
+    return teamEvents(m, teamId, 'lesao').filter((e) => !replaced.has(e.playerId))
+  }
+
+  /** Troca: `outId` null = entra na vaga de um lesionado. Cada troca conta no limite de 3. */
   function substituteFor(m: LiveMatch, teamId: string, outId: string | null, inId: string) {
     if (teamEvents(m, teamId, 'sub').length >= MAX_SUBSTITUTIONS) return false
     const incoming = benchFor(m, teamId).find((p) => p.id === inId)
@@ -97,13 +105,27 @@ export const useMatchStore = defineStore('match', () => {
     if (outId && !outgoing) return false
     if (!outId && vacanciesFor(m, teamId) <= 0) return false
     lineups.value[teamId] = [...lineup.filter((p) => p.id !== outId), { ...incoming }]
-    m.events.push({ minute: minute.value, teamId, type: 'sub', ...eventPlayer(incoming), outName: outgoing?.name, outId: outgoing?.id })
+    // Na vaga de um lesionado, o evento registra quem ele substituiu.
+    const injured = outId ? null : unreplacedInjured(m, teamId)[0]
+    m.events.push({
+      minute: minute.value,
+      teamId,
+      type: 'sub',
+      ...eventPlayer(incoming),
+      outName: outgoing?.name ?? injured?.playerName,
+      outId: outgoing?.id ?? injured?.playerId,
+      replacesInjured: !outgoing && !!injured,
+    })
     return true
   }
 
-  /** Energia efetiva no 2º tempo: quem jogou o 1º tempo gastou metade do fôlego; quem entrou está inteiro. */
+  /**
+   * Energia efetiva em campo. O cansaço só conta a partir do intervalo (para todos os times ao mesmo tempo):
+   * quem jogou o 1º tempo gastou metade do fôlego; quem entrou no intervalo ou depois está inteiro.
+   */
   function secondHalfEnergy(m: LiveMatch, teamId: string, p: Player) {
-    const fresh = teamEvents(m, teamId, 'sub').some((e) => e.playerId === p.id)
+    if (minute.value < HALFTIME_MINUTE) return p.energy
+    const fresh = teamEvents(m, teamId, 'sub').some((e) => e.playerId === p.id && e.minute >= HALFTIME_MINUTE)
     return fresh ? p.energy : Math.max(0, p.energy - energyCost(p.age >= 30 ? 30 : 22, p.star) / 2)
   }
 
@@ -113,9 +135,12 @@ export const useMatchStore = defineStore('match', () => {
     const onPitch = (lineups.value[teamId] ?? []).map((p) => ({ ...p, energy: secondHalfEnergy(m, teamId, p) }))
     const reds = teamEvents(m, teamId, 'vermelho').length
     const s = lineupStrength(onPitch, game.tacticFor(teamId))
-    // lineupStrength já reduz times com menos de 11; desfaz isso e aplica a regra de expulsão da partida.
+    // lineupStrength já reduz times com menos de 11; desfaz isso e aplica a regra da partida:
+    // cada jogador a menos (expulso ou lesionado sem reposição) pesa como uma expulsão.
     const sizeFix = onPitch.length && onPitch.length < 11 ? 11 / onPitch.length : 1
-    const factor = sizeFix * SENT_OFF_PENALTY ** reds
+    // Com menos de 11 a formação nunca "bate": essa penalidade não vale para quem está com um a menos.
+    const shortHanded = onPitch.length < 11 && !s.matchesFormation ? 1 / FORMATION_MISMATCH_PENALTY : 1
+    const factor = sizeFix * shortHanded * SENT_OFF_PENALTY ** (reds + vacanciesFor(m, teamId))
     if (m.homeId === teamId) {
       m.homeAttack = s.attack * factor * game.homeAdvantage(teamId)
       m.homeDefense = s.defense * factor
@@ -188,22 +213,43 @@ export const useMatchStore = defineStore('match', () => {
     return m && id ? benchFor(m, id) : []
   })
 
+  /** Jogo do seu time parado esperando decisão (intervalo ou lesão). */
+  const paused = computed(() => halftime.value || !!injuryBreak.value)
+
   function substitute(outId: string | null, inId: string) {
     const m = managedMatch.value
     const id = useGameStore().managedTeamId
-    return !!m && !!id && halftime.value && substituteFor(m, id, outId, inId)
+    return !!m && !!id && paused.value && substituteFor(m, id, outId, inId)
   }
 
-  /** Fim do intervalo do seu time: vagas abertas recebem o melhor reserva e o jogo recomeça. */
+  /**
+   * Volta a jogar depois do intervalo ou da parada por lesão.
+   * Vaga de lesionado não preenchida = o time segue com um a menos.
+   */
   function resumeSecondHalf(autoStart = true) {
     const m = managedMatch.value
     const id = useGameStore().managedTeamId
-    if (!halftime.value || !m || !id) return
-    fillVacancies(m, id)
+    if (!paused.value || !m || !id) return
     recomputeStrength(m, id)
+    if (halftime.value) halftimeDone.value = true
     halftime.value = false
-    halftimeDone.value = true
+    injuryBreak.value = null
     if (autoStart) start()
+  }
+
+  /** Lesão no meio do jogo: a IA repõe na hora (se ainda tiver trocas); o seu time para para você decidir. */
+  function handleInjury(m: LiveMatch, teamId: string, playerName: string) {
+    if (teamId !== useGameStore().managedTeamId) {
+      fillVacancies(m, teamId)
+      recomputeStrength(m, teamId)
+      return
+    }
+    if (teamEvents(m, teamId, 'sub').length < MAX_SUBSTITUTIONS && benchFor(m, teamId).length) {
+      injuryBreak.value = { playerName, minute: minute.value }
+    } else {
+      // Sem trocas disponíveis: segue com um a menos.
+      recomputeStrength(m, teamId)
+    }
   }
 
   function setupRound() {
@@ -213,6 +259,7 @@ export const useMatchStore = defineStore('match', () => {
     lineups.value = {}
     halftime.value = false
     halftimeDone.value = false
+    injuryBreak.value = null
     const competition = game.nextEvent ?? 'league'
     matches.value = game.currentFixtures.map((f, index) => {
       const home = game.teamStrength(f.homeId)
@@ -261,7 +308,16 @@ export const useMatchStore = defineStore('match', () => {
     // Intervalo: a IA faz as trocas dela; se o seu time está em campo, o jogo para para você decidir.
     if (minute.value === HALFTIME_MINUTE && !halftimeDone.value && !halftime.value) {
       startHalftime()
-      if (halftime.value) return
+      if (halftime.value) {
+        // O painel do intervalo já cobre uma lesão que aconteça neste mesmo minuto.
+        injuryBreak.value = null
+        return
+      }
+    }
+    // Lesão no seu time: para o jogo para a substituição.
+    if (injuryBreak.value) {
+      stop()
+      return
     }
     if (isFinished.value) {
       // Mata-mata não termina empatado: decide nos pênaltis ao apito final.
@@ -316,14 +372,14 @@ export const useMatchStore = defineStore('match', () => {
       const p = pickInjuredPlayer(current)
       if (p) {
         m.events.push({ minute: at, teamId, type: 'lesao', games: rollInjuryGames(), ...eventPlayer(p) })
-        // Sai machucado; o substituto entra sem alterar a força (não há banco simulado).
         removeFromPitch(teamId, p.id)
+        handleInjury(m, teamId, p.name)
       }
     }
   }
 
   function start() {
-    if (running.value || isFinished.value || !isReady.value || halftime.value) return
+    if (running.value || isFinished.value || !isReady.value || paused.value) return
     running.value = true
     timer = setInterval(tick, tickMs.value)
   }
@@ -349,8 +405,12 @@ export const useMatchStore = defineStore('match', () => {
   function simulateToEnd(skipHalftime = false) {
     stop()
     while (!isFinished.value) {
-      if (halftime.value) {
+      if (paused.value) {
         if (!skipHalftime) return
+        // Decisão automática: repõe lesionados com o melhor reserva (se houver troca) e segue.
+        const m = managedMatch.value
+        const id = useGameStore().managedTeamId
+        if (m && id) fillVacancies(m, id)
         resumeSecondHalf(false)
       }
       tick()
@@ -374,11 +434,12 @@ export const useMatchStore = defineStore('match', () => {
     minute.value = 0
     halftime.value = false
     halftimeDone.value = false
+    injuryBreak.value = null
   }
 
   return {
     matches, lineups, minute, running, tickMs, isReady, isFinished,
-    halftime, managedMatch, subsUsed, vacancies, bench, substitute, resumeSecondHalf,
+    halftime, injuryBreak, paused, managedMatch, subsUsed, vacancies, bench, substitute, resumeSecondHalf,
     setupRound, start, stop, setSpeed, simulateToEnd, confirmRound, reset,
   }
 })
