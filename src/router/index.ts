@@ -39,6 +39,12 @@ const router = createRouter({
       meta: { requiresCareer: true, title: 'Estádio' },
     },
     {
+      path: '/copa',
+      name: 'cup',
+      component: () => import('../views/CupView.vue'),
+      meta: { requiresCareer: true, title: 'Copa do Brasil' },
+    },
+    {
       path: '/pre-jogo',
       name: 'pre-match',
       component: () => import('../views/PreMatchView.vue'),

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { DIVISION_LABELS } from '../data/divisions'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { formatMoney } from '../utils/random'
@@ -24,7 +23,10 @@ function quit() {
       <TeamBadge :team="game.managedTeam" />
       <div>
         <strong>{{ game.managedTeam.name }}</strong>
-        <small>{{ game.managerName }} · {{ DIVISION_LABELS[game.managedDivision] }} · Temporada {{ game.season }} · Rodada {{ Math.min(game.round + 1, game.totalRounds) }}/{{ game.totalRounds }}</small>
+        <small>
+          {{ game.managerName }} · Temporada {{ game.season }} · Próximo:
+          <span :class="{ 'cup-next': game.nextEvent === 'cup' }">{{ game.nextEventLabel }}</span>
+        </small>
       </div>
     </div>
 
@@ -39,6 +41,10 @@ function quit() {
       <RouterLink :to="{ name: 'stadium' }">
         Estádio
         <span v-if="game.stadium?.construction" class="nav-badge nav-badge--build" title="Obra em andamento">🚧</span>
+      </RouterLink>
+      <RouterLink :to="{ name: 'cup' }">
+        Copa
+        <span v-if="game.nextEvent === 'cup'" class="nav-badge nav-badge--build" title="Próximo jogo é da Copa">🏆</span>
       </RouterLink>
       <RouterLink :to="{ name: 'pre-match' }">Pré-jogo</RouterLink>
       <RouterLink v-if="match.isReady" :to="{ name: 'matches' }">Partidas</RouterLink>
@@ -102,6 +108,10 @@ function quit() {
   color: #1a1400;
   font-size: 0.7rem;
   font-weight: 800;
+}
+.cup-next {
+  color: var(--warn);
+  font-weight: 600;
 }
 .nav-badge--build {
   background: transparent;

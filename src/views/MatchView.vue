@@ -25,9 +25,12 @@ function matchDivision(m: { homeId: string }) {
   return game.getTeam(m.homeId)?.division
 }
 
+/** Rodada da Copa reúne clubes de todas as séries: sem abas de divisão. */
+const isCup = computed(() => match.matches[0]?.competition === 'cup')
+
 const sortedMatches = computed(() =>
   match.matches
-    .filter((m) => matchDivision(m) === shownDivision.value)
+    .filter((m) => isCup.value || matchDivision(m) === shownDivision.value)
     .sort((a, b) => Number(isMine(b)) - Number(isMine(a))),
 )
 
@@ -80,7 +83,9 @@ onBeforeUnmount(() => match.stop())
       </div>
     </section>
 
-    <nav class="division-tabs">
+    <h2 class="round-title" :class="{ 'round-title--cup': isCup }">{{ isCup ? '🏆 ' : '' }}{{ game.nextEventLabel }}</h2>
+
+    <nav v-if="!isCup" class="division-tabs">
       <button
         v-for="d in DIVISIONS"
         :key="d"
@@ -101,7 +106,10 @@ onBeforeUnmount(() => match.stop())
             <span class="team-name">{{ game.getTeam(m.homeId)?.name }}</span>
             <TeamBadge :team="game.getTeam(m.homeId)!" :size="36" />
           </div>
-          <div class="score">{{ m.homeGoals }} <span class="muted">x</span> {{ m.awayGoals }}</div>
+          <div class="score">
+            {{ m.homeGoals }} <span class="muted">x</span> {{ m.awayGoals }}
+            <small v-if="m.penalties" class="penalties">pên. {{ m.penalties.home }} x {{ m.penalties.away }}</small>
+          </div>
           <div class="side side--away">
             <TeamBadge :team="game.getTeam(m.awayId)!" :size="36" />
             <span class="team-name">{{ game.getTeam(m.awayId)?.name }}</span>
@@ -156,6 +164,20 @@ onBeforeUnmount(() => match.stop())
   display: flex;
   gap: 0.4rem;
   align-items: center;
+}
+.round-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.round-title--cup {
+  color: var(--warn);
+}
+.penalties {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--warn);
 }
 .division-tabs {
   display: flex;

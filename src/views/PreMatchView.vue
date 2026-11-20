@@ -39,7 +39,9 @@ const problems = computed(() => {
   return list
 })
 
-const canPlay = computed(() => problems.value.length === 0 && !!game.nextFixture)
+/** Fase da Copa em que o clube já foi eliminado: só acompanha os outros jogos. */
+const spectating = computed(() => game.nextEvent === 'cup' && !game.nextFixture)
+const canPlay = computed(() => spectating.value || (problems.value.length === 0 && !!game.nextFixture))
 
 function play() {
   if (!canPlay.value) return
@@ -86,8 +88,9 @@ function play() {
     </section>
 
     <aside class="prematch__side">
-      <div v-if="game.nextOpponent" class="card versus">
-        <h3>Rodada {{ game.round + 1 }}</h3>
+      <div v-if="game.nextOpponent" class="card versus" :class="{ 'versus--cup': game.nextEvent === 'cup' }">
+        <h3>{{ game.nextEventLabel }}</h3>
+        <p v-if="game.nextEvent === 'cup'" class="muted small">Jogo único: se empatar, decide nos pênaltis.</p>
         <div class="versus__teams">
           <div>
             <TeamBadge :team="game.managedTeam" :size="56" />
@@ -113,6 +116,10 @@ function play() {
             </tr>
           </tbody>
         </table>
+      </div>
+      <div v-else-if="spectating" class="card">
+        <h3>{{ game.nextEventLabel }}</h3>
+        <p class="muted">Seu time está fora da Copa. Inicie a rodada para acompanhar os outros jogos.</p>
       </div>
       <div v-else class="card">
         <p>Não há jogos pendentes nesta temporada.</p>
@@ -147,7 +154,7 @@ function play() {
       </div>
 
       <div class="card">
-        <ul v-if="problems.length" class="problems">
+        <ul v-if="problems.length && !spectating" class="problems">
           <li v-for="msg in problems" :key="msg">{{ msg }}</li>
         </ul>
         <button class="btn play" :disabled="!canPlay" @click="play">Iniciar rodada ▶</button>
@@ -235,6 +242,12 @@ function play() {
 .player-row input {
   pointer-events: none;
   accent-color: var(--accent);
+}
+.versus--cup {
+  border-color: var(--warn);
+}
+.versus--cup h3 {
+  color: var(--warn);
 }
 .versus {
   text-align: center;

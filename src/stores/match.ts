@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { LiveMatch, Player } from '../types/game'
+import { simulatePenalties } from '../data/cup'
 import { persistRefs } from '../utils/storage'
 import { useGameStore } from './game'
 import { useTransferStore } from './transfers'
@@ -42,6 +43,7 @@ export const useMatchStore = defineStore('match', () => {
     stop()
     minute.value = 0
     lineups.value = {}
+    const competition = game.nextEvent ?? 'league'
     matches.value = game.currentFixtures.map((f, index) => {
       const home = game.teamStrength(f.homeId)
       const away = game.teamStrength(f.awayId)
@@ -49,7 +51,9 @@ export const useMatchStore = defineStore('match', () => {
         lineups.value[id] = game.getTeam(id)!.players.filter((p) => p.starter).map((p) => ({ ...p }))
       }
       return {
-        id: `r${game.round}-${index}`,
+        id: `${competition}-${game.season}-${game.round}-${index}`,
+        competition,
+        penalties: null,
         homeId: f.homeId,
         awayId: f.awayId,
         homeGoals: 0,
@@ -79,7 +83,13 @@ export const useMatchStore = defineStore('match', () => {
         m.events.push({ minute: minute.value, teamId: m.awayId, type: 'gol', playerName: pickScorer(lineups.value[m.awayId] ?? []) })
       }
     }
-    if (isFinished.value) stop()
+    if (isFinished.value) {
+      // Mata-mata não termina empatado: decide nos pênaltis ao apito final.
+      for (const m of matches.value) {
+        if (m.competition === 'cup' && m.homeGoals === m.awayGoals && !m.penalties) m.penalties = simulatePenalties()
+      }
+      stop()
+    }
   }
 
   function start() {
@@ -110,8 +120,10 @@ export const useMatchStore = defineStore('match', () => {
   /** Aplica os resultados na carreira e limpa a rodada. */
   function confirmRound() {
     if (!isFinished.value) return
+    const wasLeague = matches.value[0]?.competition !== 'cup'
     useGameStore().applyRoundResults(matches.value)
-    useTransferStore().generateOffers()
+    // Propostas de transferência chegam só após rodadas do campeonato (uma janela por rodada).
+    if (wasLeague) useTransferStore().generateOffers()
     reset()
   }
 

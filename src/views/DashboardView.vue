@@ -7,12 +7,14 @@ import { DIVISION_LABELS, DIVISIONS, tableZone } from '../data/divisions'
 import { stadiumUpkeep } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
 import { marketValue, useGameStore } from '../stores/game'
+import { useMatchStore } from '../stores/match'
 import { useTransferStore } from '../stores/transfers'
 import type { DivisionId, Position } from '../types/game'
 import { formatMoney } from '../utils/random'
 
 const game = useGameStore()
 const transfers = useTransferStore()
+const match = useMatchStore()
 const router = useRouter()
 
 const positionFilter = ref<Position | 'TODOS'>('TODOS')
@@ -31,6 +33,12 @@ const viewedDivision = ref<DivisionId | null>(null)
 const tableDivision = computed(() => viewedDivision.value ?? game.managedDivision)
 const table = computed(() => game.divisionStandings(tableDivision.value))
 const myPosition = computed(() => game.sortedStandings.findIndex((r) => r.teamId === game.managedTeamId) + 1)
+/** Fase da Copa sem o clube gerenciado: só simula e acompanha. */
+function watchCupRound() {
+  match.setupRound()
+  router.push({ name: 'matches' })
+}
+
 const myZone = computed(() => tableZone(game.managedDivision, myPosition.value, game.sortedStandings.length))
 
 function standingPoints(row: { wins: number; draws: number }) {
@@ -128,10 +136,19 @@ function standingPoints(row: { wins: number; draws: number }) {
             <span v-else-if="myZone === 'promotion'" class="good"> — acesso garantido! 🎉</span>
             <span v-else-if="myZone === 'relegation'" class="bad"> — rebaixado.</span>
           </p>
+          <p v-if="game.cup?.championId">
+            Campeão da Copa do Brasil: <strong>{{ game.getTeam(game.cup.championId)?.name }}</strong>
+            <span v-if="game.cup.championId === game.managedTeamId" class="good"> 🏆</span>
+          </p>
           <button class="btn" @click="game.nextSeason()">Iniciar temporada {{ game.season + 1 }}</button>
         </template>
+        <template v-else-if="game.nextEvent === 'cup' && !game.nextOpponent">
+          <h3>{{ game.nextEventLabel }}</h3>
+          <p class="muted">Seu time está fora da Copa, mas a fase precisa ser disputada para o calendário seguir.</p>
+          <button class="btn" @click="watchCupRound">Acompanhar a rodada da Copa</button>
+        </template>
         <template v-else-if="game.nextOpponent">
-          <h3>Próximo jogo · Rodada {{ game.round + 1 }}</h3>
+          <h3 :class="{ 'cup-title': game.nextEvent === 'cup' }">{{ game.nextEventLabel }}</h3>
           <div class="versus">
             <TeamBadge :team="isHome ? game.managedTeam : game.nextOpponent" :size="48" />
             <span class="muted">x</span>
@@ -254,6 +271,9 @@ function standingPoints(row: { wins: number; draws: number }) {
 }
 .bad {
   color: var(--bad);
+}
+.cup-title {
+  color: var(--warn);
 }
 .table-header {
   display: flex;

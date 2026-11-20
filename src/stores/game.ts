@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import {
+  createCup, CUP_NAME, CUP_PRIZES, CUP_RUNNER_UP_PRIZE, drawNextRound, inRound, simulatePenalties, tieWinner,
+} from '../data/cup'
 import { generateFixtures } from '../data/fixtures'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import {
@@ -14,7 +17,7 @@ import {
   createTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
-  DivisionId, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  Competition, CupState, CupTie, DivisionId, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord,
 } from '../types/game'
 import { clamp, formatMoney } from '../utils/random'
@@ -96,19 +99,61 @@ export const useGameStore = defineStore('game', () => {
   /** Propostas já feitas por jogador nesta rodada (limita a barganha). */
   const negotiationAttempts = ref<Record<string, number>>({})
   const stadium = ref<Stadium | null>(null)
+  const cup = ref<CupState | null>(null)
 
   // Versão 2: introdução das divisões (saves de divisão única são descartados).
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
-    transferOffers, transferHistory, negotiationAttempts, stadium,
+    transferOffers, transferHistory, negotiationAttempts, stadium, cup,
   }, 2)
 
   const hasCareer = computed(() => managedTeamId.value !== null)
   const managedTeam = computed(() => teams.value.find((t) => t.id === managedTeamId.value) ?? null)
   const starters = computed(() => managedTeam.value?.players.filter((p) => p.starter) ?? [])
+  /** Rodadas do campeonato (a Copa não conta). */
   const totalRounds = computed(() => fixtures.value.length)
-  const isSeasonOver = computed(() => hasCareer.value && round.value >= totalRounds.value)
-  const currentFixtures = computed(() => fixtures.value[round.value] ?? [])
+
+  // Saves anteriores à Copa: cria a Copa da temporada atual, encaixada nas rodadas restantes.
+  if (hasCareer.value && !cup.value) cup.value = createCup(teams.value, season.value, round.value)
+
+  const cupFinished = computed(() => !cup.value || cup.value.championId !== null)
+  const currentCupRound = computed(() => (cupFinished.value ? null : (cup.value!.rounds[cup.value!.currentRound] ?? null)))
+  const leagueFinished = computed(() => round.value >= totalRounds.value)
+  const isSeasonOver = computed(() => hasCareer.value && leagueFinished.value && cupFinished.value)
+
+  /** Próximo compromisso: a fase da Copa entra quando o calendário chega nela. */
+  const nextEvent = computed<Competition | null>(() => {
+    if (!hasCareer.value || isSeasonOver.value) return null
+    const c = cup.value
+    if (c && !cupFinished.value && (round.value >= c.schedule[c.currentRound]! || leagueFinished.value)) return 'cup'
+    return leagueFinished.value ? null : 'league'
+  })
+
+  const currentFixtures = computed<Fixture[]>(() =>
+    nextEvent.value === 'cup'
+      ? (currentCupRound.value?.ties.map((t) => ({ homeId: t.homeId, awayId: t.awayId })) ?? [])
+      : (fixtures.value[round.value] ?? []),
+  )
+
+  /** Ex.: "Série B · Rodada 5" ou "Copa do Brasil · Quartas de final". */
+  const nextEventLabel = computed(() => {
+    if (nextEvent.value === 'cup') return `${CUP_NAME} · ${currentCupRound.value?.name ?? ''}`
+    if (nextEvent.value === 'league') return `${DIVISION_LABELS[managedTeam.value?.division ?? 'A']} · Rodada ${round.value + 1}`
+    return 'Temporada encerrada'
+  })
+
+  /** Situação do clube gerenciado na Copa desta temporada. */
+  const managedCupStatus = computed(() => {
+    const c = cup.value
+    const id = managedTeamId.value
+    if (!c || !id) return null
+    if (c.championId === id) return { state: 'champion' as const, roundName: 'Final' }
+    for (const r of c.rounds) {
+      const tie: CupTie | undefined = r.ties.find((t) => t.homeId === id || t.awayId === id)
+      if (tie?.winnerId && tie.winnerId !== id) return { state: 'eliminated' as const, roundName: r.name }
+    }
+    return { state: 'alive' as const, roundName: c.rounds[c.currentRound]?.name ?? '' }
+  })
   const nextFixture = computed(
     () => currentFixtures.value.find((f) => f.homeId === managedTeamId.value || f.awayId === managedTeamId.value) ?? null,
   )
@@ -215,6 +260,7 @@ export const useGameStore = defineStore('game', () => {
       t.players.forEach((p) => (p.energy = 100))
       applyLineup(t, t.id === managedTeamId.value ? tactic.value.formation : AI_TACTIC.formation)
     })
+    cup.value = createCup(teams.value, season.value)
   }
 
   /** Acesso e rebaixamento com base na classificação final de cada divisão. */
@@ -402,6 +448,7 @@ export const useGameStore = defineStore('game', () => {
   // --- Pós-rodada ---
 
   function applyRoundResults(matches: LiveMatch[]) {
+    if (matches[0]?.competition === 'cup') return applyCupResults(matches)
     // Público calculado com a posição na tabela antes da rodada.
     const gateCtx = gateContext.value
     for (const m of matches) {
@@ -430,22 +477,7 @@ export const useGameStore = defineStore('game', () => {
 
         budget.value += result > 0 ? 100_000 : 0
         budget.value -= payroll.value
-        if (isHome && stadium.value) {
-          const gate = estimateGate(stadium.value, gateCtx)
-          budget.value += gate.total
-          stadium.value.history.unshift({
-            season: season.value,
-            round: round.value + 1,
-            opponentId: opp.id,
-            attendance: gate.attendance,
-            capacity: gate.capacity,
-            revenue: gate.total,
-          })
-          stadium.value.history = stadium.value.history.slice(0, 15)
-          addNews(`Público de ${gate.attendance.toLocaleString('pt-BR')} torcedores rendeu ${formatMoney(gate.total)}.`)
-        } else {
-          budget.value += AWAY_GAME_INCOME
-        }
+        collectMatchIncome(isHome, opp.id, gateCtx, 'league')
       }
     }
 
@@ -457,8 +489,97 @@ export const useGameStore = defineStore('game', () => {
     round.value++
     trainedThisRound.value = []
     negotiationAttempts.value = {}
-    teams.value.filter((t) => t.id !== managedTeamId.value).forEach((t) => applyLineup(t, AI_TACTIC.formation))
+    relineupAiTeams()
+    announceSeasonEnd()
+  }
 
+  /** Renda do clube gerenciado num jogo: bilheteria em casa ou cota fora. */
+  function collectMatchIncome(isHome: boolean, opponentId: string, gateCtx: GateContext, competition: Competition) {
+    if (!isHome || !stadium.value) {
+      budget.value += AWAY_GAME_INCOME
+      return
+    }
+    const gate = estimateGate(stadium.value, gateCtx)
+    budget.value += gate.total
+    stadium.value.history.unshift({
+      season: season.value,
+      round: round.value + 1,
+      opponentId,
+      attendance: gate.attendance,
+      capacity: gate.capacity,
+      revenue: gate.total,
+      competition,
+    })
+    stadium.value.history = stadium.value.history.slice(0, 15)
+    addNews(`Público de ${gate.attendance.toLocaleString('pt-BR')} torcedores rendeu ${formatMoney(gate.total)}.`)
+  }
+
+  function relineupAiTeams() {
+    teams.value.filter((t) => t.id !== managedTeamId.value).forEach((t) => applyLineup(t, AI_TACTIC.formation))
+  }
+
+  /** Resultados de uma fase da Copa: classifica os vencedores e sorteia a próxima fase. */
+  function applyCupResults(matches: LiveMatch[]) {
+    const c = cup.value
+    const cupRound = currentCupRound.value
+    if (!c || !cupRound) return
+    const gateCtx = gateContext.value
+    const prize = CUP_PRIZES[c.currentRound] ?? 0
+    const isFinal = cupRound.ties.length === 1
+
+    for (const m of matches) {
+      const tie = cupRound.ties.find((t) => t.homeId === m.homeId && t.awayId === m.awayId)
+      if (!tie) continue
+      tie.homeGoals = m.homeGoals
+      tie.awayGoals = m.awayGoals
+      tie.penalties = m.penalties
+      // Garantia: um mata-mata empatado sem pênaltis registrados é decidido agora.
+      if (m.homeGoals === m.awayGoals && !tie.penalties) tie.penalties = simulatePenalties()
+      tie.winnerId = tieWinner(tie.homeId, tie.awayId, m.homeGoals, m.awayGoals, tie.penalties)
+
+      const homeResult = tie.winnerId === tie.homeId ? 1 : -1
+      updateTeamAfterMatch(tie.homeId, homeResult)
+      updateTeamAfterMatch(tie.awayId, -homeResult)
+
+      const id = managedTeamId.value
+      if (tie.homeId === id || tie.awayId === id) {
+        const isHome = tie.homeId === id
+        const opp = getTeam(isHome ? tie.awayId : tie.homeId)!
+        const pens = tie.penalties ? ` (pênaltis ${tie.penalties.home} x ${tie.penalties.away})` : ''
+        const score = `${m.homeGoals} x ${m.awayGoals}${pens}`
+        collectMatchIncome(isHome, opp.id, gateCtx, 'cup')
+        if (tie.winnerId === id) {
+          budget.value += prize
+          addNews(
+            isFinal
+              ? `🏆 CAMPEÃO DA ${CUP_NAME.toUpperCase()}! Vitória sobre o ${opp.name}: ${score}. Prêmio de ${formatMoney(prize)}.`
+              : `${CUP_NAME}: classificado contra o ${opp.name} (${score}). Prêmio de ${formatMoney(prize)}.`,
+          )
+        } else {
+          if (isFinal) budget.value += CUP_RUNNER_UP_PRIZE
+          addNews(
+            isFinal
+              ? `${CUP_NAME}: vice-campeão após perder para o ${opp.name} (${score}). Prêmio de ${formatMoney(CUP_RUNNER_UP_PRIZE)}.`
+              : `${CUP_NAME}: eliminado pelo ${opp.name} ${inRound(cupRound.name)} (${score}).`,
+          )
+        }
+      }
+    }
+
+    const winners = cupRound.ties.map((t) => t.winnerId!).filter(Boolean)
+    if (isFinal) {
+      c.championId = winners[0] ?? null
+      if (c.championId !== managedTeamId.value) addNews(`${getTeam(c.championId!)?.name} conquista a ${CUP_NAME}!`)
+    } else {
+      c.rounds.push(drawNextRound(winners))
+      c.currentRound++
+    }
+
+    relineupAiTeams()
+    announceSeasonEnd()
+  }
+
+  function announceSeasonEnd() {
     if (isSeasonOver.value) {
       const division = managedDivision.value
       const champion = getTeam(sortedStandings.value[0]!.teamId)!
@@ -482,8 +603,9 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
-    transferOffers, transferHistory, negotiationAttempts, stadium,
+    transferOffers, transferHistory, negotiationAttempts, stadium, cup,
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
+    nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
     payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate,
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,

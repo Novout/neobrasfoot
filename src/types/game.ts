@@ -46,8 +46,42 @@ export interface MatchEvent {
   playerName: string
 }
 
+export type Competition = 'league' | 'cup'
+
+export interface PenaltyScore {
+  home: number
+  away: number
+}
+
+export interface CupTie {
+  homeId: string
+  awayId: string
+  homeGoals: number | null
+  awayGoals: number | null
+  penalties: PenaltyScore | null
+  winnerId: string | null
+}
+
+export interface CupRound {
+  name: string
+  ties: CupTie[]
+}
+
+export interface CupState {
+  season: number
+  rounds: CupRound[]
+  /** Índice da próxima fase a ser jogada. */
+  currentRound: number
+  /** Para cada fase: quantas rodadas do campeonato precisam ter sido jogadas antes dela. */
+  schedule: number[]
+  championId: string | null
+}
+
 export interface LiveMatch {
   id: string
+  competition: Competition
+  /** Disputa de pênaltis (só em mata-mata empatado). */
+  penalties: PenaltyScore | null
   homeId: string
   awayId: string
   homeGoals: number
@@ -91,6 +125,8 @@ export interface GateRecord {
   attendance: number
   capacity: number
   revenue: number
+  /** Ausente em registros antigos (= campeonato). */
+  competition?: Competition
 }
 
 export interface Stadium {
