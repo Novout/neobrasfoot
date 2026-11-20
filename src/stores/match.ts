@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { LiveMatch, Player } from '../types/game'
+import { persistRefs } from '../utils/storage'
 import { useGameStore } from './game'
+import { useTransferStore } from './transfers'
 
 const MATCH_LENGTH = 90
 const BASE_GOAL_CHANCE = 0.015
@@ -29,6 +31,9 @@ export const useMatchStore = defineStore('match', () => {
   const running = ref(false)
   const tickMs = ref(250)
   let timer: ReturnType<typeof setInterval> | null = null
+
+  // A rodada em andamento também é salva, para que recarregar a página não refaça o resultado.
+  persistRefs('round', { matches, lineups, minute, tickMs })
 
   const isReady = computed(() => matches.value.length > 0)
   const isFinished = computed(() => minute.value >= MATCH_LENGTH)
@@ -107,6 +112,12 @@ export const useMatchStore = defineStore('match', () => {
   function confirmRound() {
     if (!isFinished.value) return
     useGameStore().applyRoundResults(matches.value)
+    useTransferStore().generateOffers()
+    reset()
+  }
+
+  function reset() {
+    stop()
     matches.value = []
     lineups.value = {}
     minute.value = 0
@@ -114,6 +125,6 @@ export const useMatchStore = defineStore('match', () => {
 
   return {
     matches, minute, running, tickMs, isReady, isFinished,
-    setupRound, start, stop, setSpeed, simulateToEnd, confirmRound,
+    setupRound, start, stop, setSpeed, simulateToEnd, confirmRound, reset,
   }
 })

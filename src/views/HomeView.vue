@@ -4,8 +4,10 @@ import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
 import { createTeams } from '../data/teams'
 import { useGameStore } from '../stores/game'
+import { useMatchStore } from '../stores/match'
 
 const game = useGameStore()
+const match = useMatchStore()
 const router = useRouter()
 
 const teams = createTeams()
@@ -25,6 +27,8 @@ function stars(reputation: number) {
 
 function startCareer() {
   if (!selectedId.value) return
+  if (game.hasCareer && !confirm(`Isso substitui a carreira atual com o ${game.managedTeam?.name}. Continuar?`)) return
+  match.reset()
   game.startCareer(selectedId.value, managerName.value)
   router.push({ name: 'dashboard' })
 }

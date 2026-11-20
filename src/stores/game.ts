@@ -3,10 +3,15 @@ import { computed, ref } from 'vue'
 import { generateFixtures } from '../data/fixtures'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import { createTeams } from '../data/teams'
-import type { Fixture, Formation, LiveMatch, Player, PlayStyle, StandingRow, Tactic, Team } from '../types/game'
+import type {
+  Fixture, Formation, LiveMatch, Player, PlayStyle, StandingRow, Tactic, Team, TransferOffer, TransferRecord,
+} from '../types/game'
 import { clamp } from '../utils/random'
+import { persistRefs } from '../utils/storage'
 
-const MIN_SQUAD_SIZE = 16
+export const MIN_SQUAD_SIZE = 16
+export const MAX_SQUAD_SIZE = 30
+export const MIN_GOALKEEPERS = 2
 const AI_TACTIC: Tactic = { formation: '4-4-2', style: 'equilibrado' }
 
 export function marketValue(player: Player) {
@@ -23,14 +28,13 @@ function average(values: number[]) {
   return values.length ? values.reduce((sum, v) => sum + v, 0) / values.length : 0
 }
 
-/** Escolhe os melhores 11 respeitando a formação. */
+/** Escolhe os melhores 11 respeitando a formação; jogadores à venda só entram se faltar opção. */
 function pickBestLineup(players: Player[], formation: Formation): Set<string> {
   const chosen = new Set<string>()
-  const available = players.filter((p) => !p.forSale)
   for (const position of POSITION_ORDER) {
-    available
+    players
       .filter((p) => p.position === position)
-      .sort((a, b) => effectiveRating(b) - effectiveRating(a))
+      .sort((a, b) => Number(a.forSale) - Number(b.forSale) || effectiveRating(b) - effectiveRating(a))
       .slice(0, FORMATIONS[formation][position])
       .forEach((p) => chosen.add(p.id))
   }
@@ -75,6 +79,15 @@ export const useGameStore = defineStore('game', () => {
   const tactic = ref<Tactic>({ formation: '4-4-2', style: 'equilibrado' })
   const trainedThisRound = ref<string[]>([])
   const news = ref<string[]>([])
+  const transferOffers = ref<TransferOffer[]>([])
+  const transferHistory = ref<TransferRecord[]>([])
+  /** Propostas já feitas por jogador nesta rodada (limita a barganha). */
+  const negotiationAttempts = ref<Record<string, number>>({})
+
+  persistRefs('career', {
+    teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
+    transferOffers, transferHistory, negotiationAttempts,
+  })
 
   const hasCareer = computed(() => managedTeamId.value !== null)
   const managedTeam = computed(() => teams.value.find((t) => t.id === managedTeamId.value) ?? null)
@@ -130,6 +143,9 @@ export const useGameStore = defineStore('game', () => {
     round.value = 0
     tactic.value = { formation: '4-4-2', style: 'equilibrado' }
     news.value = []
+    transferOffers.value = []
+    transferHistory.value = []
+    negotiationAttempts.value = {}
     startSeason()
     const team = managedTeam.value!
     budget.value = team.reputation * 100_000
@@ -194,25 +210,51 @@ export const useGameStore = defineStore('game', () => {
     const player = findManagedPlayer(playerId)
     if (!player) return
     player.forSale = !player.forSale
-    if (player.forSale) player.starter = false
   }
 
-  function sellPlayer(playerId: string) {
-    const team = managedTeam.value
-    const player = findManagedPlayer(playerId)
-    if (!team || !player || team.players.length <= MIN_SQUAD_SIZE) return false
-    const value = marketValue(player)
-    budget.value += value
-    team.players = team.players.filter((p) => p.id !== playerId)
-    addNews(`${player.name} foi vendido por ${value.toLocaleString('pt-BR')} reais.`)
-    return true
+  // --- Transferências ---
+
+  /** Motivo pelo qual o clube não pode liberar o jogador, ou null se pode. */
+  function releaseBlocker(teamId: string, playerId: string): string | null {
+    const team = getTeam(teamId)
+    const player = team?.players.find((p) => p.id === playerId)
+    if (!team || !player) return 'Jogador não encontrado.'
+    if (team.players.length <= MIN_SQUAD_SIZE) return `${team.name} precisa manter ao menos ${MIN_SQUAD_SIZE} jogadores.`
+    const goalkeepers = team.players.filter((p) => p.position === 'GOL').length
+    if (player.position === 'GOL' && goalkeepers <= MIN_GOALKEEPERS) {
+      return `${team.name} precisa manter ao menos ${MIN_GOALKEEPERS} goleiros.`
+    }
+    return null
+  }
+
+  function hasSquadRoom(teamId: string) {
+    return (getTeam(teamId)?.players.length ?? MAX_SQUAD_SIZE) < MAX_SQUAD_SIZE
+  }
+
+  /** Move o jogador entre clubes e acerta o caixa do clube gerenciado. */
+  function transferPlayer(playerId: string, fromTeamId: string, toTeamId: string, fee: number) {
+    const from = getTeam(fromTeamId)
+    const to = getTeam(toTeamId)
+    const player = from?.players.find((p) => p.id === playerId)
+    if (!from || !to || !player) return null
+
+    from.players = from.players.filter((p) => p.id !== playerId)
+    to.players.push({ ...player, starter: false, forSale: false, morale: clamp(player.morale + 5, 0, 100) })
+
+    if (toTeamId === managedTeamId.value) budget.value -= fee
+    if (fromTeamId === managedTeamId.value) budget.value += fee
+    // Clubes da IA reorganizam a escalação para não jogar com desfalque.
+    for (const team of [from, to]) {
+      if (team.id !== managedTeamId.value) applyLineup(team, AI_TACTIC.formation)
+    }
+    return player
   }
 
   // --- Escalação e táticas ---
 
   function toggleStarter(playerId: string) {
     const player = findManagedPlayer(playerId)
-    if (!player || player.forSale) return
+    if (!player) return
     if (!player.starter && starters.value.length >= 11) return
     player.starter = !player.starter
   }
@@ -269,6 +311,7 @@ export const useGameStore = defineStore('game', () => {
 
     round.value++
     trainedThisRound.value = []
+    negotiationAttempts.value = {}
     teams.value.filter((t) => t.id !== managedTeamId.value).forEach((t) => applyLineup(t, AI_TACTIC.formation))
 
     if (isSeasonOver.value) {
@@ -289,10 +332,12 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
+    transferOffers, transferHistory, negotiationAttempts,
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
     payroll, sortedStandings,
     getTeam, startCareer, nextSeason, endCareer,
-    trainPlayer, restPlayer, toggleForSale, sellPlayer,
+    addNews, trainPlayer, restPlayer, toggleForSale,
+    releaseBlocker, hasSquadRoom, transferPlayer,
     toggleStarter, autoSelectStarters, setFormation, setStyle, teamStrength,
     applyRoundResults,
   }

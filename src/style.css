@@ -81,7 +81,8 @@ h1, h2, h3 {
 }
 
 select,
-input[type='text'] {
+input[type='text'],
+input[type='number'] {
   font: inherit;
   padding: 0.45rem 0.6rem;
   border-radius: 6px;

@@ -11,7 +11,7 @@ const router = useRouter()
 
 function quit() {
   if (!confirm('Abandonar a carreira atual?')) return
-  match.stop()
+  match.reset()
   game.endCareer()
   router.push({ name: 'home' })
 }
@@ -29,6 +29,12 @@ function quit() {
 
     <nav class="app-header__nav">
       <RouterLink :to="{ name: 'dashboard' }">Dashboard</RouterLink>
+      <RouterLink :to="{ name: 'market' }">
+        Mercado
+        <span v-if="game.transferOffers.length" class="nav-badge" :title="`${game.transferOffers.length} proposta(s) recebida(s)`">
+          {{ game.transferOffers.length }}
+        </span>
+      </RouterLink>
       <RouterLink :to="{ name: 'pre-match' }">Pré-jogo</RouterLink>
       <RouterLink v-if="match.isReady" :to="{ name: 'matches' }">Partidas</RouterLink>
     </nav>
@@ -78,6 +84,19 @@ function quit() {
 .app-header__nav a.router-link-active {
   background: var(--accent-soft);
   color: var(--accent);
+}
+.nav-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.2rem;
+  height: 1.2rem;
+  margin-left: 0.25rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--warn);
+  color: #1a1400;
+  font-size: 0.7rem;
+  font-weight: 800;
 }
 .app-header__meta {
   display: flex;

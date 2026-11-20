@@ -69,11 +69,14 @@ function play() {
             v-for="p in group.players"
             :key="p.id"
             class="player-row"
-            :class="{ starter: p.starter, disabled: p.forSale }"
+            :class="{ starter: p.starter }"
             @click="game.toggleStarter(p.id)"
           >
-            <input type="checkbox" :checked="p.starter" :disabled="p.forSale" tabindex="-1" />
-            <span class="name">{{ p.name }}</span>
+            <input type="checkbox" :checked="p.starter" tabindex="-1" />
+            <span class="name">
+              {{ p.name }}
+              <span v-if="p.forSale" class="for-sale" title="Listado para venda">à venda</span>
+            </span>
             <span class="muted">{{ p.age }}a</span>
             <strong>{{ p.overall }}</strong>
             <StatBar :value="p.energy" />
@@ -224,9 +227,10 @@ function play() {
   border-color: var(--accent);
   background: var(--accent-soft);
 }
-.player-row.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.for-sale {
+  margin-left: 0.3rem;
+  font-size: 0.7rem;
+  color: var(--bad);
 }
 .player-row input {
   pointer-events: none;

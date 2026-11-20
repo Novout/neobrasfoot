@@ -5,10 +5,12 @@ import StatBar from '../components/StatBar.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { POSITION_ORDER } from '../data/tactics'
 import { marketValue, useGameStore } from '../stores/game'
+import { useTransferStore } from '../stores/transfers'
 import type { Position } from '../types/game'
 import { formatMoney } from '../utils/random'
 
 const game = useGameStore()
+const transfers = useTransferStore()
 const router = useRouter()
 
 const positionFilter = ref<Position | 'TODOS'>('TODOS')
@@ -21,11 +23,6 @@ const squad = computed(() => {
 })
 
 const isHome = computed(() => game.nextFixture?.homeId === game.managedTeamId)
-
-function sell(playerId: string, name: string, value: number) {
-  if (!confirm(`Vender ${name} por ${formatMoney(value)}?`)) return
-  if (!game.sellPlayer(playerId)) alert('O elenco precisa ter pelo menos 16 jogadores.')
-}
 
 function standingPoints(row: { wins: number; draws: number }) {
   return row.wins * 3 + row.draws
@@ -94,13 +91,13 @@ function standingPoints(row: { wins: number; draws: number }) {
                 <button class="btn btn--sm btn--ghost" @click="game.toggleForSale(p.id)">
                   {{ p.forSale ? 'Retirar' : 'Listar' }}
                 </button>
-                <button
-                  v-if="p.forSale"
-                  class="btn btn--sm btn--danger"
-                  @click="sell(p.id, p.name, marketValue(p))"
+                <RouterLink
+                  v-if="transfers.offersByPlayer[p.id]"
+                  class="btn btn--sm offers-link"
+                  :to="{ name: 'market', query: { aba: 'vender' } }"
                 >
-                  Vender
-                </button>
+                  {{ transfers.offersByPlayer[p.id]!.length }} proposta(s)
+                </RouterLink>
               </td>
             </tr>
           </tbody>
@@ -200,9 +197,10 @@ function standingPoints(row: { wins: number; draws: number }) {
   gap: 0.25rem;
 }
 .actions {
-  display: flex;
-  gap: 0.25rem;
   white-space: nowrap;
+}
+.actions > * + * {
+  margin-left: 0.25rem;
 }
 .tag {
   display: inline-block;
@@ -217,6 +215,10 @@ function standingPoints(row: { wins: number; draws: number }) {
 .tag--sale {
   background: rgba(239, 68, 68, 0.15);
   color: var(--bad);
+}
+.offers-link {
+  text-decoration: none;
+  background: var(--warn);
 }
 tr.for-sale td {
   opacity: 0.75;

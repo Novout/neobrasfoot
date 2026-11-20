@@ -56,6 +56,29 @@ export interface LiveMatch {
   events: MatchEvent[]
 }
 
+/** Proposta de um clube da IA por um jogador do clube gerenciado. */
+export interface TransferOffer {
+  id: string
+  playerId: string
+  fromTeamId: string
+  amount: number
+}
+
+export interface TransferRecord {
+  playerName: string
+  position: Position
+  fromTeamId: string
+  toTeamId: string
+  amount: number
+  season: number
+  round: number
+}
+
+export type NegotiationResult =
+  | { status: 'accepted'; message: string }
+  | { status: 'counter'; message: string; askingPrice: number }
+  | { status: 'rejected'; message: string }
+
 export interface StandingRow {
   teamId: string
   played: number
