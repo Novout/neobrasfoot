@@ -51,9 +51,12 @@ function startCareer() {
     <header class="home__hero">
       <h1>⚽ Neobrassfot</h1>
       <p class="muted">Escolha um clube, monte sua equipe e leve-o ao título.</p>
-      <button v-if="game.hasCareer" class="btn btn--ghost" @click="router.push({ name: 'dashboard' })">
-        Continuar carreira com {{ game.managedTeam?.name }}
-      </button>
+      <div class="hero-actions">
+        <button v-if="game.hasCareer" class="btn btn--ghost" @click="router.push({ name: 'dashboard' })">
+          Continuar carreira com {{ game.managedTeam?.name }}
+        </button>
+        <RouterLink class="btn create-link" :to="{ name: 'team-builder' }">✏️ Criar meu próprio clube</RouterLink>
+      </div>
     </header>
 
     <nav class="divisions">
@@ -111,6 +114,15 @@ function startCareer() {
 }
 .home__hero h1 {
   font-size: 2.6rem;
+}
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.create-link {
+  text-decoration: none;
 }
 .divisions {
   display: flex;

@@ -15,6 +15,12 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'home', component: HomeView, meta: { title: 'Escolha seu time' } },
     {
+      path: '/criar-clube',
+      name: 'team-builder',
+      component: () => import('../views/TeamBuilderView.vue'),
+      meta: { title: 'Criar clube' },
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/DashboardView.vue'),

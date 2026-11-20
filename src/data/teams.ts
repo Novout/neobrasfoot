@@ -60,34 +60,156 @@ const LAST_NAMES = [
 ]
 
 /** Composição do elenco: 3 GOL, 7 DEF, 7 MEI, 5 ATA = 22 jogadores. */
-const SQUAD_TEMPLATE: Position[] = [
+export const SQUAD_TEMPLATE: Position[] = [
   ...Array<Position>(3).fill('GOL'),
   ...Array<Position>(7).fill('DEF'),
   ...Array<Position>(7).fill('MEI'),
   ...Array<Position>(5).fill('ATA'),
 ]
 
+/** Dados editáveis de um jogador antes de entrar no jogo. */
+export interface PlayerDraft {
+  name: string
+  position: Position
+  age: number
+  overall: number
+  /**
+   * Quanto o jogador fica acima (+) ou abaixo (−) do nível do elenco, sem contar a idade.
+   * Usado pelo editor de clube para recalcular o OVR quando o nível muda.
+   */
+  talent?: number
+}
+
+type Rng = ReturnType<typeof createRng>
+
+function clampOverall(value: number) {
+  return Math.max(MIN_PLAYER_OVERALL, Math.min(MAX_PLAYER_OVERALL, Math.round(value)))
+}
+
+export function randomPlayerName(rng: Rng = createRng(Date.now())) {
+  return `${rng.pick(FIRST_NAMES)} ${rng.pick(LAST_NAMES)}`
+}
+
+/** Jogador aleatório em torno de um nível (reputação) informado. */
+export function randomPlayerDraft(position: Position, level: number, rng: Rng): PlayerDraft {
+  const overall = clampOverall(level + rng.int(-12, 8))
+  return { name: randomPlayerName(rng), position, age: rng.int(18, 35), overall }
+}
+
+// --- Modelo de força usado no editor de clube ---
+
+/** Curva de idade: jovens ainda em formação, auge entre 26 e 30, queda depois dos 33. */
+export function ageAdjustment(age: number): number {
+  if (age <= 19) return -4
+  if (age <= 22) return -2
+  if (age <= 25) return 0
+  if (age <= 30) return 2
+  if (age <= 32) return 0
+  if (age <= 34) return -2
+  return -4
+}
+
+/** Média da curva nas idades sorteadas (18–35), descontada para o nível bater com a média do elenco. */
+const AGE_CURVE_MEAN = Array.from({ length: 18 }, (_, i) => ageAdjustment(18 + i)).reduce((s, v) => s + v, 0) / 18
+
+function ageEffect(age: number) {
+  return ageAdjustment(age) - AGE_CURVE_MEAN
+}
+
+/**
+ * Talento com distribuição aproximadamente normal (desvio ~5): a maioria perto do nível,
+ * poucos craques e poucos jogadores bem abaixo.
+ */
+function randomTalent(rng: Rng) {
+  const bell = (rng.next() + rng.next() + rng.next()) / 3 - 0.5 // -0,5 .. 0,5, concentrado no centro
+  return Math.round(Math.max(-14, Math.min(12, bell * 30)) * 10) / 10
+}
+
+/** OVR de um jogador para um nível de elenco, considerando talento e idade. */
+export function overallForLevel(level: number, talent: number, age: number) {
+  return clampOverall(level + talent + ageEffect(age))
+}
+
+/** Talento implícito de um jogador com OVR definido manualmente, para um dado nível. */
+export function talentFromOverall(overall: number, level: number, age: number) {
+  return overall - level - ageEffect(age)
+}
+
+export function realisticPlayerDraft(position: Position, level: number, rng: Rng): PlayerDraft {
+  const age = rng.int(18, 35)
+  const talent = randomTalent(rng)
+  return { name: randomPlayerName(rng), position, age, talent, overall: overallForLevel(level, talent, age) }
+}
+
+/** Elenco de 22 jogadores cuja média fica próxima do nível informado. */
+export function generateRealisticSquad(level: number, seed: number = Date.now()): PlayerDraft[] {
+  const rng = createRng(seed)
+  return SQUAD_TEMPLATE.map((position) => realisticPlayerDraft(position, level, rng))
+}
+
+export function buildPlayer(draft: PlayerDraft, id: string, morale: number): Player {
+  const overall = clampOverall(draft.overall)
+  return {
+    id,
+    name: draft.name.trim(),
+    position: draft.position,
+    age: draft.age,
+    overall,
+    energy: 100,
+    morale,
+    salary: Math.round((overall * overall) / 10) * 10,
+    starter: false,
+    forSale: false,
+  }
+}
+
 function generatePlayers(seed: TeamSeed): Player[] {
   const rng = createRng(hashString(seed.id))
-  return SQUAD_TEMPLATE.map((position, index) => {
-    const overall = Math.max(MIN_PLAYER_OVERALL, Math.min(MAX_PLAYER_OVERALL, seed.reputation + rng.int(-12, 8)))
-    return {
-      id: `${seed.id}-${index}`,
-      name: `${rng.pick(FIRST_NAMES)} ${rng.pick(LAST_NAMES)}`,
-      position,
-      age: rng.int(18, 35),
-      overall,
-      energy: 100,
-      morale: rng.int(60, 90),
-      salary: Math.round((overall * overall) / 10) * 10,
-      starter: false,
-      forSale: false,
-    }
-  })
+  return SQUAD_TEMPLATE.map((position, index) =>
+    buildPlayer(randomPlayerDraft(position, seed.reputation, rng), `${seed.id}-${index}`, rng.int(60, 90)),
+  )
 }
 
 export function createTeams(): Team[] {
   return TEAM_SEEDS.map((seed) => ({ ...seed, players: generatePlayers(seed) }))
+}
+
+// --- Clube personalizado ---
+
+export const CUSTOM_TEAM_ID = 'meu-clube'
+
+/** Reputação típica de cada série, usada pelo clube criado pelo jogador. */
+export const DIVISION_REPUTATION: Record<DivisionId, number> = { A: 75, B: 64, C: 54, D: 44 }
+
+export interface CustomTeamDraft {
+  name: string
+  shortName: string
+  primaryColor: string
+  secondaryColor: string
+  division: DivisionId
+  players: PlayerDraft[]
+}
+
+/** O clube de menor reputação da série, que sai para dar lugar ao clube criado. */
+export function teamReplacedBy(teams: Team[], division: DivisionId) {
+  return teamsByDivision(teams, division).sort((a, b) => a.reputation - b.reputation)[0]!
+}
+
+/** Monta a liga com o clube personalizado no lugar do mais fraco da série escolhida. */
+export function createTeamsWithCustom(draft: CustomTeamDraft): { teams: Team[]; replaced: Team } {
+  const teams = createTeams()
+  const replaced = teamReplacedBy(teams, draft.division)
+  const custom: Team = {
+    id: CUSTOM_TEAM_ID,
+    division: draft.division,
+    name: draft.name.trim(),
+    shortName: draft.shortName.trim().toUpperCase(),
+    primaryColor: draft.primaryColor,
+    secondaryColor: draft.secondaryColor,
+    reputation: DIVISION_REPUTATION[draft.division],
+    players: draft.players.map((p, i) => buildPlayer(p, `${CUSTOM_TEAM_ID}-${i}`, 75)),
+  }
+  return { teams: teams.map((t) => (t.id === replaced.id ? custom : t)), replaced }
 }
 
 export function teamsByDivision(teams: Team[], division: DivisionId) {

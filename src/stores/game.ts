@@ -10,7 +10,9 @@ import {
   DIVISION_LABELS, DIVISIONS, divisionAbove, divisionBelow, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL, PROMOTION_SPOTS,
   RELEGATION_SPOTS, REPUTATION_SWING, tableZone,
 } from '../data/divisions'
-import { createTeams, teamsByDivision } from '../data/teams'
+import {
+  createTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
+} from '../data/teams'
 import type {
   DivisionId, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord,
@@ -171,7 +173,18 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function startCareer(teamId: string, name: string) {
-    teams.value = createTeams()
+    beginCareer(createTeams(), teamId, name)
+  }
+
+  /** Começa a carreira com um clube criado pelo jogador, no lugar do mais fraco da série. */
+  function startCustomCareer(draft: CustomTeamDraft, name: string) {
+    const { teams: league, replaced } = createTeamsWithCustom(draft)
+    beginCareer(league, CUSTOM_TEAM_ID, name)
+    addNews(`O ${replaced.name} deixa a ${DIVISION_LABELS[draft.division]} para dar lugar ao ${draft.name.trim()}.`)
+  }
+
+  function beginCareer(league: Team[], teamId: string, name: string) {
+    teams.value = league
     managedTeamId.value = teamId
     managerName.value = name.trim() || 'Treinador'
     season.value = 1
@@ -473,7 +486,7 @@ export const useGameStore = defineStore('game', () => {
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
     payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate,
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
-    getTeam, startCareer, nextSeason, endCareer,
+    getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
     addNews, trainPlayer, restPlayer, toggleForSale,
     releaseBlocker, hasSquadRoom, transferPlayer,
     toggleStarter, autoSelectStarters, setFormation, setStyle, teamStrength,
