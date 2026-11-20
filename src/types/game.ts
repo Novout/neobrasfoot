@@ -108,6 +108,14 @@ export interface LiveMatch {
   awayAttack: number
   awayDefense: number
   events: MatchEvent[]
+  /** Estádio do mandante e público do jogo (ausente em partidas salvas antes do recurso). */
+  venue?: MatchVenue
+}
+
+export interface MatchVenue {
+  name: string
+  attendance: number
+  capacity: number
 }
 
 /** Proposta de um clube da IA por um jogador do clube gerenciado. */

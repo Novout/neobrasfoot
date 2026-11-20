@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
-import type { DivisionId, MatchEventType } from '../types/game'
+import type { DivisionId, MatchEventType, MatchVenue } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 
@@ -41,6 +41,10 @@ function goalsIn(division: DivisionId) {
   return match.matches
     .filter((m) => matchDivision(m) === division)
     .reduce((sum, m) => sum + m.homeGoals + m.awayGoals, 0)
+}
+
+function occupancy(venue: MatchVenue) {
+  return Math.round((venue.attendance / Math.max(venue.capacity, 1)) * 100)
 }
 
 function isMine(m: { homeId: string; awayId: string }) {
@@ -118,6 +122,14 @@ onBeforeUnmount(() => match.stop())
             <span class="team-name">{{ game.getTeam(m.awayId)?.name }}</span>
           </div>
         </div>
+        <p v-if="m.venue" class="venue">
+          🏟️ <span class="venue__name">{{ m.venue.name }}</span>
+          <span class="venue__crowd" :title="`Capacidade: ${m.venue.capacity.toLocaleString('pt-BR')} lugares`">
+            · {{ m.venue.attendance.toLocaleString('pt-BR') }} torcedores
+            <span class="muted">({{ occupancy(m.venue) }}%)</span>
+            <span v-if="occupancy(m.venue) >= 100" class="sold-out">lotado</span>
+          </span>
+        </p>
         <ul v-if="m.events.length" class="events">
           <li v-for="(e, i) in m.events" :key="i" :class="e.teamId === m.homeId ? 'home' : 'away'">
             {{ EVENT_ICONS[e.type] }} {{ e.minute }}' {{ e.playerName }}<StarMark :star="e.star" />
@@ -169,6 +181,26 @@ onBeforeUnmount(() => match.stop())
   display: flex;
   gap: 0.4rem;
   align-items: center;
+}
+.venue {
+  margin: 0.5rem 0 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.venue__name {
+  color: var(--text);
+  font-weight: 600;
+}
+.sold-out {
+  margin-left: 0.3rem;
+  padding: 0 0.3rem;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(234, 179, 8, 0.15);
+  color: var(--warn);
 }
 .round-title {
   margin: 0;

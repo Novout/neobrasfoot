@@ -10,7 +10,9 @@ import {
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import {
-  AWAY_GAME_INCOME, buildRounds, createStadium, estimateGate, homeAdvantageBonus, MAX_TICKET_PRICE, MAX_UPGRADE_LEVEL,
+  AWAY_GAME_INCOME, bestTicketPrice, buildRounds, createStadium, estimateGate, gateRevenue, homeAdvantageBonus,
+  matchAttendance,
+  MAX_TICKET_PRICE, MAX_UPGRADE_LEVEL, stadiumCapacity,
   MIN_TICKET_PRICE, STADIUM_UPGRADES, stadiumUpkeep, upgradeCost, type GateContext,
 } from '../data/stadium'
 import {
@@ -21,7 +23,7 @@ import {
   assignStarsToLegacyTeams, createTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
-  Competition, CupState, CupTie, DivisionId, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  Competition, CupState, CupTie, DivisionId, MatchVenue, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord,
 } from '../types/game'
 import { clamp, formatMoney } from '../utils/random'
@@ -224,17 +226,42 @@ export const useGameStore = defineStore('game', () => {
   /** Classificação da divisão do clube gerenciado. */
   const sortedStandings = computed(() => divisionStandings(managedDivision.value))
 
-  /** Contexto usado para estimar o público: reputação e posição atual na tabela. */
-  const gateContext = computed<GateContext>(() => {
-    const table = sortedStandings.value
-    const position = table.findIndex((r) => r.teamId === managedTeamId.value) + 1
+  /** Contexto de público de qualquer clube: reputação e posição atual na tabela da sua série. */
+  function gateContextFor(teamId: string): GateContext {
+    const team = getTeam(teamId)
+    const table = team ? divisionStandings(team.division) : []
+    const position = table.findIndex((r) => r.teamId === teamId) + 1
     return {
-      reputation: managedTeam.value?.reputation ?? 0,
+      reputation: team?.reputation ?? 0,
       tablePosition: position || Math.ceil(table.length / 2),
       totalTeams: table.length,
     }
-  })
+  }
+
+  /** Contexto usado para estimar o público do clube gerenciado. */
+  const gateContext = computed<GateContext>(() => gateContextFor(managedTeamId.value ?? ''))
   const gateEstimate = computed(() => (stadium.value ? estimateGate(stadium.value, gateContext.value) : null))
+
+  /**
+   * Estádio e público de um jogo, calculados quando a rodada começa.
+   * O clube gerenciado usa o próprio estádio (melhorias e preço do ingresso);
+   * os da IA usam um estádio padrão pelo tamanho do clube.
+   */
+  function matchVenue(homeId: string, awayId: string): MatchVenue | undefined {
+    const home = getTeam(homeId)
+    const away = getTeam(awayId)
+    if (!home || !away) return undefined
+    const ctx = gateContextFor(homeId)
+    const isManaged = homeId === managedTeamId.value && stadium.value
+    const venue = isManaged ? stadium.value! : createStadium(home)
+    // Clubes da IA cobram o ingresso que maximiza a renda, então nem sempre lotam.
+    if (!isManaged) venue.ticketPrice = bestTicketPrice(venue, ctx)
+    return {
+      name: venue.name,
+      attendance: matchAttendance(venue, ctx, away.reputation),
+      capacity: stadiumCapacity(venue),
+    }
+  }
 
   function getTeam(id: string) {
     return teams.value.find((t) => t.id === id) ?? null
@@ -520,7 +547,7 @@ export const useGameStore = defineStore('game', () => {
 
         budget.value += result > 0 ? 100_000 : 0
         budget.value -= payroll.value
-        collectMatchIncome(isHome, opp.id, gateCtx, 'league')
+        collectMatchIncome(isHome, opp.id, gateCtx, 'league', m.venue)
       }
     }
 
@@ -588,24 +615,32 @@ export const useGameStore = defineStore('game', () => {
   }
 
   /** Renda do clube gerenciado num jogo: bilheteria em casa ou cota fora. */
-  function collectMatchIncome(isHome: boolean, opponentId: string, gateCtx: GateContext, competition: Competition) {
+  function collectMatchIncome(
+    isHome: boolean,
+    opponentId: string,
+    gateCtx: GateContext,
+    competition: Competition,
+    venue: MatchVenue | undefined,
+  ) {
     if (!isHome || !stadium.value) {
       budget.value += AWAY_GAME_INCOME
       return
     }
-    const gate = estimateGate(stadium.value, gateCtx)
-    budget.value += gate.total
+    // Usa o público mostrado na partida; partidas antigas sem esse dado caem na estimativa.
+    const attendance = venue?.attendance ?? estimateGate(stadium.value, gateCtx).attendance
+    const revenue = gateRevenue(stadium.value, attendance)
+    budget.value += revenue
     stadium.value.history.unshift({
       season: season.value,
       round: round.value + 1,
       opponentId,
-      attendance: gate.attendance,
-      capacity: gate.capacity,
-      revenue: gate.total,
+      attendance,
+      capacity: stadiumCapacity(stadium.value),
+      revenue,
       competition,
     })
     stadium.value.history = stadium.value.history.slice(0, 15)
-    addNews(`Público de ${gate.attendance.toLocaleString('pt-BR')} torcedores rendeu ${formatMoney(gate.total)}.`)
+    addNews(`Público de ${attendance.toLocaleString('pt-BR')} torcedores rendeu ${formatMoney(revenue)}.`)
   }
 
   function relineupAiTeams() {
@@ -641,7 +676,7 @@ export const useGameStore = defineStore('game', () => {
         const opp = getTeam(isHome ? tie.awayId : tie.homeId)!
         const pens = tie.penalties ? ` (pênaltis ${tie.penalties.home} x ${tie.penalties.away})` : ''
         const score = `${m.homeGoals} x ${m.awayGoals}${pens}`
-        collectMatchIncome(isHome, opp.id, gateCtx, 'cup')
+        collectMatchIncome(isHome, opp.id, gateCtx, 'cup', m.venue)
         if (tie.winnerId === id) {
           budget.value += prize
           addNews(
@@ -702,7 +737,7 @@ export const useGameStore = defineStore('game', () => {
     transferOffers, transferHistory, negotiationAttempts, stadium, cup,
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
     nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
-    payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate,
+    payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate, matchVenue,
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
     addNews, trainPlayer, restPlayer, toggleForSale,

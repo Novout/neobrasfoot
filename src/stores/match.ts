@@ -77,6 +77,8 @@ export const useMatchStore = defineStore('match', () => {
         awayAttack: away.attack,
         awayDefense: away.defense,
         events: [],
+        // Público definido antes da bola rolar (usa a tabela da véspera do jogo).
+        venue: game.matchVenue(f.homeId, f.awayId),
       }
     })
   }

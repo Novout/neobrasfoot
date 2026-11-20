@@ -61,9 +61,49 @@ export function buildRounds(currentLevel: number) {
   return currentLevel + 1
 }
 
-export function createStadium(team: Pick<Team, 'name' | 'reputation'>): Stadium {
+/** Estádios fictícios dos clubes da liga. */
+const STADIUM_NAMES: Record<string, string> = {
+  'atletico-serrano': 'Estádio Pico da Serra',
+  'uniao-litoral': 'Arena Beira-Mar',
+  'esporte-planalto': 'Estádio do Planalto Central',
+  'operario-vale': 'Estádio Vale Fundo',
+  'real-cerrado': 'Arena Ipê Amarelo',
+  'ferroviario-norte': 'Estádio Trilhos do Norte',
+  'sociedade-ribeira': 'Estádio Ribeirinho',
+  'juventude-campos': 'Estádio Campos Gerais',
+  'estrela-sertao': 'Estádio Mandacaru',
+  'comercial-mare': 'Arena Maré Cheia',
+  'tupa-ec': 'Estádio Tupã',
+  'ipe-fc': 'Estádio Flor de Ipê',
+  'aurora-serra': 'Estádio Alvorada',
+  'ventania-fc': 'Arena dos Ventos',
+  'coroados-ac': 'Estádio Coroa Real',
+  'pinheiral-ec': 'Estádio dos Pinheiros',
+  'pedra-branca': 'Estádio Pedra Lisa',
+  'mangueiral-fc': 'Estádio Mangueiral',
+  'canarinho-brejo': 'Estádio do Brejo',
+  'industrial-vale-verde': 'Estádio da Fábrica',
+  'lagoa-seca': 'Estádio Beira-Lagoa',
+  'tropical-fc': 'Arena Tropical',
+  'carcara-ac': 'Estádio Ninho do Carcará',
+  'unidos-colina': 'Estádio Alto da Colina',
+  'boa-esperanca': 'Estádio Esperancinha',
+  'serrinha-ec': 'Estádio Serrinha',
+  'tamandua-ac': 'Estádio Formigueiro',
+  'riachao-fc': 'Campo do Riachão',
+  'palmital-ec': 'Estádio Palmital',
+  'cajueiro-fc': 'Estádio do Cajueiro',
+  'porto-pedras': 'Estádio do Cais',
+  'jatoba-ec': 'Campo do Jatobá',
+}
+
+export function stadiumNameFor(team: Pick<Team, 'name'> & { id?: string }) {
+  return (team.id && STADIUM_NAMES[team.id]) || `Estádio do ${team.name}`
+}
+
+export function createStadium(team: Pick<Team, 'name' | 'reputation'> & { id?: string }): Stadium {
   return {
-    name: `Estádio do ${team.name}`,
+    name: stadiumNameFor(team),
     baseCapacity: Math.round((15_000 + (team.reputation - 55) * 600) / 100) * 100,
     ticketPrice: BASE_IDEAL_PRICE,
     levels: { seats: 0, comfort: 0, shops: 0, pitch: 0 },
@@ -109,6 +149,24 @@ export interface GateEstimate {
   ticketRevenue: number
   spendRevenue: number
   total: number
+}
+
+/** Renda de um jogo para um público já conhecido: ingressos + consumo. */
+export function gateRevenue(stadium: Stadium, attendance: number) {
+  return attendance * (stadium.ticketPrice + spendPerFan(stadium))
+}
+
+/**
+ * Público de um jogo específico: a procura média do mandante, o apelo do visitante em relação
+ * ao mandante (receber um gigante enche mais: ×0,85 a ×1,15) e a variação do dia de jogo (±15%).
+ * Contra um visitante do mesmo porte os fatores têm média 1, então a estimativa da tela do estádio vale.
+ */
+export function matchAttendance(stadium: Stadium, ctx: GateContext, visitorReputation: number, random = Math.random) {
+  const base = estimateGate(stadium, ctx)
+  const gap = Math.min(1, Math.max(-1, (visitorReputation - ctx.reputation) / 20))
+  const visitorAppeal = 1 + 0.15 * gap
+  const matchday = 0.85 + random() * 0.3
+  return Math.min(base.capacity, Math.round(base.demand * visitorAppeal * matchday))
 }
 
 export function estimateGate(stadium: Stadium, ctx: GateContext, ticketPrice = stadium.ticketPrice): GateEstimate {
