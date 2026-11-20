@@ -6,9 +6,13 @@ import {
   AWAY_GAME_INCOME, buildRounds, createStadium, estimateGate, homeAdvantageBonus, MAX_TICKET_PRICE, MAX_UPGRADE_LEVEL,
   MIN_TICKET_PRICE, STADIUM_UPGRADES, stadiumUpkeep, upgradeCost, type GateContext,
 } from '../data/stadium'
-import { createTeams } from '../data/teams'
+import {
+  DIVISION_LABELS, DIVISIONS, divisionAbove, divisionBelow, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL, PROMOTION_SPOTS,
+  RELEGATION_SPOTS, REPUTATION_SWING, tableZone,
+} from '../data/divisions'
+import { createTeams, teamsByDivision } from '../data/teams'
 import type {
-  Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  DivisionId, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord,
 } from '../types/game'
 import { clamp, formatMoney } from '../utils/random'
@@ -91,10 +95,11 @@ export const useGameStore = defineStore('game', () => {
   const negotiationAttempts = ref<Record<string, number>>({})
   const stadium = ref<Stadium | null>(null)
 
+  // Versão 2: introdução das divisões (saves de divisão única são descartados).
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
     transferOffers, transferHistory, negotiationAttempts, stadium,
-  })
+  }, 2)
 
   const hasCareer = computed(() => managedTeamId.value !== null)
   const managedTeam = computed(() => teams.value.find((t) => t.id === managedTeamId.value) ?? null)
@@ -115,28 +120,37 @@ export const useGameStore = defineStore('game', () => {
   // Saves anteriores ao estádio: cria um estádio padrão para a carreira existente.
   if (managedTeam.value && !stadium.value) stadium.value = createStadium(managedTeam.value)
 
+  const managedDivision = computed<DivisionId>(() => managedTeam.value?.division ?? 'A')
+
+  /** Classificação ordenada de uma divisão. */
+  function divisionStandings(division: DivisionId) {
+    return standings.value
+      .filter((r) => getTeam(r.teamId)?.division === division)
+      .sort((a, b) => {
+        const pts = (r: StandingRow) => r.wins * 3 + r.draws
+        return (
+          pts(b) - pts(a) ||
+          b.wins - a.wins ||
+          b.goalsFor - b.goalsAgainst - (a.goalsFor - a.goalsAgainst) ||
+          b.goalsFor - a.goalsFor
+        )
+      })
+  }
+
+  /** Classificação da divisão do clube gerenciado. */
+  const sortedStandings = computed(() => divisionStandings(managedDivision.value))
+
   /** Contexto usado para estimar o público: reputação e posição atual na tabela. */
   const gateContext = computed<GateContext>(() => {
-    const position = sortedStandings.value.findIndex((r) => r.teamId === managedTeamId.value) + 1
+    const table = sortedStandings.value
+    const position = table.findIndex((r) => r.teamId === managedTeamId.value) + 1
     return {
       reputation: managedTeam.value?.reputation ?? 0,
-      tablePosition: position || Math.ceil(teams.value.length / 2),
-      totalTeams: teams.value.length,
+      tablePosition: position || Math.ceil(table.length / 2),
+      totalTeams: table.length,
     }
   })
   const gateEstimate = computed(() => (stadium.value ? estimateGate(stadium.value, gateContext.value) : null))
-
-  const sortedStandings = computed(() =>
-    [...standings.value].sort((a, b) => {
-      const pts = (r: StandingRow) => r.wins * 3 + r.draws
-      return (
-        pts(b) - pts(a) ||
-        b.wins - a.wins ||
-        b.goalsFor - b.goalsAgainst - (a.goalsFor - a.goalsAgainst) ||
-        b.goalsFor - a.goalsFor
-      )
-    }),
-  )
 
   function getTeam(id: string) {
     return teams.value.find((t) => t.id === id) ?? null
@@ -177,7 +191,10 @@ export const useGameStore = defineStore('game', () => {
   function startSeason() {
     round.value = 0
     trainedThisRound.value = []
-    fixtures.value = generateFixtures(teams.value.map((t) => t.id))
+    // Cada divisão tem seu turno e returno; todas jogam a mesma rodada ao mesmo tempo.
+    const perDivision = DIVISIONS.map((d) => generateFixtures(teamsByDivision(teams.value, d).map((t) => t.id)))
+    const totalRounds = Math.max(...perDivision.map((r) => r.length))
+    fixtures.value = Array.from({ length: totalRounds }, (_, i) => perDivision.flatMap((rounds) => rounds[i] ?? []))
     standings.value = teams.value.map((t) => ({
       teamId: t.id, played: 0, wins: 0, draws: 0, losses: 0, goalsFor: 0, goalsAgainst: 0,
     }))
@@ -187,16 +204,41 @@ export const useGameStore = defineStore('game', () => {
     })
   }
 
+  /** Acesso e rebaixamento com base na classificação final de cada divisão. */
+  function applyPromotionsAndRelegations() {
+    const moves: { team: Team; to: DivisionId; up: boolean }[] = []
+    for (const division of DIVISIONS) {
+      const table = divisionStandings(division)
+      const above = divisionAbove(division)
+      const below = divisionBelow(division)
+      if (above) {
+        table.slice(0, PROMOTION_SPOTS).forEach((r) => moves.push({ team: getTeam(r.teamId)!, to: above, up: true }))
+      }
+      if (below) {
+        table.slice(-RELEGATION_SPOTS).forEach((r) => moves.push({ team: getTeam(r.teamId)!, to: below, up: false }))
+      }
+    }
+    // Aplica só depois de calcular tudo, para um time não subir e cair na mesma virada.
+    for (const { team, to, up } of moves) {
+      team.division = to
+      team.reputation = clamp(team.reputation + (up ? REPUTATION_SWING : -REPUTATION_SWING), 30, 95)
+      if (team.id === managedTeamId.value) {
+        addNews(up ? `🎉 Acesso! O ${team.name} vai disputar a ${DIVISION_LABELS[to]}.` : `Rebaixado: o ${team.name} cai para a ${DIVISION_LABELS[to]}.`)
+      }
+    }
+  }
+
   function nextSeason() {
+    applyPromotionsAndRelegations()
     season.value++
     teams.value.forEach((t) =>
       t.players.forEach((p) => {
         p.age++
-        if (p.age >= 32) p.overall = clamp(p.overall - 2, 40, 99)
+        if (p.age >= 32) p.overall = clamp(p.overall - 2, MIN_PLAYER_OVERALL, MAX_PLAYER_OVERALL)
       }),
     )
     startSeason()
-    addNews(`Começa a temporada ${season.value}!`)
+    addNews(`Começa a temporada ${season.value}, agora na ${DIVISION_LABELS[managedDivision.value]}!`)
   }
 
   function endCareer() {
@@ -215,7 +257,7 @@ export const useGameStore = defineStore('game', () => {
     player.energy = clamp(player.energy - 15, 0, 100)
     const chance = player.age <= 23 ? 0.45 : player.age <= 29 ? 0.25 : 0.1
     if (Math.random() < chance) {
-      player.overall = clamp(player.overall + 1, 40, 99)
+      player.overall = clamp(player.overall + 1, MIN_PLAYER_OVERALL, MAX_PLAYER_OVERALL)
       player.morale = clamp(player.morale + 3, 0, 100)
       addNews(`${player.name} evoluiu no treino (OVR ${player.overall}).`)
     }
@@ -405,8 +447,13 @@ export const useGameStore = defineStore('game', () => {
     teams.value.filter((t) => t.id !== managedTeamId.value).forEach((t) => applyLineup(t, AI_TACTIC.formation))
 
     if (isSeasonOver.value) {
+      const division = managedDivision.value
       const champion = getTeam(sortedStandings.value[0]!.teamId)!
-      addNews(`Fim da temporada ${season.value}! ${champion.name} é o campeão.`)
+      addNews(`Fim da temporada ${season.value}! ${champion.name} é o campeão da ${DIVISION_LABELS[division]}.`)
+      const position = sortedStandings.value.findIndex((r) => r.teamId === managedTeamId.value) + 1
+      const zone = tableZone(division, position, sortedStandings.value.length)
+      if (zone === 'promotion') addNews(`Seu time terminou em ${position}º e garantiu o acesso!`)
+      if (zone === 'relegation') addNews(`Seu time terminou em ${position}º e será rebaixado.`)
     }
   }
 
@@ -424,7 +471,7 @@ export const useGameStore = defineStore('game', () => {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
     transferOffers, transferHistory, negotiationAttempts, stadium,
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
-    payroll, sortedStandings, gateContext, gateEstimate,
+    payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate,
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, nextSeason, endCareer,
     addNews, trainPlayer, restPlayer, toggleForSale,

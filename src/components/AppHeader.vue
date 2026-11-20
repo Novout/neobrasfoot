@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { DIVISION_LABELS } from '../data/divisions'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { formatMoney } from '../utils/random'
@@ -23,7 +24,7 @@ function quit() {
       <TeamBadge :team="game.managedTeam" />
       <div>
         <strong>{{ game.managedTeam.name }}</strong>
-        <small>{{ game.managerName }} · Temporada {{ game.season }} · Rodada {{ Math.min(game.round + 1, game.totalRounds) }}/{{ game.totalRounds }}</small>
+        <small>{{ game.managerName }} · {{ DIVISION_LABELS[game.managedDivision] }} · Temporada {{ game.season }} · Rodada {{ Math.min(game.round + 1, game.totalRounds) }}/{{ game.totalRounds }}</small>
       </div>
     </div>
 

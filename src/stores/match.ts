@@ -32,7 +32,7 @@ export const useMatchStore = defineStore('match', () => {
   let timer: ReturnType<typeof setInterval> | null = null
 
   // A rodada em andamento também é salva, para que recarregar a página não refaça o resultado.
-  persistRefs('round', { matches, lineups, minute, tickMs })
+  persistRefs('round', { matches, lineups, minute, tickMs }, 2)
 
   const isReady = computed(() => matches.value.length > 0)
   const isFinished = computed(() => minute.value >= MATCH_LENGTH)

@@ -2,11 +2,12 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
+import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
 import { POSITION_ORDER } from '../data/tactics'
 import { marketValue, MAX_SQUAD_SIZE, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { MAX_ATTEMPTS_PER_ROUND, useTransferStore } from '../stores/transfers'
-import type { NegotiationResult, Position } from '../types/game'
+import type { DivisionId, NegotiationResult, Position } from '../types/game'
 import { formatMoney } from '../utils/random'
 
 type Tab = 'comprar' | 'vender' | 'historico'
@@ -30,8 +31,21 @@ const squadSize = computed(() => game.managedTeam?.players.length ?? 0)
 // --- Comprar ---
 
 const positionFilter = ref<Position | ''>('')
+const divisionFilter = ref<DivisionId | ''>('')
 const teamFilter = ref('')
 const nameFilter = ref('')
+
+/** Clubes da IA agrupados por divisão, para o select de clubes. */
+const teamGroups = computed(() =>
+  DIVISIONS.filter((d) => !divisionFilter.value || d === divisionFilter.value).map((d) => ({
+    division: d,
+    teams: game.teams.filter((t) => t.division === d && t.id !== game.managedTeamId),
+  })),
+)
+
+watch(divisionFilter, (division) => {
+  if (division && game.getTeam(teamFilter.value)?.division !== division) teamFilter.value = ''
+})
 const affordableOnly = ref(false)
 const sortKey = ref<SortKey>('overall')
 const visibleCount = ref(PAGE_SIZE)
@@ -41,6 +55,7 @@ const filteredPlayers = computed(() => {
   const list = transfers.marketPlayers.filter(
     ({ player, team, value }) =>
       (!positionFilter.value || player.position === positionFilter.value) &&
+      (!divisionFilter.value || team.division === divisionFilter.value) &&
       (!teamFilter.value || team.id === teamFilter.value) &&
       (!name || player.name.toLowerCase().includes(name)) &&
       (!affordableOnly.value || value <= game.budget),
@@ -54,7 +69,7 @@ const filteredPlayers = computed(() => {
   return list.sort(sorters[sortKey.value])
 })
 
-watch([positionFilter, teamFilter, nameFilter, affordableOnly, sortKey], () => (visibleCount.value = PAGE_SIZE))
+watch([positionFilter, divisionFilter, teamFilter, nameFilter, affordableOnly, sortKey], () => (visibleCount.value = PAGE_SIZE))
 
 const selectedId = ref<string | null>(null)
 const offerAmount = ref(0)
@@ -151,11 +166,15 @@ function quickSell(playerId: string, playerName: string) {
             <option value="">Todas as posições</option>
             <option v-for="pos in POSITION_ORDER" :key="pos" :value="pos">{{ pos }}</option>
           </select>
+          <select v-model="divisionFilter">
+            <option value="">Todas as séries</option>
+            <option v-for="d in DIVISIONS" :key="d" :value="d">{{ DIVISION_LABELS[d] }}</option>
+          </select>
           <select v-model="teamFilter">
             <option value="">Todos os clubes</option>
-            <option v-for="t in game.teams.filter((t) => t.id !== game.managedTeamId)" :key="t.id" :value="t.id">
-              {{ t.name }}
-            </option>
+            <optgroup v-for="g in teamGroups" :key="g.division" :label="DIVISION_LABELS[g.division]">
+              <option v-for="t in g.teams" :key="t.id" :value="t.id">{{ t.name }}</option>
+            </optgroup>
           </select>
           <select v-model="sortKey">
             <option value="overall">Melhor OVR</option>
@@ -189,7 +208,12 @@ function quickSell(playerId: string, playerName: string) {
                 {{ player.name }}
                 <span v-if="player.starter" class="tag" title="Titular no clube atual">T</span>
               </td>
-              <td><span class="club"><TeamBadge :team="team" :size="22" /> {{ team.shortName }}</span></td>
+              <td>
+                <span class="club" :title="`${team.name} · ${DIVISION_LABELS[team.division]}`">
+                  <TeamBadge :team="team" :size="22" /> {{ team.shortName }}
+                  <span class="division-tag">{{ team.division }}</span>
+                </span>
+              </td>
               <td class="num">{{ player.age }}</td>
               <td class="num"><strong>{{ player.overall }}</strong></td>
               <td class="num" :class="{ expensive: value > game.budget }">{{ formatMoney(value) }}</td>
@@ -463,6 +487,14 @@ function quickSell(playerId: string, playerName: string) {
   align-items: center;
   gap: 0.4rem;
   white-space: nowrap;
+}
+.division-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0 0.25rem;
+  border-radius: 3px;
+  background: var(--surface-2);
+  color: var(--muted);
 }
 tr.selected td {
   background: var(--accent-soft);

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
+import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
+import type { DivisionId } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 
@@ -15,9 +17,25 @@ const speeds = [
   { label: '4x', ms: 80 },
 ]
 
+// Todas as divisões jogam juntas; a aba escolhe qual acompanhar (padrão: a do clube).
+const viewedDivision = ref<DivisionId | null>(null)
+const shownDivision = computed(() => viewedDivision.value ?? game.managedDivision)
+
+function matchDivision(m: { homeId: string }) {
+  return game.getTeam(m.homeId)?.division
+}
+
 const sortedMatches = computed(() =>
-  [...match.matches].sort((a, b) => Number(isMine(b)) - Number(isMine(a))),
+  match.matches
+    .filter((m) => matchDivision(m) === shownDivision.value)
+    .sort((a, b) => Number(isMine(b)) - Number(isMine(a))),
 )
+
+function goalsIn(division: DivisionId) {
+  return match.matches
+    .filter((m) => matchDivision(m) === division)
+    .reduce((sum, m) => sum + m.homeGoals + m.awayGoals, 0)
+}
 
 function isMine(m: { homeId: string; awayId: string }) {
   return m.homeId === game.managedTeamId || m.awayId === game.managedTeamId
@@ -61,6 +79,20 @@ onBeforeUnmount(() => match.stop())
         <button v-else class="btn" @click="finishRound">Finalizar rodada</button>
       </div>
     </section>
+
+    <nav class="division-tabs">
+      <button
+        v-for="d in DIVISIONS"
+        :key="d"
+        class="btn btn--sm"
+        :class="{ 'btn--ghost': shownDivision !== d }"
+        @click="viewedDivision = d"
+      >
+        {{ DIVISION_LABELS[d] }}
+        <span class="goals" :title="`${goalsIn(d)} gols nesta rodada`">⚽ {{ goalsIn(d) }}</span>
+        <span v-if="d === game.managedDivision" title="Sua divisão">★</span>
+      </button>
+    </nav>
 
     <section class="match-list">
       <article v-for="m in sortedMatches" :key="m.id" class="card match" :class="{ 'match--mine': isMine(m) }">
@@ -124,6 +156,16 @@ onBeforeUnmount(() => match.stop())
   display: flex;
   gap: 0.4rem;
   align-items: center;
+}
+.division-tabs {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+.goals {
+  margin-left: 0.35rem;
+  font-size: 0.75rem;
+  opacity: 0.8;
 }
 .match-list {
   display: grid;

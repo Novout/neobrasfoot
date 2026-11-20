@@ -13,8 +13,11 @@ export interface Player {
   forSale: boolean
 }
 
+export type DivisionId = 'A' | 'B' | 'C' | 'D'
+
 export interface Team {
   id: string
+  division: DivisionId
   name: string
   shortName: string
   primaryColor: string

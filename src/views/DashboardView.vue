@@ -3,11 +3,12 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
 import TeamBadge from '../components/TeamBadge.vue'
+import { DIVISION_LABELS, DIVISIONS, tableZone } from '../data/divisions'
 import { stadiumUpkeep } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
 import { marketValue, useGameStore } from '../stores/game'
 import { useTransferStore } from '../stores/transfers'
-import type { Position } from '../types/game'
+import type { DivisionId, Position } from '../types/game'
 import { formatMoney } from '../utils/random'
 
 const game = useGameStore()
@@ -24,6 +25,13 @@ const squad = computed(() => {
 })
 
 const isHome = computed(() => game.nextFixture?.homeId === game.managedTeamId)
+
+// Divisão exibida na tabela; acompanha a do clube até o usuário escolher outra.
+const viewedDivision = ref<DivisionId | null>(null)
+const tableDivision = computed(() => viewedDivision.value ?? game.managedDivision)
+const table = computed(() => game.divisionStandings(tableDivision.value))
+const myPosition = computed(() => game.sortedStandings.findIndex((r) => r.teamId === game.managedTeamId) + 1)
+const myZone = computed(() => tableZone(game.managedDivision, myPosition.value, game.sortedStandings.length))
 
 function standingPoints(row: { wins: number; draws: number }) {
   return row.wins * 3 + row.draws
@@ -111,7 +119,14 @@ function standingPoints(row: { wins: number; draws: number }) {
         <template v-if="game.isSeasonOver">
           <h3>Temporada encerrada</h3>
           <p>
-            Campeão: <strong>{{ game.getTeam(game.sortedStandings[0]!.teamId)?.name }}</strong>
+            Campeão da {{ DIVISION_LABELS[game.managedDivision] }}:
+            <strong>{{ game.getTeam(game.sortedStandings[0]!.teamId)?.name }}</strong>
+          </p>
+          <p>
+            Seu time terminou em <strong>{{ myPosition }}º</strong>
+            <span v-if="myZone === 'champion'" class="good"> — campeão! 🏆</span>
+            <span v-else-if="myZone === 'promotion'" class="good"> — acesso garantido! 🎉</span>
+            <span v-else-if="myZone === 'relegation'" class="bad"> — rebaixado.</span>
           </p>
           <button class="btn" @click="game.nextSeason()">Iniciar temporada {{ game.season + 1 }}</button>
         </template>
@@ -141,16 +156,21 @@ function standingPoints(row: { wins: number; draws: number }) {
       </div>
 
       <div class="card">
-        <h3>Classificação</h3>
-        <table>
+        <div class="table-header">
+          <h3>Classificação</h3>
+          <select :value="tableDivision" @change="viewedDivision = ($event.target as HTMLSelectElement).value as DivisionId">
+            <option v-for="d in DIVISIONS" :key="d" :value="d">{{ DIVISION_LABELS[d] }}</option>
+          </select>
+        </div>
+        <table class="standings">
           <thead>
             <tr><th>#</th><th>Clube</th><th class="num">J</th><th class="num">SG</th><th class="num">P</th></tr>
           </thead>
           <tbody>
             <tr
-              v-for="(row, i) in game.sortedStandings"
+              v-for="(row, i) in table"
               :key="row.teamId"
-              :class="{ mine: row.teamId === game.managedTeamId }"
+              :class="[{ mine: row.teamId === game.managedTeamId }, tableZone(tableDivision, i + 1, table.length) ? `zone-${tableZone(tableDivision, i + 1, table.length)}` : '']"
             >
               <td>{{ i + 1 }}</td>
               <td>{{ game.getTeam(row.teamId)?.name }}</td>
@@ -160,6 +180,11 @@ function standingPoints(row: { wins: number; draws: number }) {
             </tr>
           </tbody>
         </table>
+        <p class="legend">
+          <span v-if="tableDivision === 'A'" class="zone-champion">Campeão</span>
+          <span v-else class="zone-promotion">Acesso</span>
+          <span v-if="tableDivision !== 'D'" class="zone-relegation">Rebaixamento</span>
+        </p>
       </div>
 
       <div class="card">
@@ -226,6 +251,59 @@ function standingPoints(row: { wins: number; draws: number }) {
 }
 .good {
   color: var(--good);
+}
+.bad {
+  color: var(--bad);
+}
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.table-header h3 {
+  margin: 0;
+}
+.table-header select {
+  padding: 0.25rem 0.4rem;
+  font-size: 0.85rem;
+}
+.standings tr td:first-child {
+  border-left: 3px solid transparent;
+}
+.standings tr.zone-champion td:first-child {
+  border-left-color: var(--warn);
+}
+.standings tr.zone-promotion td:first-child {
+  border-left-color: var(--good);
+}
+.standings tr.zone-relegation td:first-child {
+  border-left-color: var(--bad);
+}
+.legend {
+  display: flex;
+  gap: 1rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.legend span::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 0.3rem;
+  border-radius: 2px;
+  vertical-align: -1px;
+}
+.legend .zone-champion::before {
+  background: var(--warn);
+}
+.legend .zone-promotion::before {
+  background: var(--good);
+}
+.legend .zone-relegation::before {
+  background: var(--bad);
 }
 .offers-link {
   text-decoration: none;

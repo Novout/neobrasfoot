@@ -2,7 +2,9 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
+import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
 import { createTeams } from '../data/teams'
+import type { DivisionId } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 
@@ -13,6 +15,16 @@ const router = useRouter()
 const teams = createTeams()
 const selectedId = ref<string | null>(null)
 const managerName = ref('')
+const division = ref<DivisionId>('A')
+
+const DIVISION_HINTS: Record<DivisionId, string> = {
+  A: 'Elencos fortes, estádios maiores e muito caixa. Briga direta pelo título.',
+  B: 'Bons times e o objetivo de subir para a elite.',
+  C: 'Orçamento apertado: será preciso garimpar no mercado.',
+  D: 'O desafio máximo: levar um time pequeno da última divisão até a Série A.',
+}
+
+const divisionTeams = computed(() => teams.filter((t) => t.division === division.value))
 
 const selectedTeam = computed(() => teams.find((t) => t.id === selectedId.value) ?? null)
 
@@ -22,7 +34,7 @@ function averageOverall(teamId: string) {
 }
 
 function stars(reputation: number) {
-  return Math.max(1, Math.round((reputation - 50) / 6))
+  return Math.min(5, Math.max(1, Math.round((reputation - 38) / 9)))
 }
 
 function startCareer() {
@@ -44,9 +56,22 @@ function startCareer() {
       </button>
     </header>
 
+    <nav class="divisions">
+      <button
+        v-for="d in DIVISIONS"
+        :key="d"
+        class="btn"
+        :class="{ 'btn--ghost': division !== d }"
+        @click="division = d"
+      >
+        {{ DIVISION_LABELS[d] }}
+      </button>
+    </nav>
+    <p class="muted division-hint">{{ DIVISION_HINTS[division] }}</p>
+
     <div class="home__grid">
       <button
-        v-for="team in teams"
+        v-for="team in divisionTeams"
         :key="team.id"
         class="team-card"
         :class="{ 'team-card--selected': team.id === selectedId }"
@@ -70,6 +95,7 @@ function startCareer() {
       <div class="home__selected">
         <template v-if="selectedTeam">
           Clube escolhido: <strong>{{ selectedTeam.name }}</strong>
+          <span class="muted">({{ DIVISION_LABELS[selectedTeam.division] }})</span>
         </template>
         <span v-else class="muted">Selecione um clube acima</span>
       </div>
@@ -85,6 +111,16 @@ function startCareer() {
 }
 .home__hero h1 {
   font-size: 2.6rem;
+}
+.divisions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.division-hint {
+  text-align: center;
+  margin: 0.75rem 0 1.25rem;
 }
 .home__grid {
   display: grid;
