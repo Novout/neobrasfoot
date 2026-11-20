@@ -2,8 +2,8 @@ import type { Player, Position } from '../types/game'
 
 // --- Chances por minuto, por time ---
 
-/** ~0,7 amarelo por time por jogo (~1,4 por partida). */
-export const YELLOW_CHANCE = 0.008
+/** ~0,45 amarelo por time por jogo (~0,9 por partida). */
+export const YELLOW_CHANCE = 0.006
 /** Vermelho direto (~1 a cada 13 jogos por time); somado ao 2º amarelo dá ~0,1 vermelho por time. */
 export const DIRECT_RED_CHANCE = 0.001
 /** Lesão com o time descansado (~1 a cada 9 jogos por time); cresce com o cansaço. */
