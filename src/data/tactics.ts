@@ -1,0 +1,18 @@
+import type { Formation, PlayStyle, Position } from '../types/game'
+
+export const FORMATIONS: Record<Formation, Record<Position, number>> = {
+  '4-4-2': { GOL: 1, DEF: 4, MEI: 4, ATA: 2 },
+  '4-3-3': { GOL: 1, DEF: 4, MEI: 3, ATA: 3 },
+  '3-5-2': { GOL: 1, DEF: 3, MEI: 5, ATA: 2 },
+  '5-3-2': { GOL: 1, DEF: 5, MEI: 3, ATA: 2 },
+  '4-5-1': { GOL: 1, DEF: 4, MEI: 5, ATA: 1 },
+}
+
+/** attack multiplica as chances de marcar; defense multiplica as chances de sofrer. */
+export const PLAY_STYLES: Record<PlayStyle, { label: string; attack: number; defense: number }> = {
+  defensivo: { label: 'Defensivo', attack: 0.8, defense: 0.75 },
+  equilibrado: { label: 'Equilibrado', attack: 1, defense: 1 },
+  ofensivo: { label: 'Ofensivo', attack: 1.25, defense: 1.2 },
+}
+
+export const POSITION_ORDER: Position[] = ['GOL', 'DEF', 'MEI', 'ATA']

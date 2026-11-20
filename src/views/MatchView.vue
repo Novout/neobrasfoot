@@ -1,0 +1,181 @@
+<script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import TeamBadge from '../components/TeamBadge.vue'
+import { useGameStore } from '../stores/game'
+import { useMatchStore } from '../stores/match'
+
+const game = useGameStore()
+const match = useMatchStore()
+const router = useRouter()
+
+const speeds = [
+  { label: '1x', ms: 400 },
+  { label: '2x', ms: 200 },
+  { label: '4x', ms: 80 },
+]
+
+const sortedMatches = computed(() =>
+  [...match.matches].sort((a, b) => Number(isMine(b)) - Number(isMine(a))),
+)
+
+function isMine(m: { homeId: string; awayId: string }) {
+  return m.homeId === game.managedTeamId || m.awayId === game.managedTeamId
+}
+
+function finishRound() {
+  match.confirmRound()
+  router.push({ name: 'dashboard' })
+}
+
+onMounted(() => {
+  if (match.minute === 0) match.start()
+})
+onBeforeUnmount(() => match.stop())
+</script>
+
+<template>
+  <div class="matches">
+    <section class="card clock">
+      <div class="clock__time">
+        <span class="minute">{{ match.minute }}'</span>
+        <span class="muted">{{ match.isFinished ? 'Fim de jogo' : match.running ? 'Bola rolando' : 'Pausado' }}</span>
+      </div>
+      <div class="progress"><div :style="{ width: `${(match.minute / 90) * 100}%` }" /></div>
+      <div class="controls">
+        <template v-if="!match.isFinished">
+          <button class="btn btn--ghost" @click="match.running ? match.stop() : match.start()">
+            {{ match.running ? '⏸ Pausar' : '▶ Continuar' }}
+          </button>
+          <button
+            v-for="s in speeds"
+            :key="s.ms"
+            class="btn btn--sm"
+            :class="{ 'btn--ghost': match.tickMs !== s.ms }"
+            @click="match.setSpeed(s.ms)"
+          >
+            {{ s.label }}
+          </button>
+          <button class="btn btn--ghost" @click="match.simulateToEnd()">⏭ Simular até o fim</button>
+        </template>
+        <button v-else class="btn" @click="finishRound">Finalizar rodada</button>
+      </div>
+    </section>
+
+    <section class="match-list">
+      <article v-for="m in sortedMatches" :key="m.id" class="card match" :class="{ 'match--mine': isMine(m) }">
+        <div class="scoreboard">
+          <div class="side">
+            <span class="team-name">{{ game.getTeam(m.homeId)?.name }}</span>
+            <TeamBadge :team="game.getTeam(m.homeId)!" :size="36" />
+          </div>
+          <div class="score">{{ m.homeGoals }} <span class="muted">x</span> {{ m.awayGoals }}</div>
+          <div class="side side--away">
+            <TeamBadge :team="game.getTeam(m.awayId)!" :size="36" />
+            <span class="team-name">{{ game.getTeam(m.awayId)?.name }}</span>
+          </div>
+        </div>
+        <ul v-if="m.events.length" class="events">
+          <li v-for="(e, i) in m.events" :key="i" :class="e.teamId === m.homeId ? 'home' : 'away'">
+            ⚽ {{ e.minute }}' {{ e.playerName }}
+          </li>
+        </ul>
+      </article>
+    </section>
+  </div>
+</template>
+
+<style scoped>
+.matches {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.clock {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.clock__time {
+  display: flex;
+  flex-direction: column;
+  min-width: 110px;
+}
+.minute {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.progress {
+  flex: 1;
+  min-width: 200px;
+  height: 8px;
+  background: var(--surface-2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress div {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s linear;
+}
+.controls {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.match-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr));
+  gap: 1rem;
+}
+.match--mine {
+  grid-column: 1 / -1;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.scoreboard {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+.side {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+.side--away {
+  justify-content: flex-start;
+}
+.team-name {
+  font-weight: 600;
+}
+.score {
+  font-size: 1.8rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.match--mine .score {
+  font-size: 2.4rem;
+}
+.events {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0.5rem 0 0;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-size: 0.85rem;
+  gap: 0.2rem 1rem;
+}
+.events .home {
+  grid-column: 1;
+  text-align: right;
+}
+.events .away {
+  grid-column: 2;
+}
+</style>
