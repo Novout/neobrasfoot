@@ -45,6 +45,16 @@ const router = createRouter({
       meta: { requiresCareer: true, title: 'Copa do Brasil' },
     },
     {
+      path: '/janela-tecnicos',
+      name: 'manager-market',
+      component: () => import('../views/ManagerMarketView.vue'),
+      meta: { requiresCareer: true, title: 'Janela de técnicos' },
+      // Só abre com a temporada encerrada.
+      beforeEnter: () => {
+        if (!useGameStore().isSeasonOver) return { name: 'dashboard' }
+      },
+    },
+    {
       path: '/pre-jogo',
       name: 'pre-match',
       component: () => import('../views/PreMatchView.vue'),

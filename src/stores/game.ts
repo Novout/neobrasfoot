@@ -7,6 +7,7 @@ import { generateFixtures } from '../data/fixtures'
 import {
   DIRECT_RED_SUSPENSION, injuryGames, isAvailable, SECOND_YELLOW_SUSPENSION, YELLOWS_FOR_SUSPENSION,
 } from '../data/discipline'
+import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import {
@@ -23,7 +24,7 @@ import {
   assignStarsToLegacyTeams, createTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
-  Competition, CupState, CupTie, DivisionId, MatchVenue, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  Competition, CupState, CupTie, DivisionId, JobOffer, MatchVenue, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord,
 } from '../types/game'
 import { clamp, formatMoney } from '../utils/random'
@@ -130,11 +131,13 @@ export const useGameStore = defineStore('game', () => {
   const negotiationAttempts = ref<Record<string, number>>({})
   const stadium = ref<Stadium | null>(null)
   const cup = ref<CupState | null>(null)
+  /** Propostas da janela de técnicos (abertas no fim da temporada). */
+  const jobOffers = ref<JobOffer[]>([])
 
   // Versão 2: introdução das divisões (saves de divisão única são descartados).
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
-    transferOffers, transferHistory, negotiationAttempts, stadium, cup,
+    transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers,
   }, 2)
 
   const hasCareer = computed(() => managedTeamId.value !== null)
@@ -303,6 +306,7 @@ export const useGameStore = defineStore('game', () => {
     transferOffers.value = []
     transferHistory.value = []
     negotiationAttempts.value = {}
+    jobOffers.value = []
     startSeason()
     const team = managedTeam.value!
     budget.value = team.reputation * 100_000
@@ -332,8 +336,8 @@ export const useGameStore = defineStore('game', () => {
     cup.value = createCup(teams.value, season.value)
   }
 
-  /** Acesso e rebaixamento com base na classificação final de cada divisão. */
-  function applyPromotionsAndRelegations() {
+  /** Quem sobe e quem cai, pela classificação final de cada divisão (sem aplicar). */
+  function computeSeasonMoves() {
     const moves: { team: Team; to: DivisionId; up: boolean }[] = []
     for (const division of DIVISIONS) {
       const table = divisionStandings(division)
@@ -346,6 +350,42 @@ export const useGameStore = defineStore('game', () => {
         table.slice(-RELEGATION_SPOTS).forEach((r) => moves.push({ team: getTeam(r.teamId)!, to: below, up: false }))
       }
     }
+    return moves
+  }
+
+  /** Série de um clube na próxima temporada (já com acesso e rebaixamento). */
+  function projectedDivision(teamId: string): DivisionId {
+    const move = computeSeasonMoves().find((m) => m.team.id === teamId)
+    return move?.to ?? getTeam(teamId)?.division ?? 'D'
+  }
+
+  /** Avaliação da temporada do técnico (só faz sentido com a temporada encerrada). */
+  const seasonReview = computed(() => {
+    if (!isSeasonOver.value || !managedTeamId.value) return null
+    const table = sortedStandings.value
+    const position = table.findIndex((r) => r.teamId === managedTeamId.value) + 1
+    const zone = tableZone(managedDivision.value, position, table.length)
+    const cupWins = cup.value?.rounds.flatMap((r) => r.ties).filter((t) => t.winnerId === managedTeamId.value).length ?? 0
+    const cupChampion = cup.value?.championId === managedTeamId.value
+    return reviewSeason(managedDivision.value, position, table.length, zone, cupWins, cupChampion)
+  })
+
+  /** Abre a janela de técnicos: gera as propostas uma vez por temporada encerrada. */
+  function ensureJobOffers() {
+    if (!seasonReview.value || jobOffers.value.length || !managedTeamId.value) return
+    const divisions = new Map(teams.value.map((t) => [t.id, projectedDivision(t.id)]))
+    jobOffers.value = generateJobOffers(
+      teams.value,
+      managedTeamId.value,
+      (id) => divisions.get(id) ?? 'D',
+      seasonReview.value.score,
+    )
+    addNews(`💼 Janela de técnicos aberta: ${jobOffers.value.length} clubes querem contratar você.`)
+  }
+
+  /** Acesso e rebaixamento com base na classificação final de cada divisão. */
+  function applyPromotionsAndRelegations() {
+    const moves = computeSeasonMoves()
     // Aplica só depois de calcular tudo, para um time não subir e cair na mesma virada.
     for (const { team, to, up } of moves) {
       team.division = to
@@ -356,8 +396,28 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
-  function nextSeason() {
+  /**
+   * O técnico troca de clube. O caixa e o estádio são do clube: o novo começa com o caixa
+   * inicial pelo tamanho dele e com o próprio estádio; o antigo passa a ser da IA.
+   */
+  function switchClub(newTeamId: string) {
+    const oldTeam = managedTeam.value
+    const newTeam = getTeam(newTeamId)
+    if (!oldTeam || !newTeam || newTeam.id === oldTeam.id) return
+    oldTeam.players.forEach((p) => (p.forSale = false))
+    managedTeamId.value = newTeam.id
+    budget.value = newTeam.reputation * 100_000
+    stadium.value = createStadium(newTeam)
+    transferOffers.value = []
+    negotiationAttempts.value = {}
+    addNews(`🤝 ${managerName.value} deixa o ${oldTeam.name} e é o novo técnico do ${newTeam.name}!`)
+  }
+
+  /** Vira a temporada; com `newTeamId`, o técnico assume outro clube (janela de técnicos). */
+  function nextSeason(newTeamId?: string) {
     applyPromotionsAndRelegations()
+    if (newTeamId) switchClub(newTeamId)
+    jobOffers.value = []
     season.value++
     teams.value.forEach((t) =>
       t.players.forEach((p) => {
@@ -719,6 +779,7 @@ export const useGameStore = defineStore('game', () => {
       const zone = tableZone(division, position, sortedStandings.value.length)
       if (zone === 'promotion') addNews(`Seu time terminou em ${position}º e garantiu o acesso!`)
       if (zone === 'relegation') addNews(`Seu time terminou em ${position}º e será rebaixado.`)
+      ensureJobOffers()
     }
   }
 
@@ -734,12 +795,13 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
-    transferOffers, transferHistory, negotiationAttempts, stadium, cup,
+    transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers,
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
     nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
     payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate, matchVenue,
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
+    seasonReview, projectedDivision, ensureJobOffers,
     addNews, trainPlayer, restPlayer, toggleForSale,
     releaseBlocker, hasSquadRoom, transferPlayer,
     toggleStarter, autoSelectStarters, setFormation, setStyle, teamStrength,

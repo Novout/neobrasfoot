@@ -142,7 +142,10 @@ function standingPoints(row: { wins: number; draws: number }) {
             Campeão da Copa do Brasil: <strong>{{ game.getTeam(game.cup.championId)?.name }}</strong>
             <span v-if="game.cup.championId === game.managedTeamId" class="good"> 🏆</span>
           </p>
-          <button class="btn" @click="game.nextSeason()">Iniciar temporada {{ game.season + 1 }}</button>
+          <RouterLink class="btn window-link" :to="{ name: 'manager-market' }">
+            💼 Abrir janela de técnicos
+            <span v-if="game.jobOffers.length" class="offers-count">{{ game.jobOffers.length }} propostas</span>
+          </RouterLink>
         </template>
         <template v-else-if="game.nextEvent === 'cup' && !game.nextOpponent">
           <h3>{{ game.nextEventLabel }}</h3>
@@ -273,6 +276,17 @@ function standingPoints(row: { wins: number; draws: number }) {
 }
 .bad {
   color: var(--bad);
+}
+.window-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+.offers-count {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.8;
 }
 .cup-title {
   color: var(--warn);

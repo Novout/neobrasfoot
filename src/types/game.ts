@@ -118,6 +118,14 @@ export interface MatchVenue {
   capacity: number
 }
 
+/** Proposta de um clube para o técnico assumir na próxima temporada. */
+export interface JobOffer {
+  teamId: string
+  /** Série do clube na próxima temporada (já com acesso/rebaixamento). */
+  division: DivisionId
+  reason: string
+}
+
 /** Proposta de um clube da IA por um jogador do clube gerenciado. */
 export interface TransferOffer {
   id: string
