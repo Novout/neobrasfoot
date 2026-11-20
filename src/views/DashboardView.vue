@@ -270,6 +270,21 @@ function standingPoints(row: { wins: number; draws: number }) {
 .actions > * + * {
   margin-left: 0.25rem;
 }
+/* Treinar, Descansar e Vender só aparecem com o mouse sobre a linha (o aviso de propostas fica sempre visível). */
+.actions > button {
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+tr:hover .actions > button,
+.actions:focus-within > button {
+  opacity: 1;
+}
+/* Telas de toque não têm hover: mantém os botões visíveis. */
+@media (hover: none) {
+  .actions > button {
+    opacity: 1;
+  }
+}
 .tag {
   display: inline-block;
   margin-left: 0.3rem;
