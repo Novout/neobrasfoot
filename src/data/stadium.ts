@@ -97,11 +97,11 @@ const STADIUM_NAMES: Record<string, string> = {
   'jatoba-ec': 'Campo do Jatobá',
 }
 
-export function stadiumNameFor(team: Pick<Team, 'name'> & { id?: string }) {
-  return (team.id && STADIUM_NAMES[team.id]) || `Estádio do ${team.name}`
+export function stadiumNameFor(team: Pick<Team, 'name'> & { id?: string; stadiumName?: string }) {
+  return team.stadiumName || (team.id && STADIUM_NAMES[team.id]) || `Estádio do ${team.name}`
 }
 
-export function createStadium(team: Pick<Team, 'name' | 'reputation'> & { id?: string }): Stadium {
+export function createStadium(team: Pick<Team, 'name' | 'reputation'> & { id?: string; stadiumName?: string }): Stadium {
   return {
     name: stadiumNameFor(team),
     baseCapacity: Math.round((15_000 + (team.reputation - 55) * 600) / 100) * 100,

@@ -3,10 +3,11 @@ import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from '../data/divisions'
+import { leagueTeams } from '../data/leagueFile'
 import { createStadium, stadiumCapacity } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
 import {
-  createTeams, DIVISION_REPUTATION, generateRealisticSquad, overallForLevel, randomPlayerName, realisticPlayerDraft,
+  DIVISION_REPUTATION, generateRealisticSquad, overallForLevel, randomPlayerName, realisticPlayerDraft,
   talentFromOverall, teamReplacedBy, type CustomTeamDraft,
 } from '../data/teams'
 import { MAX_SQUAD_SIZE, MIN_GOALKEEPERS, MIN_SQUAD_SIZE, useGameStore } from '../stores/game'
@@ -27,7 +28,8 @@ const MIN_BY_POSITION: Record<Position, number> = { GOL: MIN_GOALKEEPERS, DEF: 4
 
 // --- Referência das séries ---
 
-const referenceTeams = createTeams()
+// Liga em uso nas carreiras novas (padrão ou importada).
+const referenceTeams = leagueTeams()
 const divisionAverages = Object.fromEntries(
   DIVISIONS.map((d) => {
     const players = referenceTeams.filter((t) => t.division === d).flatMap((t) => t.players)

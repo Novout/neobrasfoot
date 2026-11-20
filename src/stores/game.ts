@@ -11,6 +11,7 @@ import {
   DIRECT_RED_SUSPENSION, injuryGames, isAvailable, SECOND_YELLOW_SUSPENSION, YELLOWS_FOR_SUSPENSION,
 } from '../data/discipline'
 import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
+import { leagueTeams } from '../data/leagueFile'
 import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
@@ -27,7 +28,7 @@ import {
   RELEGATION_SPOTS, REPUTATION_SWING, tableZone,
 } from '../data/divisions'
 import {
-  assignStarsToLegacyTeams, createTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
+  assignStarsToLegacyTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
   Competition, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
@@ -316,12 +317,12 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function startCareer(teamId: string, name: string) {
-    beginCareer(createTeams(), teamId, name)
+    beginCareer(leagueTeams(), teamId, name)
   }
 
   /** Começa a carreira com um clube criado pelo jogador, no lugar do mais fraco da série. */
   function startCustomCareer(draft: CustomTeamDraft, name: string) {
-    const { teams: league, replaced } = createTeamsWithCustom(draft)
+    const { teams: league, replaced } = createTeamsWithCustom(draft, leagueTeams())
     beginCareer(league, CUSTOM_TEAM_ID, name)
     addNews(`O ${replaced.name} deixa a ${DIVISION_LABELS[draft.division]} para dar lugar ao ${draft.name.trim()}.`)
   }

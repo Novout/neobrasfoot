@@ -198,6 +198,11 @@ function generatePlayers(seed: TeamSeed): Player[] {
   )
 }
 
+/** Elenco gerado (determinístico pelo id) para um clube sem jogadores definidos. */
+export function generateSquadFor(seed: Pick<Team, 'id' | 'reputation'>): Player[] {
+  return generatePlayers(seed as TeamSeed)
+}
+
 export function createTeams(): Team[] {
   return TEAM_SEEDS.map((seed) => ({ ...seed, players: generatePlayers(seed) }))
 }
@@ -224,8 +229,9 @@ export function teamReplacedBy(teams: Team[], division: DivisionId) {
 }
 
 /** Monta a liga com o clube personalizado no lugar do mais fraco da série escolhida. */
-export function createTeamsWithCustom(draft: CustomTeamDraft): { teams: Team[]; replaced: Team } {
-  const teams = createTeams()
+/** `base`: a liga em uso (a padrão ou uma importada). */
+export function createTeamsWithCustom(draft: CustomTeamDraft, base: Team[] = createTeams()): { teams: Team[]; replaced: Team } {
+  const teams = base
   const replaced = teamReplacedBy(teams, draft.division)
   const custom: Team = {
     id: CUSTOM_TEAM_ID,

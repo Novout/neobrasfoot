@@ -45,6 +45,8 @@ export interface Team {
   primaryColor: string
   secondaryColor: string
   reputation: number
+  /** Nome do estádio definido numa liga importada (senão usa o nome padrão do clube). */
+  stadiumName?: string
   players: Player[]
 }
 
