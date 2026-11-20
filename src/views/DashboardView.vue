@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
+import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS, tableZone } from '../data/divisions'
@@ -84,7 +85,7 @@ function standingPoints(row: { wins: number; draws: number }) {
             <tr v-for="p in squad" :key="p.id" :class="{ 'for-sale': p.forSale }">
               <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
               <td>
-                {{ p.name }}<StarMark :star="p.star" />
+                {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag" title="Titular">T</span>
                 <span v-if="p.forSale" class="tag tag--sale">À venda</span>
               </td>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
@@ -209,7 +210,7 @@ function quickSell(playerId: string, playerName: string) {
             >
               <td><span class="pos" :class="`pos--${player.position}`">{{ player.position }}</span></td>
               <td>
-                {{ player.name }}<StarMark :star="player.star" />
+                {{ player.name }}<StarMark :star="player.star" /><PlayerStatus :player="player" />
                 <span v-if="player.starter" class="tag" title="Titular no clube atual">T</span>
               </td>
               <td>
@@ -244,7 +245,7 @@ function quickSell(playerId: string, playerName: string) {
           <div class="negotiation__player">
             <TeamBadge :team="selected.team" :size="44" />
             <div>
-              <strong>{{ selected.player.name }}<StarMark :star="selected.player.star" /></strong>
+              <strong>{{ selected.player.name }}<StarMark :star="selected.player.star" /><PlayerStatus :player="selected.player" /></strong>
               <small class="muted">
                 {{ selected.player.position }} · {{ selected.player.age }} anos · OVR {{ selected.player.overall }}
               </small>
@@ -359,7 +360,7 @@ function quickSell(playerId: string, playerName: string) {
             <tr v-for="p in mySquad" :key="p.id" :class="{ listed: p.forSale }">
               <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
               <td>
-                {{ p.name }}<StarMark :star="p.star" />
+                {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag">T</span>
                 <span v-if="p.forSale" class="tag tag--sale">À venda</span>
               </td>

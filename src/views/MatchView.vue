@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
-import type { DivisionId } from '../types/game'
+import type { DivisionId, MatchEventType } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 
@@ -25,6 +25,8 @@ const shownDivision = computed(() => viewedDivision.value ?? game.managedDivisio
 function matchDivision(m: { homeId: string }) {
   return game.getTeam(m.homeId)?.division
 }
+
+const EVENT_ICONS: Record<MatchEventType, string> = { gol: '⚽', amarelo: '🟨', vermelho: '🟥', lesao: '🩹' }
 
 /** Rodada da Copa reúne clubes de todas as séries: sem abas de divisão. */
 const isCup = computed(() => match.matches[0]?.competition === 'cup')
@@ -118,7 +120,9 @@ onBeforeUnmount(() => match.stop())
         </div>
         <ul v-if="m.events.length" class="events">
           <li v-for="(e, i) in m.events" :key="i" :class="e.teamId === m.homeId ? 'home' : 'away'">
-            ⚽ {{ e.minute }}' {{ e.playerName }}<StarMark :star="e.star" />
+            {{ EVENT_ICONS[e.type] }} {{ e.minute }}' {{ e.playerName }}<StarMark :star="e.star" />
+            <small v-if="e.type === 'vermelho' && e.secondYellow" class="muted"> (2º amarelo)</small>
+            <small v-else-if="e.type === 'lesao'" class="muted"> (fora {{ e.games }} jogo{{ (e.games ?? 1) > 1 ? 's' : '' }})</small>
           </li>
         </ul>
       </article>

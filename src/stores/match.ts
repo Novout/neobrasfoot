@@ -2,6 +2,10 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { LiveMatch, Player } from '../types/game'
 import { simulatePenalties } from '../data/cup'
+import {
+  DIRECT_RED_CHANCE, injuryChanceFor, isAvailable, pickCardedPlayer, pickInjuredPlayer, rollInjuryGames, SENT_OFF_PENALTY,
+  YELLOW_CHANCE,
+} from '../data/discipline'
 import { persistRefs } from '../utils/storage'
 import { useGameStore } from './game'
 import { useTransferStore } from './transfers'
@@ -22,7 +26,11 @@ function pickScorer(starters: Player[]) {
 
 function scorerInfo(starters: Player[] | undefined) {
   const scorer = pickScorer(starters ?? [])
-  return { playerName: scorer?.name ?? 'Desconhecido', star: scorer?.star ?? false }
+  return { playerName: scorer?.name ?? 'Desconhecido', playerId: scorer?.id, star: scorer?.star ?? false }
+}
+
+function eventPlayer(p: Player) {
+  return { playerName: p.name, playerId: p.id, star: p.star ?? false }
 }
 
 function goalChance(attack: number, defense: number) {
@@ -53,7 +61,8 @@ export const useMatchStore = defineStore('match', () => {
       const home = game.teamStrength(f.homeId)
       const away = game.teamStrength(f.awayId)
       for (const id of [f.homeId, f.awayId]) {
-        lineups.value[id] = game.getTeam(id)!.players.filter((p) => p.starter).map((p) => ({ ...p }))
+        // Suspensos e lesionados nunca entram em campo, mesmo se marcados como titulares.
+        lineups.value[id] = game.getTeam(id)!.players.filter((p) => p.starter && isAvailable(p)).map((p) => ({ ...p }))
       }
       return {
         id: `${competition}-${game.season}-${game.round}-${index}`,
@@ -87,6 +96,8 @@ export const useMatchStore = defineStore('match', () => {
         m.awayGoals++
         m.events.push({ minute: minute.value, teamId: m.awayId, type: 'gol', ...scorerInfo(lineups.value[m.awayId]) })
       }
+      rollDiscipline(m, 'home')
+      rollDiscipline(m, 'away')
     }
     if (isFinished.value) {
       // Mata-mata não termina empatado: decide nos pênaltis ao apito final.
@@ -94,6 +105,56 @@ export const useMatchStore = defineStore('match', () => {
         if (m.competition === 'cup' && m.homeGoals === m.awayGoals && !m.penalties) m.penalties = simulatePenalties()
       }
       stop()
+    }
+  }
+
+  /** Tira o jogador de campo (expulso ou lesionado): não marca nem leva mais cartões. */
+  function removeFromPitch(teamId: string, playerId: string) {
+    lineups.value[teamId] = (lineups.value[teamId] ?? []).filter((p) => p.id !== playerId)
+  }
+
+  /** Cartões e lesões de um lado da partida neste minuto. */
+  function rollDiscipline(m: LiveMatch, side: 'home' | 'away') {
+    const teamId = side === 'home' ? m.homeId : m.awayId
+    const onPitch = lineups.value[teamId] ?? []
+    if (!onPitch.length) return
+    const at = minute.value
+
+    const sendOff = (p: Player, secondYellow: boolean) => {
+      m.events.push({ minute: at, teamId, type: 'vermelho', secondYellow, ...eventPlayer(p) })
+      removeFromPitch(teamId, p.id)
+      // Com um a menos, o time perde força no ataque e na defesa até o fim.
+      if (side === 'home') {
+        m.homeAttack *= SENT_OFF_PENALTY
+        m.homeDefense *= SENT_OFF_PENALTY
+      } else {
+        m.awayAttack *= SENT_OFF_PENALTY
+        m.awayDefense *= SENT_OFF_PENALTY
+      }
+    }
+
+    if (Math.random() < YELLOW_CHANCE) {
+      const booked = new Set(m.events.filter((e) => e.type === 'amarelo' && e.teamId === teamId).map((e) => e.playerId!))
+      const p = pickCardedPlayer(onPitch, booked)
+      if (p) {
+        const alreadyBooked = booked.has(p.id)
+        m.events.push({ minute: at, teamId, type: 'amarelo', ...eventPlayer(p) })
+        if (alreadyBooked) sendOff(p, true)
+      }
+    } else if (Math.random() < DIRECT_RED_CHANCE) {
+      const p = pickCardedPlayer(onPitch)
+      if (p) sendOff(p, false)
+    }
+
+    const current = lineups.value[teamId] ?? []
+    const avgEnergy = current.reduce((sum, p) => sum + p.energy, 0) / Math.max(current.length, 1)
+    if (current.length && Math.random() < injuryChanceFor(avgEnergy)) {
+      const p = pickInjuredPlayer(current)
+      if (p) {
+        m.events.push({ minute: at, teamId, type: 'lesao', games: rollInjuryGames(), ...eventPlayer(p) })
+        // Sai machucado; o substituto entra sem alterar a força (não há banco simulado).
+        removeFromPitch(teamId, p.id)
+      }
     }
   }
 

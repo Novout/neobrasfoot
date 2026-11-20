@@ -13,6 +13,12 @@ export interface Player {
   forSale: boolean
   /** Jogador estrela: OVR acima do normal e gasta menos energia. Ausente em saves antigos. */
   star?: boolean
+  /** Amarelos acumulados na temporada (zera ao cumprir suspensão por acúmulo). */
+  yellowCards?: number
+  /** Jogos que ainda precisa cumprir de suspensão. */
+  suspension?: number
+  /** Jogos que ainda vai ficar fora por lesão. */
+  injury?: number
 }
 
 export type DivisionId = 'A' | 'B' | 'C' | 'D'
@@ -41,12 +47,20 @@ export interface Fixture {
   awayId: string
 }
 
+export type MatchEventType = 'gol' | 'amarelo' | 'vermelho' | 'lesao'
+
 export interface MatchEvent {
   minute: number
   teamId: string
-  type: 'gol'
+  type: MatchEventType
   playerName: string
+  /** Ausente em gols de partidas antigas. */
+  playerId?: string
   star?: boolean
+  /** Vermelho: veio do segundo amarelo. */
+  secondYellow?: boolean
+  /** Lesão: jogos que vai ficar fora. */
+  games?: number
 }
 
 export type Competition = 'league' | 'cup'

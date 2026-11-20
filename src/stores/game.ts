@@ -4,6 +4,9 @@ import {
   createCup, CUP_NAME, CUP_PRIZES, CUP_RUNNER_UP_PRIZE, drawNextRound, inRound, simulatePenalties, tieWinner,
 } from '../data/cup'
 import { generateFixtures } from '../data/fixtures'
+import {
+  DIRECT_RED_SUSPENSION, injuryGames, isAvailable, SECOND_YELLOW_SUSPENSION, YELLOWS_FOR_SUSPENSION,
+} from '../data/discipline'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import {
@@ -39,7 +42,7 @@ export function trainingEnergyCost(player: Player) {
 
 /** O jogador precisa de uma folga de energia além do custo do treino. */
 export function canTrain(player: Player) {
-  return player.energy >= trainingEnergyCost(player) + 5
+  return injuryGames(player) === 0 && player.energy >= trainingEnergyCost(player) + 5
 }
 
 export function marketValue(player: Player) {
@@ -57,16 +60,27 @@ function average(values: number[]) {
   return values.length ? values.reduce((sum, v) => sum + v, 0) / values.length : 0
 }
 
-/** Escolhe os melhores 11 respeitando a formação; jogadores à venda só entram se faltar opção. */
+/**
+ * Escolhe os melhores 11 disponíveis respeitando a formação; jogadores à venda só entram se faltar opção.
+ * Se suspensões/lesões deixarem uma posição sem gente, completa com o melhor disponível de linha.
+ */
 function pickBestLineup(players: Player[], formation: Formation): Set<string> {
   const chosen = new Set<string>()
+  const available = players.filter(isAvailable)
+  const byPreference = (a: Player, b: Player) =>
+    Number(a.forSale) - Number(b.forSale) || effectiveRating(b) - effectiveRating(a)
   for (const position of POSITION_ORDER) {
-    players
+    available
       .filter((p) => p.position === position)
-      .sort((a, b) => Number(a.forSale) - Number(b.forSale) || effectiveRating(b) - effectiveRating(a))
+      .sort(byPreference)
       .slice(0, FORMATIONS[formation][position])
       .forEach((p) => chosen.add(p.id))
   }
+  available
+    .filter((p) => !chosen.has(p.id) && p.position !== 'GOL')
+    .sort(byPreference)
+    .slice(0, Math.max(0, 11 - chosen.size))
+    .forEach((p) => chosen.add(p.id))
   return chosen
 }
 
@@ -280,7 +294,12 @@ export const useGameStore = defineStore('game', () => {
       teamId: t.id, played: 0, wins: 0, draws: 0, losses: 0, goalsFor: 0, goalsAgainst: 0,
     }))
     teams.value.forEach((t) => {
-      t.players.forEach((p) => (p.energy = 100))
+      // Nova temporada: energia cheia e cartões zerados (lesões continuam valendo).
+      t.players.forEach((p) => {
+        p.energy = 100
+        p.yellowCards = 0
+        p.suspension = 0
+      })
       applyLineup(t, t.id === managedTeamId.value ? tactic.value.formation : AI_TACTIC.formation)
     })
     cup.value = createCup(teams.value, season.value)
@@ -401,7 +420,8 @@ export const useGameStore = defineStore('game', () => {
   function toggleStarter(playerId: string) {
     const player = findManagedPlayer(playerId)
     if (!player) return
-    if (!player.starter && starters.value.length >= 11) return
+    // Suspensos e lesionados podem sair da escalação, mas não entrar.
+    if (!player.starter && (starters.value.length >= 11 || !isAvailable(player))) return
     player.starter = !player.starter
   }
 
@@ -509,11 +529,62 @@ export const useGameStore = defineStore('game', () => {
       advanceConstruction()
     }
 
+    applyDiscipline(matches)
     round.value++
     trainedThisRound.value = []
     negotiationAttempts.value = {}
     relineupAiTeams()
     announceSeasonEnd()
+  }
+
+  /**
+   * Depois de cada partida: quem jogou cumpre um jogo das punições antigas, e depois
+   * recebe as novas (cartões e lesões). A ordem garante que o castigo novo vale para o próximo jogo.
+   */
+  function applyDiscipline(matches: LiveMatch[]) {
+    const myId = managedTeamId.value
+    const played = new Set(matches.flatMap((m) => [m.homeId, m.awayId]))
+
+    for (const teamId of played) {
+      for (const p of getTeam(teamId)?.players ?? []) {
+        const wasOut = !isAvailable(p)
+        if (p.suspension) p.suspension--
+        if (p.injury) p.injury--
+        if (wasOut && isAvailable(p) && teamId === myId) addNews(`✅ ${p.name} está liberado e pode voltar a jogar.`)
+      }
+    }
+
+    const plural = (n: number) => `${n} jogo${n > 1 ? 's' : ''}`
+    for (const m of matches) {
+      for (const e of m.events) {
+        if (e.type === 'gol' || !e.playerId) continue
+        const p = getTeam(e.teamId)?.players.find((x) => x.id === e.playerId)
+        if (!p) continue
+        const mine = e.teamId === myId
+
+        if (e.type === 'amarelo') {
+          // Amarelos de quem acabou expulso no mesmo jogo não contam para o acúmulo.
+          if (m.events.some((x) => x.type === 'vermelho' && x.playerId === p.id)) continue
+          p.yellowCards = (p.yellowCards ?? 0) + 1
+          if (p.yellowCards >= YELLOWS_FOR_SUSPENSION) {
+            p.yellowCards = 0
+            p.suspension = (p.suspension ?? 0) + 1
+            if (mine) addNews(`🟨 ${p.name} levou o ${YELLOWS_FOR_SUSPENSION}º amarelo e está suspenso por 1 jogo.`)
+          }
+        } else if (e.type === 'vermelho') {
+          const games = e.secondYellow ? SECOND_YELLOW_SUSPENSION : DIRECT_RED_SUSPENSION
+          p.suspension = (p.suspension ?? 0) + games
+          if (mine) addNews(`🟥 ${p.name} foi expulso${e.secondYellow ? ' (2º amarelo)' : ''} e está suspenso por ${plural(games)}.`)
+        } else if (e.type === 'lesao') {
+          const games = e.games ?? 1
+          p.injury = Math.max(p.injury ?? 0, games)
+          if (mine) addNews(`🩹 ${p.name} se lesionou e vai desfalcar o time por ${plural(games)}.`)
+        }
+
+        // Quem ficou indisponível sai da escalação; o técnico precisa escolher o substituto.
+        if (!isAvailable(p)) p.starter = false
+      }
+    }
   }
 
   /** Renda do clube gerenciado num jogo: bilheteria em casa ou cota fora. */
@@ -588,6 +659,8 @@ export const useGameStore = defineStore('game', () => {
         }
       }
     }
+
+    applyDiscipline(matches)
 
     const winners = cupRound.ties.map((t) => t.winnerId!).filter(Boolean)
     if (isFinal) {

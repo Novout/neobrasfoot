@@ -2,8 +2,10 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
+import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
+import { isAvailable, unavailableReason } from '../data/discipline'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
@@ -37,6 +39,7 @@ const problems = computed(() => {
   const list: string[] = []
   if (game.starters.length !== 11) list.push(`Escale exatamente 11 titulares (${game.starters.length}/11).`)
   if (startersByPos.value.GOL !== 1) list.push('É preciso ter exatamente 1 goleiro.')
+  for (const p of game.starters.filter((s) => !isAvailable(s))) list.push(`${p.name} não pode jogar: ${unavailableReason(p)}.`)
   return list
 })
 
@@ -72,12 +75,13 @@ function play() {
             v-for="p in group.players"
             :key="p.id"
             class="player-row"
-            :class="{ starter: p.starter }"
+            :class="{ starter: p.starter, unavailable: !isAvailable(p) }"
+            :title="unavailableReason(p) ?? ''"
             @click="game.toggleStarter(p.id)"
           >
             <input type="checkbox" :checked="p.starter" tabindex="-1" />
             <span class="name">
-              {{ p.name }}<StarMark :star="p.star" />
+              {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
               <span v-if="p.forSale" class="for-sale" title="Listado para venda">à venda</span>
             </span>
             <span class="muted">{{ p.age }}a</span>
@@ -230,6 +234,10 @@ function play() {
   border: 1px solid var(--border);
   cursor: pointer;
   user-select: none;
+}
+.player-row.unavailable {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 .player-row.starter {
   border-color: var(--accent);
