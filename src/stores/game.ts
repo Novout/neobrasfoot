@@ -12,6 +12,7 @@ import {
 } from '../data/discipline'
 import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
 import { createManagers, trophyLabel } from '../data/trophies'
+import { applyProgression, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
@@ -32,7 +33,7 @@ import type {
   Competition, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord,
 } from '../types/game'
-import { clamp, formatMoney } from '../utils/random'
+import { clamp, createRng, formatMoney, hashString } from '../utils/random'
 import { persistRefs } from '../utils/storage'
 
 export const MIN_SQUAD_SIZE = 16
@@ -465,14 +466,36 @@ export const useGameStore = defineStore('game', () => {
     if (newTeamId) switchClub(newTeamId)
     jobOffers.value = []
     season.value++
-    teams.value.forEach((t) =>
-      t.players.forEach((p) => {
-        p.age++
-        if (p.age >= 32) p.overall = clamp(p.overall - 2, MIN_PLAYER_OVERALL, MAX_PLAYER_OVERALL)
-      }),
-    )
+    renewSquads()
     startSeason()
     addNews(`Começa a temporada ${season.value}, agora na ${DIVISION_LABELS[managedDivision.value]}!`)
+  }
+
+  /**
+   * Virada de temporada nos elencos: todos fazem aniversário e evoluem (ou caem) pela idade,
+   * veteranos se aposentam e a base repõe as vagas com jovens.
+   */
+  function renewSquads() {
+    const rng = createRng(hashString(`temporada-${season.value}`) ^ Date.now())
+    for (const team of teams.value) {
+      for (const p of team.players) {
+        p.age++
+        applyProgression(p, rng)
+      }
+      const { retired, promoted, signed } = renewSquad(team, season.value, rng)
+      if (team.id !== managedTeamId.value) continue
+      // Quem se aposentou sai de qualquer lista de venda ou proposta.
+      transferOffers.value = transferOffers.value.filter((o) => !retired.some((p) => p.id === o.playerId))
+      if (retired.length) addNews(`👋 Aposentaram-se: ${retired.map((p) => `${p.name} (${p.age})`).join(', ')}.`)
+      if (promoted.length) {
+        const names = promoted.map((p) => `${p.name}${p.star ? ' ★' : ''} (${p.position}, ${p.overall})`).join(', ')
+        addNews(`🎓 Subiram da base: ${names}.`)
+      }
+      if (signed.length) {
+        const names = signed.map((p) => `${p.name}${p.star ? ' ★' : ''} (${p.position}, ${p.age} anos, ${p.overall})`).join(', ')
+        addNews(`✍️ Sem clube, contratados para completar o elenco: ${names}.`)
+      }
+    }
   }
 
   // --- Confiança e demissão ---
