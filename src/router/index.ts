@@ -33,6 +33,12 @@ const router = createRouter({
       meta: { requiresCareer: true, title: 'Clubes' },
     },
     {
+      path: '/trofeus',
+      name: 'trophies',
+      component: () => import('../views/TrophiesView.vue'),
+      meta: { requiresCareer: true, title: 'Troféus' },
+    },
+    {
       path: '/mercado',
       name: 'market',
       component: () => import('../views/TransferMarketView.vue'),

@@ -132,6 +132,26 @@ export interface MatchVenue {
   capacity: number
 }
 
+export type TrophyKind = 'league' | 'cup'
+
+export interface Trophy {
+  kind: TrophyKind
+  /** Série do título (só para `league`). */
+  division?: DivisionId
+  season: number
+  /** Clube que o técnico comandava na conquista. */
+  teamId: string
+}
+
+export interface Manager {
+  id: string
+  name: string
+  /** Clube atual (null = sem clube). */
+  teamId: string | null
+  isPlayer: boolean
+  trophies: Trophy[]
+}
+
 /** Proposta de um clube para o técnico assumir na próxima temporada. */
 export interface JobOffer {
   teamId: string

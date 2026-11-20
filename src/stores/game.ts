@@ -8,6 +8,7 @@ import {
   DIRECT_RED_SUSPENSION, injuryGames, isAvailable, SECOND_YELLOW_SUSPENSION, YELLOWS_FOR_SUSPENSION,
 } from '../data/discipline'
 import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
+import { createManagers, trophyLabel } from '../data/trophies'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
@@ -25,7 +26,7 @@ import {
   assignStarsToLegacyTeams, createTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
-  Competition, CupState, CupTie, DivisionId, JobOffer, MatchVenue, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  Competition, CupState, CupTie, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord,
 } from '../types/game'
 import { clamp, formatMoney } from '../utils/random'
@@ -145,11 +146,15 @@ export const useGameStore = defineStore('game', () => {
   const cup = ref<CupState | null>(null)
   /** Propostas da janela de técnicos (abertas no fim da temporada). */
   const jobOffers = ref<JobOffer[]>([])
+  /** Técnicos da liga (o jogador e um por clube da IA), cada um com sua prateleira de troféus. */
+  const managers = ref<Manager[]>([])
+  /** Última temporada cujos troféus já foram entregues (evita premiar duas vezes). */
+  const trophiesAwardedSeason = ref(0)
 
   // Versão 2: introdução das divisões (saves de divisão única são descartados).
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
-    transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers,
+    transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers, managers, trophiesAwardedSeason,
   }, 2)
 
   const hasCareer = computed(() => managedTeamId.value !== null)
@@ -160,6 +165,10 @@ export const useGameStore = defineStore('game', () => {
 
   // Saves anteriores à Copa: cria a Copa da temporada atual, encaixada nas rodadas restantes.
   if (hasCareer.value && !cup.value) cup.value = createCup(teams.value, season.value, round.value)
+  // Saves anteriores aos troféus: cria os técnicos com prateleiras vazias.
+  if (hasCareer.value && !managers.value.length && managedTeamId.value) {
+    managers.value = createManagers(teams.value, managedTeamId.value, managerName.value)
+  }
   // Saves anteriores às estrelas: sorteia as estrelas dos elencos existentes uma única vez.
   if (hasCareer.value && assignStarsToLegacyTeams(teams.value)) {
     const mine = teams.value.find((t) => t.id === managedTeamId.value)?.players.filter((p) => p.star) ?? []
@@ -323,6 +332,8 @@ export const useGameStore = defineStore('game', () => {
     const team = managedTeam.value!
     budget.value = team.reputation * 100_000
     stadium.value = createStadium(team)
+    managers.value = createManagers(teams.value, teamId, managerName.value)
+    trophiesAwardedSeason.value = 0
     addNews(`${managerName.value} assume o comando do ${team.name}!`)
   }
 
@@ -425,7 +436,13 @@ export const useGameStore = defineStore('game', () => {
     stadium.value = createStadium(newTeam)
     transferOffers.value = []
     negotiationAttempts.value = {}
+    // O técnico da IA do clube novo assume o clube que você deixou.
+    const replaced = managers.value.find((m) => !m.isPlayer && m.teamId === newTeam.id)
+    if (replaced) replaced.teamId = oldTeam.id
+    const me = managers.value.find((m) => m.isPlayer)
+    if (me) me.teamId = newTeam.id
     addNews(`🤝 ${managerName.value} deixa o ${oldTeam.name} e é o novo técnico do ${newTeam.name}!`)
+    if (replaced) addNews(`${replaced.name} deixa o ${newTeam.name} e assume o ${oldTeam.name}.`)
   }
 
   /** Vira a temporada; com `newTeamId`, o técnico assume outro clube (janela de técnicos). */
@@ -865,6 +882,25 @@ export const useGameStore = defineStore('game', () => {
     announceSeasonEnd()
   }
 
+  function managerOf(teamId: string) {
+    return managers.value.find((m) => m.teamId === teamId) ?? null
+  }
+
+  /** Entrega as taças da temporada aos técnicos dos campeões de cada série e da Copa (uma vez só). */
+  function awardTrophies() {
+    if (trophiesAwardedSeason.value === season.value) return
+    trophiesAwardedSeason.value = season.value
+    const give = (teamId: string | null | undefined, trophy: Omit<Trophy, 'teamId' | 'season'>) => {
+      const manager = teamId ? managerOf(teamId) : null
+      if (!manager || !teamId) return
+      const t: Trophy = { ...trophy, teamId, season: season.value }
+      manager.trophies.push(t)
+      if (manager.isPlayer) addNews(`🏆 Troféu para a sua prateleira: ${trophyLabel(t)} (temporada ${season.value})!`)
+    }
+    for (const division of DIVISIONS) give(divisionStandings(division)[0]?.teamId, { kind: 'league', division })
+    give(cup.value?.championId, { kind: 'cup' })
+  }
+
   function announceSeasonEnd() {
     if (isSeasonOver.value) {
       const division = managedDivision.value
@@ -874,6 +910,7 @@ export const useGameStore = defineStore('game', () => {
       const zone = tableZone(division, position, sortedStandings.value.length)
       if (zone === 'promotion') addNews(`Seu time terminou em ${position}º e garantiu o acesso!`)
       if (zone === 'relegation') addNews(`Seu time terminou em ${position}º e será rebaixado.`)
+      awardTrophies()
       ensureJobOffers()
     }
   }
@@ -896,7 +933,7 @@ export const useGameStore = defineStore('game', () => {
     payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate, matchVenue,
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
-    seasonReview, projectedDivision, ensureJobOffers,
+    seasonReview, projectedDivision, ensureJobOffers, managers, managerOf,
     addNews, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
     roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,
