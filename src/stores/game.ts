@@ -7,6 +7,7 @@ import { generateFixtures } from '../data/fixtures'
 import {
   DIRECT_RED_SUSPENSION, injuryGames, isAvailable, SECOND_YELLOW_SUSPENSION, YELLOWS_FOR_SUSPENSION,
 } from '../data/discipline'
+import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
@@ -46,6 +47,17 @@ export function trainingEnergyCost(player: Player) {
 /** O jogador precisa de uma folga de energia além do custo do treino. */
 export function canTrain(player: Player) {
   return injuryGames(player) === 0 && player.energy >= trainingEnergyCost(player) + 5
+}
+
+/** Preço mínimo aceito ao listar e arredondamento para milhares. */
+const MIN_ASKING_PRICE = 10_000
+export function normalizeAskingPrice(price: number) {
+  return Math.max(MIN_ASKING_PRICE, Math.round(price / 1000) * 1000)
+}
+
+/** Preço pedido efetivo de um jogador listado (saves antigos: valor de mercado). */
+export function askingPriceOf(player: Player) {
+  return player.askingPrice ?? marketValue(player)
 }
 
 export function marketValue(player: Player) {
@@ -404,7 +416,10 @@ export const useGameStore = defineStore('game', () => {
     const oldTeam = managedTeam.value
     const newTeam = getTeam(newTeamId)
     if (!oldTeam || !newTeam || newTeam.id === oldTeam.id) return
-    oldTeam.players.forEach((p) => (p.forSale = false))
+    oldTeam.players.forEach((p) => {
+      p.forSale = false
+      p.askingPrice = undefined
+    })
     managedTeamId.value = newTeam.id
     budget.value = newTeam.reputation * 100_000
     stadium.value = createStadium(newTeam)
@@ -415,6 +430,8 @@ export const useGameStore = defineStore('game', () => {
 
   /** Vira a temporada; com `newTeamId`, o técnico assume outro clube (janela de técnicos). */
   function nextSeason(newTeamId?: string) {
+    // Emprestados voltam antes de qualquer troca de clube ou de série.
+    returnAllLoans()
     applyPromotionsAndRelegations()
     if (newTeamId) switchClub(newTeamId)
     jobOffers.value = []
@@ -458,10 +475,20 @@ export const useGameStore = defineStore('game', () => {
     player.morale = clamp(player.morale - 2, 0, 100)
   }
 
-  function toggleForSale(playerId: string) {
+  /** Coloca à venda (pelo preço informado ou o valor de mercado) ou retira da lista. */
+  function toggleForSale(playerId: string, price?: number) {
     const player = findManagedPlayer(playerId)
-    if (!player) return
+    // Emprestado não é seu para vender.
+    if (!player || player.loan) return
     player.forSale = !player.forSale
+    player.askingPrice = player.forSale ? normalizeAskingPrice(price ?? marketValue(player)) : undefined
+  }
+
+  /** Ajusta o preço pedido de um jogador já listado. */
+  function setAskingPrice(playerId: string, price: number) {
+    const player = findManagedPlayer(playerId)
+    if (!player?.forSale || !Number.isFinite(price)) return
+    player.askingPrice = normalizeAskingPrice(price)
   }
 
   // --- Transferências ---
@@ -471,6 +498,7 @@ export const useGameStore = defineStore('game', () => {
     const team = getTeam(teamId)
     const player = team?.players.find((p) => p.id === playerId)
     if (!team || !player) return 'Jogador não encontrado.'
+    if (player.loan) return `${player.name} está emprestado e não pode ser negociado.`
     if (team.players.length <= MIN_SQUAD_SIZE) return `${team.name} precisa manter ao menos ${MIN_SQUAD_SIZE} jogadores.`
     const goalkeepers = team.players.filter((p) => p.position === 'GOL').length
     if (player.position === 'GOL' && goalkeepers <= MIN_GOALKEEPERS) {
@@ -491,7 +519,7 @@ export const useGameStore = defineStore('game', () => {
     if (!from || !to || !player) return null
 
     from.players = from.players.filter((p) => p.id !== playerId)
-    to.players.push({ ...player, starter: false, forSale: false, morale: clamp(player.morale + 5, 0, 100) })
+    to.players.push({ ...player, starter: false, forSale: false, askingPrice: undefined, morale: clamp(player.morale + 5, 0, 100) })
 
     if (toTeamId === managedTeamId.value) budget.value -= fee
     if (fromTeamId === managedTeamId.value) budget.value += fee
@@ -500,6 +528,72 @@ export const useGameStore = defineStore('game', () => {
       if (team.id !== managedTeamId.value) applyLineup(team, AI_TACTIC.formation)
     }
     return player
+  }
+
+  // --- Empréstimos ---
+
+  /** Rodadas do campeonato que ainda faltam na temporada. */
+  const roundsLeftInSeason = computed(() => Math.max(0, totalRounds.value - round.value))
+
+  /** Todos os jogadores emprestados que envolvem o clube gerenciado. */
+  const managedLoans = computed(() => {
+    const id = managedTeamId.value
+    const loans = teams.value.flatMap((t) => t.players.filter((p) => p.loan).map((p) => ({ player: p, loan: p.loan! })))
+    return {
+      incoming: loans.filter((l) => l.loan.toTeamId === id),
+      outgoing: loans.filter((l) => l.loan.ownerTeamId === id),
+    }
+  })
+
+  /** Leva o jogador por empréstimo; o clube que recebe paga a taxa ao dono. */
+  function startLoan(playerId: string, ownerTeamId: string, toTeamId: string, rounds: number, fee: number) {
+    const owner = getTeam(ownerTeamId)
+    const to = getTeam(toTeamId)
+    const player = owner?.players.find((p) => p.id === playerId)
+    if (!owner || !to || !player) return null
+    owner.players = owner.players.filter((p) => p.id !== playerId)
+    to.players.push({
+      ...player,
+      starter: false,
+      forSale: false,
+      askingPrice: undefined,
+      loan: { ownerTeamId, toTeamId, roundsLeft: rounds, fee },
+    })
+    if (toTeamId === managedTeamId.value) budget.value -= fee
+    if (ownerTeamId === managedTeamId.value) budget.value += fee
+    for (const team of [owner, to]) if (team.id !== managedTeamId.value) applyLineup(team, AI_TACTIC.formation)
+    return player
+  }
+
+  /** Devolve um emprestado ao dono (fim do prazo, da temporada ou devolução antecipada). */
+  function endLoan(playerId: string, reason: string) {
+    const holder = teams.value.find((t) => t.players.some((p) => p.id === playerId && p.loan))
+    const player = holder?.players.find((p) => p.id === playerId)
+    const owner = player?.loan && getTeam(player.loan.ownerTeamId)
+    if (!holder || !player || !owner) return
+    const involvesMe = holder.id === managedTeamId.value || owner.id === managedTeamId.value
+    holder.players = holder.players.filter((p) => p.id !== playerId)
+    owner.players.push({ ...player, starter: false, loan: undefined })
+    for (const team of [holder, owner]) if (team.id !== managedTeamId.value) applyLineup(team, AI_TACTIC.formation)
+    if (involvesMe) addNews(`🔁 ${player.name} volta ao ${owner.name} (${reason}).`)
+  }
+
+  /** Após cada rodada do campeonato: conta o prazo, desenvolve jovens cedidos e devolve quem terminou. */
+  function advanceLoans() {
+    const loaned = teams.value.flatMap((t) => t.players.filter((p) => p.loan))
+    for (const p of loaned) {
+      const loan = p.loan!
+      loan.roundsLeft--
+      if (loan.ownerTeamId === managedTeamId.value && p.age <= LOAN_DEVELOPMENT_AGE && Math.random() < LOAN_DEVELOPMENT_CHANCE) {
+        p.overall = clamp(p.overall + 1, MIN_PLAYER_OVERALL, MAX_PLAYER_OVERALL)
+        addNews(`📈 ${p.name} ganhou minutos no empréstimo e evoluiu (OVR ${p.overall}).`)
+      }
+      if (loan.roundsLeft <= 0) endLoan(p.id, 'fim do empréstimo')
+    }
+  }
+
+  function returnAllLoans() {
+    for (const p of teams.value.flatMap((t) => t.players.filter((x) => x.loan))) endLoan(p.id, 'fim da temporada')
   }
 
   // --- Escalação e táticas ---
@@ -617,6 +711,7 @@ export const useGameStore = defineStore('game', () => {
     }
 
     applyDiscipline(matches)
+    advanceLoans()
     round.value++
     trainedThisRound.value = []
     negotiationAttempts.value = {}
@@ -802,7 +897,8 @@ export const useGameStore = defineStore('game', () => {
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
     seasonReview, projectedDivision, ensureJobOffers,
-    addNews, trainPlayer, restPlayer, toggleForSale,
+    addNews, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
+    roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,
     toggleStarter, autoSelectStarters, setFormation, setStyle, teamStrength,
     applyRoundResults,

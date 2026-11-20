@@ -1,6 +1,6 @@
 import { watch, type Ref } from 'vue'
 
-const PREFIX = 'neobrassfot:'
+const PREFIX = 'neobrasfoot:'
 
 /**
  * Restaura os refs a partir do localStorage e salva automaticamente a cada mudança.

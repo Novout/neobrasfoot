@@ -32,6 +32,7 @@ function quit() {
 
     <nav class="app-header__nav">
       <RouterLink :to="{ name: 'dashboard' }">Dashboard</RouterLink>
+      <RouterLink :to="{ name: 'clubs' }">Clubes</RouterLink>
       <RouterLink :to="{ name: 'market' }">
         Mercado
         <span v-if="game.transferOffers.length" class="nav-badge" :title="`${game.transferOffers.length} proposta(s) recebida(s)`">

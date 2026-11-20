@@ -5,14 +5,15 @@ import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
+import { durationLabel, LOAN_DEVELOPMENT_AGE, LOAN_DURATIONS } from '../data/loans'
 import { POSITION_ORDER } from '../data/tactics'
-import { marketValue, MAX_SQUAD_SIZE, useGameStore } from '../stores/game'
+import { askingPriceOf, marketValue, MAX_SQUAD_SIZE, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { MAX_ATTEMPTS_PER_ROUND, useTransferStore } from '../stores/transfers'
 import type { DivisionId, NegotiationResult, Position } from '../types/game'
 import { formatMoney } from '../utils/random'
 
-type Tab = 'comprar' | 'vender' | 'historico'
+type Tab = 'comprar' | 'vender' | 'emprestimos' | 'historico'
 type SortKey = 'overall' | 'valueAsc' | 'valueDesc' | 'age'
 
 const game = useGameStore()
@@ -24,7 +25,7 @@ const router = useRouter()
 const PAGE_SIZE = 40
 
 const tab = computed<Tab>({
-  get: () => (['comprar', 'vender', 'historico'].includes(route.query.aba as string) ? (route.query.aba as Tab) : 'comprar'),
+  get: () => (['comprar', 'vender', 'emprestimos', 'historico'].includes(route.query.aba as string) ? (route.query.aba as Tab) : 'comprar'),
   set: (value) => router.replace({ query: { aba: value } }),
 })
 const marketClosed = computed(() => match.isReady)
@@ -101,6 +102,44 @@ function sendOffer(amount = offerAmount.value) {
 
 // --- Vender ---
 
+// --- Empréstimos ---
+
+const loanRounds = ref<number>(0)
+const loanMessage = ref<string | null>(null)
+
+const borrowBlocked = computed(() =>
+  selected.value ? transfers.borrowBlocker(selected.value.player.id, selected.value.team.id, loanRounds.value) : null,
+)
+
+function borrow() {
+  if (!selected.value || marketClosed.value) return
+  const result = transfers.borrowPlayer(selected.value.player.id, selected.value.team.id, loanRounds.value)
+  negotiation.value = result
+  if (result.status === 'accepted') selectedId.value = null
+}
+
+/** Duração escolhida por jogador na lista de "emprestar" (padrão: até o fim da temporada). */
+const lendRounds = ref<Record<string, number>>({})
+
+function lend(playerId: string, playerName: string) {
+  if (marketClosed.value) return
+  const rounds = lendRounds.value[playerId] ?? 0
+  const player = game.managedTeam?.players.find((p) => p.id === playerId)
+  if (!player) return
+  const total = transfers.resolveLoanRounds(rounds)
+  if (!confirm(`Emprestar ${playerName} por ${durationLabel(total)}? Você recebe ${formatMoney(transfers.lendFee(player, rounds))}.`)) return
+  loanMessage.value = transfers.lendPlayer(playerId, rounds) ?? `${playerName} foi emprestado por ${durationLabel(total)}.`
+}
+
+function returnEarly(playerId: string, playerName: string) {
+  if (!confirm(`Devolver ${playerName} antes do prazo? A taxa já paga não volta.`)) return
+  transfers.returnEarly(playerId)
+  loanMessage.value = `${playerName} foi devolvido.`
+}
+
+/** Seus jogadores que podem ser emprestados (não estrelas emprestadas a você). */
+const lendable = computed(() => mySquad.value.filter((p) => !p.loan))
+
 const sellMessage = ref<string | null>(null)
 
 const receivedOffers = computed(() =>
@@ -122,6 +161,15 @@ const mySquad = computed(() =>
       b.overall - a.overall,
   ),
 )
+
+const PRICE_PRESETS = [
+  { label: '-10%', factor: 0.9 },
+  { label: 'Valor', factor: 1 },
+  { label: '+15%', factor: 1.15 },
+  { label: '+30%', factor: 1.3 },
+]
+
+const listedPlayers = computed(() => mySquad.value.filter((p) => p.forSale))
 
 function accept(offerId: string, playerName: string, amount: number) {
   if (marketClosed.value || !confirm(`Vender ${playerName} por ${formatMoney(amount)}?`)) return
@@ -157,6 +205,12 @@ function quickSell(playerId: string, playerName: string) {
       <button class="btn btn--sm" :class="{ 'btn--ghost': tab !== 'vender' }" @click="tab = 'vender'">
         Vender
         <span v-if="receivedOffers.length" class="count">{{ receivedOffers.length }}</span>
+      </button>
+      <button class="btn btn--sm" :class="{ 'btn--ghost': tab !== 'emprestimos' }" @click="tab = 'emprestimos'">
+        Empréstimos
+        <span v-if="game.managedLoans.incoming.length + game.managedLoans.outgoing.length" class="count">
+          {{ game.managedLoans.incoming.length + game.managedLoans.outgoing.length }}
+        </span>
       </button>
       <button class="btn btn--sm" :class="{ 'btn--ghost': tab !== 'historico' }" @click="tab = 'historico'">Histórico</button>
     </nav>
@@ -279,6 +333,22 @@ function quickSell(playerId: string, playerName: string) {
           >
             Enviar proposta
           </button>
+
+          <div class="loan-box">
+            <h4>Ou peça emprestado</h4>
+            <div class="loan-row">
+              <select v-model.number="loanRounds">
+                <option v-for="d in LOAN_DURATIONS" :key="d" :value="d">
+                  {{ d === 0 ? `Até o fim da temporada (${game.roundsLeftInSeason})` : durationLabel(d) }}
+                </option>
+              </select>
+              <span class="small">Taxa {{ formatMoney(transfers.borrowFee(selected.player, loanRounds)) }}</span>
+            </div>
+            <p v-if="borrowBlocked" class="small warn">{{ borrowBlocked }}</p>
+            <button class="btn btn--ghost btn--sm send" :disabled="marketClosed || !!borrowBlocked" @click="borrow">
+              Pedir emprestado
+            </button>
+          </div>
         </template>
         <p v-else-if="!negotiation" class="muted">
           Escolha um jogador e clique em <strong>Negociar</strong>. Titulares custam mais caro, e cada clube aceita no
@@ -306,7 +376,7 @@ function quickSell(playerId: string, playerName: string) {
       <section class="card">
         <h2>Propostas recebidas</h2>
         <p class="muted small">
-          Ao fim de cada rodada, clubes fazem propostas pelos jogadores listados (e às vezes pelos seus destaques).
+          Propostas abaixo do preço pedido pelos jogadores à venda (e, às vezes, pelos seus destaques).
           Propostas não respondidas expiram na rodada seguinte.
         </p>
         <table v-if="receivedOffers.length">
@@ -329,6 +399,9 @@ function quickSell(playerId: string, playerName: string) {
               <td class="num muted">{{ formatMoney(marketValue(player!)) }}</td>
               <td class="num" :class="offer.amount >= marketValue(player!) ? 'good' : 'warn'">
                 <strong>{{ formatMoney(offer.amount) }}</strong>
+                <small v-if="player!.forSale" class="muted block">
+                  {{ Math.round((offer.amount / askingPriceOf(player!)) * 100) }}% do pedido
+                </small>
               </td>
               <td class="actions">
                 <button class="btn btn--sm" :disabled="marketClosed" @click="accept(offer.id, player!.name, offer.amount)">
@@ -340,6 +413,65 @@ function quickSell(playerId: string, playerName: string) {
           </tbody>
         </table>
         <p v-else class="muted">Nenhuma proposta no momento. Liste jogadores abaixo e aguarde a próxima rodada.</p>
+      </section>
+
+      <section class="card">
+        <h2>À venda ({{ listedPlayers.length }})</h2>
+        <p class="muted small">
+          Defina quanto quer por cada jogador. Ao fim de cada rodada, se algum clube valorizar o jogador acima do
+          preço pedido, ele é vendido na hora por esse preço. Os que chegarem perto mandam propostas. Quanto mais
+          caro, menos interessados.
+        </p>
+        <table v-if="listedPlayers.length">
+          <thead>
+            <tr>
+              <th>Jogador</th>
+              <th class="num">Valor de mercado</th>
+              <th>Preço pedido</th>
+              <th class="num">% do valor</th>
+              <th>Interesse</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="p in listedPlayers" :key="p.id">
+              <td>
+                <span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span>
+                {{ p.name }}<StarMark :star="p.star" /> <span class="muted">({{ p.overall }})</span>
+              </td>
+              <td class="num muted">{{ formatMoney(marketValue(p)) }}</td>
+              <td>
+                <div class="price-edit">
+                  <input
+                    type="number"
+                    min="10000"
+                    step="10000"
+                    class="price-input"
+                    :value="askingPriceOf(p)"
+                    @change="game.setAskingPrice(p.id, Number(($event.target as HTMLInputElement).value))"
+                  />
+                  <button
+                    v-for="preset in PRICE_PRESETS"
+                    :key="preset.label"
+                    class="btn btn--sm btn--ghost"
+                    :title="`${Math.round(preset.factor * 100)}% do valor de mercado`"
+                    @click="game.setAskingPrice(p.id, marketValue(p) * preset.factor)"
+                  >
+                    {{ preset.label }}
+                  </button>
+                </div>
+              </td>
+              <td class="num">{{ Math.round(transfers.saleInterest(p).ratio * 100) }}%</td>
+              <td>
+                <span :class="['interest', transfers.saleInterest(p).tone]">{{ transfers.saleInterest(p).label }}</span>
+              </td>
+              <td>
+                <button class="btn btn--sm btn--ghost" @click="game.toggleForSale(p.id)">Retirar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p v-else class="muted">Nenhum jogador à venda. Use "Colocar à venda" no elenco abaixo.</p>
       </section>
 
       <section class="card">
@@ -362,18 +494,122 @@ function quickSell(playerId: string, playerName: string) {
               <td>
                 {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag">T</span>
-                <span v-if="p.forSale" class="tag tag--sale">À venda</span>
+                <span v-if="p.forSale" class="tag tag--sale">À venda · {{ formatMoney(askingPriceOf(p)) }}</span>
               </td>
               <td class="num">{{ p.age }}</td>
               <td class="num"><strong>{{ p.overall }}</strong></td>
               <td class="num">{{ formatMoney(marketValue(p)) }}</td>
               <td class="num muted">{{ formatMoney(transfers.quickSalePrice(p)) }}</td>
               <td class="actions">
-                <button class="btn btn--sm btn--ghost" @click="game.toggleForSale(p.id)">
-                  {{ p.forSale ? 'Retirar da lista' : 'Listar' }}
-                </button>
-                <button class="btn btn--sm btn--danger" :disabled="marketClosed" @click="quickSell(p.id, p.name)">
-                  Venda rápida
+                <span v-if="p.loan" class="muted small">Emprestado de {{ game.getTeam(p.loan.ownerTeamId)?.shortName }}</span>
+                <template v-else>
+                  <button
+                    class="btn btn--sm btn--ghost"
+                    :title="p.forSale ? '' : 'Entra na lista pelo valor de mercado; ajuste o preço em À venda'"
+                    @click="game.toggleForSale(p.id)"
+                  >
+                    {{ p.forSale ? 'Retirar da venda' : 'Colocar à venda' }}
+                  </button>
+                  <button class="btn btn--sm btn--danger" :disabled="marketClosed" @click="quickSell(p.id, p.name)">
+                    Venda rápida
+                  </button>
+                </template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <!-- EMPRÉSTIMOS -->
+    <div v-else-if="tab === 'emprestimos'" class="sell">
+      <p v-if="loanMessage" class="card result">{{ loanMessage }}</p>
+
+      <section class="card">
+        <h2>Emprestados ao seu clube ({{ game.managedLoans.incoming.length }})</h2>
+        <p class="muted small">
+          Para pegar alguém emprestado, use <strong>Negociar</strong> na aba Comprar. Clubes não emprestam titulares nem
+          estrelas. Você paga a taxa e o salário enquanto o jogador estiver aqui.
+        </p>
+        <table v-if="game.managedLoans.incoming.length">
+          <thead>
+            <tr><th>Jogador</th><th>Dono</th><th class="num">Volta em</th><th class="num">Taxa paga</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr v-for="{ player, loan } in game.managedLoans.incoming" :key="player.id">
+              <td>
+                <span class="pos" :class="`pos--${player.position}`">{{ player.position }}</span>
+                {{ player.name }}<StarMark :star="player.star" /> <span class="muted">({{ player.overall }})</span>
+              </td>
+              <td><span class="club"><TeamBadge :team="game.getTeam(loan.ownerTeamId)!" :size="22" /> {{ game.getTeam(loan.ownerTeamId)?.name }}</span></td>
+              <td class="num">{{ durationLabel(loan.roundsLeft) }}</td>
+              <td class="num bad">-{{ formatMoney(loan.fee) }}</td>
+              <td><button class="btn btn--sm btn--ghost" @click="returnEarly(player.id, player.name)">Devolver</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <p v-else class="muted">Nenhum jogador emprestado ao seu clube.</p>
+      </section>
+
+      <section class="card">
+        <h2>Seus jogadores emprestados ({{ game.managedLoans.outgoing.length }})</h2>
+        <p class="muted small">
+          Eles jogam por outro clube e voltam no fim do prazo ou da temporada. Jovens de até {{ LOAN_DEVELOPMENT_AGE }}
+          anos podem evoluir com os minutos em campo.
+        </p>
+        <table v-if="game.managedLoans.outgoing.length">
+          <thead>
+            <tr><th>Jogador</th><th>Jogando no</th><th class="num">Volta em</th><th class="num">Taxa recebida</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr v-for="{ player, loan } in game.managedLoans.outgoing" :key="player.id">
+              <td>
+                <span class="pos" :class="`pos--${player.position}`">{{ player.position }}</span>
+                {{ player.name }}<StarMark :star="player.star" /> <span class="muted">({{ player.overall }}, {{ player.age }}a)</span>
+              </td>
+              <td><span class="club"><TeamBadge :team="game.getTeam(loan.toTeamId)!" :size="22" /> {{ game.getTeam(loan.toTeamId)?.name }}</span></td>
+              <td class="num">{{ durationLabel(loan.roundsLeft) }}</td>
+              <td class="num good">+{{ formatMoney(loan.fee) }}</td>
+              <td><button class="btn btn--sm btn--ghost" @click="returnEarly(player.id, player.name)">Chamar de volta</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <p v-else class="muted">Nenhum jogador seu emprestado.</p>
+      </section>
+
+      <section class="card">
+        <h2>Emprestar um jogador</h2>
+        <p class="muted small">Um clube mais modesto, que precisa de reforço, fica com ele e paga uma taxa menor.</p>
+        <table>
+          <thead>
+            <tr><th>Pos</th><th>Nome</th><th class="num">Idade</th><th class="num">OVR</th><th>Duração</th><th class="num">Você recebe</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr v-for="p in lendable" :key="p.id">
+              <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
+              <td>
+                {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
+                <span v-if="p.starter" class="tag">T</span>
+                <span v-if="p.age <= LOAN_DEVELOPMENT_AGE" class="tag" title="Pode evoluir no empréstimo">jovem</span>
+              </td>
+              <td class="num">{{ p.age }}</td>
+              <td class="num"><strong>{{ p.overall }}</strong></td>
+              <td>
+                <select :value="lendRounds[p.id] ?? 0" @change="lendRounds[p.id] = Number(($event.target as HTMLSelectElement).value)">
+                  <option v-for="d in LOAN_DURATIONS" :key="d" :value="d">
+                    {{ d === 0 ? 'Fim da temporada' : durationLabel(d) }}
+                  </option>
+                </select>
+              </td>
+              <td class="num">{{ formatMoney(transfers.lendFee(p, lendRounds[p.id] ?? 0)) }}</td>
+              <td>
+                <button
+                  class="btn btn--sm btn--ghost"
+                  :disabled="marketClosed || !!transfers.lendBlocker(p.id)"
+                  :title="transfers.lendBlocker(p.id) ?? ''"
+                  @click="lend(p.id, p.name)"
+                >
+                  Emprestar
                 </button>
               </td>
             </tr>
@@ -539,6 +775,43 @@ tr.listed td {
 .tag--sale {
   background: rgba(239, 68, 68, 0.15);
   color: var(--bad);
+}
+.loan-box {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border);
+}
+.loan-box h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+}
+.loan-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.price-edit {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+.price-input {
+  width: 8rem;
+  text-align: right;
+}
+.interest {
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.accent {
+  color: var(--accent);
+}
+.block {
+  display: block;
+  font-weight: 400;
 }
 .actions {
   white-space: nowrap;

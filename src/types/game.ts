@@ -19,6 +19,20 @@ export interface Player {
   suspension?: number
   /** Jogos que ainda vai ficar fora por lesão. */
   injury?: number
+  /** Preço pedido pelo clube enquanto o jogador está à venda (ausente = valor de mercado). */
+  askingPrice?: number
+  /** Presente enquanto o jogador está emprestado: ele fica no elenco de `toTeamId` e volta para o dono. */
+  loan?: PlayerLoan
+}
+
+export interface PlayerLoan {
+  /** Clube dono do jogador, para onde ele volta. */
+  ownerTeamId: string
+  /** Clube onde está jogando agora. */
+  toTeamId: string
+  /** Rodadas do campeonato que faltam para voltar. */
+  roundsLeft: number
+  fee: number
 }
 
 export type DivisionId = 'A' | 'B' | 'C' | 'D'

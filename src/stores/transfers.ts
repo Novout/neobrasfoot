@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import type { NegotiationResult, Player, Team, TransferOffer } from '../types/game'
 import { formatMoney } from '../utils/random'
-import { marketValue, useGameStore } from './game'
+import { durationLabel, loanFee, LOAN_OUT_FEE_PER_ROUND } from '../data/loans'
+import { askingPriceOf, marketValue, useGameStore } from './game'
 
 export const MAX_ATTEMPTS_PER_ROUND = 3
 /** Abaixo desta fração do preço pedido, a proposta é recusada sem contraproposta. */
@@ -34,7 +35,10 @@ export const useTransferStore = defineStore('transfers', () => {
   const aiTeams = computed(() => game.teams.filter((t) => t.id !== game.managedTeamId))
 
   const marketPlayers = computed<MarketPlayer[]>(() =>
-    aiTeams.value.flatMap((team) => team.players.map((player) => ({ player, team, value: marketValue(player) }))),
+    // Emprestados (inclusive os seus cedidos à IA) não estão à venda.
+    aiTeams.value.flatMap((team) =>
+      team.players.filter((p) => !p.loan).map((player) => ({ player, team, value: marketValue(player) })),
+    ),
   )
 
   const offersByPlayer = computed(() => {
@@ -143,9 +147,122 @@ export const useTransferStore = defineStore('transfers', () => {
     return null
   }
 
+  // --- Empréstimos ---
+
+  /** 0 = até o fim da temporada; nunca passa das rodadas que faltam. */
+  function resolveLoanRounds(rounds: number) {
+    const left = game.roundsLeftInSeason
+    return rounds <= 0 ? left : Math.min(rounds, left)
+  }
+
+  function borrowFee(player: Player, rounds: number) {
+    return loanFee(marketValue(player), resolveLoanRounds(rounds))
+  }
+
+  function lendFee(player: Player, rounds: number) {
+    return loanFee(marketValue(player), resolveLoanRounds(rounds), LOAN_OUT_FEE_PER_ROUND)
+  }
+
+  /** Por que o clube da IA não empresta esse jogador (ou null se empresta). */
+  function borrowBlocker(playerId: string, ownerTeamId: string, rounds: number): string | null {
+    const owner = game.getTeam(ownerTeamId)
+    const player = owner?.players.find((p) => p.id === playerId)
+    const myId = game.managedTeamId
+    if (!owner || !player || !myId) return 'Jogador indisponível.'
+    if (game.roundsLeftInSeason <= 0) return 'A temporada acabou: empréstimos só na próxima.'
+    if (player.star) return `O ${owner.name} não empresta jogadores estrela.`
+    if (player.starter) return `${player.name} é titular no ${owner.name}, que não abre mão dele.`
+    if (!game.hasSquadRoom(myId)) return 'Seu elenco já está no limite de jogadores.'
+    const blocker = game.releaseBlocker(ownerTeamId, playerId)
+    if (blocker) return blocker
+    if (borrowFee(player, rounds) > game.budget) return 'Você não tem caixa para a taxa do empréstimo.'
+    return null
+  }
+
+  function borrowPlayer(playerId: string, ownerTeamId: string, rounds: number): NegotiationResult {
+    const blocker = borrowBlocker(playerId, ownerTeamId, rounds)
+    if (blocker) return { status: 'rejected', message: blocker }
+    const owner = game.getTeam(ownerTeamId)!
+    const player = owner.players.find((p) => p.id === playerId)!
+    const total = resolveLoanRounds(rounds)
+    const fee = borrowFee(player, rounds)
+    game.startLoan(playerId, ownerTeamId, game.managedTeamId!, total, fee)
+    game.addNews(`🔁 ${player.name} chega emprestado do ${owner.name} por ${durationLabel(total)} (taxa ${formatMoney(fee)}).`)
+    return { status: 'accepted', message: `${player.name} vem emprestado por ${durationLabel(total)}.` }
+  }
+
+  function lendBlocker(playerId: string): string | null {
+    const myId = game.managedTeamId
+    if (!myId) return 'Sem clube.'
+    if (game.roundsLeftInSeason <= 0) return 'A temporada acabou: empréstimos só na próxima.'
+    if (!aiTeams.value.some((t) => game.hasSquadRoom(t.id))) return 'Nenhum clube tem vaga no elenco agora.'
+    return game.releaseBlocker(myId, playerId)
+  }
+
+  /**
+   * Cede um jogador seu a um clube da IA. Clubes mais modestos (que precisam de reforço) são
+   * os mais prováveis interessados; o jogador volta ao fim do prazo.
+   */
+  function lendPlayer(playerId: string, rounds: number) {
+    const blocker = lendBlocker(playerId)
+    if (blocker) return blocker
+    const player = game.managedTeam!.players.find((p) => p.id === playerId)!
+    const candidates = aiTeams.value
+      .filter((t) => game.hasSquadRoom(t.id))
+      .sort((a, b) => a.reputation - b.reputation)
+    const pool = candidates.slice(0, Math.max(1, Math.ceil(candidates.length / 2)))
+    const club = pool[Math.floor(Math.random() * pool.length)]!
+    const total = resolveLoanRounds(rounds)
+    const fee = lendFee(player, rounds)
+    game.startLoan(playerId, game.managedTeamId!, club.id, total, fee)
+    game.addNews(`🔁 ${player.name} foi emprestado ao ${club.name} por ${durationLabel(total)} (você recebe ${formatMoney(fee)}).`)
+    return null
+  }
+
+  /** Devolve antes do prazo; a taxa já paga não é reembolsada. */
+  function returnEarly(playerId: string) {
+    game.endLoan(playerId, 'devolvido antes do prazo')
+  }
+
+  function shuffledBuyers() {
+    return aiTeams.value.filter((t) => game.hasSquadRoom(t.id)).sort(() => Math.random() - 0.5)
+  }
+
+  function offerId(playerId: string, buyerId: string) {
+    return `${playerId}-${buyerId}-${game.season}-${game.round}`
+  }
+
+  /**
+   * Jogador listado: clubes interessados avaliam entre 80% e 125% do valor de mercado.
+   * Se alguém valoriza acima do preço pedido, compra na hora por esse preço;
+   * senão, os que chegam perto (70% do pedido) mandam proposta para você decidir.
+   */
+  function handleListedPlayer(player: Player, offers: TransferOffer[]) {
+    const sellerId = game.managedTeamId!
+    if (Math.random() >= saleInterest(player).chance) return
+
+    const asking = askingPriceOf(player)
+    const interested = shuffledBuyers().slice(0, 1 + Number(Math.random() < 0.5) + Number(Math.random() < 0.2))
+    const bids = interested
+      .map((team) => ({ team, valuation: marketValue(player) * randomBetween(0.8, 1.25) }))
+      .sort((a, b) => b.valuation - a.valuation)
+
+    const buyer = bids.find((b) => b.valuation >= asking)
+    if (buyer && !game.releaseBlocker(sellerId, player.id)) {
+      game.transferPlayer(player.id, sellerId, buyer.team.id, asking)
+      recordTransfer(player, sellerId, buyer.team.id, asking)
+      game.addNews(`💰 ${player.name} foi vendido ao ${buyer.team.name} pelo preço pedido: ${formatMoney(asking)}.`)
+      return
+    }
+    for (const { team, valuation } of bids) {
+      if (valuation < asking * 0.7) continue
+      offers.push({ id: offerId(player.id, team.id), playerId: player.id, fromTeamId: team.id, amount: roundToThousand(valuation) })
+    }
+  }
+
   /**
    * Chamado ao fim de cada rodada: substitui as propostas anteriores por novas.
-   * Jogadores listados recebem propostas com frequência; destaques não listados, às vezes.
+   * Listados podem ser vendidos na hora pelo preço pedido; destaques não listados recebem propostas às vezes.
    */
   function generateOffers() {
     const team = game.managedTeam
@@ -153,27 +270,22 @@ export const useTransferStore = defineStore('transfers', () => {
     const offers: TransferOffer[] = []
     const avgOverall = team.players.reduce((sum, p) => sum + p.overall, 0) / team.players.length
 
-    for (const player of team.players) {
-      const isStandout = player.overall >= avgOverall + 4
-      const [chance, minFactor, maxFactor] = player.forSale
-        ? [0.65, 0.75, 1.15]
-        : isStandout
-          ? [0.06, 1.15, 1.45]
-          : [0, 0, 0]
-      if (Math.random() >= chance) continue
-
-      const buyers = aiTeams.value
-        .filter((t) => game.hasSquadRoom(t.id))
-        .sort(() => Math.random() - 0.5)
-        .slice(0, player.forSale && Math.random() < 0.4 ? 2 : 1)
-      for (const buyer of buyers) {
-        offers.push({
-          id: `${player.id}-${buyer.id}-${game.season}-${game.round}`,
-          playerId: player.id,
-          fromTeamId: buyer.id,
-          amount: roundToThousand(marketValue(player) * randomBetween(minFactor, maxFactor)),
-        })
+    // Cópia: vendas automáticas tiram jogadores do elenco durante o laço.
+    for (const player of [...team.players]) {
+      if (player.loan) continue
+      if (player.forSale) {
+        handleListedPlayer(player, offers)
+        continue
       }
+      if (player.overall < avgOverall + 4 || Math.random() >= 0.06) continue
+      const buyer = shuffledBuyers()[0]
+      if (!buyer) continue
+      offers.push({
+        id: offerId(player.id, buyer.id),
+        playerId: player.id,
+        fromTeamId: buyer.id,
+        amount: roundToThousand(marketValue(player) * randomBetween(1.15, 1.45)),
+      })
     }
 
     game.transferOffers = offers
@@ -182,8 +294,27 @@ export const useTransferStore = defineStore('transfers', () => {
     }
   }
 
+  /**
+   * Quanto o mercado se interessa por um jogador listado, pela relação preço pedido / valor.
+   * Abaixo do valor quase sempre aparece alguém; muito acima, quase ninguém.
+   */
+  function saleInterest(player: Player) {
+    const ratio = askingPriceOf(player) / Math.max(marketValue(player), 1)
+    const chance = Math.min(0.9, Math.max(0.05, 0.85 - 0.9 * (ratio - 0.85)))
+    const level =
+      ratio <= 0.95
+        ? { label: 'Alto', tone: 'good' }
+        : ratio <= 1.15
+          ? { label: 'Médio', tone: 'accent' }
+          : ratio <= 1.4
+            ? { label: 'Baixo', tone: 'warn' }
+            : { label: 'Muito baixo', tone: 'bad' }
+    return { ratio, chance, ...level }
+  }
+
   return {
     marketPlayers, offersByPlayer,
-    attemptsLeft, makeOffer, acceptOffer, rejectOffer, quickSalePrice, quickSell, generateOffers,
+    attemptsLeft, makeOffer, acceptOffer, rejectOffer, quickSalePrice, quickSell, generateOffers, saleInterest,
+    resolveLoanRounds, borrowFee, lendFee, borrowBlocker, borrowPlayer, lendBlocker, lendPlayer, returnEarly,
   }
 })

@@ -8,7 +8,7 @@ import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS, tableZone } from '../data/divisions'
 import { stadiumUpkeep } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
-import { canTrain, marketValue, trainingEnergyCost, useGameStore } from '../stores/game'
+import { askingPriceOf, canTrain, marketValue, trainingEnergyCost, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { useTransferStore } from '../stores/transfers'
 import type { DivisionId, Position } from '../types/game'
@@ -87,7 +87,15 @@ function standingPoints(row: { wins: number; draws: number }) {
               <td>
                 {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag" title="Titular">T</span>
-                <span v-if="p.forSale" class="tag tag--sale">À venda</span>
+                <RouterLink v-if="p.forSale" class="tag tag--sale" :to="{ name: 'market', query: { aba: 'vender' } }" title="Ajustar o preço no Mercado">À venda · {{ formatMoney(askingPriceOf(p)) }}</RouterLink>
+                <RouterLink
+                  v-if="p.loan"
+                  class="tag tag--loan"
+                  :to="{ name: 'market', query: { aba: 'emprestimos' } }"
+                  :title="`Emprestado pelo ${game.getTeam(p.loan.ownerTeamId)?.name}`"
+                >
+                  🔁 {{ p.loan.roundsLeft }} rod.
+                </RouterLink>
               </td>
               <td class="num">{{ p.age }}</td>
               <td class="num"><strong>{{ p.overall }}</strong></td>
@@ -107,8 +115,13 @@ function standingPoints(row: { wins: number; draws: number }) {
                 <button class="btn btn--sm btn--ghost" :disabled="p.energy >= 100" title="+25 energia" @click="game.restPlayer(p.id)">
                   Descansar
                 </button>
-                <button class="btn btn--sm btn--ghost" @click="game.toggleForSale(p.id)">
-                  {{ p.forSale ? 'Retirar' : 'Listar' }}
+                <button
+                  v-if="!p.loan"
+                  class="btn btn--sm btn--ghost"
+                  :title="p.forSale ? 'Retirar da venda' : 'Colocar à venda pelo valor de mercado (ajuste o preço no Mercado)'"
+                  @click="game.toggleForSale(p.id)"
+                >
+                  {{ p.forSale ? 'Retirar' : 'Vender' }}
                 </button>
                 <RouterLink
                   v-if="transfers.offersByPlayer[p.id]"
@@ -266,6 +279,13 @@ function standingPoints(row: { wins: number; draws: number }) {
   font-weight: 700;
   background: var(--accent-soft);
   color: var(--accent);
+}
+.tag--loan {
+  background: rgba(96, 165, 250, 0.15);
+  color: #93c5fd;
+}
+a.tag {
+  text-decoration: none;
 }
 .tag--sale {
   background: rgba(239, 68, 68, 0.15);

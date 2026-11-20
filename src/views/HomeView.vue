@@ -49,7 +49,7 @@ function startCareer() {
 <template>
   <section class="home">
     <header class="home__hero">
-      <h1>⚽ Neobrassfot</h1>
+      <h1>⚽ Neobrasfoot</h1>
       <p class="muted">Escolha um clube, monte sua equipe e leve-o ao título.</p>
       <div class="hero-actions">
         <button v-if="game.hasCareer" class="btn btn--ghost" @click="router.push({ name: 'dashboard' })">

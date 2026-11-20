@@ -27,6 +27,12 @@ const router = createRouter({
       meta: { requiresCareer: true, title: 'Dashboard' },
     },
     {
+      path: '/clubes',
+      name: 'clubs',
+      component: () => import('../views/ClubsView.vue'),
+      meta: { requiresCareer: true, title: 'Clubes' },
+    },
+    {
       path: '/mercado',
       name: 'market',
       component: () => import('../views/TransferMarketView.vue'),
@@ -78,7 +84,7 @@ router.beforeEach((to) => {
 })
 
 router.afterEach((to) => {
-  document.title = to.meta.title ? `${to.meta.title} · Neobrassfot` : 'Neobrassfot'
+  document.title = to.meta.title ? `${to.meta.title} · Neobrasfoot` : 'Neobrasfoot'
 })
 
 export default router
