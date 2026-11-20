@@ -123,13 +123,6 @@ function startCareer() {
       </div>
       <div class="league__actions">
         <button class="btn btn--ghost btn--sm" @click="fileInput?.click()">📥 Importar JSON</button>
-        <button
-          class="btn btn--ghost btn--sm"
-          :title="game.hasCareer ? 'Exporta os clubes da carreira atual' : 'Exporta a liga em uso'"
-          @click="exportLeague"
-        >
-          📤 Exportar JSON
-        </button>
         <button v-if="isCustomLeague" class="btn btn--ghost btn--sm" @click="restoreDefault">Restaurar padrão</button>
         <input ref="fileInput" type="file" accept="application/json,.json" hidden @change="importLeague" />
       </div>
