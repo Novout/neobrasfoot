@@ -746,11 +746,15 @@ export const useGameStore = defineStore('game', () => {
     tactic.value.style = style
   }
 
+  /** Tática em uso: a sua para o clube gerenciado, a padrão da IA para os outros. */
+  function tacticFor(teamId: string): Tactic {
+    return teamId === managedTeamId.value ? tactic.value : AI_TACTIC
+  }
+
   function teamStrength(teamId: string) {
     const team = getTeam(teamId)
     if (!team) return { attack: 0, defense: 0, matchesFormation: false }
-    const isManaged = teamId === managedTeamId.value
-    return lineupStrength(team.players.filter((p) => p.starter), isManaged ? tactic.value : AI_TACTIC)
+    return lineupStrength(team.players.filter((p) => p.starter), tacticFor(teamId))
   }
 
   /** Multiplicador de força do mandante; o clube gerenciado ganha bônus pelo gramado. */
@@ -819,6 +823,7 @@ export const useGameStore = defineStore('game', () => {
 
       updateTeamAfterMatch(m.homeId, homeResult)
       updateTeamAfterMatch(m.awayId, -homeResult)
+      applySubstitutionFatigue(m)
 
       if (m.homeId === managedTeamId.value || m.awayId === managedTeamId.value) {
         const isHome = m.homeId === managedTeamId.value
@@ -970,6 +975,7 @@ export const useGameStore = defineStore('game', () => {
       const homeResult = tie.winnerId === tie.homeId ? 1 : -1
       updateTeamAfterMatch(tie.homeId, homeResult)
       updateTeamAfterMatch(tie.awayId, -homeResult)
+      applySubstitutionFatigue(m)
 
       const id = managedTeamId.value
       if (tie.homeId === id || tie.awayId === id) {
@@ -1055,11 +1061,30 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
+/** Gasto de energia de um jogo inteiro para o jogador. */
+  function matchEnergyCost(p: Player) {
+    return energyCost(p.age >= 30 ? 30 : 22, p.star)
+  }
+
+  /**
+   * Substituições do intervalo: quem saiu jogou só meio jogo (devolve metade do desgaste)
+   * e quem entrou também (perde metade, em vez de recuperar como reserva).
+   */
+  function applySubstitutionFatigue(m: LiveMatch) {
+    for (const e of m.events.filter((x) => x.type === 'sub')) {
+      const team = getTeam(e.teamId)
+      const incoming = team?.players.find((p) => p.id === e.playerId)
+      const outgoing = e.outId ? team?.players.find((p) => p.id === e.outId) : null
+      if (incoming) incoming.energy = clamp(incoming.energy - 20 - Math.round(matchEnergyCost(incoming) / 2), 0, 100)
+      if (outgoing) outgoing.energy = clamp(outgoing.energy + Math.round(matchEnergyCost(outgoing) / 2), 0, 100)
+    }
+  }
+
   function updateTeamAfterMatch(teamId: string, result: number) {
     const team = getTeam(teamId)
     if (!team) return
     for (const p of team.players) {
-      if (p.starter) p.energy = clamp(p.energy - energyCost(p.age >= 30 ? 30 : 22, p.star), 0, 100)
+      if (p.starter) p.energy = clamp(p.energy - matchEnergyCost(p), 0, 100)
       else p.energy = clamp(p.energy + 20, 0, 100)
       p.morale = clamp(p.morale + result * 5, 0, 100)
     }
@@ -1078,7 +1103,7 @@ export const useGameStore = defineStore('game', () => {
     addNews, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
     roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,
-    toggleStarter, autoSelectStarters, setFormation, setStyle, teamStrength,
+    toggleStarter, autoSelectStarters, setFormation, setStyle, teamStrength, tacticFor,
     applyRoundResults,
   }
 })

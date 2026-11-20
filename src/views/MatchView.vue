@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import HalftimePanel from '../components/HalftimePanel.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
@@ -26,7 +27,7 @@ function matchDivision(m: { homeId: string }) {
   return game.getTeam(m.homeId)?.division
 }
 
-const EVENT_ICONS: Record<MatchEventType, string> = { gol: '⚽', amarelo: '🟨', vermelho: '🟥', lesao: '🩹' }
+const EVENT_ICONS: Record<MatchEventType, string> = { gol: '⚽', amarelo: '🟨', vermelho: '🟥', lesao: '🩹', sub: '🔄' }
 
 /** Rodada da Copa reúne clubes de todas as séries: sem abas de divisão. */
 const isCup = computed(() => match.matches[0]?.competition === 'cup')
@@ -67,11 +68,12 @@ onBeforeUnmount(() => match.stop())
     <section class="card clock">
       <div class="clock__time">
         <span class="minute">{{ match.minute }}'</span>
-        <span class="muted">{{ match.isFinished ? 'Fim de jogo' : match.running ? 'Bola rolando' : 'Pausado' }}</span>
+        <span class="muted">{{ match.isFinished ? 'Fim de jogo' : match.halftime ? 'Intervalo' : match.running ? 'Bola rolando' : 'Pausado' }}</span>
       </div>
       <div class="progress"><div :style="{ width: `${(match.minute / 90) * 100}%` }" /></div>
       <div class="controls">
-        <template v-if="!match.isFinished">
+        <span v-if="match.halftime" class="muted">Faça as substituições abaixo e comece o 2º tempo.</span>
+        <template v-else-if="!match.isFinished">
           <button class="btn btn--ghost" @click="match.running ? match.stop() : match.start()">
             {{ match.running ? '⏸ Pausar' : '▶ Continuar' }}
           </button>
@@ -89,6 +91,8 @@ onBeforeUnmount(() => match.stop())
         <button v-else class="btn" @click="finishRound">Finalizar rodada</button>
       </div>
     </section>
+
+    <HalftimePanel v-if="match.halftime" />
 
     <h2 class="round-title" :class="{ 'round-title--cup': isCup }">{{ isCup ? '🏆 ' : '' }}{{ game.nextEventLabel }}</h2>
 
@@ -135,6 +139,7 @@ onBeforeUnmount(() => match.stop())
             {{ EVENT_ICONS[e.type] }} {{ e.minute }}' {{ e.playerName }}<StarMark :star="e.star" />
             <small v-if="e.type === 'vermelho' && e.secondYellow" class="muted"> (2º amarelo)</small>
             <small v-else-if="e.type === 'lesao'" class="muted"> (fora {{ e.games }} jogo{{ (e.games ?? 1) > 1 ? 's' : '' }})</small>
+            <small v-else-if="e.type === 'sub'" class="muted"> {{ e.outName ? `(sai ${e.outName})` : '(vaga de lesionado)' }}</small>
           </li>
         </ul>
       </article>

@@ -63,7 +63,7 @@ export interface Fixture {
   awayId: string
 }
 
-export type MatchEventType = 'gol' | 'amarelo' | 'vermelho' | 'lesao'
+export type MatchEventType = 'gol' | 'amarelo' | 'vermelho' | 'lesao' | 'sub'
 
 export interface MatchEvent {
   minute: number
@@ -77,6 +77,9 @@ export interface MatchEvent {
   secondYellow?: boolean
   /** Lesão: jogos que vai ficar fora. */
   games?: number
+  /** Substituição: quem saiu (ausente quando o jogador entrou na vaga de um lesionado). */
+  outName?: string
+  outId?: string
 }
 
 export type Competition = 'league' | 'cup'

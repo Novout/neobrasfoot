@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
 import {
-  clearCustomLeague, downloadJson, getCustomLeague, leagueTeams, parseLeagueFile, saveCustomLeague, teamsToLeagueFile,
+  clearCustomLeague, getCustomLeague, leagueTeams, parseLeagueFile, saveCustomLeague,
 } from '../data/leagueFile'
 import type { DivisionId } from '../types/game'
 import { useGameStore } from '../stores/game'
