@@ -104,6 +104,7 @@ export const useMatchStore = defineStore('match', () => {
     const outgoing = outId ? lineup.find((p) => p.id === outId) : null
     if (outId && !outgoing) return false
     if (!outId && vacanciesFor(m, teamId) <= 0) return false
+    if (outgoing) recordEnergy(m, outgoing)
     lineups.value[teamId] = [...lineup.filter((p) => p.id !== outId), { ...incoming }]
     // Na vaga de um lesionado, o evento registra quem ele substituiu.
     const injured = outId ? null : unreplacedInjured(m, teamId)[0]
@@ -119,20 +120,30 @@ export const useMatchStore = defineStore('match', () => {
     return true
   }
 
-  /**
-   * Energia efetiva em campo. O cansaço só conta a partir do intervalo (para todos os times ao mesmo tempo):
-   * quem jogou o 1º tempo gastou metade do fôlego; quem entrou no intervalo ou depois está inteiro.
-   */
-  function secondHalfEnergy(m: LiveMatch, teamId: string, p: Player) {
-    if (minute.value < HALFTIME_MINUTE) return p.energy
-    const fresh = teamEvents(m, teamId, 'sub').some((e) => e.playerId === p.id && e.minute >= HALFTIME_MINUTE)
-    return fresh ? p.energy : Math.max(0, p.energy - energyCost(p.age >= 30 ? 30 : 22, p.star) / 2)
+  // --- Desgaste ao vivo ---
+
+  /** Energia que o jogador perde por minuto em campo (90 minutos = o desgaste de uma partida inteira). */
+  function drainPerMinute(p: Player) {
+    return energyCost(p.age >= 30 ? 30 : 22, p.star) / MATCH_LENGTH
   }
 
-  /** Força para o 2º tempo, a partir de quem está em campo agora. Expulsões continuam pesando. */
+  /** Guarda a energia de quem sai de campo (ou de todos no apito final): vira a energia real depois do jogo. */
+  function recordEnergy(m: LiveMatch, p: Player) {
+    m.playedEnergy = { ...(m.playedEnergy ?? {}), [p.id]: Math.round(p.energy) }
+  }
+
+  /** Um minuto de jogo: quem está em campo cansa, e a força dos dois times acompanha. */
+  function drainAndRecompute(m: LiveMatch) {
+    for (const teamId of [m.homeId, m.awayId]) {
+      for (const p of lineups.value[teamId] ?? []) p.energy = Math.max(0, p.energy - drainPerMinute(p))
+      recomputeStrength(m, teamId)
+    }
+  }
+
+  /** Força de um time a partir de quem está em campo agora (com a energia do momento). Expulsões continuam pesando. */
   function recomputeStrength(m: LiveMatch, teamId: string) {
     const game = useGameStore()
-    const onPitch = (lineups.value[teamId] ?? []).map((p) => ({ ...p, energy: secondHalfEnergy(m, teamId, p) }))
+    const onPitch = lineups.value[teamId] ?? []
     const reds = teamEvents(m, teamId, 'vermelho').length
     const s = lineupStrength(onPitch, game.tacticFor(teamId))
     // lineupStrength já reduz times com menos de 11; desfaz isso e aplica a regra da partida:
@@ -168,12 +179,11 @@ export const useMatchStore = defineStore('match', () => {
   /** Técnico da IA no intervalo: completa vagas e troca até 3 titulares cansados por reservas que rendem mais. */
   function aiHalftime(m: LiveMatch, teamId: string) {
     fillVacancies(m, teamId)
-    const tired = [...(lineups.value[teamId] ?? [])].sort(
-      (a, b) => effectiveRating({ ...a, energy: secondHalfEnergy(m, teamId, a) }) - effectiveRating({ ...b, energy: secondHalfEnergy(m, teamId, b) }),
-    )
+    // A energia em campo já é a do momento (desgaste ao vivo).
+    const tired = [...(lineups.value[teamId] ?? [])].sort((a, b) => effectiveRating(a) - effectiveRating(b))
     for (const p of tired) {
       if (teamEvents(m, teamId, 'sub').length >= MAX_SUBSTITUTIONS) break
-      const current = effectiveRating({ ...p, energy: secondHalfEnergy(m, teamId, p) })
+      const current = effectiveRating(p)
       const best = benchFor(m, teamId)
         .filter((b) => b.position === p.position)
         .sort((a, b) => effectiveRating(b) - effectiveRating(a))[0]
@@ -304,6 +314,7 @@ export const useMatchStore = defineStore('match', () => {
       }
       rollDiscipline(m, 'home')
       rollDiscipline(m, 'away')
+      drainAndRecompute(m)
     }
     // Intervalo: a IA faz as trocas dela; se o seu time está em campo, o jogo para para você decidir.
     if (minute.value === HALFTIME_MINUTE && !halftimeDone.value && !halftime.value) {
@@ -323,13 +334,17 @@ export const useMatchStore = defineStore('match', () => {
       // Mata-mata não termina empatado: decide nos pênaltis ao apito final.
       for (const m of matches.value) {
         if (m.competition === 'cup' && m.homeGoals === m.awayGoals && !m.penalties) m.penalties = simulatePenalties()
+        // Apito final: quem terminou em campo leva a energia que sobrou.
+        for (const teamId of [m.homeId, m.awayId]) for (const p of lineups.value[teamId] ?? []) recordEnergy(m, p)
       }
       stop()
     }
   }
 
   /** Tira o jogador de campo (expulso ou lesionado): não marca nem leva mais cartões. */
-  function removeFromPitch(teamId: string, playerId: string) {
+  function removeFromPitch(m: LiveMatch, teamId: string, playerId: string) {
+    const leaving = (lineups.value[teamId] ?? []).find((p) => p.id === playerId)
+    if (leaving) recordEnergy(m, leaving)
     lineups.value[teamId] = (lineups.value[teamId] ?? []).filter((p) => p.id !== playerId)
   }
 
@@ -342,15 +357,8 @@ export const useMatchStore = defineStore('match', () => {
 
     const sendOff = (p: Player, secondYellow: boolean) => {
       m.events.push({ minute: at, teamId, type: 'vermelho', secondYellow, ...eventPlayer(p) })
-      removeFromPitch(teamId, p.id)
-      // Com um a menos, o time perde força no ataque e na defesa até o fim.
-      if (side === 'home') {
-        m.homeAttack *= SENT_OFF_PENALTY
-        m.homeDefense *= SENT_OFF_PENALTY
-      } else {
-        m.awayAttack *= SENT_OFF_PENALTY
-        m.awayDefense *= SENT_OFF_PENALTY
-      }
+      // Com um a menos, o time perde força (aplicada no recálculo deste mesmo minuto).
+      removeFromPitch(m, teamId, p.id)
     }
 
     if (Math.random() < YELLOW_CHANCE) {
@@ -372,7 +380,7 @@ export const useMatchStore = defineStore('match', () => {
       const p = pickInjuredPlayer(current)
       if (p) {
         m.events.push({ minute: at, teamId, type: 'lesao', games: rollInjuryGames(), ...eventPlayer(p) })
-        removeFromPitch(teamId, p.id)
+        removeFromPitch(m, teamId, p.id)
         handleInjury(m, teamId, p.name)
       }
     }

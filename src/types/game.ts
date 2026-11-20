@@ -129,6 +129,11 @@ export interface LiveMatch {
   awayAttack: number
   awayDefense: number
   events: MatchEvent[]
+  /**
+   * Energia de cada jogador que entrou em campo, no momento em que saiu (ou no apito final).
+   * Depois do jogo vira a energia real dele. Ausente em partidas salvas antes do desgaste ao vivo.
+   */
+  playedEnergy?: Record<string, number>
   /** Estádio do mandante e público do jogo (ausente em partidas salvas antes do recurso). */
   venue?: MatchVenue
 }

@@ -824,9 +824,9 @@ export const useGameStore = defineStore('game', () => {
       else if (homeResult < 0) { away.wins++; home.losses++ }
       else { home.draws++; away.draws++ }
 
-      updateTeamAfterMatch(m.homeId, homeResult)
-      updateTeamAfterMatch(m.awayId, -homeResult)
-      applySubstitutionFatigue(m)
+      updateTeamAfterMatch(m.homeId, homeResult, m.playedEnergy)
+      updateTeamAfterMatch(m.awayId, -homeResult, m.playedEnergy)
+      if (!m.playedEnergy) applySubstitutionFatigue(m)
 
       if (m.homeId === managedTeamId.value || m.awayId === managedTeamId.value) {
         const isHome = m.homeId === managedTeamId.value
@@ -976,9 +976,9 @@ export const useGameStore = defineStore('game', () => {
       tie.winnerId = tieWinner(tie.homeId, tie.awayId, m.homeGoals, m.awayGoals, tie.penalties)
 
       const homeResult = tie.winnerId === tie.homeId ? 1 : -1
-      updateTeamAfterMatch(tie.homeId, homeResult)
-      updateTeamAfterMatch(tie.awayId, -homeResult)
-      applySubstitutionFatigue(m)
+      updateTeamAfterMatch(tie.homeId, homeResult, m.playedEnergy)
+      updateTeamAfterMatch(tie.awayId, -homeResult, m.playedEnergy)
+      if (!m.playedEnergy) applySubstitutionFatigue(m)
 
       const id = managedTeamId.value
       if (tie.homeId === id || tie.awayId === id) {
@@ -1085,11 +1085,17 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
-  function updateTeamAfterMatch(teamId: string, result: number) {
+  /**
+   * Depois do jogo: quem entrou em campo fica com a energia que tinha ao sair (desgaste ao vivo);
+   * quem não jogou recupera. Sem `played` (partidas antigas), titulares perdem o desgaste cheio.
+   */
+  function updateTeamAfterMatch(teamId: string, result: number, played?: Record<string, number>) {
     const team = getTeam(teamId)
     if (!team) return
     for (const p of team.players) {
-      if (p.starter) p.energy = clamp(p.energy - matchEnergyCost(p), 0, 100)
+      const finalEnergy = played?.[p.id]
+      if (finalEnergy !== undefined) p.energy = clamp(finalEnergy, 0, 100)
+      else if (!played && p.starter) p.energy = clamp(p.energy - matchEnergyCost(p), 0, 100)
       else p.energy = clamp(p.energy + 20, 0, 100)
       p.morale = clamp(p.morale + result * 5, 0, 100)
     }
