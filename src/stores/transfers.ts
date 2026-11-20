@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import type { NegotiationResult, Player, Team, TransferOffer } from '../types/game'
 import { formatMoney } from '../utils/random'
+import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
 import { durationLabel, loanFee, LOAN_OUT_FEE_PER_ROUND } from '../data/loans'
 import { askingPriceOf, marketValue, useGameStore } from './game'
 
@@ -23,6 +24,8 @@ export interface MarketPlayer {
   player: Player
   team: Team
   value: number
+  /** Motivo pelo qual o seu clube não pode negociar com o dono (série acima), ou null. */
+  locked: string | null
 }
 
 /**
@@ -34,10 +37,36 @@ export const useTransferStore = defineStore('transfers', () => {
 
   const aiTeams = computed(() => game.teams.filter((t) => t.id !== game.managedTeamId))
 
+  /**
+   * Regra de divisão: um clube só contrata (compra ou empréstimo) de clubes da mesma série ou de séries abaixo.
+   * Retorna o motivo do bloqueio, ou null se a negociação é permitida.
+   */
+  function divisionBlocker(buyerTeamId: string, sellerTeamId: string): string | null {
+    const buyer = game.getTeam(buyerTeamId)
+    const seller = game.getTeam(sellerTeamId)
+    if (!buyer || !seller) return null
+    if (DIVISIONS.indexOf(buyer.division) <= DIVISIONS.indexOf(seller.division)) return null
+    return buyer.id === game.managedTeamId
+      ? `O ${seller.name} é da ${DIVISION_LABELS[seller.division]} e não negocia com clubes de séries abaixo.`
+      : `O ${buyer.name} é de uma série abaixo e não pode contratar do ${seller.name}.`
+  }
+
+  /** Clubes da IA que podem levar jogadores do seu clube: mesma série ou acima, e com vaga. */
+  const eligibleBuyers = computed(() =>
+    aiTeams.value.filter((t) => game.hasSquadRoom(t.id) && !divisionBlocker(t.id, game.managedTeamId ?? '')),
+  )
+
   const marketPlayers = computed<MarketPlayer[]>(() =>
     // Emprestados (inclusive os seus cedidos à IA) não estão à venda.
     aiTeams.value.flatMap((team) =>
-      team.players.filter((p) => !p.loan).map((player) => ({ player, team, value: marketValue(player) })),
+      team.players
+        .filter((p) => !p.loan)
+        .map((player) => ({
+          player,
+          team,
+          value: marketValue(player),
+          locked: divisionBlocker(game.managedTeamId ?? '', team.id),
+        })),
     ),
   )
 
@@ -77,6 +106,8 @@ export const useTransferStore = defineStore('transfers', () => {
     const player = seller?.players.find((p) => p.id === playerId)
     const buyerId = game.managedTeamId
     if (!seller || !player || !buyerId) return { status: 'rejected', message: 'Jogador indisponível.' }
+    const locked = divisionBlocker(buyerId, sellerTeamId)
+    if (locked) return { status: 'rejected', message: locked }
     if (attemptsLeft(playerId) <= 0) {
       return { status: 'rejected', message: `O ${seller.name} não quer mais negociar nesta rodada.` }
     }
@@ -110,7 +141,7 @@ export const useTransferStore = defineStore('transfers', () => {
     const offer = game.transferOffers.find((o) => o.id === offerId)
     const sellerId = game.managedTeamId
     if (!offer || !sellerId) return 'Proposta não encontrada.'
-    const blocker = game.releaseBlocker(sellerId, offer.playerId)
+    const blocker = game.releaseBlocker(sellerId, offer.playerId) ?? divisionBlocker(offer.fromTeamId, sellerId)
     if (blocker) return blocker
     if (!game.hasSquadRoom(offer.fromTeamId)) return 'O clube comprador não tem mais vaga no elenco.'
 
@@ -136,8 +167,8 @@ export const useTransferStore = defineStore('transfers', () => {
     if (!sellerId || !player) return 'Jogador não encontrado.'
     const blocker = game.releaseBlocker(sellerId, playerId)
     if (blocker) return blocker
-    const buyers = aiTeams.value.filter((t) => game.hasSquadRoom(t.id))
-    if (!buyers.length) return 'Nenhum clube tem vaga no elenco agora.'
+    const buyers = eligibleBuyers.value
+    if (!buyers.length) return 'Nenhum clube da sua série ou de séries acima tem vaga no elenco agora.'
 
     const buyer = buyers[Math.floor(Math.random() * buyers.length)]!
     const price = quickSalePrice(player)
@@ -169,6 +200,8 @@ export const useTransferStore = defineStore('transfers', () => {
     const player = owner?.players.find((p) => p.id === playerId)
     const myId = game.managedTeamId
     if (!owner || !player || !myId) return 'Jogador indisponível.'
+    const locked = divisionBlocker(myId, ownerTeamId)
+    if (locked) return locked
     if (game.roundsLeftInSeason <= 0) return 'A temporada acabou: empréstimos só na próxima.'
     if (player.star) return `O ${owner.name} não empresta jogadores estrela.`
     if (player.starter) return `${player.name} é titular no ${owner.name}, que não abre mão dele.`
@@ -225,7 +258,7 @@ export const useTransferStore = defineStore('transfers', () => {
   }
 
   function shuffledBuyers() {
-    return aiTeams.value.filter((t) => game.hasSquadRoom(t.id)).sort(() => Math.random() - 0.5)
+    return [...eligibleBuyers.value].sort(() => Math.random() - 0.5)
   }
 
   function offerId(playerId: string, buyerId: string) {
@@ -314,7 +347,7 @@ export const useTransferStore = defineStore('transfers', () => {
 
   return {
     marketPlayers, offersByPlayer,
-    attemptsLeft, makeOffer, acceptOffer, rejectOffer, quickSalePrice, quickSell, generateOffers, saleInterest,
+    divisionBlocker, attemptsLeft, makeOffer, acceptOffer, rejectOffer, quickSalePrice, quickSell, generateOffers, saleInterest,
     resolveLoanRounds, borrowFee, lendFee, borrowBlocker, borrowPlayer, lendBlocker, lendPlayer, returnEarly,
   }
 })

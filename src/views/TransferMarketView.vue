@@ -51,19 +51,22 @@ watch(divisionFilter, (division) => {
 })
 const affordableOnly = ref(false)
 const starsOnly = ref(false)
+/** Esconde jogadores de clubes de séries acima, com quem seu clube não pode negociar. */
+const negotiableOnly = ref(true)
 const sortKey = ref<SortKey>('overall')
 const visibleCount = ref(PAGE_SIZE)
 
 const filteredPlayers = computed(() => {
   const name = nameFilter.value.trim().toLowerCase()
   const list = transfers.marketPlayers.filter(
-    ({ player, team, value }) =>
+    ({ player, team, value, locked }) =>
       (!positionFilter.value || player.position === positionFilter.value) &&
       (!divisionFilter.value || team.division === divisionFilter.value) &&
       (!teamFilter.value || team.id === teamFilter.value) &&
       (!name || player.name.toLowerCase().includes(name)) &&
       (!affordableOnly.value || value <= game.budget) &&
-      (!starsOnly.value || !!player.star),
+      (!starsOnly.value || !!player.star) &&
+      (!negotiableOnly.value || !locked),
   )
   const sorters: Record<SortKey, (a: (typeof list)[number], b: (typeof list)[number]) => number> = {
     overall: (a, b) => b.player.overall - a.player.overall,
@@ -74,7 +77,7 @@ const filteredPlayers = computed(() => {
   return list.sort(sorters[sortKey.value])
 })
 
-watch([positionFilter, divisionFilter, teamFilter, nameFilter, affordableOnly, starsOnly, sortKey], () => (visibleCount.value = PAGE_SIZE))
+watch([positionFilter, divisionFilter, teamFilter, nameFilter, affordableOnly, starsOnly, negotiableOnly, sortKey], () => (visibleCount.value = PAGE_SIZE))
 
 const selectedId = ref<string | null>(null)
 const offerAmount = ref(0)
@@ -242,6 +245,9 @@ function quickSell(playerId: string, playerName: string) {
           </select>
           <label class="check"><input v-model="affordableOnly" type="checkbox" /> Cabe no caixa</label>
           <label class="check"><input v-model="starsOnly" type="checkbox" /> Só estrelas ★</label>
+          <label class="check" title="Clubes de séries acima não negociam com o seu">
+            <input v-model="negotiableOnly" type="checkbox" /> Só negociáveis
+          </label>
         </div>
 
         <table>
@@ -258,9 +264,9 @@ function quickSell(playerId: string, playerName: string) {
           </thead>
           <tbody>
             <tr
-              v-for="{ player, team, value } in filteredPlayers.slice(0, visibleCount)"
+              v-for="{ player, team, value, locked } in filteredPlayers.slice(0, visibleCount)"
               :key="player.id"
-              :class="{ selected: player.id === selectedId }"
+              :class="{ selected: player.id === selectedId, locked: !!locked }"
             >
               <td><span class="pos" :class="`pos--${player.position}`">{{ player.position }}</span></td>
               <td>
@@ -271,13 +277,21 @@ function quickSell(playerId: string, playerName: string) {
                 <span class="club" :title="`${team.name} · ${DIVISION_LABELS[team.division]}`">
                   <TeamBadge :team="team" :size="22" /> {{ team.shortName }}
                   <span class="division-tag">{{ team.division }}</span>
+                  <span v-if="locked" class="lock" :title="locked">🔒</span>
                 </span>
               </td>
               <td class="num">{{ player.age }}</td>
               <td class="num"><strong>{{ player.overall }}</strong></td>
               <td class="num" :class="{ expensive: value > game.budget }">{{ formatMoney(value) }}</td>
               <td>
-                <button class="btn btn--sm" :disabled="marketClosed" @click="openNegotiation(player.id)">Negociar</button>
+                <button
+                  class="btn btn--sm"
+                  :disabled="marketClosed || !!locked"
+                  :title="locked ?? ''"
+                  @click="openNegotiation(player.id)"
+                >
+                  Negociar
+                </button>
               </td>
             </tr>
             <tr v-if="!filteredPlayers.length">
@@ -736,6 +750,12 @@ function quickSell(playerId: string, playerName: string) {
   border-radius: 3px;
   background: var(--surface-2);
   color: var(--muted);
+}
+tr.locked td {
+  opacity: 0.5;
+}
+.lock {
+  cursor: help;
 }
 tr.selected td {
   background: var(--accent-soft);
