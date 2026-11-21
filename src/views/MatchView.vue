@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import HalftimePanel from '../components/HalftimePanel.vue'
 import StarMark from '../components/StarMark.vue'
@@ -8,6 +8,7 @@ import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
 import type { DivisionId, MatchEventType, MatchVenue } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
+import { playGoalAgainst, playGoalFor, soundMuted } from '../utils/sounds'
 
 const game = useGameStore()
 const match = useMatchStore()
@@ -57,6 +58,18 @@ function finishRound() {
   router.push({ name: 'dashboard' })
 }
 
+// Som a cada gol da partida do seu clube (um por vez, mesmo se sair mais de um gol no mesmo minuto).
+const myGoals = computed(() => match.managedMatch?.events.filter((e) => e.type === 'gol') ?? [])
+watch(
+  () => myGoals.value.length,
+  (count, before) => {
+    if (count <= before) return
+    const last = myGoals.value[count - 1]!
+    if (last.teamId === game.managedTeamId) playGoalFor()
+    else playGoalAgainst()
+  },
+)
+
 onMounted(() => {
   if (match.minute === 0) match.start()
 })
@@ -91,6 +104,13 @@ onBeforeUnmount(() => match.stop())
           <button class="btn btn--ghost" @click="match.simulateToEnd()">⏭ Simular até o fim</button>
         </template>
         <button v-else class="btn" @click="finishRound">Finalizar rodada</button>
+        <button
+          class="btn btn--ghost btn--sm"
+          :title="soundMuted ? 'Ligar os sons de gol' : 'Desligar os sons de gol'"
+          @click="soundMuted = !soundMuted"
+        >
+          {{ soundMuted ? '🔇' : '🔊' }}
+        </button>
       </div>
     </section>
 
