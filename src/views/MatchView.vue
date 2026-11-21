@@ -5,7 +5,8 @@ import HalftimePanel from '../components/HalftimePanel.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
-import type { DivisionId, MatchEventType, MatchVenue } from '../types/game'
+import { clockLabel } from '../data/stoppage'
+import type { DivisionId, LiveMatch, MatchEventType, MatchVenue } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { playGoalAgainst, playGoalFor, soundMuted } from '../utils/sounds'
@@ -53,6 +54,14 @@ function isMine(m: { homeId: string; awayId: string }) {
   return m.homeId === game.managedTeamId || m.awayId === game.managedTeamId
 }
 
+/** Situação do relógio de um jogo: acréscimos anunciados ou tempo já encerrado enquanto outros seguem. */
+function matchClock(m: LiveMatch) {
+  if (match.isFinished) return null
+  if (match.halfOverFor(m)) return match.period === 1 ? 'Fim do 1º tempo' : 'Encerrado'
+  const added = match.period === 1 ? m.added?.first : m.added?.second
+  return added !== undefined && !match.halftime ? `+${added}` : null
+}
+
 function finishRound() {
   match.confirmRound()
   router.push({ name: 'dashboard' })
@@ -80,8 +89,11 @@ onBeforeUnmount(() => match.stop())
   <div class="matches">
     <section class="card clock">
       <div class="clock__time">
-        <span class="minute">{{ match.minute }}'</span>
+        <span class="minute">{{ clockLabel(match.minute, match.extra) }}</span>
         <span class="muted">{{ match.isFinished ? 'Fim de jogo' : match.halftime ? 'Intervalo' : match.injuryBreak ? 'Parado: lesão' : match.running ? 'Bola rolando' : 'Pausado' }}</span>
+        <span v-if="match.addedNow !== null && !match.isFinished && !match.halftime" class="added-board" title="Maior acréscimo da rodada: cada jogo tem o seu">
+          Acréscimos: até +{{ match.addedNow }}
+        </span>
       </div>
       <div class="progress"><div :style="{ width: `${(match.minute / 90) * 100}%` }" /></div>
       <div class="controls">
@@ -156,9 +168,16 @@ onBeforeUnmount(() => match.stop())
             <span v-if="occupancy(m.venue) >= 100" class="sold-out">lotado</span>
           </span>
         </p>
+        <p v-if="m.fouls" class="match-stats">
+          <span title="Faltas cometidas (mandante x visitante)">Faltas {{ m.fouls.home }} x {{ m.fouls.away }}</span>
+          <span v-if="m.added?.first !== undefined" class="muted" title="Acréscimos de cada tempo">
+            · Acréscimos: 1º +{{ m.added.first }}<template v-if="m.added.second !== undefined"> · 2º +{{ m.added.second }}</template>
+          </span>
+          <span v-if="matchClock(m)" class="match-clock">{{ matchClock(m) }}</span>
+        </p>
         <ul v-if="m.events.length" class="events">
           <li v-for="(e, i) in m.events" :key="i" :class="e.teamId === m.homeId ? 'home' : 'away'">
-            {{ EVENT_ICONS[e.type] }} {{ e.minute }}' {{ e.playerName }}<StarMark :star="e.star" />
+            {{ EVENT_ICONS[e.type] }} {{ clockLabel(e.minute, e.extra) }} {{ e.playerName }}<StarMark :star="e.star" />
             <small v-if="e.type === 'vermelho' && e.secondYellow" class="muted"> (2º amarelo)</small>
             <small v-else-if="e.type === 'lesao'" class="muted"> (fora {{ e.games }} jogo{{ (e.games ?? 1) > 1 ? 's' : '' }})</small>
             <small v-else-if="e.type === 'sub'" class="muted"> {{ e.replacesInjured ? `(no lugar de ${e.outName}, lesionado)` : e.outName ? `(sai ${e.outName})` : '(vaga de lesionado)' }}</small>
@@ -185,6 +204,33 @@ onBeforeUnmount(() => match.stop())
   display: flex;
   flex-direction: column;
   min-width: 110px;
+}
+.added-board {
+  align-self: flex-start;
+  margin-top: 0.2rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: var(--warn);
+  color: #1a1200;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.match-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.25rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.match-clock {
+  margin-left: auto;
+  padding: 0 0.35rem;
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--warn);
+  font-weight: 700;
 }
 .minute {
   font-size: 2.2rem;

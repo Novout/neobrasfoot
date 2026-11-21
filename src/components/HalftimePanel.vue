@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { clockLabel } from '../data/stoppage'
 import { PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
 import { MAX_SUBSTITUTIONS, useMatchStore } from '../stores/match'
@@ -69,7 +70,7 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
   <section v-if="m && opponent" class="card halftime">
     <header class="halftime__header">
       <div>
-        <h2 v-if="match.injuryBreak">🩹 {{ match.injuryBreak.playerName }} se lesionou ({{ match.injuryBreak.minute }}')</h2>
+        <h2 v-if="match.injuryBreak">🩹 {{ match.injuryBreak.playerName }} se lesionou ({{ clockLabel(match.injuryBreak.minute, match.injuryBreak.extra) }})</h2>
         <h2 v-else>⏸ Intervalo</h2>
         <p class="muted">
           <TeamBadge :team="game.managedTeam!" :size="20" /> {{ game.managedTeam?.shortName }}

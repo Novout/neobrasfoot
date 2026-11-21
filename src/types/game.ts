@@ -72,6 +72,8 @@ export type MatchEventType = 'gol' | 'amarelo' | 'vermelho' | 'lesao' | 'sub'
 
 export interface MatchEvent {
   minute: number
+  /** Minuto dos acréscimos (ex.: 45+2 → minute 45, extra 2). */
+  extra?: number
   teamId: string
   type: MatchEventType
   playerName: string
@@ -141,6 +143,12 @@ export interface LiveMatch {
   playedEnergy?: Record<string, number>
   /** Estádio do mandante e público do jogo (ausente em partidas salvas antes do recurso). */
   venue?: MatchVenue
+  /** Faltas cometidas por cada time (ausente em partidas salvas antes do recurso). */
+  fouls?: { home: number; away: number }
+  /** Total de faltas ao fim do 1º tempo (para calcular os acréscimos do 2º). */
+  firstHalfFouls?: number
+  /** Acréscimos anunciados ao fim de cada tempo. */
+  added?: { first?: number; second?: number }
 }
 
 export interface MatchVenue {

@@ -85,6 +85,38 @@ describe('rodada ao vivo', () => {
     }
   })
 
+  it('cada jogo tem faltas e acréscimos nos dois tempos', () => {
+    match.simulateToEnd(true)
+    for (const m of match.matches) {
+      expect(m.fouls!.home + m.fouls!.away).toBeGreaterThan(0)
+      expect(m.added!.first).toBeGreaterThanOrEqual(1)
+      expect(m.added!.first).toBeLessThanOrEqual(6)
+      expect(m.added!.second).toBeGreaterThanOrEqual(2)
+      expect(m.added!.second).toBeLessThanOrEqual(10)
+      // Nada acontece depois do fim dos acréscimos do próprio jogo.
+      for (const e of m.events.filter((e) => e.extra)) {
+        expect(e.extra!).toBeLessThanOrEqual(e.minute <= 45 ? m.added!.first! : m.added!.second!)
+      }
+    }
+    // A rodada só termina quando o jogo com mais acréscimos acaba.
+    expect(match.minute).toBe(90)
+    expect(match.extra).toBe(Math.max(...match.matches.map((m) => m.added!.second!)))
+  })
+
+  it('o 1º tempo vai até o fim dos acréscimos e o intervalo volta o relógio a 45', () => {
+    playToHalftime()
+    const longest = Math.max(...match.matches.map((m) => m.added!.first!))
+    // O jogo com mais acréscimos chegou ao último minuto deles.
+    const lastStoppage = Math.max(0, ...match.matches.flatMap((m) => m.events.filter((e) => e.minute === 45 && e.extra).map((e) => e.extra!)))
+    expect(lastStoppage).toBeLessThanOrEqual(longest)
+    expect(match.halftime).toBe(true)
+    expect(match.minute).toBe(45)
+    expect(match.extra).toBe(0)
+    match.resumeSecondHalf(false)
+    expect(match.period).toBe(2)
+    for (const m of match.matches) expect(match.halfOverFor(m)).toBe(false)
+  })
+
   it('total de pontos distribuídos bate com os resultados', () => {
     match.simulateToEnd(true)
     const draws = match.matches.filter((m) => m.homeGoals === m.awayGoals).length

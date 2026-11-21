@@ -8,6 +8,7 @@ import {
   DIRECT_RED_CHANCE, injuryChanceFor, isAvailable, pickCardedPlayer, pickInjuredPlayer, rollInjuryGames, SENT_OFF_PENALTY,
   YELLOW_CHANCE,
 } from '../data/discipline'
+import { addedTime, FOUL_CHANCE, FOUL_STYLE_FACTOR, type HalfStoppages } from '../data/stoppage'
 import { persistRefs } from '../utils/storage'
 import { effectiveRating, FORMATION_MISMATCH_PENALTY, lineupStrength, useGameStore } from './game'
 import { useTransferStore } from './transfers'
@@ -54,13 +55,45 @@ export const useMatchStore = defineStore('match', () => {
   /** O intervalo desta rodada já foi resolvido (não para de novo). */
   const halftimeDone = ref(false)
   /** Um jogador do seu time se lesionou: o jogo para para você decidir a substituição. */
-  const injuryBreak = ref<{ playerName: string; minute: number } | null>(null)
+  const injuryBreak = ref<{ playerName: string; minute: number; extra?: number } | null>(null)
+  /** Minuto dos acréscimos em andamento (0 = tempo normal). O relógio fica em 45' ou 90' enquanto isso. */
+  const extra = ref(0)
 
   // A rodada em andamento também é salva, para que recarregar a página não refaça o resultado.
-  persistRefs('round', { matches, lineups, minute, tickMs, halftime, halftimeDone, injuryBreak }, 2)
+  persistRefs('round', { matches, lineups, minute, extra, tickMs, halftime, halftimeDone, injuryBreak }, 2)
 
   const isReady = computed(() => matches.value.length > 0)
-  const isFinished = computed(() => minute.value >= MATCH_LENGTH)
+  /** 1º ou 2º tempo (o 2º começa quando o intervalo é resolvido). */
+  const period = computed<1 | 2>(() => (halftimeDone.value ? 2 : 1))
+
+  /** Maior acréscimo anunciado no tempo: o relógio da rodada corre até o último jogo terminar. */
+  function maxAdded(half: 1 | 2) {
+    return Math.max(0, ...matches.value.map((m) => (half === 1 ? m.added?.first : m.added?.second) ?? 0))
+  }
+  const isFinished = computed(() => halftimeDone.value && minute.value >= MATCH_LENGTH && extra.value >= maxAdded(2))
+
+  /** Acréscimos anunciados no tempo atual (para o relógio), ou null antes da placa subir. */
+  const addedNow = computed(() => {
+    const end = period.value === 1 ? HALFTIME_MINUTE : MATCH_LENGTH
+    const announced = matches.value.some((m) => (period.value === 1 ? m.added?.first : m.added?.second) !== undefined)
+    return minute.value === end && announced ? maxAdded(period.value) : null
+  })
+
+  /** Este jogo ainda está em andamento no minuto atual (cada um tem seus acréscimos). */
+  function inPlay(m: LiveMatch, half: 1 | 2 = period.value) {
+    if (extra.value === 0) return true
+    return extra.value <= ((half === 1 ? m.added?.first : m.added?.second) ?? 0)
+  }
+
+  /** O tempo deste jogo já acabou enquanto outros ainda jogam os acréscimos. */
+  function halfOverFor(m: LiveMatch) {
+    return extra.value > 0 && !inPlay(m)
+  }
+
+  /** Minuto para os eventos: 45+2 nos acréscimos (no intervalo o relógio volta a 45'). */
+  function stamp() {
+    return { minute: minute.value, ...(extra.value ? { extra: extra.value } : {}) }
+  }
 
   // --- Intervalo e substituições ---
   // Aos 45' todos os times sentem o 1º tempo; a IA troca sozinha e o seu time para para você decidir.
@@ -110,7 +143,7 @@ export const useMatchStore = defineStore('match', () => {
     // Na vaga de um lesionado, o evento registra quem ele substituiu.
     const injured = outId ? null : unreplacedInjured(m, teamId)[0]
     m.events.push({
-      minute: minute.value,
+      ...stamp(),
       teamId,
       type: 'sub',
       ...eventPlayer(incoming),
@@ -196,6 +229,8 @@ export const useMatchStore = defineStore('match', () => {
   /** Aos 45': a IA resolve o intervalo de todos os outros times; o seu jogo (se houver) para. */
   function startHalftime() {
     const myId = useGameStore().managedTeamId
+    // Acabaram os acréscimos do 1º tempo: o relógio volta a 45' (trocas do intervalo ficam em 45').
+    extra.value = 0
     for (const m of matches.value) {
       for (const teamId of [m.homeId, m.awayId]) if (teamId !== myId) aiHalftime(m, teamId)
     }
@@ -256,7 +291,7 @@ export const useMatchStore = defineStore('match', () => {
       return
     }
     if (teamEvents(m, teamId, 'sub').length < MAX_SUBSTITUTIONS && benchFor(m, teamId).length) {
-      injuryBreak.value = { playerName, minute: minute.value }
+      injuryBreak.value = { playerName, ...stamp() }
     } else {
       // Sem trocas disponíveis: segue com um a menos.
       recomputeStrength(m, teamId)
@@ -271,6 +306,7 @@ export const useMatchStore = defineStore('match', () => {
     halftime.value = false
     halftimeDone.value = false
     injuryBreak.value = null
+    extra.value = 0
     const competition = game.nextEvent ?? 'league'
     matches.value = game.currentFixtures.map((f, index) => {
       const home = game.teamStrength(f.homeId)
@@ -292,10 +328,41 @@ export const useMatchStore = defineStore('match', () => {
         awayAttack: away.attack,
         awayDefense: away.defense,
         events: [],
+        fouls: { home: 0, away: 0 },
+        added: {},
         // Público definido antes da bola rolar (usa a tabela da véspera do jogo).
         venue: game.matchVenue(f.homeId, f.awayId),
       }
     })
+  }
+
+  /** O que atrasou o jogo num tempo: base para os acréscimos. */
+  function halfStoppages(m: LiveMatch, half: 1 | 2): HalfStoppages {
+    // Eventos do 1º tempo vão até 45+x; os do 2º começam no 46'. Trocas do intervalo (45') não contam.
+    const events = m.events.filter((e) => (half === 1 ? e.minute <= HALFTIME_MINUTE : e.minute > HALFTIME_MINUTE))
+    const count = (...types: string[]) => events.filter((e) => types.includes(e.type)).length
+    const totalFouls = (m.fouls?.home ?? 0) + (m.fouls?.away ?? 0)
+    return {
+      fouls: half === 1 ? totalFouls : totalFouls - (m.firstHalfFouls ?? 0),
+      cards: count('amarelo', 'vermelho'),
+      injuries: count('lesao'),
+      goals: count('gol'),
+      subs: count('sub'),
+    }
+  }
+
+  /** Placa do quarto árbitro ao fim do tempo regulamentar. */
+  function announceAdded(m: LiveMatch, half: 1 | 2) {
+    const minutes = addedTime(half, halfStoppages(m, half))
+    m.added = half === 1 ? { ...m.added, first: minutes } : { ...m.added, second: minutes }
+  }
+
+  /** Faltas do minuto: times defensivos param mais o jogo. */
+  function rollFouls(m: LiveMatch) {
+    const game = useGameStore()
+    m.fouls ??= { home: 0, away: 0 }
+    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.homeId).style]) m.fouls.home++
+    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.awayId).style]) m.fouls.away++
   }
 
   function tick() {
@@ -303,22 +370,38 @@ export const useMatchStore = defineStore('match', () => {
       stop()
       return
     }
-    minute.value++
+    const half = period.value
+    const end = half === 1 ? HALFTIME_MINUTE : MATCH_LENGTH
+    // Tempo normal avança o relógio; depois dos 45'/90' contam os acréscimos.
+    if (minute.value < end) {
+      minute.value++
+      extra.value = 0
+    } else {
+      extra.value++
+    }
     for (const m of matches.value) {
+      // Jogo que já esgotou os acréscimos espera os outros terminarem o tempo.
+      if (!inPlay(m, half)) continue
       if (Math.random() < goalChance(m.homeAttack, m.awayDefense)) {
         m.homeGoals++
-        m.events.push({ minute: minute.value, teamId: m.homeId, type: 'gol', ...scorerInfo(lineups.value[m.homeId]) })
+        m.events.push({ ...stamp(), teamId: m.homeId, type: 'gol', ...scorerInfo(lineups.value[m.homeId]) })
       }
       if (Math.random() < goalChance(m.awayAttack, m.homeDefense)) {
         m.awayGoals++
-        m.events.push({ minute: minute.value, teamId: m.awayId, type: 'gol', ...scorerInfo(lineups.value[m.awayId]) })
+        m.events.push({ ...stamp(), teamId: m.awayId, type: 'gol', ...scorerInfo(lineups.value[m.awayId]) })
       }
+      rollFouls(m)
       rollDiscipline(m, 'home')
       rollDiscipline(m, 'away')
       drainAndRecompute(m)
     }
+    // Fim do tempo regulamentar: cada jogo ganha seus acréscimos, conforme o tempo que perdeu.
+    if (minute.value === end && extra.value === 0) for (const m of matches.value) announceAdded(m, half)
+    const halfOver = minute.value === end && extra.value >= maxAdded(half)
+
     // Intervalo: a IA faz as trocas dela; se o seu time está em campo, o jogo para para você decidir.
-    if (minute.value === HALFTIME_MINUTE && !halftimeDone.value && !halftime.value) {
+    if (half === 1 && halfOver && !halftime.value) {
+      for (const m of matches.value) m.firstHalfFouls = (m.fouls?.home ?? 0) + (m.fouls?.away ?? 0)
       startHalftime()
       if (halftime.value) {
         // O painel do intervalo já cobre uma lesão que aconteça neste mesmo minuto.
@@ -354,10 +437,15 @@ export const useMatchStore = defineStore('match', () => {
     const teamId = side === 'home' ? m.homeId : m.awayId
     const onPitch = lineups.value[teamId] ?? []
     if (!onPitch.length) return
-    const at = minute.value
+    const at = stamp()
+    // Todo cartão nasce de uma falta.
+    const foul = () => {
+      m.fouls ??= { home: 0, away: 0 }
+      m.fouls[side]++
+    }
 
     const sendOff = (p: Player, secondYellow: boolean) => {
-      m.events.push({ minute: at, teamId, type: 'vermelho', secondYellow, ...eventPlayer(p) })
+      m.events.push({ ...at, teamId, type: 'vermelho', secondYellow, ...eventPlayer(p) })
       // Com um a menos, o time perde força (aplicada no recálculo deste mesmo minuto).
       removeFromPitch(m, teamId, p.id)
     }
@@ -367,12 +455,16 @@ export const useMatchStore = defineStore('match', () => {
       const p = pickCardedPlayer(onPitch, booked)
       if (p) {
         const alreadyBooked = booked.has(p.id)
-        m.events.push({ minute: at, teamId, type: 'amarelo', ...eventPlayer(p) })
+        foul()
+        m.events.push({ ...at, teamId, type: 'amarelo', ...eventPlayer(p) })
         if (alreadyBooked) sendOff(p, true)
       }
     } else if (Math.random() < DIRECT_RED_CHANCE) {
       const p = pickCardedPlayer(onPitch)
-      if (p) sendOff(p, false)
+      if (p) {
+        foul()
+        sendOff(p, false)
+      }
     }
 
     const current = lineups.value[teamId] ?? []
@@ -380,7 +472,7 @@ export const useMatchStore = defineStore('match', () => {
     if (current.length && Math.random() < injuryChanceFor(avgEnergy)) {
       const p = pickInjuredPlayer(current)
       if (p) {
-        m.events.push({ minute: at, teamId, type: 'lesao', games: rollInjuryGames(), ...eventPlayer(p) })
+        m.events.push({ ...at, teamId, type: 'lesao', games: rollInjuryGames(), ...eventPlayer(p) })
         removeFromPitch(m, teamId, p.id)
         handleInjury(m, teamId, p.name)
       }
@@ -441,13 +533,14 @@ export const useMatchStore = defineStore('match', () => {
     matches.value = []
     lineups.value = {}
     minute.value = 0
+    extra.value = 0
     halftime.value = false
     halftimeDone.value = false
     injuryBreak.value = null
   }
 
   return {
-    matches, lineups, minute, running, tickMs, isReady, isFinished,
+    matches, lineups, minute, extra, period, addedNow, halfOverFor, running, tickMs, isReady, isFinished,
     halftime, injuryBreak, paused, managedMatch, subsUsed, vacancies, bench, substitute, resumeSecondHalf,
     setupRound, start, stop, setSpeed, simulateToEnd, confirmRound, reset,
   }
