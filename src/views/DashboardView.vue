@@ -97,6 +97,15 @@ function standingPoints(row: { wins: number; draws: number }) {
                 >
                   🔁 {{ p.loan.roundsLeft }} rod.
                 </RouterLink>
+                <!-- Fica junto do nome (sempre visível): na coluna de ações ele alargava a tabela e era cortado. -->
+                <RouterLink
+                  v-if="transfers.offersByPlayer[p.id]"
+                  class="tag tag--offers"
+                  :to="{ name: 'market', query: { aba: 'vender' } }"
+                  title="Ver propostas no Mercado"
+                >
+                  💰 {{ transfers.offersByPlayer[p.id]!.length }} proposta(s)
+                </RouterLink>
               </td>
               <td class="num">{{ p.age }}</td>
               <td class="num"><strong>{{ p.overall }}</strong></td>
@@ -124,13 +133,6 @@ function standingPoints(row: { wins: number; draws: number }) {
                 >
                   {{ p.forSale ? 'Retirar' : 'Vender' }}
                 </button>
-                <RouterLink
-                  v-if="transfers.offersByPlayer[p.id]"
-                  class="btn btn--sm offers-link"
-                  :to="{ name: 'market', query: { aba: 'vender' } }"
-                >
-                  {{ transfers.offersByPlayer[p.id]!.length }} proposta(s)
-                </RouterLink>
               </td>
             </tr>
           </tbody>
@@ -412,9 +414,10 @@ a.tag {
 .legend .zone-relegation::before {
   background: var(--bad);
 }
-.offers-link {
-  text-decoration: none;
+.tag--offers {
+  white-space: nowrap;
   background: var(--warn);
+  color: #1a1200;
 }
 tr.for-sale td {
   opacity: 0.75;
