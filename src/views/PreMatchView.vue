@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
+import PitchLineup from '../components/PitchLineup.vue'
 import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { isAvailable, unavailableReason } from '../data/discipline'
-import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
+import { FORMATIONS, PLAY_STYLES, playingPosition, POSITION_ORDER } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import type { Formation, PlayStyle } from '../types/game'
@@ -16,11 +17,13 @@ const match = useMatchStore()
 const router = useRouter()
 
 const formations = Object.keys(FORMATIONS) as Formation[]
+/** Campo com camisas para arrastar ou a lista clássica por posição. */
+const lineupView = ref<'campo' | 'lista'>('campo')
 const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
 
 const required = computed(() => FORMATIONS[game.tactic.formation])
 const startersByPos = computed(() =>
-  Object.fromEntries(POSITION_ORDER.map((pos) => [pos, game.starters.filter((p) => p.position === pos).length])),
+  Object.fromEntries(POSITION_ORDER.map((pos) => [pos, game.starters.filter((p) => playingPosition(p) === pos).length])),
 )
 
 const groups = computed(() =>
@@ -60,10 +63,16 @@ function play() {
       <div class="lineup-header">
         <h2>Escalação</h2>
         <span class="count" :class="{ ok: game.starters.length === 11 }">{{ game.starters.length }}/11</span>
+        <div class="view-toggle">
+          <button class="btn btn--sm" :class="{ 'btn--ghost': lineupView !== 'campo' }" @click="lineupView = 'campo'">Campo</button>
+          <button class="btn btn--sm" :class="{ 'btn--ghost': lineupView !== 'lista' }" @click="lineupView = 'lista'">Lista</button>
+        </div>
         <button class="btn btn--ghost btn--sm" @click="game.autoSelectStarters()">Escalação automática</button>
       </div>
 
-      <div v-for="group in groups" :key="group.pos" class="pos-group">
+      <PitchLineup v-if="lineupView === 'campo'" />
+
+      <div v-for="group in lineupView === 'lista' ? groups : []" :key="group.pos" class="pos-group">
         <h3>
           <span class="pos" :class="`pos--${group.pos}`">{{ group.pos }}</span>
           <span :class="startersByPos[group.pos] === required[group.pos] ? 'ok' : 'warn'">
@@ -171,13 +180,14 @@ function play() {
 <style scoped>
 .prematch {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  /* minmax(0, …): sem isso o tamanho interno do canvas alarga a coluna. */
+  grid-template-columns: minmax(0, 1fr) 340px;
   gap: 1.25rem;
   align-items: start;
 }
 @media (max-width: 1000px) {
   .prematch {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 .prematch__side {
@@ -187,13 +197,16 @@ function play() {
 }
 .lineup-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
 }
 .lineup-header h2 {
   margin: 0;
 }
-.lineup-header .btn {
+.view-toggle {
+  display: flex;
+  gap: 0.25rem;
   margin-left: auto;
 }
 .count {

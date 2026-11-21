@@ -21,6 +21,11 @@ export interface Player {
   injury?: number
   /** Preço pedido pelo clube enquanto o jogador está à venda (ausente = valor de mercado). */
   askingPrice?: number
+  /**
+   * Posição em que o titular joga na escalação, quando diferente da sua (ex.: meia improvisado no ataque).
+   * Ausente = joga na própria posição.
+   */
+  role?: Position
   /** Presente enquanto o jogador está emprestado: ele fica no elenco de `toTeamId` e volta para o dono. */
   loan?: PlayerLoan
 }

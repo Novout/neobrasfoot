@@ -16,7 +16,7 @@ import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
-import { FORMATIONS, PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
+import { FORMATIONS, PLAY_STYLES, playingPosition, POSITION_ORDER, positionFit } from '../data/tactics'
 import {
   AWAY_GAME_INCOME, bestTicketPrice, idealTicketPrice, buildRounds, createStadium, estimateGate, gateRevenue, homeAdvantageBonus,
   matchAttendance,
@@ -32,7 +32,7 @@ import {
 } from '../data/teams'
 import type {
   Competition, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
-  TransferRecord,
+  TransferRecord, Position,
 } from '../types/game'
 import { clamp, createRng, formatMoney, hashString } from '../utils/random'
 import { persistRefs } from '../utils/storage'
@@ -109,7 +109,9 @@ function pickBestLineup(players: Player[], formation: Formation): Set<string> {
 export const FORMATION_MISMATCH_PENALTY = 0.92
 
 export function lineupStrength(starters: Player[], tactic: Tactic) {
-  const byPos = (pos: Player['position']) => starters.filter((p) => p.position === pos).map(effectiveRating)
+  // Improvisados contam na linha em que jogam, com o rendimento reduzido.
+  const byPos = (pos: Player['position']) =>
+    starters.filter((p) => playingPosition(p) === pos).map((p) => effectiveRating(p) * positionFit(p.position, pos))
   const gol = byPos('GOL')
   const def = byPos('DEF')
   const mei = byPos('MEI')
@@ -316,7 +318,10 @@ export const useGameStore = defineStore('game', () => {
 
   function applyLineup(team: Team, formation: Formation) {
     const chosen = pickBestLineup(team.players, formation)
-    team.players.forEach((p) => (p.starter = chosen.has(p.id)))
+    team.players.forEach((p) => {
+      p.starter = chosen.has(p.id)
+      delete p.role
+    })
   }
 
   function startCareer(teamId: string, name: string) {
@@ -735,6 +740,27 @@ export const useGameStore = defineStore('game', () => {
     // Suspensos e lesionados podem sair da escalação, mas não entrar.
     if (!player.starter && (starters.value.length >= 11 || !isAvailable(player))) return
     player.starter = !player.starter
+    delete player.role
+  }
+
+  /** Move um titular para outra linha do campo (null ou a própria posição = volta para a dele). */
+  function setRole(playerId: string, role: Position | null) {
+    const player = findManagedPlayer(playerId)
+    if (!player?.starter) return
+    if (!role || role === player.position) delete player.role
+    else player.role = role
+  }
+
+  /** Troca de reserva por titular: quem entra assume a linha de quem saiu. */
+  function substituteStarter(outId: string, inId: string) {
+    const out = findManagedPlayer(outId)
+    const inn = findManagedPlayer(inId)
+    if (!out?.starter || !inn || inn.starter || !isAvailable(inn)) return false
+    const role = playingPosition(out)
+    toggleStarter(outId)
+    toggleStarter(inId)
+    setRole(inId, role)
+    return true
   }
 
   function autoSelectStarters() {
@@ -1114,7 +1140,7 @@ export const useGameStore = defineStore('game', () => {
     addNews, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
     roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,
-    toggleStarter, autoSelectStarters, setFormation, setStyle, teamStrength, tacticFor,
+    toggleStarter, setRole, substituteStarter, autoSelectStarters, setFormation, setStyle, teamStrength, tacticFor,
     applyRoundResults,
   }
 })

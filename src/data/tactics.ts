@@ -1,4 +1,4 @@
-import type { Formation, PlayStyle, Position } from '../types/game'
+import type { Formation, Player, PlayStyle, Position } from '../types/game'
 
 export const FORMATIONS: Record<Formation, Record<Position, number>> = {
   '4-4-2': { GOL: 1, DEF: 4, MEI: 4, ATA: 2 },
@@ -16,3 +16,18 @@ export const PLAY_STYLES: Record<PlayStyle, { label: string; attack: number; def
 }
 
 export const POSITION_ORDER: Position[] = ['GOL', 'DEF', 'MEI', 'ATA']
+
+/** Posição em que o jogador atua na escalação (a dele, se não foi improvisado). */
+export function playingPosition(p: Pick<Player, 'position' | 'role'>): Position {
+  return p.role ?? p.position
+}
+
+/**
+ * Rendimento de um jogador fora da posição: vizinha (DEF↔MEI, MEI↔ATA) 85%, duas linhas (DEF↔ATA) 70%,
+ * e goleiro na linha (ou jogador de linha no gol) só 40%.
+ */
+export function positionFit(natural: Position, role: Position) {
+  if (natural === role) return 1
+  if (natural === 'GOL' || role === 'GOL') return 0.4
+  return Math.abs(POSITION_ORDER.indexOf(natural) - POSITION_ORDER.indexOf(role)) === 1 ? 0.85 : 0.7
+}

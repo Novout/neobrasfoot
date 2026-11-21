@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import type { LiveMatch, Player } from '../types/game'
 import { simulatePenalties } from '../data/cup'
 import { energyCost } from '../data/stars'
+import { playingPosition } from '../data/tactics'
 import {
   DIRECT_RED_CHANCE, injuryChanceFor, isAvailable, pickCardedPlayer, pickInjuredPlayer, rollInjuryGames, SENT_OFF_PENALTY,
   YELLOW_CHANCE,
@@ -18,10 +19,10 @@ const BASE_GOAL_CHANCE = 0.015
 const SCORER_WEIGHT: Record<Player['position'], number> = { GOL: 0, DEF: 1, MEI: 3, ATA: 6 }
 
 function pickScorer(starters: Player[]) {
-  const total = starters.reduce((sum, p) => sum + SCORER_WEIGHT[p.position], 0)
+  const total = starters.reduce((sum, p) => sum + SCORER_WEIGHT[playingPosition(p)], 0)
   let roll = Math.random() * total
   for (const p of starters) {
-    roll -= SCORER_WEIGHT[p.position]
+    roll -= SCORER_WEIGHT[playingPosition(p)]
     if (roll <= 0) return p
   }
   return starters[0]
