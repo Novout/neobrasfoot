@@ -17,6 +17,7 @@ const router = useRouter()
 /** Clubes disponíveis para uma carreira nova (liga padrão ou importada). */
 const teams = ref(leagueTeams())
 const isCustomLeague = ref(!!getCustomLeague())
+const leagueName = ref(getCustomLeague()?.name ?? null)
 const selectedId = ref<string | null>(null)
 const managerName = ref('')
 const division = ref<DivisionId>('A')
@@ -41,15 +42,13 @@ function stars(reputation: number) {
   return Math.min(5, Math.max(1, Math.round((reputation - 38) / 9)))
 }
 
-// --- Liga: importar / exportar ---
-
-const fileInput = ref<HTMLInputElement | null>(null)
 const importErrors = ref<string[]>([])
 const leagueMessage = ref<string | null>(null)
 
 function refreshLeague() {
   teams.value = leagueTeams()
   isCustomLeague.value = !!getCustomLeague()
+  leagueName.value = getCustomLeague()?.name ?? null
   selectedId.value = null
 }
 
@@ -69,7 +68,7 @@ async function importLeague(event: Event) {
   refreshLeague()
   const generated = league.teams.filter((t) => !t.players).length
   leagueMessage.value =
-    `Liga importada: ${league.teams.length} clubes` +
+    `${league.name ? `"${league.name}" importada` : 'Liga importada'}: ${league.teams.length} clubes` +
     (generated ? ` (${generated} com elenco gerado automaticamente)` : '') +
     '. Ela vale para as próximas carreiras.'
 }
@@ -106,13 +105,13 @@ function startCareer() {
 
     <section class="card league">
       <div class="league__info">
-        <strong>Clubes: {{ isCustomLeague ? 'liga importada' : 'liga padrão' }}</strong>
+        <strong>Clubes: {{ isCustomLeague ? (leagueName ?? 'liga importada') : 'liga padrão' }}</strong>
         <small class="muted">
           A liga importada substitui a padrão nas próximas carreiras (8 clubes por série). A carreira em andamento não muda.
         </small>
       </div>
       <div class="league__actions">
-        <button class="btn btn--ghost btn--sm" @click="fileInput?.click()">📥 Importar JSON</button>
+        <RouterLink class="btn btn--sm create-link" :to="{ name: 'league-editor' }">🛠️ Editor de times</RouterLink>
         <button v-if="isCustomLeague" class="btn btn--ghost btn--sm" @click="restoreDefault">Restaurar padrão</button>
         <input ref="fileInput" type="file" accept="application/json,.json" hidden @change="importLeague" />
       </div>

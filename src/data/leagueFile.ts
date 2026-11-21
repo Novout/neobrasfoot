@@ -36,6 +36,9 @@ export interface LeagueFile {
   format: typeof LEAGUE_FORMAT
   version: number
   exportedAt?: string
+  /** Nome do addon (ex.: "Brasileirão 2026"), mostrado no menu inicial. */
+  name?: string
+  author?: string
   teams: LeagueFileTeam[]
 }
 
@@ -47,11 +50,12 @@ const HEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i
 
 // --- Exportação ---
 
-export function teamsToLeagueFile(teams: Team[]): LeagueFile {
+export function teamsToLeagueFile(teams: Team[], info: { name?: string; author?: string } = {}): LeagueFile {
   return {
     format: LEAGUE_FORMAT,
     version: LEAGUE_FORMAT_VERSION,
     exportedAt: new Date().toISOString(),
+    ...metaFields(info),
     teams: DIVISIONS.flatMap((d) => teams.filter((t) => t.division === d)).map((t) => ({
       id: t.id,
       name: t.name,
@@ -76,6 +80,13 @@ export function downloadJson(data: unknown, fileName: string) {
   a.download = fileName
   a.click()
   URL.revokeObjectURL(url)
+}
+
+function metaFields(info: { name?: unknown; author?: unknown }) {
+  const text = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim().slice(0, 60) : undefined)
+  const name = text(info.name)
+  const author = text(info.author)
+  return { ...(name ? { name } : {}), ...(author ? { author } : {}) }
 }
 
 // --- Importação e validação ---
@@ -186,7 +197,7 @@ export function parseLeagueFile(text: string): ParseResult {
 
   return errors.length
     ? { league: null, errors }
-    : { league: { format: LEAGUE_FORMAT, version: LEAGUE_FORMAT_VERSION, teams }, errors: [] }
+    : { league: { format: LEAGUE_FORMAT, version: LEAGUE_FORMAT_VERSION, ...metaFields(isObject(raw) ? raw : {}), teams }, errors: [] }
 }
 
 // --- Liga personalizada salva no navegador ---

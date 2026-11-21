@@ -21,6 +21,12 @@ const router = createRouter({
       meta: { title: 'Criar clube' },
     },
     {
+      path: '/editor-times',
+      name: 'league-editor',
+      component: () => import('../views/LeagueEditorView.vue'),
+      meta: { title: 'Editor de times' },
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('../views/DashboardView.vue'),
