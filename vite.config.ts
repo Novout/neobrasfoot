@@ -1,9 +1,44 @@
 import vue from '@vitejs/plugin-vue'
+import { VitePWA } from 'vite-plugin-pwa'
 import { defineConfig } from 'vitest/config'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    // App instalável (PWA): manifesto + service worker que guarda o jogo para abrir offline.
+    VitePWA({
+      // Versões novas são baixadas em segundo plano e entram ao reabrir o jogo (o save fica no localStorage).
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.ico', 'apple-touch-icon-180x180.png', 'logo.svg'],
+      manifest: {
+        id: '/',
+        name: 'Neobrasfoot',
+        short_name: 'Neobrasfoot',
+        description: 'Gerencie seu clube de futebol: escalação, mercado, estádio, campeonato e Copa do Brasil.',
+        lang: 'pt-BR',
+        start_url: '/',
+        scope: '/',
+        display: 'standalone',
+        orientation: 'any',
+        theme_color: '#0d1712',
+        background_color: '#0d1712',
+        categories: ['games', 'sports'],
+        // Ícones gerados a partir de public/logo.svg com `npm run generate-pwa-assets`.
+        icons: [
+          { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+        // Rotas do vue-router (/dashboard, /pre-jogo...) abrem o app mesmo offline.
+        navigateFallback: 'index.html',
+      },
+    }),
+  ],
   test: {
     // happy-dom fornece localStorage, usado pelo salvamento automático das stores.
     environment: 'happy-dom',

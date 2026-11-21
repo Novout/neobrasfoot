@@ -3,6 +3,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import './style.css'
+import { listenForInstall } from './utils/pwa'
+
+listenForInstall()
 
 const app = createApp(App)
 

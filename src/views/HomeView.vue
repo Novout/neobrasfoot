@@ -9,6 +9,7 @@ import {
 import type { DivisionId } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
+import { canInstall, promptInstall } from '../utils/pwa'
 
 const game = useGameStore()
 const match = useMatchStore()
@@ -100,6 +101,9 @@ function startCareer() {
           Continuar carreira com {{ game.managedTeam?.name }}
         </button>
         <RouterLink class="btn create-link" :to="{ name: 'team-builder' }">✏️ Criar meu próprio clube</RouterLink>
+        <button v-if="canInstall" class="btn btn--ghost" title="Instala o Neobrasfoot como um app no computador (funciona offline)" @click="promptInstall">
+          📲 Instalar o jogo
+        </button>
       </div>
     </header>
 
