@@ -10,6 +10,7 @@ import type { DivisionId } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { canInstall, promptInstall } from '../utils/pwa'
+import { BRASILEIRAO_TEMPLATE_NAME } from '../data/templates/names'
 
 const game = useGameStore()
 const match = useMatchStore()
@@ -74,6 +75,17 @@ async function importLeague(event: Event) {
     '. Ela vale para as próximas carreiras.'
 }
 
+/** Template opcional: clubes e elencos reais do Brasileirão em todas as séries. */
+async function useBrasileirao() {
+  if (isCustomLeague.value && !confirm(`Substituir a liga atual pelo template "${BRASILEIRAO_TEMPLATE_NAME}"?`)) return
+  // Carregado só agora: os elencos reais são um arquivo grande.
+  const { brasileiraoTemplate } = await import('../data/templates/brasileirao')
+  saveCustomLeague(parseLeagueFile(JSON.stringify(brasileiraoTemplate())).league!)
+  refreshLeague()
+  importErrors.value = []
+  leagueMessage.value = 'Template Brasileirão ativado: 32 clubes reais com seus elencos, nas Séries A a D. Vale para as próximas carreiras.'
+}
+
 function restoreDefault() {
   if (!confirm('Voltar para a lista de clubes padrão nas próximas carreiras?')) return
   clearCustomLeague()
@@ -116,6 +128,14 @@ function startCareer() {
       </div>
       <div class="league__actions">
         <RouterLink class="btn btn--sm create-link" :to="{ name: 'league-editor' }">🛠️ Editor de times</RouterLink>
+        <button
+          v-if="leagueName !== BRASILEIRAO_TEMPLATE_NAME"
+          class="btn btn--ghost btn--sm"
+          title="Clubes reais do Brasileirão com os elencos atuais, 8 por série"
+          @click="useBrasileirao"
+        >
+          🇧🇷 Template Brasileirão
+        </button>
         <button v-if="isCustomLeague" class="btn btn--ghost btn--sm" @click="restoreDefault">Restaurar padrão</button>
         <input ref="fileInput" type="file" accept="application/json,.json" hidden @change="importLeague" />
       </div>

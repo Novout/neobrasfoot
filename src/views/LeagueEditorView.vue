@@ -8,6 +8,7 @@ import {
   type LeagueFile, type LeagueFilePlayer, type LeagueFileTeam,
 } from '../data/leagueFile'
 import { POSITION_ORDER } from '../data/tactics'
+import { BRASILEIRAO_TEMPLATE_NAME, brasileiraoTemplate } from '../data/templates/brasileirao'
 import { createTeams, DIVISION_REPUTATION, generateSquadFor } from '../data/teams'
 import type { DivisionId, Position } from '../types/game'
 import { persistRefs } from '../utils/storage'
@@ -202,6 +203,16 @@ function loadDefault() {
   message.value = { kind: 'good', text: 'Liga padrão carregada no editor. Salve para voltar a usá-la nas carreiras.' }
 }
 
+function loadBrasileirao() {
+  if (!confirm(`Substituir o rascunho pelo template "${BRASILEIRAO_TEMPLATE_NAME}"?`)) return
+  draft.value = toEditable(parseLeagueFile(JSON.stringify(brasileiraoTemplate())).league!)
+  selectDivision('A')
+  message.value = {
+    kind: 'good',
+    text: 'Template carregado: 32 clubes reais nas Séries A a D, com elencos gerados. Edite à vontade e clique em "Salvar e usar".',
+  }
+}
+
 function useDefaultInCareers() {
   if (!confirm('Usar a liga padrão nas próximas carreiras? O rascunho do editor continua guardado.')) return
   clearCustomLeague()
@@ -242,6 +253,9 @@ const isCustomInUse = computed(() => {
         <button class="btn btn--ghost btn--sm" @click="fileInput?.click()">📥 Importar JSON</button>
         <button class="btn btn--ghost btn--sm" @click="exportFile">📤 Exportar JSON</button>
         <button class="btn btn--ghost btn--sm" @click="loadDefault">Carregar liga padrão</button>
+        <button class="btn btn--ghost btn--sm" title="32 clubes reais do futebol brasileiro, 8 por série" @click="loadBrasileirao">
+          🇧🇷 Template Brasileirão
+        </button>
         <button v-if="dirty" class="btn btn--ghost btn--sm" @click="discardChanges">Descartar alterações</button>
         <button class="btn btn--sm" :disabled="!isValid || !dirty" @click="save">💾 Salvar e usar</button>
         <input ref="fileInput" type="file" accept="application/json,.json" hidden @change="importFile" />

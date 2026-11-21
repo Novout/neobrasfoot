@@ -84,3 +84,50 @@ describe('arquivo de liga (addon)', () => {
     expect(leagueTeams().some((t) => t.name === 'Renomeado FC')).toBe(false)
   })
 })
+
+describe('template Brasileirão', () => {
+  it('é uma liga válida com 32 clubes reais, 8 por série', async () => {
+    const { brasileiraoTemplate, BRASILEIRAO_TEMPLATE_NAME } = await import('../templates/brasileirao')
+    const { league, errors } = parseLeagueFile(JSON.stringify(brasileiraoTemplate()))
+    expect(errors).toEqual([])
+    expect(league!.name).toBe(BRASILEIRAO_TEMPLATE_NAME)
+    for (const d of ['A', 'B', 'C', 'D'] as const) expect(league!.teams.filter((t) => t.division === d)).toHaveLength(8)
+    const teams = teamsFromLeagueFile(league!)
+    expect(teams.find((t) => t.id === 'flamengo')?.stadiumName).toBe('Maracanã')
+    // Elencos gerados, mais fortes nas séries de cima.
+    const avg = (d: string) => {
+      const ps = teams.filter((t) => t.division === d).flatMap((t) => t.players)
+      return ps.reduce((s, p) => s + p.overall, 0) / ps.length
+    }
+    expect(avg('A')).toBeGreaterThan(avg('B'))
+    expect(avg('C')).toBeGreaterThan(avg('D'))
+  })
+
+  it('usa os elencos reais baixados (com idade e OVR estimados) em todos os clubes', async () => {
+    const { brasileiraoTemplate } = await import('../templates/brasileirao')
+    const squads = (await import('../templates/brasileirao-squads.json')).default
+    for (const team of brasileiraoTemplate().teams) {
+      const real = squads.clubs[team.id as keyof typeof squads.clubs].players.map((p) => p.name)
+      expect(team.players, team.name).toBeDefined()
+      expect(team.players!.length).toBeLessThanOrEqual(30)
+      // Todo jogador do template está no elenco real do clube.
+      for (const p of team.players!) expect(real).toContain(p.name)
+    }
+  })
+
+  it('OVR estimado: fama sobe, juventude e veterania descem', async () => {
+    const { estimateOverall } = await import('../templates/brasileirao')
+    expect(estimateOverall(70, 30, 27).overall).toBeGreaterThan(estimateOverall(70, 2, 27).overall)
+    expect(estimateOverall(70, 10, 18).overall).toBeLessThan(estimateOverall(70, 10, 27).overall)
+    expect(estimateOverall(70, 10, 37).overall).toBeLessThan(estimateOverall(70, 10, 27).overall)
+    expect(estimateOverall(70, 60, 28).star).toBe(true)
+    expect(estimateOverall(70, 60, 38).star).toBe(false)
+  })
+
+  it('cada chamada devolve uma cópia nova', async () => {
+    const { brasileiraoTemplate } = await import('../templates/brasileirao')
+    const a = brasileiraoTemplate()
+    a.teams[0]!.name = 'Mudado'
+    expect(brasileiraoTemplate().teams[0]!.name).toBe('Flamengo')
+  })
+})
