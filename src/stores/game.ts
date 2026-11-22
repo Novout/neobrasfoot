@@ -16,6 +16,7 @@ import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
+import { penaltyConversion, teamSkillBonus } from '../data/skills'
 import { FORMATIONS, PLAY_STYLES, playingPosition, POSITION_ORDER, positionFit } from '../data/tactics'
 import {
   AWAY_GAME_INCOME, bestTicketPrice, idealTicketPrice, buildRounds, createStadium, estimateGate, gateRevenue, homeAdvantageBonus,
@@ -131,6 +132,11 @@ export function lineupStrength(starters: Player[], tactic: Tactic) {
     attack *= starters.length / 11
     defense *= starters.length / 11
   }
+
+  // Habilidades de quem está em campo (passe, desarme, colocação...).
+  const skills = teamSkillBonus(starters)
+  attack *= skills.attack
+  defense *= skills.defense
 
   const style = PLAY_STYLES[tactic.style]
   return { attack: attack * style.attack, defense: defense / style.defense, matchesFormation }
@@ -998,7 +1004,11 @@ export const useGameStore = defineStore('game', () => {
       tie.awayGoals = m.awayGoals
       tie.penalties = m.penalties
       // Garantia: um mata-mata empatado sem pênaltis registrados é decidido agora.
-      if (m.homeGoals === m.awayGoals && !tie.penalties) tie.penalties = simulatePenalties()
+      if (m.homeGoals === m.awayGoals && !tie.penalties) {
+        const home = getTeam(tie.homeId)?.players.filter((p) => p.starter) ?? []
+        const away = getTeam(tie.awayId)?.players.filter((p) => p.starter) ?? []
+        tie.penalties = simulatePenalties(penaltyConversion(home, away), penaltyConversion(away, home))
+      }
       tie.winnerId = tieWinner(tie.homeId, tie.awayId, m.homeGoals, m.awayGoals, tie.penalties)
 
       const homeResult = tie.winnerId === tie.homeId ? 1 : -1

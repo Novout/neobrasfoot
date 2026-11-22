@@ -82,20 +82,20 @@ export function createCup(teams: Team[], season: number, playedLeagueRounds = 0)
 }
 
 /** Disputa de pênaltis: 5 cobranças alternadas e depois morte súbita. */
-export function simulatePenalties(conversion = 0.75): PenaltyScore {
+export function simulatePenalties(homeConversion = 0.75, awayConversion = homeConversion): PenaltyScore {
   const score = { home: 0, away: 0 }
   /** Encerra assim que um lado não consegue mais alcançar o outro com as cobranças restantes. */
   const decided = (homeLeft: number, awayLeft: number) =>
     score.home > score.away + awayLeft || score.away > score.home + homeLeft
   for (let kick = 0; kick < 5; kick++) {
-    if (Math.random() < conversion) score.home++
+    if (Math.random() < homeConversion) score.home++
     if (decided(4 - kick, 5 - kick)) return score
-    if (Math.random() < conversion) score.away++
+    if (Math.random() < awayConversion) score.away++
     if (decided(4 - kick, 4 - kick)) return score
   }
   while (score.home === score.away) {
-    const home = Math.random() < conversion
-    const away = Math.random() < conversion
+    const home = Math.random() < homeConversion
+    const away = Math.random() < awayConversion
     score.home += Number(home)
     score.away += Number(away)
   }

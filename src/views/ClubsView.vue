@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
+import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS, tableZone } from '../data/divisions'
 import { createStadium, stadiumCapacity } from '../data/stadium'
@@ -184,7 +185,7 @@ const players = computed(() => {
             <tr v-for="p in players" :key="p.id" :class="{ highlight: term && p.name.toLowerCase().includes(term) }">
               <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
               <td>
-                {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
+                {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag" title="Titular">T</span>
                 <span v-if="p.forSale" class="tag tag--sale">À venda</span>
                 <span v-if="p.loan" class="tag tag--loan" :title="`Emprestado pelo ${game.getTeam(p.loan.ownerTeamId)?.name}`">

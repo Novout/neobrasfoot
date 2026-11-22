@@ -5,6 +5,7 @@ import StatBar from '../components/StatBar.vue'
 import ConfidenceMeters from '../components/ConfidenceMeters.vue'
 import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
+import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS, tableZone } from '../data/divisions'
 import { stadiumUpkeep } from '../data/stadium'
@@ -86,7 +87,7 @@ function standingPoints(row: { wins: number; draws: number }) {
             <tr v-for="p in squad" :key="p.id" :class="{ 'for-sale': p.forSale }">
               <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
               <td>
-                {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
+                {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag" title="Titular">T</span>
                 <RouterLink v-if="p.forSale" class="tag tag--sale" :to="{ name: 'market', query: { aba: 'vender' } }" title="Ajustar o preço no Mercado">À venda · {{ formatMoney(askingPriceOf(p)) }}</RouterLink>
                 <RouterLink

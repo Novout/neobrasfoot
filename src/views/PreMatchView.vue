@@ -5,6 +5,7 @@ import StatBar from '../components/StatBar.vue'
 import PitchLineup from '../components/PitchLineup.vue'
 import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
+import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { isAvailable, unavailableReason } from '../data/discipline'
 import { FORMATIONS, PLAY_STYLES, playingPosition, POSITION_ORDER } from '../data/tactics'
@@ -90,7 +91,7 @@ function play() {
           >
             <input type="checkbox" :checked="p.starter" tabindex="-1" />
             <span class="name">
-              {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
+              {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
               <span v-if="p.forSale" class="for-sale" title="Listado para venda">à venda</span>
             </span>
             <span class="muted">{{ p.age }}a</span>

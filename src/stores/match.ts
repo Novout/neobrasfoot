@@ -8,6 +8,7 @@ import {
   DIRECT_RED_CHANCE, injuryChanceFor, isAvailable, pickCardedPlayer, pickInjuredPlayer, rollInjuryGames, SENT_OFF_PENALTY,
   YELLOW_CHANCE,
 } from '../data/discipline'
+import { energyFactor, foulFactor, penaltyConversion, scorerFactor } from '../data/skills'
 import { addedTime, FOUL_CHANCE, FOUL_STYLE_FACTOR, type HalfStoppages } from '../data/stoppage'
 import { persistRefs } from '../utils/storage'
 import { effectiveRating, FORMATION_MISMATCH_PENALTY, lineupStrength, useGameStore } from './game'
@@ -20,10 +21,12 @@ const BASE_GOAL_CHANCE = 0.015
 const SCORER_WEIGHT: Record<Player['position'], number> = { GOL: 0, DEF: 1, MEI: 3, ATA: 6 }
 
 function pickScorer(starters: Player[]) {
-  const total = starters.reduce((sum, p) => sum + SCORER_WEIGHT[playingPosition(p)], 0)
+  // Posição em que joga x habilidades (finalização, cabeceio, chute de longe...).
+  const weight = (p: Player) => SCORER_WEIGHT[playingPosition(p)] * scorerFactor(p)
+  const total = starters.reduce((sum, p) => sum + weight(p), 0)
   let roll = Math.random() * total
   for (const p of starters) {
-    roll -= SCORER_WEIGHT[playingPosition(p)]
+    roll -= weight(p)
     if (roll <= 0) return p
   }
   return starters[0]
@@ -158,7 +161,7 @@ export const useMatchStore = defineStore('match', () => {
 
   /** Energia que o jogador perde por minuto em campo (90 minutos = o desgaste de uma partida inteira). */
   function drainPerMinute(p: Player) {
-    return energyCost(p.age >= 30 ? 30 : 22, p.star) / MATCH_LENGTH
+    return (energyCost(p.age >= 30 ? 30 : 22, p.star) * energyFactor(p)) / MATCH_LENGTH
   }
 
   /** Guarda a energia de quem sai de campo (ou de todos no apito final): vira a energia real depois do jogo. */
@@ -361,8 +364,11 @@ export const useMatchStore = defineStore('match', () => {
   function rollFouls(m: LiveMatch) {
     const game = useGameStore()
     m.fouls ??= { home: 0, away: 0 }
-    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.homeId).style]) m.fouls.home++
-    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.awayId).style]) m.fouls.away++
+    const home = lineups.value[m.homeId] ?? []
+    const away = lineups.value[m.awayId] ?? []
+    // Jogo limpo do time diminui; dribladores do adversário aumentam.
+    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.homeId).style] * foulFactor(home, away)) m.fouls.home++
+    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.awayId).style] * foulFactor(away, home)) m.fouls.away++
   }
 
   function tick() {
@@ -417,7 +423,12 @@ export const useMatchStore = defineStore('match', () => {
     if (isFinished.value) {
       // Mata-mata não termina empatado: decide nos pênaltis ao apito final.
       for (const m of matches.value) {
-        if (m.competition === 'cup' && m.homeGoals === m.awayGoals && !m.penalties) m.penalties = simulatePenalties()
+        if (m.competition === 'cup' && m.homeGoals === m.awayGoals && !m.penalties) {
+          // Cobradores em campo contra o goleiro do outro lado.
+          const home = lineups.value[m.homeId] ?? []
+          const away = lineups.value[m.awayId] ?? []
+          m.penalties = simulatePenalties(penaltyConversion(home, away), penaltyConversion(away, home))
+        }
         // Apito final: quem terminou em campo leva a energia que sobrou.
         for (const teamId of [m.homeId, m.awayId]) for (const p of lineups.value[teamId] ?? []) recordEnergy(m, p)
       }

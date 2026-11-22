@@ -6,6 +6,7 @@ import { effectiveRating, useGameStore } from '../stores/game'
 import { MAX_SUBSTITUTIONS, useMatchStore } from '../stores/match'
 import type { Player, PlayStyle } from '../types/game'
 import StarMark from './StarMark.vue'
+import SkillBadges from './SkillBadges.vue'
 import StatBar from './StatBar.vue'
 import TeamBadge from './TeamBadge.vue'
 
@@ -109,7 +110,7 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
           >
             <span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span>
             <span class="name">
-              {{ p.name }}<StarMark :star="p.star" />
+              {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" />
               <span v-if="booked.has(p.id)" title="Amarelado: pode ser expulso">🟨</span>
             </span>
             <strong>{{ p.overall }}</strong>
@@ -137,7 +138,7 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
             @click="inSelection = inSelection === p.id ? null : p.id"
           >
             <span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span>
-            <span class="name">{{ p.name }}<StarMark :star="p.star" /></span>
+            <span class="name">{{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /></span>
             <strong>{{ p.overall }}</strong>
             <StatBar :value="p.energy" />
           </li>

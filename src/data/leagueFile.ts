@@ -1,5 +1,6 @@
 import type { DivisionId, Position, Team } from '../types/game'
 import { DIVISION_LABELS, DIVISIONS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from './divisions'
+import { isValidSkillFor, playerSkills, SKILLS_BY_POSITION, SKILLS_PER_PLAYER, type SkillId } from './skills'
 import { stadiumNameFor } from './stadium'
 import { POSITION_ORDER } from './tactics'
 import { buildPlayer, createTeams, DIVISION_REPUTATION, generateSquadFor } from './teams'
@@ -18,6 +19,8 @@ export interface LeagueFilePlayer {
   age: number
   overall: number
   star?: boolean
+  /** 2 habilidades da lista da posição (opcional: sem elas o jogo sorteia). */
+  skills?: SkillId[]
 }
 
 export interface LeagueFileTeam {
@@ -67,7 +70,9 @@ export function teamsToLeagueFile(teams: Team[], info: { name?: string; author?:
       stadiumName: stadiumNameFor(t),
       players: [...t.players]
         .sort((a, b) => POSITION_ORDER.indexOf(a.position) - POSITION_ORDER.indexOf(b.position) || b.overall - a.overall)
-        .map((p) => ({ name: p.name, position: p.position, age: p.age, overall: p.overall, ...(p.star ? { star: true } : {}) })),
+        .map((p) => ({
+          name: p.name, position: p.position, age: p.age, overall: p.overall, ...(p.star ? { star: true } : {}), skills: playerSkills(p),
+        })),
     })),
   }
 }
@@ -162,7 +167,18 @@ export function parseLeagueFile(text: string): ParseResult {
         if (typeof p.overall !== 'number' || p.overall < MIN_PLAYER_OVERALL || p.overall > MAX_PLAYER_OVERALL) {
           return fail(`${pName}: "overall" entre ${MIN_PLAYER_OVERALL} e ${MAX_PLAYER_OVERALL}.`)
         }
-        players.push({ name: pName, position: p.position as Position, age: p.age as number, overall: Math.round(p.overall), star: p.star === true })
+        let skills: SkillId[] | undefined
+        if (p.skills !== undefined) {
+          const list = Array.isArray(p.skills) ? [...new Set(p.skills)] : []
+          if (list.length !== SKILLS_PER_PLAYER || !list.every((s) => isValidSkillFor(p.position as Position, s))) {
+            return fail(`${pName}: "skills" precisa ter ${SKILLS_PER_PLAYER} habilidades diferentes de ${p.position}: ${SKILLS_BY_POSITION[p.position as Position].join(', ')}.`)
+          }
+          skills = list as SkillId[]
+        }
+        players.push({
+          name: pName, position: p.position as Position, age: p.age as number, overall: Math.round(p.overall), star: p.star === true,
+          ...(skills ? { skills } : {}),
+        })
       }
       for (const pos of POSITION_ORDER) {
         const count = players.filter((p) => p.position === pos).length

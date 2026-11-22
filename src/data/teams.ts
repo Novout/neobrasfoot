@@ -1,5 +1,6 @@
 import type { DivisionId, Player, Position, Team } from '../types/game'
 import { createRng, hashString } from '../utils/random'
+import { defaultSkills, isValidSkillFor, SKILLS_PER_PLAYER, type SkillId } from './skills'
 import { MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from './divisions'
 import { STAR_CHANCE, STAR_OVERALL_BOOST, STAR_SALARY_FACTOR, starBoost } from './stars'
 
@@ -81,6 +82,8 @@ export interface PlayerDraft {
   talent?: number
   /** Jogador estrela (o bônus de OVR já está incluído em `overall`). */
   star?: boolean
+  /** Habilidades escolhidas (ex.: liga importada); sem isso são sorteadas. */
+  skills?: SkillId[]
 }
 
 type Rng = ReturnType<typeof createRng>
@@ -157,6 +160,12 @@ export function generateRealisticSquad(level: number, seed: number = Date.now())
   return SQUAD_TEMPLATE.map((position) => realisticPlayerDraft(position, level, rng))
 }
 
+/** Habilidades informadas (se forem 2 válidas da posição) ou o sorteio fixo do jogador. */
+function skillsFor(draft: PlayerDraft, id: string): SkillId[] {
+  const given = [...new Set(draft.skills ?? [])].filter((s) => isValidSkillFor(draft.position, s))
+  return given.length === SKILLS_PER_PLAYER ? given : defaultSkills(id, draft.position)
+}
+
 export function buildPlayer(draft: PlayerDraft, id: string, morale: number): Player {
   const overall = clampOverall(draft.overall)
   return {
@@ -171,6 +180,7 @@ export function buildPlayer(draft: PlayerDraft, id: string, morale: number): Pla
     starter: false,
     forSale: false,
     star: draft.star ?? false,
+    skills: skillsFor(draft, id),
   }
 }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue'
 import { isAvailable, unavailableReason } from '../data/discipline'
+import { playerSkills, SKILLS } from '../data/skills'
 import { FORMATIONS, playingPosition, POSITION_ORDER, positionFit } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
 import type { Player, Position } from '../types/game'
@@ -404,6 +405,7 @@ function drawTooltip(ctx: CanvasRenderingContext2D, p: Player, x: number, y: num
     `${p.position} · ${p.name}${p.star ? ' ★' : ''}`,
     `OVR ${p.overall} · ${p.age} anos`,
     `Energia ${Math.round(p.energy)} · Moral ${Math.round(p.morale)}`,
+    playerSkills(p).map((s) => `${SKILLS[s].icon} ${SKILLS[s].label}`).join('  '),
     ...(p.starter && playingPosition(p) !== p.position
       ? [`Improvisado como ${playingPosition(p)}: rende ${Math.round(positionFit(p.position, playingPosition(p)) * 100)}%`]
       : []),

@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
+import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
 import { durationLabel, LOAN_DEVELOPMENT_AGE, LOAN_DURATIONS } from '../data/loans'
@@ -270,7 +271,7 @@ function quickSell(playerId: string, playerName: string) {
             >
               <td><span class="pos" :class="`pos--${player.position}`">{{ player.position }}</span></td>
               <td>
-                {{ player.name }}<StarMark :star="player.star" /><PlayerStatus :player="player" />
+                {{ player.name }}<StarMark :star="player.star" /><SkillBadges :player="player" /><PlayerStatus :player="player" />
                 <span v-if="player.starter" class="tag" title="Titular no clube atual">T</span>
               </td>
               <td>
@@ -313,7 +314,7 @@ function quickSell(playerId: string, playerName: string) {
           <div class="negotiation__player">
             <TeamBadge :team="selected.team" :size="44" />
             <div>
-              <strong>{{ selected.player.name }}<StarMark :star="selected.player.star" /><PlayerStatus :player="selected.player" /></strong>
+              <strong>{{ selected.player.name }}<StarMark :star="selected.player.star" /><SkillBadges :player="selected.player" labels /><PlayerStatus :player="selected.player" /></strong>
               <small class="muted">
                 {{ selected.player.position }} · {{ selected.player.age }} anos · OVR {{ selected.player.overall }}
               </small>
@@ -506,7 +507,7 @@ function quickSell(playerId: string, playerName: string) {
             <tr v-for="p in mySquad" :key="p.id" :class="{ listed: p.forSale }">
               <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
               <td>
-                {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
+                {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag">T</span>
                 <span v-if="p.forSale" class="tag tag--sale">À venda · {{ formatMoney(askingPriceOf(p)) }}</span>
               </td>
@@ -602,7 +603,7 @@ function quickSell(playerId: string, playerName: string) {
             <tr v-for="p in lendable" :key="p.id">
               <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
               <td>
-                {{ p.name }}<StarMark :star="p.star" /><PlayerStatus :player="p" />
+                {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag">T</span>
                 <span v-if="p.age <= LOAN_DEVELOPMENT_AGE" class="tag" title="Pode evoluir no empréstimo">jovem</span>
               </td>

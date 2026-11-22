@@ -1,3 +1,5 @@
+import type { SkillId } from '../data/skills'
+
 export type Position = 'GOL' | 'DEF' | 'MEI' | 'ATA'
 
 export interface Player {
@@ -13,6 +15,8 @@ export interface Player {
   forSale: boolean
   /** Jogador estrela: OVR acima do normal e gasta menos energia. Ausente em saves antigos. */
   star?: boolean
+  /** As 2 habilidades do jogador (da lista da posição). Ausente em saves antigos: ver playerSkills(). */
+  skills?: SkillId[]
   /** Amarelos acumulados na temporada (zera ao cumprir suspensão por acúmulo). */
   yellowCards?: number
   /** Jogos que ainda precisa cumprir de suspensão. */

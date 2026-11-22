@@ -1,4 +1,5 @@
 import type { Player, Position } from '../types/game'
+import { cardFactor } from './skills'
 
 // --- Chances por minuto, por time ---
 
@@ -71,7 +72,7 @@ function weightedPick<T>(items: T[], weight: (item: T) => number): T | undefined
 export const BOOKED_CAUTION = 0.18
 
 export function pickCardedPlayer(onPitch: Player[], booked: Set<string> = new Set()) {
-  return weightedPick(onPitch, (p) => CARD_WEIGHT[p.position] * (booked.has(p.id) ? BOOKED_CAUTION : 1))
+  return weightedPick(onPitch, (p) => CARD_WEIGHT[p.position] * cardFactor(p) * (booked.has(p.id) ? BOOKED_CAUTION : 1))
 }
 
 /** Quem se machuca: jogadores mais cansados têm mais chance. */

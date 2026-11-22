@@ -7,6 +7,7 @@ import {
   saveCustomLeague, TEAMS_PER_DIVISION, teamsFromLeagueFile, teamsToLeagueFile,
   type LeagueFile, type LeagueFilePlayer, type LeagueFileTeam,
 } from '../data/leagueFile'
+import { playerSkills, SKILLS, SKILLS_BY_POSITION, type SkillId } from '../data/skills'
 import { POSITION_ORDER } from '../data/tactics'
 import { BRASILEIRAO_TEMPLATE_NAME, brasileiraoTemplate } from '../data/templates/brasileirao'
 import { createTeams, DIVISION_REPUTATION, generateSquadFor } from '../data/teams'
@@ -72,8 +73,30 @@ const squadSummary = computed(() => {
 
 function generatedPlayers(reputation: number, seed: string): LeagueFilePlayer[] {
   return generateSquadFor({ id: seed, reputation })
-    .map((p) => ({ name: p.name, position: p.position, age: p.age, overall: p.overall, ...(p.star ? { star: true } : {}) }))
+    .map((p) => ({
+      name: p.name, position: p.position, age: p.age, overall: p.overall, ...(p.star ? { star: true } : {}), skills: playerSkills(p),
+    }))
     .sort(byPosition)
+}
+
+// --- Habilidades ---
+
+/** Habilidades do jogador no editor: as escolhidas ou o sorteio que o jogo faria (id = clube + posição na lista). */
+function skillsOf(p: LeagueFilePlayer, index: number): SkillId[] {
+  return playerSkills({ id: `${team.value?.id}-${index}`, position: p.position, skills: p.skills })
+}
+
+function setSkill(p: LeagueFilePlayer, index: number, slot: number, skill: SkillId) {
+  const current = [...skillsOf(p, index)]
+  current[slot] = skill
+  // Escolheu a mesma da outra vaga: troca as duas de lugar.
+  if (current[0] === current[1]) current[1 - slot] = skillsOf(p, index)[slot]!
+  p.skills = current
+}
+
+/** Mudou de posição: as habilidades da posição antiga não valem mais. */
+function changePosition(p: LeagueFilePlayer) {
+  delete p.skills
 }
 
 function addPlayer() {
@@ -362,13 +385,14 @@ const isCustomInUse = computed(() => {
               <th>Idade</th>
               <th>OVR</th>
               <th title="Jogador estrela">★</th>
+              <th title="2 habilidades da lista da posição">Habilidades</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(p, i) in team.players" :key="i">
               <td>
-                <select v-model="p.position" class="pos-select" :class="`pos--${p.position}`">
+                <select v-model="p.position" class="pos-select" :class="`pos--${p.position}`" @change="changePosition(p)">
                   <option v-for="pos in POSITION_ORDER" :key="pos" :value="pos">{{ pos }}</option>
                 </select>
               </td>
@@ -376,6 +400,18 @@ const isCustomInUse = computed(() => {
               <td><input v-model.number="p.age" type="number" min="16" max="45" class="num" /></td>
               <td><input v-model.number="p.overall" type="number" :min="MIN_PLAYER_OVERALL" :max="MAX_PLAYER_OVERALL" class="num" /></td>
               <td><input v-model="p.star" type="checkbox" /></td>
+              <td class="skills-cell">
+                <select
+                  v-for="slot in [0, 1]"
+                  :key="slot"
+                  class="skill-select"
+                  :value="skillsOf(p, i)[slot]"
+                  :title="SKILLS[skillsOf(p, i)[slot]!].description"
+                  @change="setSkill(p, i, slot, ($event.target as HTMLSelectElement).value as SkillId)"
+                >
+                  <option v-for="s in SKILLS_BY_POSITION[p.position]" :key="s" :value="s">{{ SKILLS[s].icon }} {{ SKILLS[s].label }}</option>
+                </select>
+              </td>
               <td><button class="link bad" title="Remover jogador" @click="removePlayer(i)">✕</button></td>
             </tr>
           </tbody>
@@ -564,6 +600,17 @@ input[type='color'] {
 .squad td {
   padding: 0.15rem 0.3rem;
   border-top: 1px solid var(--border);
+}
+.skills-cell {
+  white-space: nowrap;
+}
+.skill-select {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.3rem;
+  max-width: 9.5rem;
+}
+.skill-select + .skill-select {
+  margin-left: 0.25rem;
 }
 .squad td input[type='text'] {
   width: 100%;

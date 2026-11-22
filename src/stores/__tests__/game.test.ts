@@ -13,14 +13,13 @@ function player(overrides: Partial<Player> = {}): Player {
   }
 }
 
-/** 11 titulares que batem com o 4-4-2. */
+/**
+ * 11 titulares que batem com o 4-4-2. Ids fixos: as habilidades (sorteadas pelo id) são as mesmas
+ * em toda chamada, para comparar só o que o teste muda.
+ */
 function lineup442(overall = 70) {
-  return [
-    player({ position: 'GOL', overall }),
-    ...Array.from({ length: 4 }, () => player({ position: 'DEF', overall })),
-    ...Array.from({ length: 4 }, () => player({ position: 'MEI', overall })),
-    ...Array.from({ length: 2 }, () => player({ position: 'ATA', overall })),
-  ]
+  const positions = ['GOL', 'DEF', 'DEF', 'DEF', 'DEF', 'MEI', 'MEI', 'MEI', 'MEI', 'ATA', 'ATA'] as const
+  return positions.map((position, i) => player({ id: `t${i}`, position, overall }))
 }
 
 const TACTIC = { formation: '4-4-2', style: 'equilibrado' } as const
