@@ -2,6 +2,7 @@
  "fetchedAt": "2026-11-21",
  "clubs": {
   "flamengo": {
+   "manager": "Leonardo Jardim",
    "source": "https://en.wikipedia.org/wiki/CR_Flamengo",
    "revision": 1383881225,
    "players": [
@@ -170,6 +171,7 @@
    ]
   },
   "palmeiras": {
+   "manager": "Abel Ferreira",
    "source": "https://en.wikipedia.org/wiki/SE_Palmeiras",
    "revision": 1383883570,
    "players": [
@@ -326,6 +328,7 @@
    ]
   },
   "botafogo": {
+   "manager": "Tite",
    "source": "https://en.wikipedia.org/wiki/Botafogo_FR",
    "revision": 1384943090,
    "players": [
@@ -524,6 +527,7 @@
    ]
   },
   "sao-paulo": {
+   "manager": "Dorival Júnior",
    "source": "https://en.wikipedia.org/wiki/S%C3%A3o_Paulo_FC",
    "revision": 1386250610,
    "players": [
@@ -755,6 +759,7 @@
    ]
   },
   "corinthians": {
+   "manager": "Clarence Seedorf",
    "source": "https://en.wikipedia.org/wiki/SC_Corinthians_Paulista",
    "revision": 1386719248,
    "players": [
@@ -959,6 +964,7 @@
    ]
   },
   "atletico-mg": {
+   "manager": "Eduardo Domínguez",
    "source": "https://en.wikipedia.org/wiki/Clube_Atl%C3%A9tico_Mineiro",
    "revision": 1383881127,
    "players": [
@@ -1153,6 +1159,7 @@
    ]
   },
   "fluminense": {
+   "manager": "Marcão",
    "source": "https://en.wikipedia.org/wiki/Fluminense_FC",
    "revision": 1385018679,
    "players": [
@@ -1339,6 +1346,7 @@
    ]
   },
   "internacional": {
+   "manager": "Eduardo Baptista",
    "source": "https://en.wikipedia.org/wiki/SC_Internacional",
    "revision": 1383252733,
    "players": [
@@ -1500,6 +1508,7 @@
    ]
   },
   "gremio": {
+   "manager": "Renato Portaluppi",
    "source": "https://en.wikipedia.org/wiki/Gr%C3%AAmio_FBPA",
    "revision": 1380626257,
    "players": [
@@ -1708,6 +1717,7 @@
    ]
   },
   "cruzeiro": {
+   "manager": "Artur Jorge",
    "source": "https://en.wikipedia.org/wiki/Cruzeiro_EC",
    "revision": 1381496002,
    "players": [
@@ -1915,6 +1925,7 @@
    ]
   },
   "vasco": {
+   "manager": "Pedro Emanuel",
    "source": "https://en.wikipedia.org/wiki/CR_Vasco_da_Gama",
    "revision": 1386869132,
    "players": [
@@ -2118,6 +2129,7 @@
    ]
   },
   "bahia": {
+   "manager": "Rogério Ceni",
    "source": "https://en.wikipedia.org/wiki/Esporte_Clube_Bahia",
    "revision": 1380914087,
    "players": [
@@ -2298,6 +2310,7 @@
    ]
   },
   "fortaleza": {
+   "manager": "Juan Pablo Vojvoda",
    "source": "https://en.wikipedia.org/wiki/Fortaleza_Esporte_Clube",
    "revision": 1385050654,
    "players": [
@@ -2509,6 +2522,7 @@
    ]
   },
   "athletico-pr": {
+   "manager": "Odair Hellmann",
    "source": "https://en.wikipedia.org/wiki/Club_Athletico_Paranaense",
    "revision": 1384925356,
    "players": [
@@ -2699,6 +2713,7 @@
    ]
   },
   "santos": {
+   "manager": "Cuca",
    "source": "https://en.wikipedia.org/wiki/Santos_FC",
    "revision": 1382900401,
    "players": [
@@ -2925,6 +2940,7 @@
    ]
   },
   "bragantino": {
+   "manager": "Vagner Mancini",
    "source": "https://en.wikipedia.org/wiki/Red_Bull_Bragantino",
    "revision": 1384873435,
    "players": [
@@ -3122,6 +3138,7 @@
    ]
   },
   "vitoria": {
+   "manager": "Rafael Lacerda",
    "source": "https://en.wikipedia.org/wiki/Esporte_Clube_Vit%C3%B3ria",
    "revision": 1386843516,
    "players": [
@@ -3347,6 +3364,7 @@
    ]
   },
   "sport": {
+   "manager": "Mariano Soso",
    "source": "https://en.wikipedia.org/wiki/Sport_Club_do_Recife",
    "revision": 1384180008,
    "players": [
@@ -3544,6 +3562,7 @@
    ]
   },
   "ceara": {
+   "manager": "Daniel Paulista",
    "source": "https://en.wikipedia.org/wiki/Cear%C3%A1_Sporting_Club",
    "revision": 1378240701,
    "players": [
@@ -3720,6 +3739,7 @@
    ]
   },
   "juventude": {
+   "manager": "Maurício Barbieri",
    "source": "https://en.wikipedia.org/wiki/Esporte_Clube_Juventude",
    "revision": 1385719902,
    "players": [
@@ -3935,6 +3955,7 @@
    ]
   },
   "goias": {
+   "manager": "Mozart",
    "source": "https://en.wikipedia.org/wiki/Goi%C3%A1s_Esporte_Clube",
    "revision": 1382874481,
    "players": [
@@ -4314,6 +4335,7 @@
    ]
   },
   "america-mg": {
+   "manager": "Roger",
    "source": "https://en.wikipedia.org/wiki/Am%C3%A9rica_Futebol_Clube_(MG)",
    "revision": 1386505855,
    "players": [
@@ -4485,6 +4507,7 @@
    ]
   },
   "cuiaba": {
+   "manager": "Eduardo Barros",
    "source": "https://en.wikipedia.org/wiki/Cuiab%C3%A1_Esporte_Clube",
    "revision": 1386614356,
    "players": [
@@ -4656,6 +4679,7 @@
    ]
   },
   "ponte-preta": {
+   "manager": "Gilson Kleina",
    "source": "https://en.wikipedia.org/wiki/Associa%C3%A7%C3%A3o_Atl%C3%A9tica_Ponte_Preta",
    "revision": 1386510443,
    "players": [
@@ -4819,6 +4843,7 @@
    ]
   },
   "guarani": {
+   "manager": "Anderson Gomes",
    "source": "https://en.wikipedia.org/wiki/Guarani_FC",
    "revision": 1384874785,
    "players": [
@@ -4956,6 +4981,7 @@
    ]
   },
   "paysandu": {
+   "manager": "Ignácio Neto",
    "source": "https://en.wikipedia.org/wiki/Paysandu_Sport_Club",
    "revision": 1384853824,
    "players": [
@@ -5141,6 +5167,7 @@
    ]
   },
   "remo": {
+   "manager": "Thiago Carpini",
    "source": "https://en.wikipedia.org/wiki/Clube_do_Remo",
    "revision": 1386668435,
    "players": [
@@ -5324,6 +5351,7 @@
    ]
   },
   "nautico": {
+   "manager": "Bruno Pivetti",
    "source": "https://en.wikipedia.org/wiki/Clube_N%C3%A1utico_Capibaribe",
    "revision": 1386437138,
    "players": [
@@ -5502,6 +5530,7 @@
    ]
   },
   "santa-cruz": {
+   "manager": "Cristian de Souza",
    "source": "https://en.wikipedia.org/wiki/Santa_Cruz_Futebol_Clube",
    "revision": 1381646145,
    "players": [
@@ -5661,6 +5690,7 @@
    ]
   },
   "crb": {
+   "manager": "Eduardo Barroca",
    "source": "https://en.wikipedia.org/wiki/Clube_de_Regatas_Brasil",
    "revision": 1382880148,
    "players": [
@@ -5862,6 +5892,7 @@
    ]
   },
   "avai": {
+   "manager": "Marquinhos",
    "source": "https://en.wikipedia.org/wiki/Ava%C3%AD_FC",
    "revision": 1386479616,
    "players": [
@@ -6060,5 +6091,6 @@
     }
    ]
   }
- }
+ },
+ "managersFetchedAt": "2026-11-22"
 }

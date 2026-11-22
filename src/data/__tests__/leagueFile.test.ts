@@ -131,3 +131,39 @@ describe('template Brasileirão', () => {
     expect(brasileiraoTemplate().teams[0]!.name).toBe('Flamengo')
   })
 })
+
+describe('técnicos', () => {
+  it('template Brasileirão traz os técnicos reais, que viram os técnicos da IA na carreira', async () => {
+    const { brasileiraoTemplate } = await import('../templates/brasileirao')
+    const { createManagers } = await import('../trophies')
+    const squads = (await import('../templates/brasileirao-squads.json')).default
+    const { league } = parseLeagueFile(JSON.stringify(brasileiraoTemplate()))
+    const teams = teamsFromLeagueFile(league!)
+    const withManager = teams.filter((t) => t.managerName)
+    expect(withManager.length).toBeGreaterThanOrEqual(28)
+    const clubs = squads.clubs as Record<string, { manager?: string }>
+    for (const t of withManager) expect(t.managerName).toBe(clubs[t.id]!.manager)
+
+    const managers = createManagers(teams, teams[0]!.id, 'Você')
+    // O clube do jogador fica com você; os outros, com o técnico real.
+    expect(managers.find((m) => m.teamId === teams[0]!.id)!.name).toBe('Você')
+    for (const t of withManager.filter((t) => t.id !== teams[0]!.id)) {
+      expect(managers.find((m) => m.teamId === t.id)!.name).toBe(t.managerName)
+    }
+    // Sem técnico na liga: nome inventado, sem repetir nenhum real.
+    const names = managers.map((m) => m.name)
+    expect(new Set(names).size).toBe(names.length)
+  })
+
+  it('técnico vai e volta no arquivo de liga; liga sem técnico continua com nomes inventados', async () => {
+    const { createManagers } = await import('../trophies')
+    const file = teamsToLeagueFile(createTeams())
+    file.teams[0]!.manager = '  Técnico Teste  '
+    const teams = teamsFromLeagueFile(parseLeagueFile(JSON.stringify(file)).league!)
+    expect(teams[0]!.managerName).toBe('Técnico Teste')
+    expect(teamsToLeagueFile(teams).teams.find((t) => t.id === teams[0]!.id)!.manager).toBe('Técnico Teste')
+    const managers = createManagers(teams, teams[1]!.id, 'Você')
+    expect(managers.find((m) => m.teamId === teams[0]!.id)!.name).toBe('Técnico Teste')
+    expect(managers.find((m) => m.teamId === teams[2]!.id)!.name).toMatch(/^\S+ \S+$/)
+  })
+})

@@ -359,6 +359,10 @@ const isCustomInUse = computed(() => {
             <label>Cor 1 <input v-model="team.primaryColor" type="color" /></label>
             <label>Cor 2 <input v-model="team.secondaryColor" type="color" /></label>
             <label class="wide">Estádio <input v-model="team.stadiumName" type="text" maxlength="50" /></label>
+            <label class="wide">
+              Técnico
+              <input v-model="team.manager" type="text" maxlength="40" placeholder="Vazio = nome inventado pelo jogo" />
+            </label>
             <label>
               Reputação
               <input v-model.number="team.reputation" type="number" min="30" max="95" class="num" />

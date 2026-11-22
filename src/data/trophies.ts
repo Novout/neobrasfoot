@@ -34,12 +34,17 @@ const FIRST = ['Adilson', 'Brás', 'Cláudio', 'Dorival', 'Evaristo', 'Fabiano',
 const LAST = ['Antunes', 'Bragança', 'Coutinho', 'Damasceno', 'Esteves', 'Fontoura', 'Guimarães', 'Henriques',
   'Lacerda', 'Meireles', 'Nogueira', 'Pacheco', 'Quintela', 'Rezende', 'Salgado', 'Tavares', 'Valadares', 'Xavier']
 
-/** Técnicos da liga: um por clube da IA, mais o jogador. Nomes fixos por clube. */
+/**
+ * Técnicos da liga: um por clube da IA, mais o jogador. Usa o técnico definido na liga (ex.: template com
+ * técnicos reais); sem isso, inventa um nome fixo por clube.
+ */
 export function createManagers(teams: Team[], playerTeamId: string, playerName: string): Manager[] {
-  const used = new Set<string>()
+  const used = new Set<string>(teams.map((t) => t.managerName?.trim()).filter((n): n is string => !!n))
   const ai = teams
     .filter((t) => t.id !== playerTeamId)
     .map((t) => {
+      const real = t.managerName?.trim()
+      if (real) return { id: `tecnico-${t.id}`, name: real, teamId: t.id, isPlayer: false, trophies: [] as Trophy[] }
       const rng = createRng(hashString(`tecnico-${t.id}`))
       let name = `${rng.pick(FIRST)} ${rng.pick(LAST)}`
       while (used.has(name)) name = `${rng.pick(FIRST)} ${rng.pick(LAST)}`

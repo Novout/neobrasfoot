@@ -61,6 +61,8 @@ export interface Team {
   reputation: number
   /** Nome do estádio definido numa liga importada (senão usa o nome padrão do clube). */
   stadiumName?: string
+  /** Técnico do clube definido numa liga importada (senão o jogo inventa um nome). */
+  managerName?: string
   players: Player[]
 }
 

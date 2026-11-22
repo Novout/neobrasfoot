@@ -80,6 +80,8 @@ const details = computed(() => {
     squadValue: team.players.reduce((sum, p) => sum + marketValue(p), 0),
     stadiumName: venue.name,
     capacity: stadiumCapacity(venue),
+    // Técnico atual (muda com demissões e com a janela de técnicos).
+    manager: game.managerOf(team.id),
   }
 })
 
@@ -138,6 +140,22 @@ const players = computed(() => {
             <span v-else-if="details.played && details.zone === 'champion'" class="warn"> · líder</span>
           </p>
           <p class="muted small">🏟️ {{ details.stadiumName }} · {{ details.capacity.toLocaleString('pt-BR') }} lugares</p>
+          <p class="muted small manager">
+            👔 Técnico:
+            <template v-if="details.manager">
+              <strong>{{ details.manager.name }}</strong>
+              <span v-if="details.manager.isPlayer" class="mine-tag">você</span>
+              <RouterLink
+                v-if="details.manager.trophies.length"
+                class="manager__trophies"
+                :to="{ name: 'trophies' }"
+                title="Ver a prateleira de troféus"
+              >
+                · 🏆 {{ details.manager.trophies.length }} título{{ details.manager.trophies.length > 1 ? 's' : '' }}
+              </RouterLink>
+            </template>
+            <span v-else>sem técnico</span>
+          </p>
         </div>
         <dl class="hero__stats">
           <dt>Média do elenco</dt><dd>{{ details.squadAverage }}</dd>
@@ -210,6 +228,13 @@ const players = computed(() => {
 </template>
 
 <style scoped>
+.manager strong {
+  color: var(--text);
+}
+.manager__trophies {
+  color: var(--warn);
+  text-decoration: none;
+}
 .clubs {
   display: grid;
   grid-template-columns: 300px 1fr;

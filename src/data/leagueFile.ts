@@ -35,6 +35,8 @@ export interface LeagueFileTeam {
   secondaryColor?: string
   reputation?: number
   stadiumName?: string
+  /** Técnico do clube (opcional: sem ele o jogo inventa um nome). */
+  manager?: string
   players?: LeagueFilePlayer[]
 }
 
@@ -71,6 +73,7 @@ export function teamsToLeagueFile(teams: Team[], info: { name?: string; author?:
       secondaryColor: t.secondaryColor,
       reputation: t.reputation,
       stadiumName: stadiumNameFor(t),
+      ...(t.managerName ? { manager: t.managerName } : {}),
       players: [...t.players]
         .sort((a, b) => POSITION_ORDER.indexOf(a.position) - POSITION_ORDER.indexOf(b.position) || b.overall - a.overall)
         .map((p) => ({
@@ -208,6 +211,7 @@ export function parseLeagueFile(text: string): ParseResult {
       secondaryColor: color(item.secondaryColor, '#ffffff'),
       reputation,
       stadiumName: typeof item.stadiumName === 'string' && item.stadiumName.trim() ? item.stadiumName.trim().slice(0, 50) : undefined,
+      manager: typeof item.manager === 'string' && item.manager.trim() ? item.manager.trim().slice(0, 40) : undefined,
       players,
     })
   })
@@ -256,6 +260,7 @@ export function teamsFromLeagueFile(league: LeagueFile): Team[] {
       secondaryColor: t.secondaryColor!,
       reputation: t.reputation!,
       stadiumName: t.stadiumName,
+      managerName: t.manager,
       players: [],
     }
     team.players = t.players

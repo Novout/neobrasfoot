@@ -2,10 +2,13 @@
  * Baixa os elencos atuais dos clubes do template Brasileirão a partir da Wikipédia (seção "Current squad")
  * e as datas de nascimento / "fama" (nº de Wikipédias com artigo do jogador) a partir do Wikidata.
  *
- * Uso: npm run update-brasileirao
+ * Também pega o técnico atual de cada clube (campo "manager" da ficha do clube).
+ *
+ * Uso: npm run update-brasileirao            (elencos + técnicos)
+ *      npm run update-brasileirao -- --tecnicos  (só os técnicos, sem mexer nos elencos)
  * Saída: src/data/templates/brasileirao-squads.json (dados brutos; idade e OVR são calculados no template).
  */
-import { writeFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 
 const OUT = new URL('../src/data/templates/brasileirao-squads.json', import.meta.url)
 const HEADERS = { 'User-Agent': 'NeobrasfootTemplateBuilder/1.0 (squad template generator)' }
@@ -79,6 +82,24 @@ function fields(body) {
   return f
 }
 
+/** Técnico atual: campo "manager" (ou "head coach") da ficha do clube, sem links, referências e observações. */
+function parseManager(text) {
+  const m = text.match(/\n\s*\|\s*(?:manager|head coach|coach)\s*=\s*([^\n]*)/i)
+  if (!m) return undefined
+  const name = m[1]
+    .replace(/<ref[^>]*\/>|<ref[^>]*>.*?<\/ref>/g, '')
+    .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, '$2')
+    .replace(/\[\[([^\]]+)\]\]/g, '$1')
+    .replace(/\{\{[^}]*\}\}/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s*\(.*?\)\s*/g, ' ')
+    .replace(/'''?/g, '')
+    .trim()
+  // Cargo vago na ficha: sem técnico (o jogo inventa um nome).
+  if (/^(vacant|vago|tba|tbd|none)$/i.test(name)) return undefined
+  return name.length >= 2 && name.length <= 40 ? name : undefined
+}
+
 /** Só a seção do elenco principal (sem base, emprestados ou números aposentados). */
 function mainSquadSection(text) {
   const heads = [...text.matchAll(/\n(=+)\s*([^=\n]+?)\s*=+\s*\n/g)].map((m) => ({ i: m.index, end: m.index + m[0].length, title: m[2] }))
@@ -107,12 +128,34 @@ function parsePlayers(section) {
     .filter(Boolean)
 }
 
+async function onlyManagers() {
+  const data = JSON.parse(await readFile(OUT, 'utf8'))
+  for (const [id, title] of Object.entries(CLUBS)) {
+    const r = await wiki(`action=parse&prop=wikitext&redirects=1&page=${encodeURIComponent(title)}`)
+    const manager = parseManager(r.parse?.wikitext ?? '')
+    // O técnico fica antes dos jogadores no arquivo (mais fácil de achar).
+    if (data.clubs[id]) {
+      const { manager: _old, ...rest } = data.clubs[id]
+      data.clubs[id] = manager ? { manager, ...rest } : rest
+    }
+    console.log(`${id.padEnd(14)} ${manager ?? '(sem técnico na ficha)'}`)
+  }
+  data.managersFetchedAt = new Date().toISOString().slice(0, 10)
+  await writeFile(OUT, JSON.stringify(data, null, 1) + '\n')
+}
+
 async function main() {
+  if (process.argv.includes('--tecnicos')) return onlyManagers()
   const squads = {}
   for (const [id, title] of Object.entries(CLUBS)) {
     const r = await wiki(`action=parse&prop=wikitext|revid&redirects=1&page=${encodeURIComponent(title)}`)
     const text = r.parse?.wikitext ?? ''
-    squads[id] = { source: `https://en.wikipedia.org/wiki/${encodeURIComponent(r.parse?.title ?? title).replace(/%20/g, '_')}`, revision: r.parse?.revid, players: parsePlayers(mainSquadSection(text)) }
+    squads[id] = {
+      source: `https://en.wikipedia.org/wiki/${encodeURIComponent(r.parse?.title ?? title).replace(/%20/g, '_')}`,
+      revision: r.parse?.revid,
+      manager: parseManager(text),
+      players: parsePlayers(mainSquadSection(text)),
+    }
     console.log(`${id.padEnd(14)} ${squads[id].players.length} jogadores`)
   }
 
@@ -151,6 +194,7 @@ async function main() {
         {
           source: s.source,
           revision: s.revision,
+          ...(s.manager ? { manager: s.manager } : {}),
           players: s.players.map(({ name, position, link }) => {
             const q = link && qid[link]
             return { name, position, ...(q && info[q]?.birthDate ? { birthDate: info[q].birthDate } : {}), fame: q ? info[q]?.fame ?? 0 : 0 }

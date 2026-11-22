@@ -68,7 +68,10 @@ interface RawPlayer {
 
 /** Data dos elencos (as idades são calculadas nela, para o template não mudar sozinho com o tempo). */
 export const SQUADS_DATE: string = squads.fetchedAt
-const RAW: Record<string, { players: RawPlayer[] }> = squads.clubs
+/** Técnico e elenco de cada clube (o técnico vem da ficha do clube na Wikipédia). */
+const RAW: Record<string, { manager?: string; players: RawPlayer[] }> = squads.clubs
+/** Data em que os técnicos foram atualizados. */
+export const MANAGERS_DATE: string = (squads as { managersFetchedAt?: string }).managersFetchedAt ?? squads.fetchedAt
 
 const MAX_SQUAD = 30
 const MIN_BY_POSITION: Record<Position, number> = { GOL: 2, DEF: 4, MEI: 4, ATA: 2 }
@@ -154,6 +157,10 @@ export function brasileiraoTemplate(): LeagueFile {
     format: LEAGUE_FORMAT,
     version: LEAGUE_FORMAT_VERSION,
     name: BRASILEIRAO_TEMPLATE_NAME,
-    teams: TEAMS.map((t) => ({ ...t, players: realSquad(t.id, t.reputation) })),
+    teams: TEAMS.map((t) => ({
+      ...t,
+      ...(RAW[t.id]?.manager ? { manager: RAW[t.id]!.manager } : {}),
+      players: realSquad(t.id, t.reputation),
+    })),
   }
 }
