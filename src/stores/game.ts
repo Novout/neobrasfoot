@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import {
-  createCup, CUP_NAME, CUP_PRIZES, CUP_RUNNER_UP_PRIZE, drawNextRound, inRound, simulatePenalties, tieWinner,
+  createCup, CUP_NAME, CUP_PRIZES, CUP_RUNNER_UP_PRIZE, drawNextRound, inRound, tieWinner,
 } from '../data/cup'
 import {
   leagueMatchDelta, NEW_JOB_CONFIDENCE, seasonEndDelta, START_CONFIDENCE, tableDriftDelta, WARNING_CONFIDENCE,
@@ -16,7 +16,8 @@ import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
-import { penaltyConversion, teamSkillBonus } from '../data/skills'
+import { shootoutScore, simulateShootout } from '../data/penalties'
+import { teamSkillBonus } from '../data/skills'
 import { FORMATIONS, PLAY_STYLES, playingPosition, POSITION_ORDER, positionFit } from '../data/tactics'
 import {
   AWAY_GAME_INCOME, bestTicketPrice, idealTicketPrice, buildRounds, createStadium, estimateGate, gateRevenue, homeAdvantageBonus,
@@ -1007,7 +1008,7 @@ export const useGameStore = defineStore('game', () => {
       if (m.homeGoals === m.awayGoals && !tie.penalties) {
         const home = getTeam(tie.homeId)?.players.filter((p) => p.starter) ?? []
         const away = getTeam(tie.awayId)?.players.filter((p) => p.starter) ?? []
-        tie.penalties = simulatePenalties(penaltyConversion(home, away), penaltyConversion(away, home))
+        tie.penalties = shootoutScore(simulateShootout(tie.homeId, tie.awayId, home, away))
       }
       tie.winnerId = tieWinner(tie.homeId, tie.awayId, m.homeGoals, m.awayGoals, tie.penalties)
 

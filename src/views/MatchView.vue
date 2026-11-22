@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import HalftimePanel from '../components/HalftimePanel.vue'
+import PenaltyPanel from '../components/PenaltyPanel.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
@@ -29,7 +30,7 @@ function matchDivision(m: { homeId: string }) {
   return game.getTeam(m.homeId)?.division
 }
 
-const EVENT_ICONS: Record<MatchEventType, string> = { gol: '⚽', amarelo: '🟨', vermelho: '🟥', lesao: '🩹', sub: '🔄' }
+const EVENT_ICONS: Record<MatchEventType, string> = { gol: '⚽', amarelo: '🟨', vermelho: '🟥', lesao: '🩹', sub: '🔄', 'penalti-perdido': '❌' }
 
 /** Rodada da Copa reúne clubes de todas as séries: sem abas de divisão. */
 const isCup = computed(() => match.matches[0]?.competition === 'cup')
@@ -90,7 +91,7 @@ onBeforeUnmount(() => match.stop())
     <section class="card clock">
       <div class="clock__time">
         <span class="minute">{{ clockLabel(match.minute, match.extra) }}</span>
-        <span class="muted">{{ match.isFinished ? 'Fim de jogo' : match.halftime ? 'Intervalo' : match.injuryBreak ? 'Parado: lesão' : match.running ? 'Bola rolando' : 'Pausado' }}</span>
+        <span class="muted">{{ match.shootout ? 'Pênaltis' : match.isFinished ? 'Fim de jogo' : match.halftime ? 'Intervalo' : match.injuryBreak ? 'Parado: lesão' : match.penaltyBreak ? 'Pênalti!' : match.running ? 'Bola rolando' : 'Pausado' }}</span>
         <span v-if="match.addedNow !== null && !match.isFinished && !match.halftime" class="added-board" title="Maior acréscimo da rodada: cada jogo tem o seu">
           Acréscimos: até +{{ match.addedNow }}
         </span>
@@ -98,8 +99,16 @@ onBeforeUnmount(() => match.stop())
       <div class="progress"><div :style="{ width: `${(match.minute / 90) * 100}%` }" /></div>
       <div class="controls">
         <span v-if="match.paused" class="muted">
-          {{ match.halftime ? 'Faça as substituições abaixo e comece o 2º tempo.' : 'Um jogador se machucou: escolha quem entra abaixo.' }}
+          {{
+            match.halftime
+              ? 'Faça as substituições abaixo e comece o 2º tempo.'
+              : match.penaltyBreak
+                ? 'Pênalti a seu favor: escolha o batedor abaixo.'
+                : 'Um jogador se machucou: escolha quem entra abaixo.'
+          }}
         </span>
+        <span v-else-if="match.shootout && !match.shootout.done" class="muted">Disputa de pênaltis: escolha os batedores abaixo.</span>
+        <span v-else-if="match.shootout" class="muted">Disputa encerrada.</span>
         <template v-else-if="!match.isFinished">
           <button class="btn btn--ghost" @click="match.running ? match.stop() : match.start()">
             {{ match.running ? '⏸ Pausar' : '▶ Continuar' }}
@@ -115,7 +124,7 @@ onBeforeUnmount(() => match.stop())
           </button>
           <button class="btn btn--ghost" @click="match.simulateToEnd()">⏭ Simular até o fim</button>
         </template>
-        <button v-else class="btn" @click="finishRound">Finalizar rodada</button>
+        <button v-else-if="match.roundComplete" class="btn" @click="finishRound">Finalizar rodada</button>
         <button
           class="btn btn--ghost btn--sm"
           :title="soundMuted ? 'Ligar os sons de gol' : 'Desligar os sons de gol'"
@@ -126,7 +135,8 @@ onBeforeUnmount(() => match.stop())
       </div>
     </section>
 
-    <HalftimePanel v-if="match.paused" :key="match.injuryBreak ? 'lesao-' + match.injuryBreak.minute : 'intervalo'" />
+    <HalftimePanel v-if="match.halftime || match.injuryBreak" :key="match.injuryBreak ? 'lesao-' + match.injuryBreak.minute : 'intervalo'" />
+    <PenaltyPanel v-if="match.penaltyBreak || match.shootout" />
 
     <h2 class="round-title" :class="{ 'round-title--cup': isCup }">{{ isCup ? '🏆 ' : '' }}{{ game.nextEventLabel }}</h2>
 
@@ -175,10 +185,19 @@ onBeforeUnmount(() => match.stop())
           </span>
           <span v-if="matchClock(m)" class="match-clock">{{ matchClock(m) }}</span>
         </p>
+        <div v-if="m.shootout?.length" class="shootout-line" title="Disputa de pênaltis">
+          <span v-for="side in [m.homeId, m.awayId]" :key="side" class="shootout-line__side">
+            <span v-for="(k, i) in m.shootout.filter((x) => x.teamId === side)" :key="i" :class="k.scored ? 'good' : 'bad'" :title="k.playerName">
+              {{ k.scored ? '●' : '○' }}
+            </span>
+          </span>
+        </div>
         <ul v-if="m.events.length" class="events">
           <li v-for="(e, i) in m.events" :key="i" :class="e.teamId === m.homeId ? 'home' : 'away'">
             {{ EVENT_ICONS[e.type] }} {{ clockLabel(e.minute, e.extra) }} {{ e.playerName }}<StarMark :star="e.star" />
-            <small v-if="e.type === 'vermelho' && e.secondYellow" class="muted"> (2º amarelo)</small>
+            <small v-if="e.type === 'gol' && e.penalty" class="muted"> (pênalti)</small>
+            <small v-else-if="e.type === 'penalti-perdido'" class="muted"> perdeu o pênalti{{ e.savedBy ? ` (defesa de ${e.savedBy})` : ' (para fora)' }}</small>
+            <small v-else-if="e.type === 'vermelho' && e.secondYellow" class="muted"> (2º amarelo)</small>
             <small v-else-if="e.type === 'lesao'" class="muted"> (fora {{ e.games }} jogo{{ (e.games ?? 1) > 1 ? 's' : '' }})</small>
             <small v-else-if="e.type === 'sub'" class="muted"> {{ e.replacesInjured ? `(no lugar de ${e.outName}, lesionado)` : e.outName ? `(sai ${e.outName})` : '(vaga de lesionado)' }}</small>
           </li>
@@ -204,6 +223,19 @@ onBeforeUnmount(() => match.stop())
   display: flex;
   flex-direction: column;
   min-width: 110px;
+}
+.shootout-line {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+.shootout-line .good {
+  color: var(--good);
+}
+.shootout-line .bad {
+  color: var(--bad);
 }
 .added-board {
   align-self: flex-start;

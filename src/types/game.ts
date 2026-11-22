@@ -72,7 +72,7 @@ export interface Fixture {
   awayId: string
 }
 
-export type MatchEventType = 'gol' | 'amarelo' | 'vermelho' | 'lesao' | 'sub'
+export type MatchEventType = 'gol' | 'amarelo' | 'vermelho' | 'lesao' | 'sub' | 'penalti-perdido'
 
 export interface MatchEvent {
   minute: number
@@ -93,6 +93,18 @@ export interface MatchEvent {
   outId?: string
   /** Substituição: entrou no lugar de um jogador que se lesionou. */
   replacesInjured?: boolean
+  /** Gol de pênalti. */
+  penalty?: boolean
+  /** Pênalti perdido: goleiro que defendeu (ausente = chutou para fora). */
+  savedBy?: string
+}
+
+/** Uma cobrança da disputa de pênaltis. */
+export interface PenaltyKick {
+  teamId: string
+  playerId: string
+  playerName: string
+  scored: boolean
 }
 
 export type Competition = 'league' | 'cup'
@@ -153,6 +165,8 @@ export interface LiveMatch {
   firstHalfFouls?: number
   /** Acréscimos anunciados ao fim de cada tempo. */
   added?: { first?: number; second?: number }
+  /** Cobranças da disputa de pênaltis, em ordem (mata-mata empatado). */
+  shootout?: PenaltyKick[]
 }
 
 export interface MatchVenue {

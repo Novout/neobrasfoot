@@ -1,14 +1,17 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { LiveMatch, Player } from '../types/game'
-import { simulatePenalties } from '../data/cup'
 import { energyCost } from '../data/stars'
 import { playingPosition } from '../data/tactics'
 import {
   DIRECT_RED_CHANCE, injuryChanceFor, isAvailable, pickCardedPlayer, pickInjuredPlayer, rollInjuryGames, SENT_OFF_PENALTY,
   YELLOW_CHANCE,
 } from '../data/discipline'
-import { energyFactor, foulFactor, penaltyConversion, scorerFactor } from '../data/skills'
+import {
+  bestTakers, eligibleKickers, goalkeeperOf, kickConversion, nextKickingTeam, PENALTY_FOUL_SHARE, shootoutDecided, shootoutScore,
+  simulateShootout, takeKick, type ShootoutState,
+} from '../data/penalties'
+import { energyFactor, foulFactor, scorerFactor } from '../data/skills'
 import { addedTime, FOUL_CHANCE, FOUL_STYLE_FACTOR, type HalfStoppages } from '../data/stoppage'
 import { persistRefs } from '../utils/storage'
 import { effectiveRating, FORMATION_MISMATCH_PENALTY, lineupStrength, useGameStore } from './game'
@@ -17,7 +20,8 @@ import { useTransferStore } from './transfers'
 const MATCH_LENGTH = 90
 const HALFTIME_MINUTE = 45
 export const MAX_SUBSTITUTIONS = 3
-const BASE_GOAL_CHANCE = 0.015
+// Um pouco abaixo de 0.015: os gols de pênalti (~0,2 por jogo) completam a média de ~3,5 gols.
+const BASE_GOAL_CHANCE = 0.0136
 const SCORER_WEIGHT: Record<Player['position'], number> = { GOL: 0, DEF: 1, MEI: 3, ATA: 6 }
 
 function pickScorer(starters: Player[]) {
@@ -63,7 +67,18 @@ export const useMatchStore = defineStore('match', () => {
   const extra = ref(0)
 
   // A rodada em andamento também é salva, para que recarregar a página não refaça o resultado.
-  persistRefs('round', { matches, lineups, minute, extra, tickMs, halftime, halftimeDone, injuryBreak }, 2)
+  /** Pênalti a favor do seu time: o jogo para para você escolher o batedor. */
+  const penaltyBreak = ref<{ minute: number; extra?: number } | null>(null)
+  /** Disputa de pênaltis do seu jogo de copa (cobrança a cobrança). `done` = decidida, esperando você fechar. */
+  const shootout = ref<(ShootoutState & { matchId: string; done: boolean }) | null>(null)
+  /** O apito final já foi processado (energia de quem terminou em campo e pênaltis). */
+  const finalWhistleDone = ref(false)
+
+  persistRefs(
+    'round',
+    { matches, lineups, minute, extra, tickMs, halftime, halftimeDone, injuryBreak, penaltyBreak, shootout, finalWhistleDone },
+    2,
+  )
 
   const isReady = computed(() => matches.value.length > 0)
   /** 1º ou 2º tempo (o 2º começa quando o intervalo é resolvido). */
@@ -263,7 +278,9 @@ export const useMatchStore = defineStore('match', () => {
   })
 
   /** Jogo do seu time parado esperando decisão (intervalo ou lesão). */
-  const paused = computed(() => halftime.value || !!injuryBreak.value)
+  const paused = computed(() => halftime.value || !!injuryBreak.value || !!penaltyBreak.value)
+  /** Rodada pronta para confirmar: tempo esgotado e sem disputa de pênaltis em andamento. */
+  const roundComplete = computed(() => isFinished.value && !shootout.value)
 
   function substitute(outId: string | null, inId: string) {
     const m = managedMatch.value
@@ -283,7 +300,9 @@ export const useMatchStore = defineStore('match', () => {
     if (halftime.value) halftimeDone.value = true
     halftime.value = false
     injuryBreak.value = null
-    if (autoStart) start()
+    // Parada no último minuto: o apito final acontece agora.
+    if (isFinished.value) finalWhistle()
+    else if (autoStart) start()
   }
 
   /** Lesão no meio do jogo: a IA repõe na hora (se ainda tiver trocas); o seu time para para você decidir. */
@@ -309,6 +328,9 @@ export const useMatchStore = defineStore('match', () => {
     halftime.value = false
     halftimeDone.value = false
     injuryBreak.value = null
+    penaltyBreak.value = null
+    shootout.value = null
+    finalWhistleDone.value = false
     extra.value = 0
     const competition = game.nextEvent ?? 'league'
     matches.value = game.currentFixtures.map((f, index) => {
@@ -351,6 +373,7 @@ export const useMatchStore = defineStore('match', () => {
       injuries: count('lesao'),
       goals: count('gol'),
       subs: count('sub'),
+      penalties: count('penalti-perdido') + events.filter((e) => e.type === 'gol' && e.penalty).length,
     }
   }
 
@@ -367,8 +390,161 @@ export const useMatchStore = defineStore('match', () => {
     const home = lineups.value[m.homeId] ?? []
     const away = lineups.value[m.awayId] ?? []
     // Jogo limpo do time diminui; dribladores do adversário aumentam.
-    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.homeId).style] * foulFactor(home, away)) m.fouls.home++
-    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.awayId).style] * foulFactor(away, home)) m.fouls.away++
+    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.homeId).style] * foulFactor(home, away)) {
+      m.fouls.home++
+      // Falta dentro da área: pênalti para o adversário.
+      if (Math.random() < PENALTY_FOUL_SHARE) awardPenalty(m, m.awayId)
+    }
+    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.awayId).style] * foulFactor(away, home)) {
+      m.fouls.away++
+      if (Math.random() < PENALTY_FOUL_SHARE) awardPenalty(m, m.homeId)
+    }
+  }
+
+  // --- Pênaltis durante o jogo ---
+
+  const opponentOf = (m: LiveMatch, teamId: string) => (teamId === m.homeId ? m.awayId : m.homeId)
+
+  /** Pênalti marcado: o seu time para para escolher o batedor; a IA manda o melhor. */
+  function awardPenalty(m: LiveMatch, teamId: string) {
+    const lineup = lineups.value[teamId] ?? []
+    if (!lineup.length) return
+    if (teamId === useGameStore().managedTeamId && !injuryBreak.value && !penaltyBreak.value) {
+      penaltyBreak.value = stamp()
+      return
+    }
+    const keeper = goalkeeperOf(lineups.value[opponentOf(m, teamId)] ?? [])
+    resolvePenalty(m, teamId, bestTakers(lineup, keeper)[0]!)
+  }
+
+  function resolvePenalty(m: LiveMatch, teamId: string, taker: Player) {
+    const keeper = goalkeeperOf(lineups.value[opponentOf(m, teamId)] ?? [])
+    if (Math.random() < kickConversion(taker, keeper)) {
+      if (teamId === m.homeId) m.homeGoals++
+      else m.awayGoals++
+      m.events.push({ ...stamp(), teamId, type: 'gol', penalty: true, ...eventPlayer(taker) })
+    } else {
+      // O goleiro defende na maioria das vezes; às vezes a bola vai para fora.
+      const saved = keeper && Math.random() < 0.7
+      m.events.push({ ...stamp(), teamId, type: 'penalti-perdido', ...eventPlayer(taker), ...(saved ? { savedBy: (keeper as Player).name } : {}) })
+    }
+  }
+
+  /** Batedores do seu time para o pênalti, do melhor para o pior, com a chance de cada um. */
+  const penaltyTakers = computed(() => {
+    const m = managedMatch.value
+    const id = useGameStore().managedTeamId
+    if (!m || !id) return []
+    const keeper = goalkeeperOf(lineups.value[opponentOf(m, id)] ?? [])
+    return bestTakers(lineups.value[id] ?? [], keeper).map((p) => ({ player: p, chance: kickConversion(p, keeper) }))
+  })
+
+  /** Você escolheu o batedor: cobra e o jogo continua. */
+  function takePenalty(playerId: string, autoStart = true) {
+    const m = managedMatch.value
+    const id = useGameStore().managedTeamId
+    const taker = (id && lineups.value[id]?.find((p) => p.id === playerId)) || null
+    if (!penaltyBreak.value || !m || !id || !taker) return false
+    resolvePenalty(m, id, taker)
+    penaltyBreak.value = null
+    if (isFinished.value) finalWhistle()
+    else if (autoStart) start()
+    return true
+  }
+
+  // --- Disputa de pênaltis (copa) ---
+
+  /** Opções de batedor do seu time na disputa: quem ainda não bateu nesta volta, com a chance contra o goleiro. */
+  const shootoutTakers = computed(() => {
+    const s = shootout.value
+    const id = useGameStore().managedTeamId
+    if (!s || !id) return []
+    const keeper = goalkeeperOf(lineups.value[s.homeId === id ? s.awayId : s.homeId] ?? [])
+    return bestTakers(eligibleKickers(s, id, lineups.value[id] ?? []), keeper).map((p) => ({ player: p, chance: kickConversion(p, keeper) }))
+  })
+
+  /** Cobranças da IA até chegar a vez do seu time (ou a disputa acabar). */
+  function aiKicks() {
+    const s = shootout.value
+    const id = useGameStore().managedTeamId
+    if (!s) return
+    while (!shootoutDecided(s) && nextKickingTeam(s) !== id) {
+      const teamId = nextKickingTeam(s)
+      const keeper = goalkeeperOf(lineups.value[teamId === s.homeId ? s.awayId : s.homeId] ?? [])
+      const taker = bestTakers(eligibleKickers(s, teamId, lineups.value[teamId] ?? []), keeper)[0]
+      if (!taker) break
+      takeKick(s, teamId, taker, keeper)
+    }
+    checkShootoutEnd()
+  }
+
+  function checkShootoutEnd() {
+    const s = shootout.value
+    if (!s || !shootoutDecided(s)) return
+    const m = matches.value.find((x) => x.id === s.matchId)
+    if (m) {
+      m.penalties = shootoutScore(s)
+      m.shootout = [...s.kicks]
+    }
+    s.done = true
+  }
+
+  /** Sua cobrança na disputa: o jogador escolhido bate, e a IA responde. */
+  function shootoutKick(playerId: string) {
+    const s = shootout.value
+    const id = useGameStore().managedTeamId
+    if (!s || s.done || !id || nextKickingTeam(s) !== id) return null
+    const taker = eligibleKickers(s, id, lineups.value[id] ?? []).find((p) => p.id === playerId)
+    if (!taker) return null
+    const keeper = goalkeeperOf(lineups.value[s.homeId === id ? s.awayId : s.homeId] ?? [])
+    const kick = takeKick(s, id, taker, keeper)
+    checkShootoutEnd()
+    if (!s.done) aiKicks()
+    return kick
+  }
+
+  /** Decide a disputa automaticamente (sempre o melhor batedor disponível). */
+  function autoShootout() {
+    const s = shootout.value
+    const id = useGameStore().managedTeamId
+    // Limite de segurança: uma morte súbita sem fim é praticamente impossível, mas não pode travar o jogo.
+    for (let guard = 0; s && !s.done && guard < 200; guard++) {
+      if (nextKickingTeam(s) === id) {
+        const best = shootoutTakers.value[0]
+        if (!best) break
+        shootoutKick(best.player.id)
+      } else aiKicks()
+    }
+  }
+
+  /** Fecha o painel da disputa já decidida. */
+  function closeShootout() {
+    if (shootout.value?.done) shootout.value = null
+  }
+
+  /**
+   * Apito final de todos os jogos: guarda a energia de quem terminou em campo e decide os mata-matas empatados
+   * (a IA sozinha; o seu jogo abre a disputa de pênaltis para você escolher os batedores).
+   */
+  function finalWhistle() {
+    if (finalWhistleDone.value) return
+    finalWhistleDone.value = true
+    const id = useGameStore().managedTeamId
+    for (const m of matches.value) {
+      for (const teamId of [m.homeId, m.awayId]) for (const p of lineups.value[teamId] ?? []) recordEnergy(m, p)
+      if (m.competition !== 'cup' || m.homeGoals !== m.awayGoals || m.penalties) continue
+      const home = lineups.value[m.homeId] ?? []
+      const away = lineups.value[m.awayId] ?? []
+      if (m.homeId === id || m.awayId === id) {
+        shootout.value = { matchId: m.id, homeId: m.homeId, awayId: m.awayId, firstId: Math.random() < 0.5 ? m.homeId : m.awayId, kicks: [], done: false }
+        aiKicks()
+      } else {
+        const s = simulateShootout(m.homeId, m.awayId, home, away)
+        m.penalties = shootoutScore(s)
+        m.shootout = s.kicks
+      }
+    }
+    stop()
   }
 
   function tick() {
@@ -416,24 +592,12 @@ export const useMatchStore = defineStore('match', () => {
       }
     }
     // Lesão no seu time: para o jogo para a substituição.
-    if (injuryBreak.value) {
+    // Lesão ou pênalti a favor do seu time: para o jogo para você decidir.
+    if (injuryBreak.value || penaltyBreak.value) {
       stop()
       return
     }
-    if (isFinished.value) {
-      // Mata-mata não termina empatado: decide nos pênaltis ao apito final.
-      for (const m of matches.value) {
-        if (m.competition === 'cup' && m.homeGoals === m.awayGoals && !m.penalties) {
-          // Cobradores em campo contra o goleiro do outro lado.
-          const home = lineups.value[m.homeId] ?? []
-          const away = lineups.value[m.awayId] ?? []
-          m.penalties = simulatePenalties(penaltyConversion(home, away), penaltyConversion(away, home))
-        }
-        // Apito final: quem terminou em campo leva a energia que sobrou.
-        for (const teamId of [m.homeId, m.awayId]) for (const p of lineups.value[teamId] ?? []) recordEnergy(m, p)
-      }
-      stop()
-    }
+    if (isFinished.value) finalWhistle()
   }
 
   /** Tira o jogador de campo (expulso ou lesionado): não marca nem leva mais cartões. */
@@ -519,19 +683,32 @@ export const useMatchStore = defineStore('match', () => {
     while (!isFinished.value) {
       if (paused.value) {
         if (!skipHalftime) return
-        // Decisão automática: repõe lesionados com o melhor reserva (se houver troca) e segue.
+        // Decisão automática: o melhor batedor no pênalti; lesionados repostos pelo melhor reserva.
+        if (penaltyBreak.value) {
+          takePenalty(penaltyTakers.value[0]!.player.id, false)
+          continue
+        }
         const m = managedMatch.value
         const id = useGameStore().managedTeamId
         if (m && id) fillVacancies(m, id)
         resumeSecondHalf(false)
+        continue
       }
       tick()
+    }
+    if (skipHalftime) {
+      finalWhistle()
+      autoShootout()
+      closeShootout()
     }
   }
 
   /** Aplica os resultados na carreira e limpa a rodada. */
   function confirmRound() {
     if (!isFinished.value) return
+    // Rodadas salvas antes do apito final ser separado: processa agora.
+    finalWhistle()
+    if (shootout.value) return
     const wasLeague = matches.value[0]?.competition !== 'cup'
     useGameStore().applyRoundResults(matches.value)
     // Propostas de transferência chegam só após rodadas do campeonato (uma janela por rodada).
@@ -548,11 +725,15 @@ export const useMatchStore = defineStore('match', () => {
     halftime.value = false
     halftimeDone.value = false
     injuryBreak.value = null
+    penaltyBreak.value = null
+    shootout.value = null
+    finalWhistleDone.value = false
   }
 
   return {
     matches, lineups, minute, extra, period, addedNow, halfOverFor, running, tickMs, isReady, isFinished,
     halftime, injuryBreak, paused, managedMatch, subsUsed, vacancies, bench, substitute, resumeSecondHalf,
     setupRound, start, stop, setSpeed, simulateToEnd, confirmRound, reset,
+    penaltyBreak, penaltyTakers, takePenalty, shootout, shootoutTakers, shootoutKick, autoShootout, closeShootout, roundComplete,
   }
 })

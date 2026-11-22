@@ -126,3 +126,85 @@ describe('rodada ao vivo', () => {
     expect(points).toBe(expected)
   })
 })
+
+describe('pênaltis', () => {
+  const teamId = createTeams()[0]!.id
+  afterEach(() => vi.restoreAllMocks())
+
+  /** Nova rodada com sorteios fixos pela semente (para achar o cenário desejado). */
+  function round(seed: number, cup = false) {
+    const rng = createRng(seed)
+    vi.spyOn(Math, 'random').mockImplementation(rng.next)
+    localStorage.clear()
+    setActivePinia(createPinia())
+    const game = useGameStore()
+    const match = useMatchStore()
+    game.startCareer(teamId, 'Técnico Teste')
+    match.setupRound()
+    if (cup) for (const m of match.matches) m.competition = 'cup'
+    return { game, match }
+  }
+
+  /** Joga até um pênalti a favor do seu time (resolvendo intervalo e lesões) ou até o fim. */
+  function playUntilPenalty(match: ReturnType<typeof useMatchStore>) {
+    for (let guard = 0; guard < 100 && !match.isFinished && !match.penaltyBreak; guard++) {
+      match.simulateToEnd()
+      if (match.paused && !match.penaltyBreak) match.resumeSecondHalf(false)
+    }
+  }
+
+  it('falta na área a favor do seu time: o jogo para e você escolhe o batedor', () => {
+    // Semente 20: o seu time sofre uma falta na área (achada uma vez por busca; o sorteio é fixo).
+    const match: ReturnType<typeof useMatchStore> | null = round(20).match
+    playUntilPenalty(match)
+    expect(match!.penaltyBreak).not.toBeNull()
+    expect(match!.paused).toBe(true)
+    // Lista do melhor para o pior batedor, com a chance de cada um.
+    const takers = match!.penaltyTakers
+    expect(takers.length).toBeGreaterThan(5)
+    expect(takers[0]!.chance).toBeGreaterThanOrEqual(takers[takers.length - 1]!.chance)
+
+    // Escolhe o pior de propósito: quem bate é quem você escolheu.
+    const chosen = takers[takers.length - 1]!.player
+    const before = match!.managedMatch!.events.length
+    expect(match!.takePenalty(chosen.id, false)).toBe(true)
+    const result = match!.managedMatch!.events[before]!
+    expect(result.playerId).toBe(chosen.id)
+    expect(result.type === 'penalti-perdido' || (result.type === 'gol' && result.penalty)).toBe(true)
+    expect(match!.penaltyBreak).toBeNull()
+  })
+
+  it('copa empatada: disputa de pênaltis cobrança a cobrança com os batedores que você escolhe', () => {
+    // Semente 14: o jogo do seu time termina empatado (cenário fixo, achado por busca).
+    const match: ReturnType<typeof useMatchStore> | null = round(14, true).match
+    for (let guard = 0; guard < 100 && !match.isFinished; guard++) {
+      match.simulateToEnd()
+      if (match.penaltyBreak) match.takePenalty(match.penaltyTakers[0]!.player.id, false)
+      else if (match.paused) match.resumeSecondHalf(false)
+    }
+    const m = match!.managedMatch!
+    expect(m.homeGoals).toBe(m.awayGoals)
+    expect(match!.isFinished).toBe(true)
+    expect(match!.roundComplete).toBe(false) // a rodada espera a disputa
+
+    // Os outros mata-matas empatados já foram decididos sozinhos.
+    for (const other of match!.matches.filter((x) => x !== m && x.homeGoals === x.awayGoals)) {
+      expect(other.penalties!.home).not.toBe(other.penalties!.away)
+      expect(other.shootout!.length).toBeGreaterThanOrEqual(6)
+    }
+
+    const used: string[] = []
+    while (!match!.shootout!.done) {
+      const option = match!.shootoutTakers[0]!
+      used.push(option.player.id)
+      expect(match!.shootoutKick(option.player.id)).not.toBeNull()
+    }
+    // Nenhum batedor repetido antes de todos baterem.
+    expect(new Set(used.slice(0, 11)).size).toBe(Math.min(used.length, 11))
+    expect(m.penalties!.home).not.toBe(m.penalties!.away)
+    expect(m.shootout!.filter((k) => k.teamId === teamId).map((k) => k.playerId)).toEqual(used)
+
+    match!.closeShootout()
+    expect(match!.roundComplete).toBe(true)
+  })
+})
