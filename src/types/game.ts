@@ -1,3 +1,4 @@
+import type { Foot } from '../data/feet'
 import type { SkillId } from '../data/skills'
 
 export type Position = 'GOL' | 'DEF' | 'MEI' | 'ATA'
@@ -17,6 +18,10 @@ export interface Player {
   star?: boolean
   /** As 2 habilidades do jogador (da lista da posição). Ausente em saves antigos: ver playerSkills(). */
   skills?: SkillId[]
+  /** Pé preferido: D destro, E canhoto, A ambidestro. Ausente em saves antigos: ver playerFoot(). */
+  foot?: Foot
+  /** Ordem do titular na linha do campo (0 = mais à esquerda), definida pelo técnico. Ausente = lado do pé. */
+  lineupSlot?: number
   /** Amarelos acumulados na temporada (zera ao cumprir suspensão por acúmulo). */
   yellowCards?: number
   /** Jogos que ainda precisa cumprir de suspensão. */

@@ -7,6 +7,7 @@ import {
   saveCustomLeague, TEAMS_PER_DIVISION, teamsFromLeagueFile, teamsToLeagueFile,
   type LeagueFile, type LeagueFilePlayer, type LeagueFileTeam,
 } from '../data/leagueFile'
+import { FOOT_LABELS, playerFoot, type Foot } from '../data/feet'
 import { playerSkills, SKILLS, SKILLS_BY_POSITION, type SkillId } from '../data/skills'
 import { POSITION_ORDER } from '../data/tactics'
 import { BRASILEIRAO_TEMPLATE_NAME, brasileiraoTemplate } from '../data/templates/brasileirao'
@@ -75,6 +76,7 @@ function generatedPlayers(reputation: number, seed: string): LeagueFilePlayer[] 
   return generateSquadFor({ id: seed, reputation })
     .map((p) => ({
       name: p.name, position: p.position, age: p.age, overall: p.overall, ...(p.star ? { star: true } : {}), skills: playerSkills(p),
+      foot: playerFoot(p),
     }))
     .sort(byPosition)
 }
@@ -92,6 +94,11 @@ function setSkill(p: LeagueFilePlayer, index: number, slot: number, skill: Skill
   // Escolheu a mesma da outra vaga: troca as duas de lugar.
   if (current[0] === current[1]) current[1 - slot] = skillsOf(p, index)[slot]!
   p.skills = current
+}
+
+/** Pé do jogador no editor: o escolhido ou o sorteio que o jogo faria. */
+function footOf(p: LeagueFilePlayer, index: number): Foot {
+  return playerFoot({ id: `${team.value?.id}-${index}`, foot: p.foot })
 }
 
 /** Mudou de posição: as habilidades da posição antiga não valem mais. */
@@ -386,6 +393,7 @@ const isCustomInUse = computed(() => {
               <th>OVR</th>
               <th title="Jogador estrela">★</th>
               <th title="2 habilidades da lista da posição">Habilidades</th>
+              <th title="Pé preferido: destro rende mais pela direita, canhoto pela esquerda">Pé</th>
               <th></th>
             </tr>
           </thead>
@@ -400,7 +408,7 @@ const isCustomInUse = computed(() => {
               <td><input v-model.number="p.age" type="number" min="16" max="45" class="num" /></td>
               <td><input v-model.number="p.overall" type="number" :min="MIN_PLAYER_OVERALL" :max="MAX_PLAYER_OVERALL" class="num" /></td>
               <td><input v-model="p.star" type="checkbox" /></td>
-              <td class="skills-cell">
+              <td class="skills-cell" data-col="habilidades">
                 <select
                   v-for="slot in [0, 1]"
                   :key="slot"
@@ -410,6 +418,11 @@ const isCustomInUse = computed(() => {
                   @change="setSkill(p, i, slot, ($event.target as HTMLSelectElement).value as SkillId)"
                 >
                   <option v-for="s in SKILLS_BY_POSITION[p.position]" :key="s" :value="s">{{ SKILLS[s].icon }} {{ SKILLS[s].label }}</option>
+                </select>
+              </td>
+              <td>
+                <select class="skill-select" :value="footOf(p, i)" @change="p.foot = ($event.target as HTMLSelectElement).value as Foot">
+                  <option v-for="(label, f) in FOOT_LABELS" :key="f" :value="f">{{ label }}</option>
                 </select>
               </td>
               <td><button class="link bad" title="Remover jogador" @click="removePlayer(i)">✕</button></td>

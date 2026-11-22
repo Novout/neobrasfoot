@@ -20,8 +20,8 @@ import { useTransferStore } from './transfers'
 const MATCH_LENGTH = 90
 const HALFTIME_MINUTE = 45
 export const MAX_SUBSTITUTIONS = 3
-// Um pouco abaixo de 0.015: os gols de pênalti (~0,2 por jogo) completam a média de ~3,5 gols.
-const BASE_GOAL_CHANCE = 0.0136
+// Calibrada para ~3,6 gols por jogo, contando os de pênalti (~0,2) e o efeito do pé x lado nos atacantes.
+const BASE_GOAL_CHANCE = 0.0141
 const SCORER_WEIGHT: Record<Player['position'], number> = { GOL: 0, DEF: 1, MEI: 3, ATA: 6 }
 
 function pickScorer(starters: Player[]) {

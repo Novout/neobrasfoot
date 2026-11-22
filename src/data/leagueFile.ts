@@ -1,5 +1,6 @@
 import type { DivisionId, Position, Team } from '../types/game'
 import { DIVISION_LABELS, DIVISIONS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from './divisions'
+import { FOOT_LABELS, isFoot, playerFoot, type Foot } from './feet'
 import { isValidSkillFor, playerSkills, SKILLS_BY_POSITION, SKILLS_PER_PLAYER, type SkillId } from './skills'
 import { stadiumNameFor } from './stadium'
 import { POSITION_ORDER } from './tactics'
@@ -21,6 +22,8 @@ export interface LeagueFilePlayer {
   star?: boolean
   /** 2 habilidades da lista da posição (opcional: sem elas o jogo sorteia). */
   skills?: SkillId[]
+  /** Pé preferido: "D" destro, "E" canhoto, "A" ambidestro (opcional: sem ele o jogo sorteia). */
+  foot?: Foot
 }
 
 export interface LeagueFileTeam {
@@ -71,7 +74,7 @@ export function teamsToLeagueFile(teams: Team[], info: { name?: string; author?:
       players: [...t.players]
         .sort((a, b) => POSITION_ORDER.indexOf(a.position) - POSITION_ORDER.indexOf(b.position) || b.overall - a.overall)
         .map((p) => ({
-          name: p.name, position: p.position, age: p.age, overall: p.overall, ...(p.star ? { star: true } : {}), skills: playerSkills(p),
+          name: p.name, position: p.position, age: p.age, overall: p.overall, ...(p.star ? { star: true } : {}), skills: playerSkills(p), foot: playerFoot(p),
         })),
     })),
   }
@@ -175,9 +178,13 @@ export function parseLeagueFile(text: string): ParseResult {
           }
           skills = list as SkillId[]
         }
+        if (p.foot !== undefined && !isFoot(p.foot)) {
+          return fail(`${pName}: "foot" precisa ser "D" (${FOOT_LABELS.D}), "E" (${FOOT_LABELS.E}) ou "A" (${FOOT_LABELS.A}).`)
+        }
         players.push({
           name: pName, position: p.position as Position, age: p.age as number, overall: Math.round(p.overall), star: p.star === true,
           ...(skills ? { skills } : {}),
+          ...(isFoot(p.foot) ? { foot: p.foot } : {}),
         })
       }
       for (const pos of POSITION_ORDER) {

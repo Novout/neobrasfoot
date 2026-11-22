@@ -1,5 +1,6 @@
 import type { DivisionId, Player, Position, Team } from '../types/game'
 import { createRng, hashString } from '../utils/random'
+import { isFoot, playerFoot, type Foot } from './feet'
 import { defaultSkills, isValidSkillFor, SKILLS_PER_PLAYER, type SkillId } from './skills'
 import { MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from './divisions'
 import { STAR_CHANCE, STAR_OVERALL_BOOST, STAR_SALARY_FACTOR, starBoost } from './stars'
@@ -84,6 +85,8 @@ export interface PlayerDraft {
   star?: boolean
   /** Habilidades escolhidas (ex.: liga importada); sem isso são sorteadas. */
   skills?: SkillId[]
+  /** Pé preferido (ex.: liga importada); sem isso é sorteado. */
+  foot?: Foot
 }
 
 type Rng = ReturnType<typeof createRng>
@@ -181,6 +184,7 @@ export function buildPlayer(draft: PlayerDraft, id: string, morale: number): Pla
     forSale: false,
     star: draft.star ?? false,
     skills: skillsFor(draft, id),
+    foot: isFoot(draft.foot) ? draft.foot : playerFoot({ id }),
   }
 }
 

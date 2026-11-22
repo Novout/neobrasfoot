@@ -18,6 +18,7 @@ import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { shootoutScore, simulateShootout } from '../data/penalties'
 import { teamSkillBonus } from '../data/skills'
+import { sideFits } from '../data/feet'
 import { FORMATIONS, PLAY_STYLES, playingPosition, POSITION_ORDER, positionFit } from '../data/tactics'
 import {
   AWAY_GAME_INCOME, bestTicketPrice, idealTicketPrice, buildRounds, createStadium, estimateGate, gateRevenue, homeAdvantageBonus,
@@ -112,8 +113,12 @@ export const FORMATION_MISMATCH_PENALTY = 0.92
 
 export function lineupStrength(starters: Player[], tactic: Tactic) {
   // Improvisados contam na linha em que jogam, com o rendimento reduzido.
+  // Pé x lado: destro pela direita e canhoto pela esquerda rendem mais; no lado contrário, menos.
+  const sides = sideFits(starters)
   const byPos = (pos: Player['position']) =>
-    starters.filter((p) => playingPosition(p) === pos).map((p) => effectiveRating(p) * positionFit(p.position, pos))
+    starters
+      .filter((p) => playingPosition(p) === pos)
+      .map((p) => effectiveRating(p) * positionFit(p.position, pos) * (sides.get(p.id) ?? 1))
   const gol = byPos('GOL')
   const def = byPos('DEF')
   const mei = byPos('MEI')
@@ -328,6 +333,7 @@ export const useGameStore = defineStore('game', () => {
     team.players.forEach((p) => {
       p.starter = chosen.has(p.id)
       delete p.role
+      delete p.lineupSlot
     })
   }
 
@@ -748,14 +754,26 @@ export const useGameStore = defineStore('game', () => {
     if (!player.starter && (starters.value.length >= 11 || !isAvailable(player))) return
     player.starter = !player.starter
     delete player.role
+    delete player.lineupSlot
+  }
+
+  /** O técnico arrumou uma linha do campo: ids da esquerda para a direita. */
+  function arrangeLine(ids: string[]) {
+    ids.forEach((id, index) => {
+      const player = findManagedPlayer(id)
+      if (player?.starter) player.lineupSlot = index
+    })
   }
 
   /** Move um titular para outra linha do campo (null ou a própria posição = volta para a dele). */
   function setRole(playerId: string, role: Position | null) {
     const player = findManagedPlayer(playerId)
     if (!player?.starter) return
+    const before = playingPosition(player)
     if (!role || role === player.position) delete player.role
     else player.role = role
+    // Mudou de linha: o lugar na linha antiga não vale mais.
+    if (playingPosition(player) !== before) delete player.lineupSlot
   }
 
   /** Troca de reserva por titular: quem entra assume a linha de quem saiu. */
@@ -764,9 +782,12 @@ export const useGameStore = defineStore('game', () => {
     const inn = findManagedPlayer(inId)
     if (!out?.starter || !inn || inn.starter || !isAvailable(inn)) return false
     const role = playingPosition(out)
+    const slot = out.lineupSlot
     toggleStarter(outId)
     toggleStarter(inId)
     setRole(inId, role)
+    // Quem entra fica no mesmo lugar do campo.
+    if (slot !== undefined) inn.lineupSlot = slot
     return true
   }
 
@@ -1151,7 +1172,7 @@ export const useGameStore = defineStore('game', () => {
     addNews, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
     roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,
-    toggleStarter, setRole, substituteStarter, autoSelectStarters, setFormation, setStyle, teamStrength, tacticFor,
+    toggleStarter, setRole, substituteStarter, arrangeLine, autoSelectStarters, setFormation, setStyle, teamStrength, tacticFor,
     applyRoundResults,
   }
 })

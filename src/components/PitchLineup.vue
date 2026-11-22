@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue'
 import { isAvailable, unavailableReason } from '../data/discipline'
+import { FOOT_LABELS, footFit, lineupSides, orderLine, playerFoot, SIDE_LABELS, type Side } from '../data/feet'
 import { playerSkills, SKILLS } from '../data/skills'
 import { FORMATIONS, playingPosition, POSITION_ORDER, positionFit } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
@@ -10,6 +11,7 @@ import type { Player, Position } from '../types/game'
  * Campo em <canvas> com os jogadores como camisas.
  * Arraste do banco para o campo (ou para cima de um titular, trocando), do campo para o banco,
  * ou de uma linha para outra do campo (o jogador é improvisado e rende menos fora da posição).
+ * Dentro da linha, a ordem da esquerda para a direita define o lado: destro rende mais pela direita, canhoto pela esquerda.
  */
 
 const game = useGameStore()
@@ -34,6 +36,8 @@ interface Spot {
   extra?: boolean
   /** Linha do campo em que a camisa está. */
   line?: Position
+  /** Lado do campo (titulares). */
+  side?: Side
   x: number
   y: number
 }
@@ -60,11 +64,17 @@ const height = computed(
 const spots = computed<Spot[]>(() => {
   const list: Spot[] = []
   const required = FORMATIONS[game.tactic.formation]
+  const sides = lineupSides(game.starters)
   for (const pos of POSITION_ORDER) {
-    const starters = game.starters.filter((p) => playingPosition(p) === pos).sort((a, b) => effectiveRating(b) - effectiveRating(a))
+    // Ordem da linha = esquerda para a direita (lado de cada um).
+    const starters = orderLine(game.starters.filter((p) => playingPosition(p) === pos))
+    // Sobrando na formação: os de menor rendimento.
+    const extras = new Set(
+      [...starters].sort((a, b) => effectiveRating(b) - effectiveRating(a)).slice(required[pos]).map((p) => p.id),
+    )
     const empty = Math.max(0, required[pos] - starters.length)
     const items: Omit<Spot, 'x' | 'y'>[] = [
-      ...starters.map((p, i) => ({ key: p.id, zone: 'pitch' as const, player: p, extra: i >= required[pos], line: pos })),
+      ...starters.map((p) => ({ key: p.id, zone: 'pitch' as const, player: p, extra: extras.has(p.id), line: pos, side: sides.get(p.id) })),
       ...Array.from({ length: empty }, (_, i) => ({
         key: `vaga-${pos}-${i}`, zone: 'pitch' as const, player: null, slotPosition: pos, line: pos,
       })),
@@ -132,7 +142,7 @@ function onPointerUp(e: PointerEvent) {
   drag.value = null
   if (!d?.moved || !d.spot.player) return
   const { x, y } = localPoint(e)
-  drop(d.spot, spotAt(x, y, d.spot.key), zoneAt(y), y)
+  drop(d.spot, spotAt(x, y, d.spot.key), zoneAt(y), y, x)
 }
 
 function fitNote(p: Player, line: Position) {
@@ -163,7 +173,29 @@ function surplusStarter(): Player | null {
   return extras.sort((a, b) => effectiveRating(a) - effectiveRating(b))[0] ?? null
 }
 
-function drop(from: Spot, target: Spot | null, zone: 'pitch' | 'bench', y: number) {
+/** Ids da linha, da esquerda para a direita. */
+function lineIds(line: Position) {
+  return orderLine(game.starters.filter((p) => playingPosition(p) === line)).map((p) => p.id)
+}
+
+function sideNote(p: Player) {
+  const side = lineupSides(game.starters).get(p.id) ?? 'C'
+  const fit = footFit(playerFoot(p), side)
+  if (side === 'C') return ''
+  const pct = Math.round((fit - 1) * 100)
+  return ` — ${FOOT_LABELS[playerFoot(p)].toLowerCase()} pela ${SIDE_LABELS[side]} (${pct > 0 ? '+' : ''}${pct}%)`
+}
+
+/** Coloca o titular na linha, na altura horizontal `x` (entre os que estão à esquerda e à direita). */
+function placeAt(player: Player, line: Position, x: number) {
+  if (playingPosition(player) !== line) game.setRole(player.id, line)
+  const others = lineIds(line).filter((id) => id !== player.id)
+  const xOf = (id: string) => spots.value.find((s) => s.key === id)?.x ?? 0
+  const index = others.filter((id) => xOf(id) < x).length
+  game.arrangeLine([...others.slice(0, index), player.id, ...others.slice(index)])
+}
+
+function drop(from: Spot, target: Spot | null, zone: 'pitch' | 'bench', y: number, x: number) {
   const player = from.player!
   if (from.zone === 'bench') {
     if (target?.zone === 'pitch' && target.player) return swap(target.player, player)
@@ -177,13 +209,13 @@ function drop(from: Spot, target: Spot | null, zone: 'pitch' | 'bench', y: numbe
         return
       }
       game.substituteStarter(out.id, player.id)
-      game.setRole(player.id, line)
-      hint.value = `🔄 ${player.name} entra como ${line} no lugar de ${out.name}${fitNote(player, line)}.`
+      placeAt(player, line, x)
+      hint.value = `🔄 ${player.name} entra como ${line} no lugar de ${out.name}${fitNote(player, line)}${sideNote(player)}.`
       return
     }
     game.toggleStarter(player.id)
-    game.setRole(player.id, line)
-    hint.value = `✅ ${player.name} entrou no time titular${fitNote(player, line)}.`
+    placeAt(player, line, x)
+    hint.value = `✅ ${player.name} entrou no time titular${fitNote(player, line)}${sideNote(player)}.`
     return
   }
 
@@ -194,20 +226,32 @@ function drop(from: Spot, target: Spot | null, zone: 'pitch' | 'bench', y: numbe
     hint.value = `${player.name} foi para o banco.`
     return
   }
-  // Dentro do campo: troca de lugar com outro titular, ou muda de linha.
+  // Dentro do campo: troca de lugar com outro titular (mesma linha = troca de lado), ou muda de lugar.
   if (target?.player && target.zone === 'pitch') {
+    const other = target.player
     const mine = playingPosition(player)
-    const theirs = playingPosition(target.player)
-    if (mine === theirs) return
-    game.setRole(player.id, theirs)
-    game.setRole(target.player.id, mine)
-    hint.value = `↔ ${player.name} e ${target.player.name} trocaram de posição.`
+    const theirs = playingPosition(other)
+    const myLine = lineIds(mine)
+    const theirLine = mine === theirs ? myLine : lineIds(theirs)
+    const a = myLine.indexOf(player.id)
+    const b = theirLine.indexOf(other.id)
+    myLine[a] = other.id
+    theirLine[b] = player.id
+    if (mine !== theirs) {
+      game.setRole(player.id, theirs)
+      game.setRole(other.id, mine)
+      game.arrangeLine(theirLine)
+    }
+    game.arrangeLine(myLine)
+    hint.value = `↔ ${player.name} e ${other.name} trocaram de lugar${sideNote(player)}.`
     return
   }
   const line = target?.slotPosition ?? lineAt(y)
-  if (line === playingPosition(player)) return
-  game.setRole(player.id, line)
-  hint.value = `➡ ${player.name} passou a jogar como ${line}${fitNote(player, line)}.`
+  const changedLine = line !== playingPosition(player)
+  placeAt(player, line, x)
+  hint.value = changedLine
+    ? `➡ ${player.name} passou a jogar como ${line}${fitNote(player, line)}${sideNote(player)}.`
+    : `➡ ${player.name} mudou de lado${sideNote(player)}.`
 }
 
 // --- Desenho ---
@@ -303,6 +347,22 @@ function drawShirt(ctx: CanvasRenderingContext2D, spot: Spot, x: number, y: numb
     ctx.font = `${Math.round(s * 0.32)}px system-ui, sans-serif`
     ctx.fillText('★', x + s * 0.55, y - s * 0.5)
   }
+  // Pé preferido: verde no lado certo, vermelho no lado contrário, cinza no centro/banco.
+  const foot = playerFoot(p)
+  const fit = spot.zone === 'pitch' && spot.side ? footFit(foot, spot.side) : 1
+  const badgeR = Math.max(6, s * 0.2)
+  const bx = x - s * 0.55
+  const by = y + s * 0.32
+  ctx.beginPath()
+  ctx.arc(bx, by, badgeR, 0, Math.PI * 2)
+  ctx.fillStyle = fit > 1 ? theme.good : fit < 1 ? theme.bad : '#3b4a42'
+  ctx.fill()
+  ctx.fillStyle = '#fff'
+  ctx.font = `800 ${Math.round(badgeR * 1.15)}px system-ui, sans-serif`
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(foot, bx, by + 0.5)
+
   if (!available) {
     ctx.font = `${Math.round(s * 0.32)}px system-ui, sans-serif`
     ctx.fillText(p.injury ? '🩹' : '🟥', x - s * 0.55, y - s * 0.5)
@@ -376,6 +436,14 @@ function draw() {
   ctx.clearRect(0, 0, w, h)
 
   drawPitch(ctx, w, pitchH.value)
+  // Lados vistos de quem ataca para cima: esquerda à esquerda da tela.
+  ctx.fillStyle = 'rgba(255,255,255,0.45)'
+  ctx.font = '600 11px system-ui, sans-serif'
+  ctx.textBaseline = 'bottom'
+  ctx.textAlign = 'left'
+  ctx.fillText('◀ ESQUERDA', 16, pitchH.value - 14)
+  ctx.textAlign = 'right'
+  ctx.fillText('DIREITA ▶', w - 16, pitchH.value - 14)
 
   // Banco.
   const d = drag.value
@@ -400,12 +468,21 @@ function draw() {
   if (hovered?.player) drawTooltip(ctx, hovered.player, hovered.x, hovered.y)
 }
 
+function footLine(p: Player) {
+  const foot = playerFoot(p)
+  const side = p.starter ? lineupSides(game.starters).get(p.id) : undefined
+  if (!side || side === 'C') return `Pé: ${FOOT_LABELS[foot]}${side === 'C' ? ' · pelo centro' : ''}`
+  const pct = Math.round((footFit(foot, side) - 1) * 100)
+  return `Pé: ${FOOT_LABELS[foot]} · pela ${SIDE_LABELS[side]} (${pct > 0 ? '+' : ''}${pct}%)`
+}
+
 function drawTooltip(ctx: CanvasRenderingContext2D, p: Player, x: number, y: number) {
   const lines = [
     `${p.position} · ${p.name}${p.star ? ' ★' : ''}`,
     `OVR ${p.overall} · ${p.age} anos`,
     `Energia ${Math.round(p.energy)} · Moral ${Math.round(p.morale)}`,
     playerSkills(p).map((s) => `${SKILLS[s].icon} ${SKILLS[s].label}`).join('  '),
+    footLine(p),
     ...(p.starter && playingPosition(p) !== p.position
       ? [`Improvisado como ${playingPosition(p)}: rende ${Math.round(positionFit(p.position, playingPosition(p)) * 100)}%`]
       : []),
@@ -457,7 +534,10 @@ const cursor = computed(() => {
       @pointerleave="pointer = null"
     />
     <p class="pitch__hint" :class="{ muted: !hint }">
-      {{ hint ?? 'Arraste reservas para o campo ou para cima de um titular, titulares para o banco, ou mova um titular para outra linha.' }}
+      {{
+        hint ??
+        'Arraste reservas para o campo ou para cima de um titular, titulares para o banco, ou mova um titular de linha ou de lado. Destros rendem mais pela direita e canhotos pela esquerda (selo verde = lado certo).'
+      }}
     </p>
   </div>
 </template>
