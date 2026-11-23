@@ -12,6 +12,7 @@ import {
 } from '../data/discipline'
 import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
 import { leagueTeams } from '../data/league'
+import { BRASILEIRAO_CRESTS } from '../data/crests'
 import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
@@ -199,6 +200,10 @@ export const useGameStore = defineStore('game', () => {
   // Saves anteriores aos troféus: cria os técnicos com prateleiras vazias.
   if (hasCareer.value && !managers.value.length && managedTeamId.value) {
     managers.value = createManagers(teams.value, managedTeamId.value, managerName.value)
+  }
+  // Carreiras do Brasileirão anteriores aos escudos: os clubes reais ganham o escudo baixado.
+  if (hasCareer.value) {
+    for (const t of teams.value) if (t.crest === undefined && BRASILEIRAO_CRESTS[t.id]) t.crest = BRASILEIRAO_CRESTS[t.id]
   }
   // Saves anteriores às estrelas: sorteia as estrelas dos elencos existentes uma única vez.
   if (hasCareer.value && assignStarsToLegacyTeams(teams.value)) {

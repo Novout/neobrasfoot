@@ -3,6 +3,7 @@ import { LEAGUE_FORMAT, LEAGUE_FORMAT_VERSION, type LeagueFile, type LeagueFileP
 import { POSITION_ORDER } from '../tactics'
 import { generateSquadFor } from '../teams'
 import squads from './brasileirao-squads.json'
+import { BRASILEIRAO_CRESTS } from '../crests'
 
 /**
  * Template opcional com clubes reais do futebol brasileiro, 8 por série.
@@ -160,6 +161,7 @@ export function brasileiraoTemplate(): LeagueFile {
     teams: TEAMS.map((t) => ({
       ...t,
       ...(RAW[t.id]?.manager ? { manager: RAW[t.id]!.manager } : {}),
+      ...(BRASILEIRAO_CRESTS[t.id] ? { crest: BRASILEIRAO_CRESTS[t.id] } : {}),
       players: realSquad(t.id, t.reputation),
     })),
   }

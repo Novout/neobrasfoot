@@ -1,0 +1,134 @@
+{
+ "fetchedAt": "2026-11-23",
+ "size": 128,
+ "clubs": {
+  "flamengo": {
+   "file": "Clube de Regatas do Flamengo logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Clube_de_Regatas_do_Flamengo_logo.svg"
+  },
+  "palmeiras": {
+   "file": "Sociedade Esportiva Palmeiras logo (1 red star).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Sociedade_Esportiva_Palmeiras_logo_(1_red_star).svg"
+  },
+  "botafogo": {
+   "file": "Botafogo de Futebol e Regatas logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Botafogo_de_Futebol_e_Regatas_logo.svg"
+  },
+  "sao-paulo": {
+   "file": "São Paulo Futebol Clube logo (2022).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:S%C3%A3o_Paulo_Futebol_Clube_logo_(2022).svg"
+  },
+  "corinthians": {
+   "file": "Sport Club Corinthians Paulista crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Sport_Club_Corinthians_Paulista_crest.svg"
+  },
+  "atletico-mg": {
+   "file": "Clube Atlético Mineiro logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Clube_Atl%C3%A9tico_Mineiro_logo.svg"
+  },
+  "fluminense": {
+   "file": "Fluminense Football Club.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Fluminense_Football_Club.svg"
+  },
+  "internacional": {
+   "file": "Sport Club Internacional logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Sport_Club_Internacional_logo.svg"
+  },
+  "gremio": {
+   "file": "Gremio logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Gremio_logo.svg"
+  },
+  "cruzeiro": {
+   "file": "Cruzeiro Esporte Clube (logo).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Cruzeiro_Esporte_Clube_(logo).svg"
+  },
+  "vasco": {
+   "file": "Club de Regatas Vasco da Gama logo (2021).svg",
+   "source": "https://en.wikipedia.org/wiki/File:Club_de_Regatas_Vasco_da_Gama_logo_(2021).svg"
+  },
+  "bahia": {
+   "file": "Esporte Clube Bahia logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Esporte_Clube_Bahia_logo.svg"
+  },
+  "fortaleza": {
+   "file": "Fortaleza Esporte Clube logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Fortaleza_Esporte_Clube_logo.svg"
+  },
+  "athletico-pr": {
+   "file": "Athletico Paranaense (Logo 2019).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Athletico_Paranaense_(Logo_2019).svg"
+  },
+  "santos": {
+   "file": "Santos Futebol Clube logo (with two stars and a golden crown).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Santos_Futebol_Clube_logo_(with_two_stars_and_a_golden_crown).svg"
+  },
+  "bragantino": {
+   "file": "Red Bull Bragantino logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Red_Bull_Bragantino_logo.svg"
+  },
+  "vitoria": {
+   "file": "Esporte Clube Vitória (2024).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Esporte_Clube_Vit%C3%B3ria_(2024).svg"
+  },
+  "sport": {
+   "file": "Sport Club Recife.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Sport_Club_Recife.svg"
+  },
+  "ceara": {
+   "file": "Ceará Sporting Club logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Cear%C3%A1_Sporting_Club_logo.svg"
+  },
+  "juventude": {
+   "file": "Esporte Clube Juventude logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Esporte_Clube_Juventude_logo.svg"
+  },
+  "goias": {
+   "file": "Goiás Esporte Clube logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Goi%C3%A1s_Esporte_Clube_logo.svg"
+  },
+  "coritiba": {
+   "file": "Coritiba Foot Ball Club logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Coritiba_Foot_Ball_Club_logo.svg"
+  },
+  "america-mg": {
+   "file": "América Futebol Clube (Belo Horizonte, Minas Gerais) logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Am%C3%A9rica_Futebol_Clube_(Belo_Horizonte,_Minas_Gerais)_logo.svg"
+  },
+  "cuiaba": {
+   "file": "Cuiabá Esporte Clube.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Cuiab%C3%A1_Esporte_Clube.svg"
+  },
+  "ponte-preta": {
+   "file": "Logo AA Ponte Preta.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Logo_AA_Ponte_Preta.svg"
+  },
+  "guarani": {
+   "file": "Guarani Futebol Clube logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Guarani_Futebol_Clube_logo.svg"
+  },
+  "paysandu": {
+   "file": "Paysandu Sport Club logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Paysandu_Sport_Club_logo.svg"
+  },
+  "remo": {
+   "file": "Clube do Remo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Clube_do_Remo.svg"
+  },
+  "nautico": {
+   "file": "Clube Náutico Capibaribe (2010).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Clube_N%C3%A1utico_Capibaribe_(2010).svg"
+  },
+  "santa-cruz": {
+   "file": "Santa Cruz Futebol Clube logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Santa_Cruz_Futebol_Clube_logo.svg"
+  },
+  "crb": {
+   "file": "Clube de Regatas Brasil logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Clube_de_Regatas_Brasil_logo.svg"
+  },
+  "avai": {
+   "file": "Avaí Futebol Clube logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Ava%C3%AD_Futebol_Clube_logo.svg"
+  }
+ }
+}

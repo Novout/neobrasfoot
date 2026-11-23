@@ -12,6 +12,7 @@ import { playerSkills, SKILLS, SKILLS_BY_POSITION, type SkillId } from '../data/
 import { POSITION_ORDER } from '../data/tactics'
 import { BRASILEIRAO_TEMPLATE_NAME } from '../data/templates/brasileirao'
 import { brasileiraoLeague, getLeagueBase, LEAGUE_BASE_LABELS } from '../data/league'
+import { crestFromFile, isValidCrest } from '../data/crests'
 import { createTeams, DIVISION_REPUTATION, generateSquadFor } from '../data/teams'
 import type { DivisionId, Position } from '../types/game'
 import { persistRefs } from '../utils/storage'
@@ -172,6 +173,33 @@ function changeDivision(d: DivisionId) {
 // --- Importar / exportar / salvar ---
 
 const fileInput = ref<HTMLInputElement | null>(null)
+
+// --- Escudo do clube ---
+const crestInput = ref<HTMLInputElement | null>(null)
+const crestError = ref<string | null>(null)
+
+/** Imagem enviada vira um PNG pequeno embutido no arquivo da liga (vai junto ao exportar). */
+async function uploadCrest(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file || !team.value) return
+  crestError.value = null
+  try {
+    team.value.crest = await crestFromFile(file)
+  } catch (err) {
+    crestError.value = (err as Error).message
+  }
+}
+
+function setCrestLink(value: string) {
+  if (!team.value) return
+  const v = value.trim()
+  crestError.value = v && !isValidCrest(v) ? 'Link inválido: use um endereço https:// de uma imagem.' : null
+  team.value.crest = v || undefined
+}
+
+const crestIsEmbedded = computed(() => !!team.value?.crest?.startsWith('data:'))
 
 async function importFile(event: Event) {
   const input = event.target as HTMLInputElement
@@ -342,7 +370,7 @@ const isCustomInUse = computed(() => {
           :class="{ selected: t.id === selectedId, invalid: errorsOf(t).length }"
           @click="selectedId = t.id ?? null"
         >
-          <TeamBadge :team="{ shortName: t.shortName ?? '', primaryColor: t.primaryColor ?? '#607d8b', secondaryColor: t.secondaryColor ?? '#fff' }" :size="30" />
+          <TeamBadge :team="{ shortName: t.shortName ?? '', primaryColor: t.primaryColor ?? '#607d8b', secondaryColor: t.secondaryColor ?? '#fff', crest: t.crest }" :size="30" />
           <span class="team-row__name">{{ t.name || '(sem nome)' }}</span>
           <span v-if="errorsOf(t).length" title="Este clube tem problemas">⚠️</span>
         </button>
@@ -352,7 +380,7 @@ const isCustomInUse = computed(() => {
 
       <section v-if="team" class="card team-form">
         <div class="team-form__top">
-          <TeamBadge :team="{ shortName: team.shortName ?? '', primaryColor: team.primaryColor ?? '#607d8b', secondaryColor: team.secondaryColor ?? '#fff' }" :size="56" />
+          <TeamBadge :team="{ shortName: team.shortName ?? '', primaryColor: team.primaryColor ?? '#607d8b', secondaryColor: team.secondaryColor ?? '#fff', crest: team.crest, name: team.name }" :size="56" />
           <div class="fields">
             <label>Nome <input v-model="team.name" type="text" maxlength="40" /></label>
             <label>Sigla <input v-model="team.shortName" type="text" maxlength="4" class="short" @input="team.shortName = team.shortName?.toUpperCase()" /></label>
@@ -369,6 +397,22 @@ const isCustomInUse = computed(() => {
               Técnico
               <input v-model="team.manager" type="text" maxlength="40" placeholder="Vazio = nome inventado pelo jogo" />
             </label>
+            <div class="wide crest-field">
+              <span>Escudo</span>
+              <div class="crest-field__row">
+                <input
+                  type="text"
+                  :value="crestIsEmbedded ? '(imagem enviada)' : (team.crest ?? '')"
+                  :readonly="crestIsEmbedded"
+                  placeholder="https://... (vazio = distintivo com as cores)"
+                  @change="setCrestLink(($event.target as HTMLInputElement).value)"
+                />
+                <button class="btn btn--ghost btn--sm" title="PNG, JPG ou SVG; é reduzida para 128 px" @click="crestInput?.click()">📷 Enviar</button>
+                <button v-if="team.crest" class="btn btn--ghost btn--sm" @click="team.crest = undefined; crestError = null">Remover</button>
+                <input ref="crestInput" type="file" accept="image/*" hidden @change="uploadCrest" />
+              </div>
+              <small v-if="crestError" class="bad">{{ crestError }}</small>
+            </div>
             <label>
               Reputação
               <input v-model.number="team.reputation" type="number" min="30" max="95" class="num" />
@@ -574,6 +618,21 @@ const isCustomInUse = computed(() => {
   flex-wrap: wrap;
   gap: 0.6rem;
   flex: 1;
+}
+.crest-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.crest-field__row {
+  display: flex;
+  gap: 0.3rem;
+}
+.crest-field__row input {
+  flex: 1;
+  min-width: 0;
 }
 .fields .wide {
   flex: 1 1 220px;

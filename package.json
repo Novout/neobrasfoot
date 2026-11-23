@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "generate-pwa-assets": "pwa-assets-generator",
-    "update-brasileirao": "node scripts/fetch-brasileirao-squads.mjs"
+    "update-brasileirao": "node scripts/fetch-brasileirao-squads.mjs",
+    "update-escudos": "node scripts/fetch-brasileirao-crests.mjs"
   },
   "dependencies": {
     "pinia": "^4.1.0",

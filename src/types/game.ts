@@ -63,6 +63,8 @@ export interface Team {
   stadiumName?: string
   /** Técnico do clube definido numa liga importada (senão o jogo inventa um nome). */
   managerName?: string
+  /** Escudo do clube (link, caminho no jogo ou imagem embutida); sem ele, o distintivo usa as cores. */
+  crest?: string
   players: Player[]
 }
 

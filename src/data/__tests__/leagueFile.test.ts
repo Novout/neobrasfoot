@@ -197,3 +197,38 @@ describe('liga base das carreiras', () => {
     expect(leagueTeams().some((t) => t.id === 'flamengo')).toBe(true)
   })
 })
+
+describe('escudos', () => {
+  it('todos os clubes do Brasileirão têm escudo, e o arquivo existe em public/', async () => {
+    const files = Object.keys(import.meta.glob('/public/escudos/*.png'))
+    const { brasileiraoLeague } = await import('../league')
+    const teams = teamsFromLeagueFile(brasileiraoLeague())
+    for (const t of teams) {
+      expect(t.crest, t.name).toBe(`escudos/${t.id}.png`)
+      expect(files, t.name).toContain(`/public/${t.crest}`)
+    }
+  })
+
+  it('escudo vai e volta no arquivo de liga; valor inválido é recusado', async () => {
+    const { isValidCrest } = await import('../crests')
+    const file = defaultFile()
+    file.teams[0]!.crest = 'https://exemplo.com/escudo.png'
+    file.teams[1]!.crest = 'data:image/png;base64,iVBORw0KGgo='
+    const teams = teamsFromLeagueFile(parseLeagueFile(JSON.stringify(file)).league!)
+    expect(teams.find((t) => t.name === file.teams[0]!.name)!.crest).toBe('https://exemplo.com/escudo.png')
+    expect(teamsToLeagueFile(teams).teams.find((t) => t.name === file.teams[1]!.name)!.crest).toMatch(/^data:image\/png/)
+
+    expect(isValidCrest('javascript:alert(1)')).toBe(false)
+    expect(isValidCrest('../segredo.png')).toBe(false)
+    expect(isValidCrest('data:text/html;base64,AAAA')).toBe(false)
+    file.teams[2]!.crest = 'javascript:alert(1)'
+    expect(parseLeagueFile(JSON.stringify(file)).errors.some((e) => e.includes('"crest"'))).toBe(true)
+  })
+
+  it('sem escudo, o clube continua com o distintivo de cores', async () => {
+    const { crestSrc } = await import('../crests')
+    expect(crestSrc(undefined)).toBeNull()
+    expect(crestSrc('escudos/flamengo.png')).toBe('/escudos/flamengo.png')
+    expect(teamsFromLeagueFile(parseLeagueFile(JSON.stringify(defaultFile())).league!).every((t) => !t.crest)).toBe(true)
+  })
+})

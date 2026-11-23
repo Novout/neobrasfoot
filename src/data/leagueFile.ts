@@ -5,6 +5,7 @@ import { isValidSkillFor, playerSkills, SKILLS_BY_POSITION, SKILLS_PER_PLAYER, t
 import { stadiumNameFor } from './stadium'
 import { POSITION_ORDER } from './tactics'
 import { buildPlayer, DIVISION_REPUTATION, generateSquadFor } from './teams'
+import { isValidCrest } from './crests'
 
 /**
  * Arquivo de liga (importação/exportação). Exemplo mínimo de um clube:
@@ -37,6 +38,8 @@ export interface LeagueFileTeam {
   stadiumName?: string
   /** Técnico do clube (opcional: sem ele o jogo inventa um nome). */
   manager?: string
+  /** Escudo: link https://, caminho no jogo (escudos/x.png) ou imagem embutida (data:image/...). Opcional. */
+  crest?: string
   players?: LeagueFilePlayer[]
 }
 
@@ -74,6 +77,7 @@ export function teamsToLeagueFile(teams: Team[], info: { name?: string; author?:
       reputation: t.reputation,
       stadiumName: stadiumNameFor(t),
       ...(t.managerName ? { manager: t.managerName } : {}),
+      ...(t.crest ? { crest: t.crest } : {}),
       players: [...t.players]
         .sort((a, b) => POSITION_ORDER.indexOf(a.position) - POSITION_ORDER.indexOf(b.position) || b.overall - a.overall)
         .map((p) => ({
@@ -155,6 +159,10 @@ export function parseLeagueFile(text: string): ParseResult {
     const shortRaw = typeof item.shortName === 'string' ? item.shortName.trim().toUpperCase() : ''
     const shortName = /^[A-ZÀ-Ú0-9]{2,4}$/.test(shortRaw) ? shortRaw : slugify(name).replace(/-/g, '').slice(0, 3).toUpperCase()
     const color = (v: unknown, fallback: string) => (typeof v === 'string' && HEX.test(v) ? v : fallback)
+    const hasCrest = typeof item.crest === 'string' && item.crest.trim() !== ''
+    if (hasCrest && !isValidCrest(item.crest)) {
+      return fail('"crest" precisa ser um link https://, um caminho de imagem do jogo ou uma imagem embutida (data:image/...) pequena.')
+    }
 
     let players: LeagueFilePlayer[] | undefined
     if (item.players !== undefined) {
@@ -212,6 +220,7 @@ export function parseLeagueFile(text: string): ParseResult {
       reputation,
       stadiumName: typeof item.stadiumName === 'string' && item.stadiumName.trim() ? item.stadiumName.trim().slice(0, 50) : undefined,
       manager: typeof item.manager === 'string' && item.manager.trim() ? item.manager.trim().slice(0, 40) : undefined,
+      crest: hasCrest ? (item.crest as string).trim() : undefined,
       players,
     })
   })
@@ -261,6 +270,7 @@ export function teamsFromLeagueFile(league: LeagueFile): Team[] {
       reputation: t.reputation!,
       stadiumName: t.stadiumName,
       managerName: t.manager,
+      crest: t.crest,
       players: [],
     }
     team.players = t.players
