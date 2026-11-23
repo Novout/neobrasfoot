@@ -11,6 +11,12 @@ export const MAX_ATTEMPTS_PER_ROUND = 3
 const COUNTER_THRESHOLD = 0.7
 /** Fração do valor de mercado recebida numa venda imediata. */
 export const QUICK_SALE_RATIO = 0.7
+/** Chance, por rodada, de um clube da IA comprar de outro (e uma segunda compra, com 1/3 disso). */
+export const AI_SALE_CHANCE = 0.6
+/** Chance, por rodada, de um empréstimo entre clubes da IA. */
+export const AI_LOAN_CHANCE = 0.35
+/** Ágio máximo que um clube da IA paga sobre o valor de mercado. */
+export const AI_SALE_PREMIUM = 1.35
 
 function roundToThousand(value: number) {
   return Math.round(value / 1000) * 1000
@@ -331,6 +337,65 @@ export const useTransferStore = defineStore('transfers', () => {
     }
   }
 
+  // --- Mercado entre clubes da IA ---
+
+  /** Escolhe um item com peso proporcional (ex.: reputação dos clubes). */
+  function weightedPick<T>(items: T[], weight: (item: T) => number): T | undefined {
+    const total = items.reduce((s, i) => s + Math.max(weight(i), 0), 0)
+    let roll = Math.random() * total
+    for (const item of items) {
+      roll -= Math.max(weight(item), 0)
+      if (roll <= 0) return item
+    }
+    return items[items.length - 1]
+  }
+
+  /** Um clube da IA compra um destaque de outro clube da IA, de reputação menor. */
+  function aiSale() {
+    const buyer = weightedPick(aiTeams.value.filter((t) => game.hasSquadRoom(t.id)), (t) => t.reputation ** 3)
+    if (!buyer) return false
+    const sellers = aiTeams.value.filter((t) => t.id !== buyer.id && t.reputation < buyer.reputation && !divisionBlocker(buyer.id, t.id))
+    const seller = sellers[Math.floor(Math.random() * sellers.length)]
+    if (!seller) return false
+    const targets = seller.players
+      .filter((p) => !game.releaseBlocker(seller.id, p.id))
+      .sort((a, b) => marketValue(b) - marketValue(a))
+      .slice(0, 3)
+    const player = targets[Math.floor(Math.random() * targets.length)]
+    if (!player) return false
+    game.transferPlayer(player.id, seller.id, buyer.id, roundToThousand(marketValue(player) * randomBetween(1, AI_SALE_PREMIUM)))
+    return true
+  }
+
+  /** Um clube da IA cede um reserva a outro clube da IA com vaga (mesma série ou acima). */
+  function aiLoan() {
+    const left = game.roundsLeftInSeason
+    if (left <= 0) return false
+    const owner = weightedPick(aiTeams.value, (t) => t.reputation ** 3)
+    if (!owner) return false
+    const receivers = aiTeams.value.filter((t) => t.id !== owner.id && game.hasSquadRoom(t.id) && !divisionBlocker(t.id, owner.id))
+    const to = receivers[Math.floor(Math.random() * receivers.length)]
+    const reserves = owner.players
+      .filter((p) => !p.starter && !p.star && !game.releaseBlocker(owner.id, p.id))
+      .sort((a, b) => marketValue(b) - marketValue(a))
+      .slice(0, 3)
+    const player = reserves[Math.floor(Math.random() * reserves.length)]
+    if (!to || !player) return false
+    const rounds = Math.min(left, 3 + Math.floor(Math.random() * 6))
+    game.startLoan(player.id, owner.id, to.id, rounds, loanFee(marketValue(player), rounds))
+    return true
+  }
+
+  /**
+   * Chamado ao fim de cada rodada do campeonato: os clubes da IA também vão ao mercado,
+   * com poucas negociações por rodada (as caras viram manchete no giro da rodada).
+   */
+  function aiMarketRound() {
+    if (Math.random() < AI_SALE_CHANCE) aiSale()
+    if (Math.random() < AI_SALE_CHANCE / 3) aiSale()
+    if (Math.random() < AI_LOAN_CHANCE) aiLoan()
+  }
+
   /**
    * Quanto o mercado se interessa por um jogador listado, pela relação preço pedido / valor.
    * Abaixo do valor quase sempre aparece alguém; muito acima, quase ninguém.
@@ -351,6 +416,7 @@ export const useTransferStore = defineStore('transfers', () => {
 
   return {
     marketPlayers, offersByPlayer,
+    aiMarketRound,
     divisionBlocker, attemptsLeft, makeOffer, acceptOffer, rejectOffer, quickSalePrice, quickSell, generateOffers, saleInterest,
     resolveLoanRounds, borrowFee, lendFee, borrowBlocker, borrowPlayer, lendBlocker, lendPlayer, returnEarly,
   }

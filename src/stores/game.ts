@@ -39,6 +39,7 @@ import type {
 } from '../types/game'
 import { clamp, createRng, formatMoney, hashString } from '../utils/random'
 import { persistRefs } from '../utils/storage'
+import { loanHeadline, matchHeadlines, MAX_HEADLINES, saleHeadline, type Headline } from '../data/headlines'
 
 export const MIN_SQUAD_SIZE = 16
 export const MAX_SQUAD_SIZE = 30
@@ -160,6 +161,8 @@ export const useGameStore = defineStore('game', () => {
   const tactic = ref<Tactic>({ formation: '4-4-2', style: 'equilibrado' })
   const trainedThisRound = ref<string[]>([])
   const news = ref<string[]>([])
+  /** Giro da rodada: goleadas, zebras e negócios caros da liga inteira. */
+  const headlines = ref<Headline[]>([])
   const transferOffers = ref<TransferOffer[]>([])
   const transferHistory = ref<TransferRecord[]>([])
   /** Propostas já feitas por jogador nesta rodada (limita a barganha). */
@@ -182,7 +185,7 @@ export const useGameStore = defineStore('game', () => {
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers, managers, trophiesAwardedSeason,
-    confidence, confidenceLog, dismissal,
+    confidence, confidenceLog, dismissal, headlines,
   }, 2)
 
   const hasCareer = computed(() => managedTeamId.value !== null)
@@ -324,6 +327,13 @@ export const useGameStore = defineStore('game', () => {
     news.value = news.value.slice(0, 20)
   }
 
+  /** Guarda manchetes novas no topo (sem repetir) e descarta as mais antigas. */
+  function addHeadlines(items: (Headline | null)[]) {
+    const fresh = items.filter((h): h is Headline => !!h && !headlines.value.some((x) => x.id === h.id))
+    if (!fresh.length) return
+    headlines.value = [...fresh, ...headlines.value].slice(0, MAX_HEADLINES)
+  }
+
   function findManagedPlayer(playerId: string) {
     return managedTeam.value?.players.find((p) => p.id === playerId) ?? null
   }
@@ -356,6 +366,7 @@ export const useGameStore = defineStore('game', () => {
     round.value = 0
     tactic.value = { formation: '4-4-2', style: 'equilibrado' }
     news.value = []
+    headlines.value = []
     transferOffers.value = []
     transferHistory.value = []
     negotiationAttempts.value = {}
@@ -672,6 +683,12 @@ export const useGameStore = defineStore('game', () => {
 
     if (toTeamId === managedTeamId.value) budget.value -= fee
     if (fromTeamId === managedTeamId.value) budget.value += fee
+    addHeadlines([
+      saleHeadline({
+        season: season.value, round: round.value + 1, playerName: player.name, overall: player.overall,
+        fromName: from.name, toName: to.name, fromTeamId, toTeamId, fee,
+      }),
+    ])
     // Clubes da IA reorganizam a escalação para não jogar com desfalque.
     for (const team of [from, to]) {
       if (team.id !== managedTeamId.value) applyLineup(team, AI_TACTIC.formation)
@@ -710,6 +727,12 @@ export const useGameStore = defineStore('game', () => {
     })
     if (toTeamId === managedTeamId.value) budget.value -= fee
     if (ownerTeamId === managedTeamId.value) budget.value += fee
+    addHeadlines([
+      loanHeadline({
+        season: season.value, round: round.value + 1, playerName: player.name, overall: player.overall,
+        fromName: owner.name, toName: to.name, fromTeamId: ownerTeamId, toTeamId, value: marketValue(player), fee, rounds,
+      }),
+    ])
     for (const team of [owner, to]) if (team.id !== managedTeamId.value) applyLineup(team, AI_TACTIC.formation)
     return player
   }
@@ -918,6 +941,16 @@ export const useGameStore = defineStore('game', () => {
       advanceConstruction()
     }
 
+    addHeadlines(
+      matchHeadlines(matches, {
+        season: season.value,
+        round: round.value + 1,
+        context: (m) => `${DIVISION_LABELS[getTeam(m.homeId)?.division ?? 'A']} · Rodada ${round.value + 1}`,
+        teamName: (id) => getTeam(id)?.name ?? '?',
+        division: (id) => getTeam(id)?.division,
+      }),
+    )
+
     applyDiscipline(matches)
     advanceLoans()
     round.value++
@@ -1067,6 +1100,17 @@ export const useGameStore = defineStore('game', () => {
       }
     }
 
+    addHeadlines(
+      matchHeadlines(matches, {
+        season: season.value,
+        round: round.value + 1,
+        context: () => `${CUP_NAME} · ${cupRound.name}`,
+        teamName: (id) => getTeam(id)?.name ?? '?',
+        division: (id) => getTeam(id)?.division,
+        winnerId: (m) => cupRound.ties.find((t) => t.homeId === m.homeId && t.awayId === m.awayId)?.winnerId ?? null,
+      }),
+    )
+
     applyDiscipline(matches)
 
     const winners = cupRound.ties.map((t) => t.winnerId!).filter(Boolean)
@@ -1160,7 +1204,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   return {
-    teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
+    teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news, headlines,
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers,
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
     nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
@@ -1169,7 +1213,7 @@ export const useGameStore = defineStore('game', () => {
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
     seasonReview, projectedDivision, ensureJobOffers, managers, managerOf,
     confidence, confidenceLog, dismissal, expectedPosition, changeConfidence, acceptJobAfterDismissal, reactToTransfer,
-    addNews, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
+    addNews, addHeadlines, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
     roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,
     toggleStarter, setRole, substituteStarter, arrangeLine, autoSelectStarters, setFormation, setStyle, teamStrength, tacticFor,

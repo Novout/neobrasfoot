@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
 import ConfidenceMeters from '../components/ConfidenceMeters.vue'
+import HeadlinesFeed from '../components/HeadlinesFeed.vue'
 import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
 import SkillBadges from '../components/SkillBadges.vue'
@@ -181,6 +182,8 @@ function standingPoints(row: { wins: number; draws: number }) {
         </template>
       </div>
 
+      <HeadlinesFeed :headlines="game.headlines" :my-team-id="game.managedTeamId" />
+
       <div class="card">
         <h3>Confiança no técnico</h3>
         <ConfidenceMeters :confidence="game.confidence" />
@@ -240,7 +243,7 @@ function standingPoints(row: { wins: number; draws: number }) {
       </div>
 
       <div class="card">
-        <h3>Notícias</h3>
+        <h3>Notícias do clube</h3>
         <ul class="news">
           <li v-for="(item, i) in game.news" :key="i">{{ item }}</li>
           <li v-if="!game.news.length" class="muted">Nada por enquanto.</li>

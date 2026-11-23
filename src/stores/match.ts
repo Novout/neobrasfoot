@@ -712,7 +712,10 @@ export const useMatchStore = defineStore('match', () => {
     const wasLeague = matches.value[0]?.competition !== 'cup'
     useGameStore().applyRoundResults(matches.value)
     // Propostas de transferência chegam só após rodadas do campeonato (uma janela por rodada).
-    if (wasLeague) useTransferStore().generateOffers()
+    if (wasLeague) {
+      useTransferStore().generateOffers()
+      useTransferStore().aiMarketRound()
+    }
     reset()
   }
 
