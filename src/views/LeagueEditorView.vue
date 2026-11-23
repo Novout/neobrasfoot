@@ -10,7 +10,8 @@ import {
 import { FOOT_LABELS, playerFoot, type Foot } from '../data/feet'
 import { playerSkills, SKILLS, SKILLS_BY_POSITION, type SkillId } from '../data/skills'
 import { POSITION_ORDER } from '../data/tactics'
-import { BRASILEIRAO_TEMPLATE_NAME, brasileiraoTemplate } from '../data/templates/brasileirao'
+import { BRASILEIRAO_TEMPLATE_NAME } from '../data/templates/brasileirao'
+import { brasileiraoLeague, getLeagueBase, LEAGUE_BASE_LABELS } from '../data/league'
 import { createTeams, DIVISION_REPUTATION, generateSquadFor } from '../data/teams'
 import type { DivisionId, Position } from '../types/game'
 import { persistRefs } from '../utils/storage'
@@ -20,13 +21,16 @@ function toEditable(league: LeagueFile): LeagueFile {
   return teamsToLeagueFile(teamsFromLeagueFile(league), league)
 }
 
-function defaultLeague(): LeagueFile {
-  return teamsToLeagueFile(createTeams(), { name: 'Liga padrão' })
+/** Liga de clubes fictícios, com elencos sorteados. */
+function generatedLeague(): LeagueFile {
+  return teamsToLeagueFile(createTeams(), { name: LEAGUE_BASE_LABELS.gerada })
 }
 
+/** Sem liga do editor, o rascunho começa pela liga base das carreiras (Brasileirão, por padrão). */
 const startLeague = () => {
   const custom = getCustomLeague()
-  return custom ? toEditable(custom) : defaultLeague()
+  if (custom) return toEditable(custom)
+  return getLeagueBase() === 'gerada' ? generatedLeague() : toEditable(brasileiraoLeague())
 }
 
 // Rascunho salvo no navegador: dá para sair do editor e voltar sem perder nada.
@@ -226,27 +230,29 @@ function discardChanges() {
   message.value = null
 }
 
-function loadDefault() {
-  if (!confirm('Substituir o rascunho pela liga padrão do jogo?')) return
-  draft.value = defaultLeague()
+function loadGenerated() {
+  if (!confirm('Substituir o rascunho por uma liga gerada (clubes fictícios)?')) return
+  draft.value = generatedLeague()
   selectDivision('A')
-  message.value = { kind: 'good', text: 'Liga padrão carregada no editor. Salve para voltar a usá-la nas carreiras.' }
+  message.value = { kind: 'good', text: 'Liga gerada carregada no editor: clubes fictícios com elencos sorteados. Edite e clique em "Salvar e usar".' }
 }
 
 function loadBrasileirao() {
   if (!confirm(`Substituir o rascunho pelo template "${BRASILEIRAO_TEMPLATE_NAME}"?`)) return
-  draft.value = toEditable(parseLeagueFile(JSON.stringify(brasileiraoTemplate())).league!)
+  draft.value = toEditable(brasileiraoLeague())
   selectDivision('A')
   message.value = {
     kind: 'good',
-    text: 'Template carregado: 32 clubes reais nas Séries A a D, com elencos gerados. Edite à vontade e clique em "Salvar e usar".',
+    text: 'Brasileirão carregado: 32 clubes reais nas Séries A a D, com os elencos atuais. Edite à vontade e clique em "Salvar e usar".',
   }
 }
 
+const baseLabel = () => LEAGUE_BASE_LABELS[getLeagueBase()]
+
 function useDefaultInCareers() {
-  if (!confirm('Usar a liga padrão nas próximas carreiras? O rascunho do editor continua guardado.')) return
+  if (!confirm(`Usar "${baseLabel()}" nas próximas carreiras? O rascunho do editor continua guardado.`)) return
   clearCustomLeague()
-  message.value = { kind: 'good', text: 'As próximas carreiras voltam a usar a liga padrão.' }
+  message.value = { kind: 'good', text: `As próximas carreiras voltam a usar "${baseLabel()}".` }
 }
 
 const isCustomInUse = computed(() => {
@@ -282,10 +288,10 @@ const isCustomInUse = computed(() => {
       <div class="meta__actions">
         <button class="btn btn--ghost btn--sm" @click="fileInput?.click()">📥 Importar JSON</button>
         <button class="btn btn--ghost btn--sm" @click="exportFile">📤 Exportar JSON</button>
-        <button class="btn btn--ghost btn--sm" @click="loadDefault">Carregar liga padrão</button>
         <button class="btn btn--ghost btn--sm" title="32 clubes reais do futebol brasileiro, 8 por série" @click="loadBrasileirao">
-          🇧🇷 Template Brasileirão
+          🇧🇷 Carregar Brasileirão
         </button>
+        <button class="btn btn--ghost btn--sm" title="Clubes fictícios com elencos sorteados" @click="loadGenerated">🎲 Carregar liga gerada</button>
         <button v-if="dirty" class="btn btn--ghost btn--sm" @click="discardChanges">Descartar alterações</button>
         <button class="btn btn--sm" :disabled="!isValid || !dirty" @click="save">💾 Salvar e usar</button>
         <input ref="fileInput" type="file" accept="application/json,.json" hidden @change="importFile" />
@@ -294,8 +300,8 @@ const isCustomInUse = computed(() => {
         <span v-if="dirty" class="warn">● Alterações não salvas</span>
         <span v-else class="good">✓ Tudo salvo</span>
         <span class="muted">
-          · Em uso nas próximas carreiras: {{ isCustomInUse ? 'liga do editor' : 'liga padrão' }}
-          <button v-if="isCustomInUse" class="link" @click="useDefaultInCareers">(voltar à padrão)</button>
+          · Em uso nas próximas carreiras: {{ isCustomInUse ? 'liga do editor' : baseLabel() }}
+          <button v-if="isCustomInUse" class="link" @click="useDefaultInCareers">(voltar para {{ baseLabel() }})</button>
         </span>
       </div>
       <p v-if="message" class="meta__message small" :class="message.kind">{{ message.text }}</p>

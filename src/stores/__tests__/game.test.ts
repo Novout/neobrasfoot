@@ -169,3 +169,16 @@ describe('carreira e escalação', () => {
     expect(reloaded.budget).toBe(budget)
   })
 })
+
+describe('carreira com a liga padrão (Brasileirão)', () => {
+  it('começa com um clube real e o elenco real', async () => {
+    const { setLeagueBase } = await import('../../data/league')
+    setLeagueBase('brasileirao')
+    setActivePinia(createPinia())
+    const game = useGameStore()
+    game.startCareer('flamengo', 'Técnico')
+    expect(game.managedTeam?.name).toBe('Flamengo')
+    expect(game.teams).toHaveLength(32)
+    expect(game.managerOf('palmeiras')?.name).toBeTruthy()
+  })
+})

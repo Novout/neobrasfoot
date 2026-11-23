@@ -3,23 +3,22 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
-import {
-  clearCustomLeague, getCustomLeague, leagueTeams, parseLeagueFile, saveCustomLeague,
-} from '../data/leagueFile'
+import { clearCustomLeague, getCustomLeague, parseLeagueFile, saveCustomLeague } from '../data/leagueFile'
+import { getLeagueBase, LEAGUE_BASE_LABELS, leagueTeams, setLeagueBase, type LeagueBase } from '../data/league'
 import type { DivisionId } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { canInstall, promptInstall } from '../utils/pwa'
-import { BRASILEIRAO_TEMPLATE_NAME } from '../data/templates/names'
 
 const game = useGameStore()
 const match = useMatchStore()
 const router = useRouter()
 
-/** Clubes disponíveis para uma carreira nova (liga padrão ou importada). */
+/** Clubes disponíveis para uma carreira nova (Brasileirão, liga gerada ou liga importada). */
 const teams = ref(leagueTeams())
 const isCustomLeague = ref(!!getCustomLeague())
 const leagueName = ref(getCustomLeague()?.name ?? null)
+const leagueBase = ref<LeagueBase>(getLeagueBase())
 const selectedId = ref<string | null>(null)
 const managerName = ref('')
 const division = ref<DivisionId>('A')
@@ -51,6 +50,7 @@ function refreshLeague() {
   teams.value = leagueTeams()
   isCustomLeague.value = !!getCustomLeague()
   leagueName.value = getCustomLeague()?.name ?? null
+  leagueBase.value = getLeagueBase()
   selectedId.value = null
 }
 
@@ -75,23 +75,20 @@ async function importLeague(event: Event) {
     '. Ela vale para as próximas carreiras.'
 }
 
-/** Template opcional: clubes e elencos reais do Brasileirão em todas as séries. */
-async function useBrasileirao() {
-  if (isCustomLeague.value && !confirm(`Substituir a liga atual pelo template "${BRASILEIRAO_TEMPLATE_NAME}"?`)) return
-  // Carregado só agora: os elencos reais são um arquivo grande.
-  const { brasileiraoTemplate } = await import('../data/templates/brasileirao')
-  saveCustomLeague(parseLeagueFile(JSON.stringify(brasileiraoTemplate())).league!)
-  refreshLeague()
-  importErrors.value = []
-  leagueMessage.value = 'Template Brasileirão ativado: 32 clubes reais com seus elencos, nas Séries A a D. Vale para as próximas carreiras.'
+const BASE_MESSAGES: Record<LeagueBase, string> = {
+  brasileirao: 'Brasileirão ativado: 32 clubes reais com seus elencos, nas Séries A a D. Vale para as próximas carreiras.',
+  gerada: 'Liga gerada ativada: clubes fictícios com elencos sorteados. Vale para as próximas carreiras.',
 }
 
-function restoreDefault() {
-  if (!confirm('Voltar para a lista de clubes padrão nas próximas carreiras?')) return
+/** Troca a liga base (Brasileirão é o padrão; a liga gerada é a opção). Descarta a liga importada, se houver. */
+function chooseBase(base: LeagueBase) {
+  if (!isCustomLeague.value && leagueBase.value === base) return
+  if (isCustomLeague.value && !confirm(`Deixar de usar "${leagueName.value ?? 'liga importada'}" e jogar com: ${LEAGUE_BASE_LABELS[base]}?`)) return
   clearCustomLeague()
+  setLeagueBase(base)
   refreshLeague()
   importErrors.value = []
-  leagueMessage.value = 'Lista padrão restaurada.'
+  leagueMessage.value = BASE_MESSAGES[base]
 }
 
 function startCareer() {
@@ -121,22 +118,32 @@ function startCareer() {
 
     <section class="card league">
       <div class="league__info">
-        <strong>Clubes: {{ isCustomLeague ? (leagueName ?? 'liga importada') : 'liga padrão' }}</strong>
+        <strong>Clubes: {{ isCustomLeague ? (leagueName ?? 'liga importada') : LEAGUE_BASE_LABELS[leagueBase] }}</strong>
         <small class="muted">
-          A liga importada substitui a padrão nas próximas carreiras (8 clubes por série). A carreira em andamento não muda.
+          O Brasileirão com clubes reais é o padrão. Prefere clubes fictícios? Use a liga gerada. Uma liga do editor ou
+          importada substitui as duas. Vale para as próximas carreiras; a carreira em andamento não muda.
         </small>
       </div>
       <div class="league__actions">
-        <RouterLink class="btn btn--sm create-link" :to="{ name: 'league-editor' }">🛠️ Editor de times</RouterLink>
-        <button
-          v-if="leagueName !== BRASILEIRAO_TEMPLATE_NAME"
-          class="btn btn--ghost btn--sm"
-          title="Clubes reais do Brasileirão com os elencos atuais, 8 por série"
-          @click="useBrasileirao"
-        >
-          🇧🇷 Template Brasileirão
-        </button>
-        <button v-if="isCustomLeague" class="btn btn--ghost btn--sm" @click="restoreDefault">Restaurar padrão</button>
+        <div class="league__bases" role="group" aria-label="Liga das próximas carreiras">
+          <button
+            class="btn btn--sm"
+            :class="{ 'btn--ghost': isCustomLeague || leagueBase !== 'brasileirao' }"
+            title="Clubes reais do Brasileirão com os elencos atuais, 8 por série"
+            @click="chooseBase('brasileirao')"
+          >
+            🇧🇷 Brasileirão (padrão)
+          </button>
+          <button
+            class="btn btn--sm"
+            :class="{ 'btn--ghost': isCustomLeague || leagueBase !== 'gerada' }"
+            title="Clubes fictícios com elencos sorteados automaticamente"
+            @click="chooseBase('gerada')"
+          >
+            🎲 Liga gerada
+          </button>
+        </div>
+        <RouterLink class="btn btn--sm btn--ghost create-link" :to="{ name: 'league-editor' }">🛠️ Editor de times</RouterLink>
         <input ref="fileInput" type="file" accept="application/json,.json" hidden @change="importLeague" />
       </div>
       <p v-if="leagueMessage" class="league__message">{{ leagueMessage }}</p>
@@ -229,7 +236,16 @@ function startCareer() {
 }
 .league__actions {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 0.35rem;
+}
+.league__bases {
+  display: flex;
+  gap: 0.25rem;
+  padding-right: 0.35rem;
+  margin-right: 0.1rem;
+  border-right: 1px solid var(--border);
 }
 .league__message {
   width: 100%;

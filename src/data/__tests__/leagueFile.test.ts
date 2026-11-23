@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import {
-  clearCustomLeague, getCustomLeague, leagueTeams, parseLeagueFile, saveCustomLeague, teamsFromLeagueFile,
+  clearCustomLeague, getCustomLeague, parseLeagueFile, saveCustomLeague, teamsFromLeagueFile,
   teamsToLeagueFile, type LeagueFile,
 } from '../leagueFile'
+import { baseLeagueTeams, getLeagueBase, leagueTeams, setLeagueBase } from '../league'
 import { createTeams } from '../teams'
 
 const defaultFile = () => teamsToLeagueFile(createTeams(), { name: 'Brasileirão Teste', author: 'Eu' })
@@ -165,5 +166,34 @@ describe('técnicos', () => {
     const managers = createManagers(teams, teams[1]!.id, 'Você')
     expect(managers.find((m) => m.teamId === teams[0]!.id)!.name).toBe('Técnico Teste')
     expect(managers.find((m) => m.teamId === teams[2]!.id)!.name).toMatch(/^\S+ \S+$/)
+  })
+})
+
+describe('liga base das carreiras', () => {
+  it('sem escolha, o padrão é o Brasileirão com clubes reais', () => {
+    localStorage.clear()
+    expect(getLeagueBase()).toBe('brasileirao')
+    const teams = leagueTeams()
+    expect(teams).toHaveLength(32)
+    expect(teams.some((t) => t.id === 'flamengo')).toBe(true)
+  })
+
+  it('a liga gerada é opcional e fica guardada', () => {
+    setLeagueBase('gerada')
+    expect(getLeagueBase()).toBe('gerada')
+    expect(leagueTeams().map((t) => t.id)).toEqual(createTeams().map((t) => t.id))
+    setLeagueBase('brasileirao')
+    expect(getLeagueBase()).toBe('brasileirao')
+    expect(baseLeagueTeams().some((t) => t.id === 'palmeiras')).toBe(true)
+  })
+
+  it('liga do editor/importada tem prioridade sobre a base', () => {
+    setLeagueBase('brasileirao')
+    const file = defaultFile()
+    file.teams[0]!.name = 'Clube do Editor'
+    saveCustomLeague(parseLeagueFile(JSON.stringify(file)).league!)
+    expect(leagueTeams().some((t) => t.name === 'Clube do Editor')).toBe(true)
+    clearCustomLeague()
+    expect(leagueTeams().some((t) => t.id === 'flamengo')).toBe(true)
   })
 })

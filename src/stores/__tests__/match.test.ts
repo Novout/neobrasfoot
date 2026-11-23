@@ -1,6 +1,7 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createTeams } from '../../data/teams'
+import { setLeagueBase } from '../../data/league'
 import { createRng } from '../../utils/random'
 import { useGameStore } from '../game'
 import { MAX_SUBSTITUTIONS, useMatchStore } from '../match'
@@ -136,6 +137,7 @@ describe('pênaltis', () => {
     const rng = createRng(seed)
     vi.spyOn(Math, 'random').mockImplementation(rng.next)
     localStorage.clear()
+    setLeagueBase('gerada')
     setActivePinia(createPinia())
     const game = useGameStore()
     const match = useMatchStore()

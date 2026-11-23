@@ -4,7 +4,7 @@ import { FOOT_LABELS, isFoot, playerFoot, type Foot } from './feet'
 import { isValidSkillFor, playerSkills, SKILLS_BY_POSITION, SKILLS_PER_PLAYER, type SkillId } from './skills'
 import { stadiumNameFor } from './stadium'
 import { POSITION_ORDER } from './tactics'
-import { buildPlayer, createTeams, DIVISION_REPUTATION, generateSquadFor } from './teams'
+import { buildPlayer, DIVISION_REPUTATION, generateSquadFor } from './teams'
 
 /**
  * Arquivo de liga (importação/exportação). Exemplo mínimo de um clube:
@@ -268,10 +268,4 @@ export function teamsFromLeagueFile(league: LeagueFile): Team[] {
       : generateSquadFor(team)
     return team
   })
-}
-
-/** Clubes usados ao começar uma carreira: a liga importada, se houver, ou a padrão. */
-export function leagueTeams(): Team[] {
-  const custom = getCustomLeague()
-  return custom ? teamsFromLeagueFile(custom) : createTeams()
 }

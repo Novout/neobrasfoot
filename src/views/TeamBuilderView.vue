@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DIVISION_LABELS, DIVISIONS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from '../data/divisions'
-import { leagueTeams } from '../data/leagueFile'
+import { leagueTeams } from '../data/league'
 import { createStadium, stadiumCapacity } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
 import {

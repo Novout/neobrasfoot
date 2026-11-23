@@ -11,7 +11,7 @@ import {
   DIRECT_RED_SUSPENSION, injuryGames, isAvailable, SECOND_YELLOW_SUSPENSION, YELLOWS_FOR_SUSPENSION,
 } from '../data/discipline'
 import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
-import { leagueTeams } from '../data/leagueFile'
+import { leagueTeams } from '../data/league'
 import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
