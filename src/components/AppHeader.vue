@@ -41,6 +41,16 @@ function quit() {
           {{ game.transferOffers.length }}
         </span>
       </RouterLink>
+      <RouterLink :to="{ name: 'youth' }">
+        Base
+        <span
+          v-if="game.academy?.players.length"
+          class="nav-badge nav-badge--youth"
+          :title="`${game.academy.players.length} jovem(ns) esperando uma chance`"
+        >
+          {{ game.academy.players.length }}
+        </span>
+      </RouterLink>
       <RouterLink :to="{ name: 'stadium' }">
         Estádio
         <span v-if="game.stadium?.construction" class="nav-badge nav-badge--build" title="Obra em andamento">🚧</span>
@@ -116,6 +126,10 @@ function quit() {
 .cup-next {
   color: var(--warn);
   font-weight: 600;
+}
+.nav-badge--youth {
+  background: var(--surface-2);
+  color: var(--muted);
 }
 .nav-badge--build {
   background: transparent;

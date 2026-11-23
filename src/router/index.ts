@@ -57,6 +57,12 @@ const router = createRouter({
       meta: { requiresCareer: true, title: 'Estádio' },
     },
     {
+      path: '/base',
+      name: 'youth',
+      component: () => import('../views/YouthView.vue'),
+      meta: { requiresCareer: true, title: 'Base' },
+    },
+    {
       path: '/copa',
       name: 'cup',
       component: () => import('../views/CupView.vue'),

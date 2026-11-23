@@ -14,7 +14,7 @@ import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
 import { leagueTeams } from '../data/league'
 import { BRASILEIRAO_CRESTS } from '../data/crests'
 import { createManagers, trophyLabel } from '../data/trophies'
-import { applyProgression, renewSquad } from '../data/youth'
+import { applyProgression, createAcademy, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
 import { shootoutScore, simulateShootout } from '../data/penalties'
@@ -35,7 +35,7 @@ import {
   assignStarsToLegacyTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
-  Competition, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  Academy, Competition, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord, Position,
 } from '../types/game'
 import { clamp, createRng, formatMoney, hashString } from '../utils/random'
@@ -164,6 +164,8 @@ export const useGameStore = defineStore('game', () => {
   const news = ref<string[]>([])
   /** Giro da rodada: goleadas, zebras e negócios caros da liga inteira. */
   const headlines = ref<Headline[]>([])
+  /** Categorias de base do clube gerenciado: jovens que o técnico pode subir ao elenco. Renovada a cada temporada. */
+  const academy = ref<Academy | null>(null)
   const transferOffers = ref<TransferOffer[]>([])
   const transferHistory = ref<TransferRecord[]>([])
   /** Propostas já feitas por jogador nesta rodada (limita a barganha). */
@@ -186,7 +188,7 @@ export const useGameStore = defineStore('game', () => {
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers, managers, trophiesAwardedSeason,
-    confidence, confidenceLog, dismissal, headlines,
+    confidence, confidenceLog, dismissal, headlines, academy,
   }, 2)
 
   const hasCareer = computed(() => managedTeamId.value !== null)
@@ -205,6 +207,8 @@ export const useGameStore = defineStore('game', () => {
   if (hasCareer.value) {
     for (const t of teams.value) if (t.crest === undefined && BRASILEIRAO_CRESTS[t.id]) t.crest = BRASILEIRAO_CRESTS[t.id]
   }
+  // Saves anteriores à lista da base (ou de outro clube): gera a lista do clube atual.
+  if (hasCareer.value && managedTeamId.value && academy.value?.teamId !== managedTeamId.value) refreshAcademy()
   // Saves anteriores às estrelas: sorteia as estrelas dos elencos existentes uma única vez.
   if (hasCareer.value && assignStarsToLegacyTeams(teams.value)) {
     const mine = teams.value.find((t) => t.id === managedTeamId.value)?.players.filter((p) => p.star) ?? []
@@ -384,6 +388,7 @@ export const useGameStore = defineStore('game', () => {
     trophiesAwardedSeason.value = 0
     resetConfidence(START_CONFIDENCE)
     dismissal.value = null
+    refreshAcademy()
     addNews(`${managerName.value} assume o comando do ${team.name}!`)
   }
 
@@ -494,6 +499,7 @@ export const useGameStore = defineStore('game', () => {
     addNews(`🤝 ${managerName.value} deixa o ${oldTeam.name} e é o novo técnico do ${newTeam.name}!`)
     if (replaced) addNews(`${replaced.name} deixa o ${newTeam.name} e assume o ${oldTeam.name}.`)
     resetConfidence(NEW_JOB_CONFIDENCE)
+    refreshAcademy()
   }
 
   /** Vira a temporada; com `newTeamId`, o técnico assume outro clube (janela de técnicos). */
@@ -520,8 +526,10 @@ export const useGameStore = defineStore('game', () => {
         p.age++
         applyProgression(p, rng)
       }
-      const { retired, promoted, signed } = renewSquad(team, season.value, rng)
-      if (team.id !== managedTeamId.value) continue
+      // No seu clube a base não sobe ninguém sozinha: você escolhe na lista da base.
+      const mine = team.id === managedTeamId.value
+      const { retired, promoted, signed } = renewSquad(team, season.value, rng, { youth: !mine })
+      if (!mine) continue
       // Quem se aposentou sai de qualquer lista de venda ou proposta.
       transferOffers.value = transferOffers.value.filter((o) => !retired.some((p) => p.id === o.playerId))
       if (retired.length) addNews(`👋 Aposentaram-se: ${retired.map((p) => `${p.name} (${p.age})`).join(', ')}.`)
@@ -534,6 +542,43 @@ export const useGameStore = defineStore('game', () => {
         addNews(`✍️ Sem clube, contratados para completar o elenco: ${names}.`)
       }
     }
+    const dismissed = academy.value?.players.length ?? 0
+    refreshAcademy()
+    addNews(
+      `🎓 Nova geração na base: ${academy.value?.players.length ?? 0} jovens esperando uma chance` +
+        (dismissed ? ` (${dismissed} da turma anterior foram dispensados).` : '.'),
+    )
+  }
+
+  // --- Categorias de base ---
+
+  /** Gera a lista da base do clube gerenciado para a temporada atual (a anterior é dispensada). */
+  function refreshAcademy() {
+    const team = managedTeam.value
+    if (!team) {
+      academy.value = null
+      return
+    }
+    const rng = createRng(hashString(`base-${team.id}-${season.value}`) ^ Date.now())
+    academy.value = { teamId: team.id, season: season.value, players: createAcademy(team, season.value, rng) }
+  }
+
+  /** Por que o jovem não pode subir agora (ou null se pode). */
+  function youthBlocker(playerId: string): string | null {
+    if (!academy.value?.players.some((p) => p.id === playerId)) return 'Jogador não está na base.'
+    if (!managedTeamId.value || !hasSquadRoom(managedTeamId.value)) return `Elenco cheio (${MAX_SQUAD_SIZE} jogadores): libere uma vaga antes.`
+    return null
+  }
+
+  /** Sobe um jovem da base para o elenco principal. */
+  function promoteYouth(playerId: string): string | null {
+    const blocker = youthBlocker(playerId)
+    if (blocker) return blocker
+    const player = academy.value!.players.find((p) => p.id === playerId)!
+    academy.value!.players = academy.value!.players.filter((p) => p.id !== playerId)
+    managedTeam.value!.players.push({ ...player, starter: false })
+    addNews(`🎓 ${player.name}${player.star ? ' ★' : ''} sobe da base (${player.position}, ${player.age} anos, OVR ${player.overall}).`)
+    return null
   }
 
   // --- Confiança e demissão ---
@@ -1209,7 +1254,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   return {
-    teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news, headlines,
+    teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news, headlines, academy,
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers,
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
     nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
@@ -1218,7 +1263,7 @@ export const useGameStore = defineStore('game', () => {
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
     seasonReview, projectedDivision, ensureJobOffers, managers, managerOf,
     confidence, confidenceLog, dismissal, expectedPosition, changeConfidence, acceptJobAfterDismissal, reactToTransfer,
-    addNews, addHeadlines, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
+    addNews, addHeadlines, refreshAcademy, youthBlocker, promoteYouth, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
     roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,
     toggleStarter, setRole, substituteStarter, arrangeLine, autoSelectStarters, setFormation, setStyle, teamStrength, tacticFor,

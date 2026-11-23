@@ -65,11 +65,18 @@ export interface SquadRenewal {
   signed: Player[]
 }
 
+/** Elenco mínimo garantido após a virada de temporada (mesmas regras do mercado). */
+const MIN_SQUAD = 16
+const MIN_GOALKEEPERS = 2
+
 /**
  * Fim de temporada num elenco: aposentadorias e reposição pela base, mantendo
  * ao menos a composição padrão por posição (3 GOL, 7 DEF, 7 MEI, 5 ATA).
+ *
+ * Com `youth: false` (clube do jogador), a base não sobe ninguém sozinha: o técnico escolhe na lista da base.
+ * As vagas que seriam dos jovens ficam abertas, desde que o elenco continue com 16 jogadores e 2 goleiros.
  */
-export function renewSquad(team: Team, season: number, rng: Rng): SquadRenewal {
+export function renewSquad(team: Team, season: number, rng: Rng, { youth = true } = {}): SquadRenewal {
   const retired = team.players.filter((p) => rng.next() < retirementChance(p.age))
   team.players = team.players.filter((p) => !retired.includes(p))
 
@@ -85,9 +92,35 @@ export function renewSquad(team: Team, season: number, rng: Rng): SquadRenewal {
   gaps.forEach((position, i) => {
     const id = `${team.id}-s${season}-${i}`
     // Poucos jovens por ano evitam que o elenco inteiro tenha a mesma idade (e se aposente junto).
-    if (i < YOUTH_PER_SEASON) promoted.push(createYouthPlayer(team, position, `${id}-base`, rng))
-    else signed.push(createFreeAgent(team, position, id, rng))
+    if (i >= YOUTH_PER_SEASON) signed.push(createFreeAgent(team, position, id, rng))
+    else if (youth) promoted.push(createYouthPlayer(team, position, `${id}-base`, rng))
   })
   team.players.push(...promoted, ...signed)
+
+  // Sem a base automática, garante o mínimo para o clube poder jogar.
+  if (!youth) {
+    let extra = 0
+    const sign = (position: Position) => {
+      const p = createFreeAgent(team, position, `${team.id}-s${season}-min${extra++}`, rng)
+      team.players.push(p)
+      signed.push(p)
+    }
+    while (team.players.filter((p) => p.position === 'GOL').length < MIN_GOALKEEPERS) sign('GOL')
+    while (team.players.length < MIN_SQUAD) sign(gaps[extra % Math.max(gaps.length, 1)] ?? 'MEI')
+  }
   return { retired, promoted, signed }
+}
+
+// --- Categorias de base do clube do jogador ---
+
+/** Quantos jovens a base oferece por temporada (quem não subir é dispensado na virada). */
+export const ACADEMY_SIZE = 6
+/** Posições da lista da base: sempre um goleiro e as outras posições bem distribuídas. */
+const ACADEMY_POSITIONS: Position[] = ['GOL', 'DEF', 'DEF', 'MEI', 'MEI', 'ATA']
+
+/** Nova geração da base: jovens de 17 a 19 anos, com OVR, idade e posição definidos. */
+export function createAcademy(team: Team, season: number, rng: Rng): Player[] {
+  return ACADEMY_POSITIONS.slice(0, ACADEMY_SIZE)
+    .map((position, i) => createYouthPlayer(team, position, `${team.id}-base-t${season}-${i}`, rng))
+    .sort((a, b) => b.overall - a.overall)
 }

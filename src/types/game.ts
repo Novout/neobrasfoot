@@ -137,6 +137,13 @@ export interface CupRound {
   ties: CupTie[]
 }
 
+/** Categorias de base do clube gerenciado: jovens que podem subir ao elenco na temporada. */
+export interface Academy {
+  teamId: string
+  season: number
+  players: Player[]
+}
+
 export interface CupState {
   season: number
   rounds: CupRound[]
