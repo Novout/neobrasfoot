@@ -22,10 +22,6 @@ const speeds = [
   { label: '4x', ms: 80 },
 ]
 
-// Todas as divisões jogam juntas; a aba escolhe qual acompanhar (padrão: a do clube).
-const viewedDivision = ref<DivisionId | null>(null)
-const shownDivision = computed(() => viewedDivision.value ?? game.managedDivision)
-
 function matchDivision(m: { homeId: string }) {
   return game.getTeam(m.homeId)?.division
 }
@@ -35,11 +31,55 @@ const EVENT_ICONS: Record<MatchEventType, string> = { gol: '⚽', amarelo: '🟨
 /** Rodada da Copa reúne clubes de todas as séries: sem abas de divisão. */
 const isCup = computed(() => match.matches[0]?.competition === 'cup')
 
-const sortedMatches = computed(() =>
-  match.matches
-    .filter((m) => isCup.value || matchDivision(m) === shownDivision.value)
-    .sort((a, b) => Number(isMine(b)) - Number(isMine(a))),
-)
+/** Jogo do seu clube, em destaque no topo com todos os lances. */
+const myMatch = computed(() => match.matches.find((m) => isMine(m)) ?? null)
+
+/** Painel com todos os jogos ao mesmo tempo: uma coluna por série (na Copa, todos juntos). */
+const columns = computed(() => {
+  if (isCup.value) return [{ key: 'copa', label: null as string | null, division: null as DivisionId | null, matches: match.matches }]
+  return DIVISIONS.map((d) => ({
+    key: d,
+    label: DIVISION_LABELS[d] as string | null,
+    division: d as DivisionId | null,
+    matches: match.matches.filter((m) => matchDivision(m) === d),
+  }))
+})
+
+/** Cartões abertos para ver todos os lances (os demais mostram só o resumo). */
+const expanded = ref(new Set<string>())
+function toggle(id: string) {
+  const next = new Set(expanded.value)
+  if (next.has(id)) next.delete(id)
+  else next.add(id)
+  expanded.value = next
+}
+
+/** Autores dos gols em uma linha: "Pedro 12', Hulk 77' (p)". */
+function scorers(m: LiveMatch, teamId: string) {
+  return m.events
+    .filter((e) => e.type === 'gol' && e.teamId === teamId)
+    .map((e) => `${e.playerName.split(' ').slice(-1)[0]} ${clockLabel(e.minute, e.extra)}${e.penalty ? ' (p)' : ''}`)
+    .join(', ')
+}
+
+function redCards(m: LiveMatch, teamId: string) {
+  return m.events.filter((e) => e.type === 'vermelho' && e.teamId === teamId).length
+}
+
+// Jogo que acabou de ter gol pisca por alguns segundos no painel.
+const flashing = ref(new Set<string>())
+const goalCounts = computed(() => Object.fromEntries(match.matches.map((m) => [m.id, m.homeGoals + m.awayGoals])))
+watch(goalCounts, (now, before) => {
+  for (const [id, n] of Object.entries(now)) {
+    if (!before || n <= (before[id] ?? 0)) continue
+    flashing.value = new Set(flashing.value).add(id)
+    setTimeout(() => {
+      const next = new Set(flashing.value)
+      next.delete(id)
+      flashing.value = next
+    }, 2500)
+  }
+})
 
 function goalsIn(division: DivisionId) {
   return match.matches
@@ -140,22 +180,8 @@ onBeforeUnmount(() => match.stop())
 
     <h2 class="round-title" :class="{ 'round-title--cup': isCup }">{{ isCup ? '🏆 ' : '' }}{{ game.nextEventLabel }}</h2>
 
-    <nav v-if="!isCup" class="division-tabs">
-      <button
-        v-for="d in DIVISIONS"
-        :key="d"
-        class="btn btn--sm"
-        :class="{ 'btn--ghost': shownDivision !== d }"
-        @click="viewedDivision = d"
-      >
-        {{ DIVISION_LABELS[d] }}
-        <span class="goals" :title="`${goalsIn(d)} gols nesta rodada`">⚽ {{ goalsIn(d) }}</span>
-        <span v-if="d === game.managedDivision" title="Sua divisão">★</span>
-      </button>
-    </nav>
-
-    <section class="match-list">
-      <article v-for="m in sortedMatches" :key="m.id" class="card match" :class="{ 'match--mine': isMine(m) }">
+    <section v-if="myMatch" class="match-list">
+      <article v-for="m in [myMatch]" :key="m.id" class="card match match--mine" :class="{ 'match--flash': flashing.has(m.id) }">
         <div class="scoreboard">
           <div class="side">
             <span class="team-name">{{ game.getTeam(m.homeId)?.name }}</span>
@@ -204,6 +230,54 @@ onBeforeUnmount(() => match.stop())
         </ul>
       </article>
     </section>
+
+    <section class="board" :class="{ 'board--cup': isCup }">
+      <div v-for="col in columns" :key="col.key" class="board__col">
+        <h3 v-if="col.label && col.division" class="board__title" :class="{ 'board__title--mine': col.division === game.managedDivision }">
+          {{ col.label }}
+          <span v-if="col.division === game.managedDivision" title="Sua divisão">★</span>
+          <span class="goals" :title="`${goalsIn(col.division)} gols nesta rodada`">⚽ {{ goalsIn(col.division) }}</span>
+        </h3>
+        <div class="board__list">
+          <article
+            v-for="m in col.matches"
+            :key="m.id"
+            class="mini"
+            :class="{ 'mini--mine': isMine(m), 'mini--flash': flashing.has(m.id) }"
+            :title="expanded.has(m.id) ? 'Clique para recolher' : 'Clique para ver os lances'"
+            @click="toggle(m.id)"
+          >
+            <div class="mini__row">
+              <span class="mini__team" :title="game.getTeam(m.homeId)?.name">{{ game.getTeam(m.homeId)?.name }}</span>
+              <TeamBadge :team="game.getTeam(m.homeId)!" :size="20" />
+              <strong class="mini__score">{{ m.homeGoals }}<span class="muted">-</span>{{ m.awayGoals }}</strong>
+              <TeamBadge :team="game.getTeam(m.awayId)!" :size="20" />
+              <span class="mini__team mini__team--away" :title="game.getTeam(m.awayId)?.name">{{ game.getTeam(m.awayId)?.name }}</span>
+            </div>
+            <div class="mini__meta">
+              <span class="mini__scorers mini__scorers--home">
+                <span v-if="redCards(m, m.homeId)" class="red">🟥{{ redCards(m, m.homeId) > 1 ? redCards(m, m.homeId) : '' }}</span>
+                {{ scorers(m, m.homeId) }}
+              </span>
+              <span class="mini__center">
+                <span v-if="m.penalties" class="pens">pên. {{ m.penalties.home }}-{{ m.penalties.away }}</span>
+                <span v-else-if="matchClock(m)" class="match-clock">{{ matchClock(m) }}</span>
+              </span>
+              <span class="mini__scorers">
+                {{ scorers(m, m.awayId) }}
+                <span v-if="redCards(m, m.awayId)" class="red">🟥{{ redCards(m, m.awayId) > 1 ? redCards(m, m.awayId) : '' }}</span>
+              </span>
+            </div>
+            <ul v-if="expanded.has(m.id) && m.events.length" class="events events--mini">
+              <li v-for="(e, i) in m.events" :key="i" :class="e.teamId === m.homeId ? 'home' : 'away'">
+                {{ EVENT_ICONS[e.type] }} {{ clockLabel(e.minute, e.extra) }} {{ e.playerName }}
+              </li>
+            </ul>
+            <p v-else-if="expanded.has(m.id)" class="muted mini__empty">Sem lances ainda.</p>
+          </article>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -211,13 +285,14 @@ onBeforeUnmount(() => match.stop())
 .matches {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 .clock {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   flex-wrap: wrap;
+  padding: 0.6rem 1.1rem;
 }
 .clock__time {
   display: flex;
@@ -265,7 +340,7 @@ onBeforeUnmount(() => match.stop())
   font-weight: 700;
 }
 .minute {
-  font-size: 2.2rem;
+  font-size: 1.9rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
@@ -321,11 +396,6 @@ onBeforeUnmount(() => match.stop())
   text-align: center;
   color: var(--warn);
 }
-.division-tabs {
-  display: flex;
-  gap: 0.35rem;
-  flex-wrap: wrap;
-}
 .goals {
   margin-left: 0.35rem;
   font-size: 0.75rem;
@@ -333,13 +403,143 @@ onBeforeUnmount(() => match.stop())
 }
 .match-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr));
-  gap: 1rem;
 }
 .match--mine {
-  grid-column: 1 / -1;
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent);
+  padding: 0.6rem 1rem;
+  transition: background-color 0.4s;
+}
+.match--mine .events {
+  max-height: 5.2rem;
+  overflow-y: auto;
+}
+
+/* Painel com todos os jogos: uma coluna por série. */
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  align-items: start;
+}
+.board--cup {
+  grid-template-columns: minmax(0, 1fr);
+}
+.board--cup .board__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+@media (max-width: 1100px) {
+  .board:not(.board--cup) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  .board:not(.board--cup) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.board__title {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.board__title--mine {
+  color: var(--accent);
+}
+.board__title .goals {
+  margin-left: auto;
+  text-transform: none;
+}
+.board__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.mini {
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: border-color 0.2s, background-color 0.4s;
+}
+.mini:hover {
+  border-color: var(--muted);
+}
+.mini--mine {
+  border-color: var(--accent);
+}
+.mini--flash,
+.match--flash {
+  background: rgba(74, 222, 128, 0.16);
+}
+.mini__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.35rem;
+}
+.mini__team {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  font-weight: 600;
+}
+.mini__team--away {
+  text-align: left;
+}
+.mini__score {
+  min-width: 2.6rem;
+  text-align: center;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.mini__meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0.35rem;
+  min-height: 1rem;
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.mini__scorers {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mini__scorers--home {
+  text-align: right;
+}
+.mini__center {
+  text-align: center;
+}
+.mini__center .match-clock {
+  margin-left: 0;
+}
+.pens {
+  color: var(--warn);
+  font-weight: 700;
+}
+.red {
+  font-size: 0.6rem;
+}
+.events--mini {
+  margin-top: 0.35rem;
+  padding-top: 0.3rem;
+  font-size: 0.72rem;
+}
+.mini__empty {
+  margin: 0.3rem 0 0;
+  font-size: 0.72rem;
+  text-align: center;
 }
 .scoreboard {
   display: grid;
@@ -365,7 +565,7 @@ onBeforeUnmount(() => match.stop())
   font-variant-numeric: tabular-nums;
 }
 .match--mine .score {
-  font-size: 2.4rem;
+  font-size: 2rem;
 }
 .events {
   list-style: none;
