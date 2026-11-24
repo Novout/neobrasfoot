@@ -17,7 +17,7 @@ import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, createAcademy, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
-import { matchEnergyCost, PLAYED_RECOVERY, REST_RECOVERY, SUB_ENTRY_ENERGY, TRAINING_ENERGY } from '../data/energy'
+import { matchEnergyCost, playedRecovery, REST_RECOVERY, SUB_ENTRY_ENERGY, TRAINING_ENERGY } from '../data/energy'
 import { shootoutScore, simulateShootout } from '../data/penalties'
 import { teamSkillBonus } from '../data/skills'
 import { sideFits } from '../data/feet'
@@ -1258,8 +1258,8 @@ export const useGameStore = defineStore('game', () => {
     if (!team) return
     for (const p of team.players) {
       const finalEnergy = played?.[p.id]
-      if (finalEnergy !== undefined) p.energy = clamp(finalEnergy + PLAYED_RECOVERY, 0, 100)
-      else if (!played && p.starter) p.energy = clamp(p.energy - matchEnergyCost(p) + PLAYED_RECOVERY, 0, 100)
+      if (finalEnergy !== undefined) p.energy = clamp(finalEnergy + playedRecovery(p), 0, 100)
+      else if (!played && p.starter) p.energy = clamp(p.energy - matchEnergyCost(p) + playedRecovery(p), 0, 100)
       else p.energy = clamp(p.energy + REST_RECOVERY, 0, 100)
       p.morale = clamp(p.morale + result * 5, 0, 100)
     }

@@ -180,13 +180,27 @@ describe('aleatoriedade determinística', () => {
 
 describe('cansaço', () => {
   it('quem joga cansa menos do que recupera descansando, e veteranos cansam mais', async () => {
-    const { matchEnergyCost, PLAYED_RECOVERY, REST_RECOVERY } = await import('../energy')
+    const { fullMatchDrain, matchEnergyCost, playedRecovery, REST_RECOVERY } = await import('../energy')
     const young = matchEnergyCost({ age: 24, star: false })
     const veteran = matchEnergyCost({ age: 33, star: false })
     expect(veteran).toBeGreaterThan(young)
-    // Titular jovem jogando toda rodada perde pouco por partida (não zera a energia em poucas rodadas).
-    expect(young - PLAYED_RECOVERY).toBeLessThanOrEqual(5)
-    expect(REST_RECOVERY).toBeGreaterThan(PLAYED_RECOVERY)
     expect(matchEnergyCost({ age: 24, star: true })).toBeLessThan(young)
+    // Todo titular que joga um jogo inteiro termina a rodada com menos energia — inclusive estrelas
+    // e meias com Fôlego, que gastam pouco (antes recuperavam tudo e ficavam sempre em 100%).
+    const base = { id: 'x', position: 'MEI' as const }
+    const cases = [
+      { ...base, age: 24, star: false },
+      { ...base, age: 33, star: false },
+      { ...base, age: 24, star: true },
+      { ...base, age: 24, star: true, skills: ['folego', 'passe'] as never },
+      { ...base, age: 24, star: false, skills: ['folego', 'passe'] as never },
+    ]
+    for (const p of cases) {
+      const net = Math.round(fullMatchDrain(p)) - playedRecovery(p)
+      expect(net, JSON.stringify(p)).toBeGreaterThanOrEqual(2)
+      expect(playedRecovery(p)).toBeLessThan(REST_RECOVERY)
+    }
+    // Jovem comum ainda perde pouco por jogo (não zera a energia em poucas rodadas).
+    expect(Math.round(fullMatchDrain(cases[0]!)) - playedRecovery(cases[0]!)).toBeLessThanOrEqual(6)
   })
 })
