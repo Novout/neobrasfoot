@@ -249,6 +249,8 @@ export interface CustomTeamDraft {
   secondaryColor: string
   division: DivisionId
   players: PlayerDraft[]
+  /** Escudo enviado pelo jogador (imagem embutida, já reduzida). Sem ele, o distintivo usa as cores. */
+  crest?: string
 }
 
 /** O clube de menor reputação da série, que sai para dar lugar ao clube criado. */
@@ -269,6 +271,7 @@ export function createTeamsWithCustom(draft: CustomTeamDraft, base: Team[] = cre
     primaryColor: draft.primaryColor,
     secondaryColor: draft.secondaryColor,
     reputation: DIVISION_REPUTATION[draft.division],
+    ...(draft.crest ? { crest: draft.crest } : {}),
     players: draft.players.map((p, i) => buildPlayer(p, `${CUSTOM_TEAM_ID}-${i}`, 75)),
   }
   return { teams: teams.map((t) => (t.id === replaced.id ? custom : t)), replaced }

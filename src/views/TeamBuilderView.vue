@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
+import { crestFromFile } from '../data/crests'
 import { DIVISION_LABELS, formatOfTeams, LEAGUE_FORMATS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from '../data/divisions'
 import { leagueTeams } from '../data/league'
 import { createStadium, stadiumCapacity } from '../data/stadium'
@@ -42,6 +43,30 @@ const divisionAverages = Object.fromEntries(
 const levelPresets = Object.fromEntries(divisions.map((d) => [d, Math.round(divisionAverages[d])])) as Record<DivisionId, number>
 
 // --- Rascunho ---
+
+// --- Escudo (foto do computador) ---
+
+const crestInput = ref<HTMLInputElement | null>(null)
+const crestError = ref<string | null>(null)
+
+/** A imagem escolhida vira um PNG quadrado de 128 px, salvo junto com o rascunho do clube. */
+async function uploadCrest(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file) return
+  crestError.value = null
+  try {
+    draft.value.crest = await crestFromFile(file)
+  } catch (err) {
+    crestError.value = (err as Error).message
+  }
+}
+
+function removeCrest() {
+  draft.value.crest = undefined
+  crestError.value = null
+}
 
 /** O clube criado começa na última série do formato (Série D no 4×8, Série B no 2×20). */
 const lowestDivision = divisions.at(-1)!
@@ -208,10 +233,24 @@ function startCareer() {
         <section class="card">
           <h2>Clube</h2>
           <div class="identity">
-            <TeamBadge
-              :team="{ shortName: draft.shortName.toUpperCase() || '???', primaryColor: draft.primaryColor, secondaryColor: draft.secondaryColor }"
-              :size="72"
-            />
+            <button
+              class="crest-pick"
+              type="button"
+              :title="draft.crest ? 'Trocar a foto do escudo' : 'Carregar uma foto do computador para o escudo'"
+              @click="crestInput?.click()"
+            >
+              <TeamBadge
+                :team="{
+                  shortName: draft.shortName.toUpperCase() || '???',
+                  primaryColor: draft.primaryColor,
+                  secondaryColor: draft.secondaryColor,
+                  crest: draft.crest,
+                  name: draft.name,
+                }"
+                :size="72"
+              />
+              <span class="crest-pick__hint">📷</span>
+            </button>
             <div class="identity__fields">
               <label>Nome<input v-model="draft.name" type="text" maxlength="30" placeholder="Ex.: Esporte Clube Aurora" /></label>
               <label>Sigla<input v-model="draft.shortName" type="text" maxlength="3" placeholder="ECA" class="short" /></label>
@@ -221,6 +260,15 @@ function startCareer() {
             <label>Cor principal <input v-model="draft.primaryColor" type="color" /></label>
             <label>Cor secundária <input v-model="draft.secondaryColor" type="color" /></label>
           </div>
+          <div class="crest-actions">
+            <button class="btn btn--ghost btn--sm" type="button" @click="crestInput?.click()">
+              📷 {{ draft.crest ? 'Trocar foto do escudo' : 'Carregar foto do escudo' }}
+            </button>
+            <button v-if="draft.crest" class="btn btn--ghost btn--sm" type="button" @click="removeCrest">Remover foto</button>
+            <input ref="crestInput" type="file" accept="image/*" hidden @change="uploadCrest" />
+          </div>
+          <p v-if="crestError" class="small bad">{{ crestError }}</p>
+          <p v-else class="small muted crest-note">PNG, JPG ou SVG do computador. Sem foto, o escudo usa as cores e a sigla.</p>
         </section>
 
         <section class="card">
@@ -438,6 +486,39 @@ label {
 .short {
   width: 5rem;
   text-transform: uppercase;
+}
+.crest-pick {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.crest-pick__hint {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+}
+.crest-pick:hover .crest-pick__hint {
+  border-color: var(--accent);
+}
+.crest-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.crest-note {
+  margin: 0.35rem 0 0;
 }
 .colors {
   display: flex;

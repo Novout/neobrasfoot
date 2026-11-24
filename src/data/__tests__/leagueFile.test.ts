@@ -233,3 +233,18 @@ describe('escudos', () => {
     expect(teamsFromLeagueFile(parseLeagueFile(JSON.stringify(defaultFile())).league!).every((t) => !t.crest)).toBe(true)
   })
 })
+
+describe('escudo do clube criado', () => {
+  it('a foto enviada vira o escudo do clube na liga', async () => {
+    const { createTeamsWithCustom, CUSTOM_TEAM_ID } = await import('../teams')
+    const base = createTeams()
+    const draft = {
+      name: 'Meu Clube', shortName: 'MEU', primaryColor: '#000000', secondaryColor: '#ffffff', division: 'D' as const,
+      players: base[0]!.players.map((p) => ({ name: p.name, position: p.position, age: p.age, overall: p.overall })),
+    }
+    const withPhoto = createTeamsWithCustom({ ...draft, crest: 'data:image/png;base64,iVBORw0KGgo=' }, base).teams
+    expect(withPhoto.find((t) => t.id === CUSTOM_TEAM_ID)!.crest).toMatch(/^data:image\/png/)
+    const without = createTeamsWithCustom(draft, base).teams
+    expect(without.find((t) => t.id === CUSTOM_TEAM_ID)!.crest).toBeUndefined()
+  })
+})
