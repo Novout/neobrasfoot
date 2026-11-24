@@ -5,6 +5,7 @@ import StatBar from '../components/StatBar.vue'
 import ConfidenceMeters from '../components/ConfidenceMeters.vue'
 import HeadlinesFeed from '../components/HeadlinesFeed.vue'
 import PlayerStatus from '../components/PlayerStatus.vue'
+import SaveControls from '../components/SaveControls.vue'
 import StarMark from '../components/StarMark.vue'
 import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
@@ -143,6 +144,9 @@ function standingPoints(row: { wins: number; draws: number }) {
     </section>
 
     <aside class="dashboard__side">
+      <!-- Salvar (cópia) e carregar: só no modo de múltiplos saves. -->
+      <SaveControls />
+
       <div class="card next-match">
         <template v-if="game.isSeasonOver">
           <h3>Temporada encerrada</h3>

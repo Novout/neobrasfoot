@@ -16,6 +16,7 @@ import { useMatchStore } from '../stores/match'
 import type { DivisionId, Position } from '../types/game'
 import { createRng, formatMoney } from '../utils/random'
 import { persistRefs } from '../utils/storage'
+import { prepareNewCareer } from '../utils/saveSlots'
 import { STAR_OVERALL_BOOST } from '../data/stars'
 
 const game = useGameStore()
@@ -208,8 +209,7 @@ const problems = computed(() => {
 
 function startCareer() {
   if (problems.value.length) return
-  if (game.hasCareer && !confirm(`Isso substitui a carreira atual com o ${game.managedTeam?.name}. Continuar?`)) return
-  match.reset()
+  if (!prepareNewCareer(game, match)) return
   game.startCustomCareer(draft.value, managerName.value)
   router.push({ name: 'dashboard' })
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import SavesPanel from '../components/SavesPanel.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { DEFAULT_FORMAT, DIVISION_LABELS, formatOfTeams, LEAGUE_FORMAT_LABELS, LEAGUE_FORMATS, type LeagueFormat } from '../data/divisions'
 import { clearCustomLeague, getCustomLeague, parseLeagueFile, saveCustomLeague } from '../data/leagueFile'
@@ -11,6 +12,7 @@ import type { DivisionId } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { canInstall, promptInstall } from '../utils/pwa'
+import { prepareNewCareer } from '../utils/saveSlots'
 
 const game = useGameStore()
 const match = useMatchStore()
@@ -117,8 +119,8 @@ function chooseBase(base: LeagueBase) {
 
 function startCareer() {
   if (!selectedId.value) return
-  if (game.hasCareer && !confirm(`Isso substitui a carreira atual com o ${game.managedTeam?.name}. Continuar?`)) return
-  match.reset()
+  // Save único: confirma a substituição. Vários saves: a carreira atual fica guardada e a nova ganha um save.
+  if (!prepareNewCareer(game, match)) return
   game.startCareer(selectedId.value, managerName.value)
   router.push({ name: 'dashboard' })
 }
@@ -139,6 +141,8 @@ function startCareer() {
         </button>
       </div>
     </header>
+
+    <SavesPanel />
 
     <section class="card league">
       <div class="league__info">

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import {
   createCup, CUP_NAME, cupPrize, CUP_RUNNER_UP_PRIZE, inRound, nextCupRound, tieWinner,
 } from '../data/cup'
@@ -40,7 +40,7 @@ import type {
   TransferRecord, Position,
 } from '../types/game'
 import { clamp, createRng, formatMoney, hashString } from '../utils/random'
-import { persistRefs } from '../utils/storage'
+import { persistRefs, updateSaveSummary } from '../utils/storage'
 import { loanHeadline, matchHeadlines, MAX_HEADLINES, saleHeadline, type Headline } from '../data/headlines'
 
 export const MIN_SQUAD_SIZE = 16
@@ -247,6 +247,26 @@ export const useGameStore = defineStore('game', () => {
     if (nextEvent.value === 'league') return `${DIVISION_LABELS[managedTeam.value?.division ?? 'A']} · Rodada ${round.value + 1}`
     return 'Temporada encerrada'
   })
+
+  // Resumo do save em uso (clube, temporada, rodada), mostrado na lista de saves.
+  watch(
+    () => {
+      const t = managedTeam.value
+      if (!t) return null
+      return {
+        club: t.name,
+        shortName: t.shortName,
+        primaryColor: t.primaryColor,
+        secondaryColor: t.secondaryColor,
+        ...(t.crest && !t.crest.startsWith('data:') ? { crest: t.crest } : {}),
+        manager: managerName.value,
+        season: season.value,
+        label: nextEventLabel.value,
+      }
+    },
+    (summary) => updateSaveSummary(summary),
+    { immediate: true },
+  )
 
   /** Situação do clube gerenciado na Copa desta temporada. */
   const managedCupStatus = computed(() => {
