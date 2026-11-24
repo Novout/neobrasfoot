@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { LiveMatch, Player } from '../types/game'
-import { energyCost } from '../data/stars'
+import { matchEnergyCost } from '../data/energy'
 import { playingPosition } from '../data/tactics'
 import {
   DIRECT_RED_CHANCE, injuryChanceFor, isAvailable, pickCardedPlayer, pickInjuredPlayer, rollInjuryGames, SENT_OFF_PENALTY,
@@ -176,7 +176,7 @@ export const useMatchStore = defineStore('match', () => {
 
   /** Energia que o jogador perde por minuto em campo (90 minutos = o desgaste de uma partida inteira). */
   function drainPerMinute(p: Player) {
-    return (energyCost(p.age >= 30 ? 30 : 22, p.star) * energyFactor(p)) / MATCH_LENGTH
+    return (matchEnergyCost(p) * energyFactor(p)) / MATCH_LENGTH
   }
 
   /** Guarda a energia de quem sai de campo (ou de todos no apito final): vira a energia real depois do jogo. */

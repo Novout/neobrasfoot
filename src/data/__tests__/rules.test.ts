@@ -177,3 +177,16 @@ describe('aleatoriedade determinística', () => {
     expect(createTeams()[0]!.players.map((p) => p.overall)).toEqual(createTeams()[0]!.players.map((p) => p.overall))
   })
 })
+
+describe('cansaço', () => {
+  it('quem joga cansa menos do que recupera descansando, e veteranos cansam mais', async () => {
+    const { matchEnergyCost, PLAYED_RECOVERY, REST_RECOVERY } = await import('../energy')
+    const young = matchEnergyCost({ age: 24, star: false })
+    const veteran = matchEnergyCost({ age: 33, star: false })
+    expect(veteran).toBeGreaterThan(young)
+    // Titular jovem jogando toda rodada perde pouco por partida (não zera a energia em poucas rodadas).
+    expect(young - PLAYED_RECOVERY).toBeLessThanOrEqual(5)
+    expect(REST_RECOVERY).toBeGreaterThan(PLAYED_RECOVERY)
+    expect(matchEnergyCost({ age: 24, star: true })).toBeLessThan(young)
+  })
+})

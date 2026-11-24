@@ -17,6 +17,7 @@ import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, createAcademy, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
 import { energyCost, STAR_VALUE_FACTOR } from '../data/stars'
+import { matchEnergyCost, PLAYED_RECOVERY, REST_RECOVERY, SUB_ENTRY_ENERGY, TRAINING_ENERGY } from '../data/energy'
 import { shootoutScore, simulateShootout } from '../data/penalties'
 import { teamSkillBonus } from '../data/skills'
 import { sideFits } from '../data/feet'
@@ -48,7 +49,6 @@ export const MIN_GOALKEEPERS = 2
 const BASE_HOME_ADVANTAGE = 1.1
 const AI_TACTIC: Tactic = { formation: '4-4-2', style: 'equilibrado' }
 
-const TRAINING_ENERGY = 15
 
 /** Energia que um treino consome (estrelas gastam menos). */
 export function trainingEnergyCost(player: Player) {
@@ -1232,10 +1232,6 @@ export const useGameStore = defineStore('game', () => {
   }
 
 /** Gasto de energia de um jogo inteiro para o jogador. */
-  function matchEnergyCost(p: Player) {
-    return energyCost(p.age >= 30 ? 30 : 22, p.star)
-  }
-
   /**
    * Substituições do intervalo: quem saiu jogou só meio jogo (devolve metade do desgaste)
    * e quem entrou também (perde metade, em vez de recuperar como reserva).
@@ -1247,23 +1243,24 @@ export const useGameStore = defineStore('game', () => {
       const team = getTeam(e.teamId)
       const incoming = team?.players.find((p) => p.id === e.playerId)
       const outgoing = e.outId ? team?.players.find((p) => p.id === e.outId) : null
-      if (incoming) incoming.energy = clamp(incoming.energy - 20 - Math.round(matchEnergyCost(incoming) * remaining), 0, 100)
+      if (incoming) incoming.energy = clamp(incoming.energy - SUB_ENTRY_ENERGY - Math.round(matchEnergyCost(incoming) * remaining), 0, 100)
       if (outgoing) outgoing.energy = clamp(outgoing.energy + Math.round(matchEnergyCost(outgoing) * remaining), 0, 100)
     }
   }
 
   /**
-   * Depois do jogo: quem entrou em campo fica com a energia que tinha ao sair (desgaste ao vivo);
-   * quem não jogou recupera. Sem `played` (partidas antigas), titulares perdem o desgaste cheio.
+   * Depois do jogo: quem entrou em campo fica com a energia que tinha ao sair (desgaste ao vivo) e
+   * recupera um pouco até a próxima partida; quem não jogou recupera mais.
+   * Sem `played` (partidas antigas), titulares perdem o desgaste cheio.
    */
   function updateTeamAfterMatch(teamId: string, result: number, played?: Record<string, number>) {
     const team = getTeam(teamId)
     if (!team) return
     for (const p of team.players) {
       const finalEnergy = played?.[p.id]
-      if (finalEnergy !== undefined) p.energy = clamp(finalEnergy, 0, 100)
-      else if (!played && p.starter) p.energy = clamp(p.energy - matchEnergyCost(p), 0, 100)
-      else p.energy = clamp(p.energy + 20, 0, 100)
+      if (finalEnergy !== undefined) p.energy = clamp(finalEnergy + PLAYED_RECOVERY, 0, 100)
+      else if (!played && p.starter) p.energy = clamp(p.energy - matchEnergyCost(p) + PLAYED_RECOVERY, 0, 100)
+      else p.energy = clamp(p.energy + REST_RECOVERY, 0, 100)
       p.morale = clamp(p.morale + result * 5, 0, 100)
     }
   }

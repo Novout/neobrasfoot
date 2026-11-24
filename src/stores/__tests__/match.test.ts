@@ -2,6 +2,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createTeams } from '../../data/teams'
 import { setLeagueBase } from '../../data/league'
+import { PLAYED_RECOVERY } from '../../data/energy'
 import { createRng } from '../../utils/random'
 import { useGameStore } from '../game'
 import { MAX_SUBSTITUTIONS, useMatchStore } from '../match'
@@ -80,9 +81,9 @@ describe('rodada ao vivo', () => {
     const row = game.standings.find((r) => r.teamId === teamId)!
     expect(row.played).toBe(1)
     expect(row.goalsFor).toBe(m.homeId === teamId ? m.homeGoals : m.awayGoals)
-    // Quem jogou fica com a energia do fim do jogo; os outros descansam.
+    // Quem jogou fica com a energia do fim do jogo e recupera um pouco até a próxima rodada.
     for (const p of game.managedTeam!.players) {
-      if (played[p.id] !== undefined) expect(p.energy).toBe(played[p.id])
+      if (played[p.id] !== undefined) expect(p.energy).toBe(Math.min(100, played[p.id]! + PLAYED_RECOVERY))
     }
   })
 
