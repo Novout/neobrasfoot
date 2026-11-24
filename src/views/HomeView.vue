@@ -85,7 +85,7 @@ async function importLeague(event: Event) {
 
 const FORMAT_MESSAGES: Record<LeagueFormat, string> = {
   '4x8': 'Formato 4 séries × 8 clubes: Séries A a D, 14 rodadas, 2 sobem e 2 descem.',
-  '2x20': 'Formato 2 séries × 20 clubes: Séries A e B, 38 rodadas, 4 sobem e 4 descem. A Copa reúne os 32 mais fortes.',
+  '2x20': 'Formato 2 séries × 20 clubes: Séries A e B, 38 rodadas, 4 sobem e 4 descem.',
 }
 
 /** Troca o formato das séries (vale para o Brasileirão e a liga gerada; descarta a liga importada, se houver). */
