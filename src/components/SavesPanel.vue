@@ -3,11 +3,33 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   deleteSave, readSaveIndex, renameSave, saveSize, setSaveMode, storageFull, switchSave, totalSavesSize, type SaveIndex,
-  type SaveMode, type SaveSlot,
+  type SaveMode, type SaveSlot, type SaveSummary,
 } from '../utils/storage'
 import TeamBadge from './TeamBadge.vue'
+import { useGameStore } from '../stores/game'
 
 const router = useRouter()
+const game = useGameStore()
+
+/**
+ * Resumo mostrado de cada save. No save em uso vale a carreira carregada agora (o resumo guardado na lista
+ * pode estar ausente ou atrasado, ex.: saves de antes da lista existir).
+ */
+function summaryOf(slot: SaveSlot): SaveSummary | null {
+  if (slot.id !== index.value.active) return slot.summary ?? null
+  const t = game.managedTeam
+  if (!t) return null
+  return {
+    club: t.name,
+    shortName: t.shortName,
+    primaryColor: t.primaryColor,
+    secondaryColor: t.secondaryColor,
+    ...(t.crest ? { crest: t.crest } : {}),
+    manager: game.managerName,
+    season: game.season,
+    label: game.nextEventLabel,
+  }
+}
 /** "Continuar" no save em uso (quem abriu a lista dentro do jogo fecha a janela). */
 const emit = defineEmits<{ continue: [] }>()
 
@@ -56,7 +78,8 @@ function rename(slot: SaveSlot) {
 }
 
 function remove(slot: SaveSlot) {
-  const what = slot.summary ? ` (${slot.summary.club}, temporada ${slot.summary.season})` : ''
+  const summary = summaryOf(slot)
+  const what = summary ? ` (${summary.club}, temporada ${summary.season})` : ''
   if (!confirm(`Apagar o save "${slot.name}"${what}? Isso não pode ser desfeito.`)) return
   const wasActive = slot.id === index.value.active
   deleteSave(slot.id)
@@ -101,15 +124,15 @@ function dateLabel(iso?: string) {
 
     <ul v-if="multi" class="saves__list">
       <li v-for="slot in slots" :key="slot.id" class="slot" :class="{ 'slot--active': slot.id === index.active }">
-        <TeamBadge v-if="slot.summary" :team="{ ...slot.summary, name: slot.summary.club }" :size="36" />
+        <TeamBadge v-if="summaryOf(slot)" :team="{ ...summaryOf(slot)!, name: summaryOf(slot)!.club }" :size="36" />
         <span v-else class="slot__empty" aria-hidden="true">—</span>
         <div class="slot__info">
           <strong>
             {{ slot.name }}
             <span v-if="slot.id === index.active" class="tag-active">em uso</span>
           </strong>
-          <small v-if="slot.summary" class="muted">
-            {{ slot.summary.club }} · {{ slot.summary.manager }} · Temporada {{ slot.summary.season }} · {{ slot.summary.label }}
+          <small v-if="summaryOf(slot)" class="muted">
+            {{ summaryOf(slot)!.club }} · {{ summaryOf(slot)!.manager }} · Temporada {{ summaryOf(slot)!.season }} · {{ summaryOf(slot)!.label }}
           </small>
           <small v-else class="muted">Vazio: escolha um clube abaixo para começar.</small>
           <small class="muted slot__meta">
@@ -117,10 +140,25 @@ function dateLabel(iso?: string) {
           </small>
         </div>
         <div class="slot__actions">
-          <button v-if="slot.id === index.active && slot.summary" class="btn btn--sm" @click="continueActive">
-            Continuar
+          <!-- Save em uso com carreira: entra direto no jogo (não precisa "carregar" de novo). -->
+          <button
+            v-if="slot.id === index.active && game.hasCareer"
+            class="btn btn--sm"
+            title="Este save já está carregado: entra no Dashboard"
+            @click="continueActive"
+          >
+            ▶ Continuar
           </button>
-          <button v-else-if="slot.id !== index.active" class="btn btn--sm" @click="load(slot)">Carregar</button>
+          <button v-else-if="slot.id !== index.active && slot.summary" class="btn btn--sm" @click="load(slot)">Carregar</button>
+          <!-- Save vazio: não há o que carregar; "Usar" faz a próxima carreira começar nele. -->
+          <button
+            v-else-if="slot.id !== index.active"
+            class="btn btn--ghost btn--sm"
+            title="Save vazio: a próxima carreira que você começar fica nele"
+            @click="load(slot)"
+          >
+            Usar
+          </button>
           <button class="btn btn--ghost btn--sm" @click="rename(slot)">Renomear</button>
           <button class="btn btn--ghost btn--sm slot__delete" @click="remove(slot)">Apagar</button>
         </div>

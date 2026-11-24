@@ -117,6 +117,17 @@ function chooseBase(base: LeagueBase) {
   leagueMessage.value = BASE_MESSAGES[base]
 }
 
+/** Apaga a carreira do save em uso (antes era o "Sair" do cabeçalho, que apagava sem querer). */
+function abandonCareer() {
+  const ok = confirm(
+    `Abandonar a carreira com o ${game.managedTeam?.name}? Ela será apagada deste save e não dá para desfazer.` +
+      ' (Para só voltar ao menu, use o botão Menu dentro do jogo: a carreira continua salva.)',
+  )
+  if (!ok) return
+  match.reset()
+  game.endCareer()
+}
+
 function startCareer() {
   if (!selectedId.value) return
   // Save único: confirma a substituição. Vários saves: a carreira atual fica guardada e a nova ganha um save.
@@ -134,6 +145,14 @@ function startCareer() {
       <div class="hero-actions">
         <button v-if="game.hasCareer" class="btn btn--ghost" @click="router.push({ name: 'dashboard' })">
           Continuar carreira com {{ game.managedTeam?.name }}
+        </button>
+        <button
+          v-if="game.hasCareer"
+          class="btn btn--ghost btn--sm abandon"
+          title="Apaga a carreira deste save (não dá para desfazer)"
+          @click="abandonCareer"
+        >
+          Abandonar carreira
         </button>
         <RouterLink class="btn create-link" :to="{ name: 'team-builder' }">✏️ Criar meu próprio clube</RouterLink>
         <button v-if="canInstall" class="btn btn--ghost" title="Instala o Neobrasfoot como um app no computador (funciona offline)" @click="promptInstall">
@@ -257,6 +276,14 @@ function startCareer() {
   justify-content: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+}
+.abandon {
+  align-self: center;
+  color: var(--muted);
+}
+.abandon:hover {
+  color: var(--bad);
+  border-color: var(--bad);
 }
 .create-link {
   text-decoration: none;

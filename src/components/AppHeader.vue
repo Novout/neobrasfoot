@@ -10,10 +10,9 @@ const game = useGameStore()
 const match = useMatchStore()
 const router = useRouter()
 
-function quit() {
-  if (!confirm('Abandonar a carreira atual?')) return
-  match.reset()
-  game.endCareer()
+/** Volta ao menu principal sem apagar nada: a carreira continua salva (e aparece em "Continuar carreira"). */
+function goToMenu() {
+  match.stop()
   router.push({ name: 'home' })
 }
 </script>
@@ -66,7 +65,7 @@ function quit() {
     <div class="app-header__meta">
       <ConfidenceMeters v-if="!game.dismissal" :confidence="game.confidence" compact />
       <span class="money">{{ formatMoney(game.budget) }}</span>
-      <button class="btn btn--ghost" @click="quit">Sair</button>
+      <button class="btn btn--ghost" title="Volta ao menu principal; a carreira continua salva" @click="goToMenu">Menu</button>
     </div>
   </header>
 </template>
@@ -147,7 +146,7 @@ function quit() {
   white-space: nowrap;
 }
 
-/* Telas estreitas: em cima o clube, o caixa e Sair; embaixo as abas (em quantas linhas precisarem). */
+/* Telas estreitas: em cima o clube, o caixa e Menu; embaixo as abas (em quantas linhas precisarem). */
 @media (max-width: 900px) {
   .app-header {
     display: grid;
