@@ -70,8 +70,8 @@ function redCards(m: LiveMatch, teamId: string) {
 const GOAL_FLASH_MS = 2500
 
 // Jogo que acabou de ter gol fica por um momento com o fundo na cor primária de quem marcou
-// (a borda usa a cor secundária, para clubes de cor escura também aparecerem no fundo escuro).
-const flashing = ref(new Map<string, { primary: string; secondary: string }>())
+// (a borda fica no verde padrão do jogo).
+const flashing = ref(new Map<string, { primary: string }>())
 const goalCounts = computed(() => Object.fromEntries(match.matches.map((m) => [m.id, m.homeGoals + m.awayGoals])))
 const timers = new Map<string, ReturnType<typeof setTimeout>>()
 watch(goalCounts, (now, before) => {
@@ -81,7 +81,7 @@ watch(goalCounts, (now, before) => {
     const scorer = m?.events.filter((e) => e.type === 'gol').at(-1)
     const team = scorer && game.getTeam(scorer.teamId)
     if (!team) continue
-    flashing.value = new Map(flashing.value).set(id, { primary: team.primaryColor, secondary: team.secondaryColor })
+    flashing.value = new Map(flashing.value).set(id, { primary: team.primaryColor })
     // Gol seguido no mesmo jogo: reinicia o tempo (e troca a cor, se foi do outro time).
     clearTimeout(timers.get(id))
     timers.set(
@@ -99,7 +99,7 @@ watch(goalCounts, (now, before) => {
 /** Estilo do fundo de um jogo enquanto pisca o gol. */
 function flashStyle(id: string) {
   const c = flashing.value.get(id)
-  return c ? { '--goal-color': c.primary, '--goal-border': c.secondary } : undefined
+  return c ? { '--goal-color': c.primary } : undefined
 }
 
 function goalsIn(division: DivisionId) {
@@ -521,9 +521,10 @@ onBeforeUnmount(() => {
 /* Gol: fundo na cor primária de quem marcou, misturada ao fundo para o texto continuar legível. */
 .mini--flash,
 .match--flash {
-  background: color-mix(in srgb, var(--goal-color) 55%, var(--surface));
-  border-color: var(--goal-border);
-  box-shadow: 0 0 0 1px var(--goal-border), 0 0 18px color-mix(in srgb, var(--goal-color) 60%, transparent);
+  background: color-mix(in srgb, var(--goal-color) 30%, var(--surface));
+  border-color: var(--accent);
+  /* Só a borda de 1px (sem o anel extra que a deixava grossa) e um brilho leve na cor do time. */
+  box-shadow: 0 0 14px color-mix(in srgb, var(--goal-color) 40%, transparent);
   transition: none;
 }
 .mini--flash .mini__team,
