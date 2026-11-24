@@ -18,6 +18,13 @@ const match = useMatchStore()
 const router = useRouter()
 
 const formations = Object.keys(FORMATIONS) as Formation[]
+
+/** O que mudou na escalação ao trocar a formação (o jogo ajusta os titulares sozinho). */
+const lineupChanges = ref<{ formation: Formation; changes: string[] } | null>(null)
+function changeFormation(formation: Formation) {
+  const changes = game.setFormation(formation)
+  lineupChanges.value = { formation, changes }
+}
 /** Campo com camisas para arrastar ou a lista clássica por posição. */
 const lineupView = ref<'campo' | 'lista'>('campo')
 const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
@@ -145,7 +152,7 @@ function play() {
         <h3>Táticas</h3>
         <label class="field">
           Formação
-          <select :value="game.tactic.formation" @change="game.setFormation(($event.target as HTMLSelectElement).value as Formation)">
+          <select :value="game.tactic.formation" @change="changeFormation(($event.target as HTMLSelectElement).value as Formation)">
             <option v-for="f in formations" :key="f" :value="f">{{ f }}</option>
           </select>
         </label>
@@ -163,6 +170,13 @@ function play() {
             </button>
           </div>
         </div>
+        <div v-if="lineupChanges?.changes.length" class="lineup-changes small">
+          <strong>Escalação ajustada para o {{ lineupChanges.formation }}:</strong>
+          <ul>
+            <li v-for="c in lineupChanges.changes" :key="c">{{ c }}</li>
+          </ul>
+        </div>
+        <p v-else-if="lineupChanges" class="muted small">Os titulares já cabiam no {{ lineupChanges.formation }}: nada mudou.</p>
         <p v-if="myStrength && !myStrength.matchesFormation" class="warn small">
           Os titulares não batem com a formação {{ game.tactic.formation }} — o time perde rendimento.
         </p>
@@ -302,6 +316,17 @@ function play() {
 .styles {
   display: flex;
   gap: 0.35rem;
+}
+.lineup-changes {
+  margin: 0 0 0.75rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--text);
+}
+.lineup-changes ul {
+  margin: 0.3rem 0 0;
+  padding-left: 1.1rem;
 }
 .problems {
   color: var(--warn);

@@ -130,6 +130,41 @@ describe('carreira e escalação', () => {
     expect(game.starters).toHaveLength(11)
   })
 
+  it('trocar a formação ajusta os titulares sozinho (todas as formações, ida e volta)', () => {
+    const forms = ['4-3-3', '3-5-2', '5-3-2', '4-5-1', '4-4-2'] as const
+    for (const f of forms) {
+      const changes = game.setFormation(f)
+      expect(game.starters, f).toHaveLength(11)
+      expect(game.teamStrength(teamId).matchesFormation, f).toBe(true)
+      expect(Array.isArray(changes)).toBe(true)
+    }
+  })
+
+  it('ao trocar a formação, prefere o reserva da posição e mexe o mínimo na escalação', () => {
+    game.setFormation('4-4-2')
+    const before = new Set(game.starters.map((p) => p.id))
+    const changes = game.setFormation('4-3-3')
+    const after = game.starters
+    // Saiu um meia e entrou um atacante: os outros 10 continuam.
+    expect(after.filter((p) => before.has(p.id))).toHaveLength(10)
+    const newcomer = after.find((p) => !before.has(p.id))!
+    expect(newcomer.position).toBe('ATA')
+    expect(newcomer.role).toBeUndefined()
+    expect(changes.some((c) => c.includes(newcomer.name))).toBe(true)
+  })
+
+  it('sem reserva da posição, improvisa o titular que sobra na linha vizinha', () => {
+    game.setFormation('4-4-2')
+    // Tira os atacantes reservas do elenco disponível (ex.: lesionados).
+    for (const p of game.managedTeam!.players.filter((x) => !x.starter && x.position === 'ATA')) p.injury = 5
+    const changes = game.setFormation('4-3-3')
+    expect(game.starters).toHaveLength(11)
+    expect(game.teamStrength(teamId).matchesFormation).toBe(true)
+    const improvised = game.starters.find((p) => p.role === 'ATA')!
+    expect(improvised.position).toBe('MEI')
+    expect(changes.some((c) => c.includes('passou a jogar como ATA'))).toBe(true)
+  })
+
   it('escalação automática desfaz improvisos e respeita a formação', () => {
     game.setFormation('4-3-3')
     game.setRole(game.starters.find((p) => p.position === 'MEI')!.id, 'ATA')

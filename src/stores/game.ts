@@ -897,8 +897,68 @@ export const useGameStore = defineStore('game', () => {
     if (managedTeam.value) applyLineup(managedTeam.value, tactic.value.formation)
   }
 
+  /**
+   * Troca a formação e ajusta os titulares para ela, mexendo o mínimo possível na escalação do técnico.
+   * Retorna as mudanças feitas (para avisar na tela).
+   */
   function setFormation(formation: Formation) {
     tactic.value.formation = formation
+    return fitLineupToFormation(formation)
+  }
+
+  /**
+   * Para cada vaga que faltar numa linha da formação, escolhe a melhor opção entre:
+   * - um reserva da posição, que entra no lugar do titular mais fraco de uma linha com gente a mais;
+   * - um titular de uma linha com gente a mais, improvisado na posição (rende menos fora dela).
+   * Também completa a escalação se faltar titular (ex.: suspensos).
+   */
+  function fitLineupToFormation(formation: Formation): string[] {
+    const team = managedTeam.value
+    if (!team) return []
+    const required = FORMATIONS[formation]
+    const changes: string[] = []
+    const starting = () => team.players.filter((p) => p.starter)
+    const count = (pos: Position) => starting().filter((p) => playingPosition(p) === pos).length
+    const surplusLines = () => POSITION_ORDER.filter((pos) => count(pos) > required[pos])
+    const value = (p: Player, pos: Position) => effectiveRating(p) * positionFit(p.position, pos) * (p.forSale ? 0.97 : 1)
+    const bench = () => team.players.filter((p) => !p.starter && isAvailable(p))
+
+    for (const pos of POSITION_ORDER) {
+      while (count(pos) < required[pos]) {
+        const missingStarter = starting().length < 11
+        const extras = starting().filter((p) => surplusLines().includes(playingPosition(p)))
+        // Melhor reserva da posição (ou, sem nenhum, o reserva que melhor se adapta a ela).
+        const fromBench = [...bench()].sort((a, b) => value(b, pos) - value(a, pos))[0]
+        // Melhor titular sobrando noutra linha para improvisar aqui.
+        const moved = [...extras].sort((a, b) => value(b, pos) - value(a, pos))[0]
+        const useBench = fromBench && (missingStarter || !moved || value(fromBench, pos) >= value(moved, pos))
+
+        if (useBench) {
+          if (!missingStarter) {
+            // Sai o titular mais fraco de uma linha que ficou com gente a mais.
+            const out = [...extras].sort((a, b) => value(a, playingPosition(a)) - value(b, playingPosition(b)))[0]
+            if (!out) break
+            out.starter = false
+            delete out.role
+            delete out.lineupSlot
+            changes.push(`${out.name} (${out.position}) foi para o banco`)
+          }
+          fromBench.starter = true
+          delete fromBench.lineupSlot
+          if (fromBench.position === pos) delete fromBench.role
+          else fromBench.role = pos
+          changes.push(`${fromBench.name} entrou ${fromBench.position === pos ? `como ${pos}` : `improvisado como ${pos}`}`)
+        } else if (moved) {
+          moved.role = pos === moved.position ? undefined : pos
+          if (!moved.role) delete moved.role
+          delete moved.lineupSlot
+          changes.push(`${moved.name} (${moved.position}) passou a jogar como ${pos}`)
+        } else {
+          break
+        }
+      }
+    }
+    return changes
   }
 
   function setStyle(style: PlayStyle) {
