@@ -95,7 +95,7 @@ function redCards(m: LiveMatch, teamId: string) {
 }
 
 /** Tempo que o fundo da partida fica na cor de quem marcou. */
-const GOAL_FLASH_MS = 2500
+const GOAL_FLASH_MS = 800
 
 // Jogo que acabou de ter gol fica por um momento com o fundo na cor primária de quem marcou
 // (a borda fica no verde padrão do jogo).
