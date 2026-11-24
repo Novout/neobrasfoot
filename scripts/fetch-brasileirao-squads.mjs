@@ -6,10 +6,11 @@
  *
  * Uso: npm run update-brasileirao            (elencos + técnicos)
  *      npm run update-brasileirao -- --tecnicos  (só os técnicos, sem mexer nos elencos)
+ *      npm run update-brasileirao -- --clubes=mirassol,criciuma  (só esses clubes; os outros ficam como estão)
  * Saída: src/data/templates/brasileirao-squads.json (dados brutos; idade e OVR são calculados no template).
  */
 import { readFile, writeFile } from 'node:fs/promises'
-import { CLUBS } from './brasileirao-clubs.mjs'
+import { CLUBS, selectedClubs } from './brasileirao-clubs.mjs'
 
 const OUT = new URL('../src/data/templates/brasileirao-squads.json', import.meta.url)
 const HEADERS = { 'User-Agent': 'NeobrasfootTemplateBuilder/1.0 (squad template generator)' }
@@ -136,7 +137,9 @@ async function onlyManagers() {
 async function main() {
   if (process.argv.includes('--tecnicos')) return onlyManagers()
   const squads = {}
-  for (const [id, title] of Object.entries(CLUBS)) {
+  const clubs = selectedClubs()
+  const partial = clubs !== CLUBS
+  for (const [id, title] of Object.entries(clubs)) {
     const r = await wiki(`action=parse&prop=wikitext|revid&redirects=1&page=${encodeURIComponent(title)}`)
     const text = r.parse?.wikitext ?? ''
     squads[id] = {
@@ -175,9 +178,8 @@ async function main() {
     }
   }
 
-  const out = {
-    fetchedAt: new Date().toISOString().slice(0, 10),
-    clubs: Object.fromEntries(
+  const previous = partial ? JSON.parse(await readFile(OUT, 'utf8')) : null
+  const fresh = Object.fromEntries(
       Object.entries(squads).map(([id, s]) => [
         id,
         {
@@ -190,8 +192,10 @@ async function main() {
           }),
         },
       ]),
-    ),
-  }
+    )
+  const out = previous
+    ? { ...previous, clubs: { ...previous.clubs, ...fresh } }
+    : { fetchedAt: new Date().toISOString().slice(0, 10), clubs: fresh }
   await writeFile(OUT, JSON.stringify(out, null, 1) + '\n')
   const total = Object.values(out.clubs).reduce((s, c) => s + c.players.length, 0)
   console.log(`\n${total} jogadores salvos em ${OUT.pathname}`)

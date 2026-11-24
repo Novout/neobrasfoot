@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import {
-  createCup, CUP_NAME, CUP_PRIZES, CUP_RUNNER_UP_PRIZE, drawNextRound, inRound, tieWinner,
+  createCup, CUP_NAME, cupPrize, CUP_RUNNER_UP_PRIZE, inRound, nextCupRound, tieWinner,
 } from '../data/cup'
 import {
   leagueMatchDelta, NEW_JOB_CONFIDENCE, seasonEndDelta, START_CONFIDENCE, tableDriftDelta, WARNING_CONFIDENCE,
@@ -29,7 +29,7 @@ import {
 } from '../data/stadium'
 import {
   DIVISION_LABELS, DIVISIONS, divisionAbove, divisionBelow, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL, PROMOTION_SPOTS,
-  RELEGATION_SPOTS, REPUTATION_SWING, tableZone,
+  RELEGATION_SPOTS, REPUTATION_SWING, tableZone, formatOfTeams, setActiveFormat,
 } from '../data/divisions'
 import {
   assignStarsToLegacyTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
@@ -191,6 +191,9 @@ export const useGameStore = defineStore('game', () => {
     confidence, confidenceLog, dismissal, headlines, academy,
   }, 2)
 
+  // O formato da liga (4×8 ou 2×20) vem dos próprios clubes da carreira salva.
+  if (managedTeamId.value) setActiveFormat(formatOfTeams(teams.value))
+
   const hasCareer = computed(() => managedTeamId.value !== null)
   const managedTeam = computed(() => teams.value.find((t) => t.id === managedTeamId.value) ?? null)
   const starters = computed(() => managedTeam.value?.players.filter((p) => p.starter) ?? [])
@@ -198,7 +201,7 @@ export const useGameStore = defineStore('game', () => {
   const totalRounds = computed(() => fixtures.value.length)
 
   // Saves anteriores à Copa: cria a Copa da temporada atual, encaixada nas rodadas restantes.
-  if (hasCareer.value && !cup.value) cup.value = createCup(teams.value, season.value, round.value)
+  if (hasCareer.value && !cup.value) cup.value = createCup(teams.value, season.value, round.value, fixtures.value.length)
   // Saves anteriores aos troféus: cria os técnicos com prateleiras vazias.
   if (hasCareer.value && !managers.value.length && managedTeamId.value) {
     managers.value = createManagers(teams.value, managedTeamId.value, managerName.value)
@@ -250,6 +253,11 @@ export const useGameStore = defineStore('game', () => {
     const c = cup.value
     const id = managedTeamId.value
     if (!c || !id) return null
+    // Clube que pulou a fase preliminar: espera a 1ª fase.
+    const skipped = c.byes?.includes(id) ?? false
+    if (!skipped && !c.rounds[0]?.ties.some((t) => t.homeId === id || t.awayId === id)) {
+      return { state: 'absent' as const, roundName: c.rounds[0]?.name ?? '' }
+    }
     if (c.championId === id) return { state: 'champion' as const, roundName: 'Final' }
     for (const r of c.rounds) {
       const tie: CupTie | undefined = r.ties.find((t) => t.homeId === id || t.awayId === id)
@@ -368,6 +376,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function beginCareer(league: Team[], teamId: string, name: string) {
+    setActiveFormat(formatOfTeams(league))
     teams.value = league
     managedTeamId.value = teamId
     managerName.value = name.trim() || 'Treinador'
@@ -411,7 +420,7 @@ export const useGameStore = defineStore('game', () => {
       })
       applyLineup(t, t.id === managedTeamId.value ? tactic.value.formation : AI_TACTIC.formation)
     })
-    cup.value = createCup(teams.value, season.value)
+    cup.value = createCup(teams.value, season.value, 0, totalRounds)
   }
 
   /** Quem sobe e quem cai, pela classificação final de cada divisão (sem aplicar). */
@@ -981,7 +990,7 @@ export const useGameStore = defineStore('game', () => {
     if (managedTeamId.value && round.value >= 2) {
       // A diretoria acompanha a tabela: acima do esperado agrada, abaixo preocupa.
       const position = divisionStandings(managedDivision.value).findIndex((r) => r.teamId === managedTeamId.value) + 1
-      const drift = tableDriftDelta(expectedPosition(managedTeamId.value), position)
+      const drift = tableDriftDelta(expectedPosition(managedTeamId.value), position, divisionStandings(managedDivision.value).length)
       if (drift) changeConfidence(drift, 0, drift > 0 ? `Campanha acima do esperado (${position}º)` : `Campanha abaixo do esperado (${position}º)`)
     }
     if (managedTeamId.value && budget.value < 0) changeConfidence(-5, 0, 'Clube no vermelho')
@@ -1099,7 +1108,7 @@ export const useGameStore = defineStore('game', () => {
     const cupRound = currentCupRound.value
     if (!c || !cupRound) return
     const gateCtx = gateContext.value
-    const prize = CUP_PRIZES[c.currentRound] ?? 0
+    const prize = cupPrize(c, c.currentRound)
     const isFinal = cupRound.ties.length === 1
 
     for (const m of matches) {
@@ -1168,7 +1177,7 @@ export const useGameStore = defineStore('game', () => {
       c.championId = winners[0] ?? null
       if (c.championId !== managedTeamId.value) addNews(`${getTeam(c.championId!)?.name} conquista a ${CUP_NAME}!`)
     } else {
-      c.rounds.push(drawNextRound(winners))
+      c.rounds.push(nextCupRound(c, winners, teams.value))
       c.currentRound++
     }
 
@@ -1208,7 +1217,13 @@ export const useGameStore = defineStore('game', () => {
       const firstTime = trophiesAwardedSeason.value !== season.value
       awardTrophies()
       if (firstTime && managedTeamId.value) {
-        const delta = seasonEndDelta(zone, position, expectedPosition(managedTeamId.value), cup.value?.championId === managedTeamId.value)
+        const delta = seasonEndDelta(
+          zone,
+          position,
+          expectedPosition(managedTeamId.value),
+          cup.value?.championId === managedTeamId.value,
+          sortedStandings.value.length,
+        )
         changeConfidence(delta.board, delta.club, `Balanço da temporada ${season.value}: ${position}º lugar`)
       }
       // Demitido no balanço: as propostas já são as de quem perdeu o emprego.

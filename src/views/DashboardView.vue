@@ -236,9 +236,9 @@ function standingPoints(row: { wins: number; draws: number }) {
           </tbody>
         </table>
         <p class="legend">
-          <span v-if="tableDivision === 'A'" class="zone-champion">Campeão</span>
+          <span v-if="tableDivision === DIVISIONS[0]" class="zone-champion">Campeão</span>
           <span v-else class="zone-promotion">Acesso</span>
-          <span v-if="tableDivision !== 'D'" class="zone-relegation">Rebaixamento</span>
+          <span v-if="tableDivision !== DIVISIONS.at(-1)" class="zone-relegation">Rebaixamento</span>
         </p>
       </div>
 

@@ -30,15 +30,27 @@ export function leagueMatchDelta(result: number, isHome: boolean, margin: number
   return { board: (favorite ? -5 : underdog ? -2 : -3) - heavy, club: (isHome ? -6 : -4) - heavy }
 }
 
+/** Diferença de posições na escala de uma série de 8 clubes (numa de 20, 5 posições valem 2). */
+function scaledGap(expectedPosition: number, position: number, divisionSize: number) {
+  return ((expectedPosition - position) * 8) / Math.max(divisionSize, 1)
+}
+
 /** Ao longo do campeonato a diretoria compara a posição atual com a esperada para o elenco. */
-export function tableDriftDelta(expectedPosition: number, currentPosition: number): number {
-  return Math.max(-2, Math.min(2, Math.round((expectedPosition - currentPosition) * 0.5)))
+export function tableDriftDelta(expectedPosition: number, currentPosition: number, divisionSize = 8): number {
+  return Math.max(-2, Math.min(2, Math.round(scaledGap(expectedPosition, currentPosition, divisionSize) * 0.5)))
 }
 
 /** Balanço do fim da temporada. */
-export function seasonEndDelta(zone: TableZone, position: number, expectedPosition: number, cupChampion: boolean): ConfidenceDelta {
-  let board = (expectedPosition - position) * 3
-  let club = (expectedPosition - position) * 2
+export function seasonEndDelta(
+  zone: TableZone,
+  position: number,
+  expectedPosition: number,
+  cupChampion: boolean,
+  divisionSize = 8,
+): ConfidenceDelta {
+  const gap = scaledGap(expectedPosition, position, divisionSize)
+  let board = Math.round(gap * 3)
+  let club = Math.round(gap * 2)
   if (zone === 'champion') { board += 20; club += 20 }
   else if (zone === 'promotion') { board += 15; club += 15 }
   else if (zone === 'relegation') { board -= 30; club -= 20 }

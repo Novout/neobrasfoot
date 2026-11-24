@@ -1,5 +1,8 @@
 import type { DivisionId, Position, Team } from '../types/game'
-import { DIVISION_LABELS, DIVISIONS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from './divisions'
+import {
+  ALL_DIVISIONS, DIVISION_LABELS, formatOfTeams, isLeagueFormat, LEAGUE_FORMAT_LABELS, LEAGUE_FORMATS, MAX_PLAYER_OVERALL,
+  MIN_PLAYER_OVERALL, type LeagueFormat,
+} from './divisions'
 import { FOOT_LABELS, isFoot, playerFoot, type Foot } from './feet'
 import { isValidSkillFor, playerSkills, SKILLS_BY_POSITION, SKILLS_PER_PLAYER, type SkillId } from './skills'
 import { stadiumNameFor } from './stadium'
@@ -13,6 +16,7 @@ import { isValidCrest } from './crests'
  */
 export const LEAGUE_FORMAT = 'neobrasfoot-liga'
 export const LEAGUE_FORMAT_VERSION = 1
+/** Clubes por série no formato padrão (4×8). No formato 2×20 são 20 por série. */
 export const TEAMS_PER_DIVISION = 8
 
 export interface LeagueFilePlayer {
@@ -50,7 +54,14 @@ export interface LeagueFile {
   /** Nome do addon (ex.: "Brasileirão 2026"), mostrado no menu inicial. */
   name?: string
   author?: string
+  /** Formato das séries: "4x8" (A a D, 8 clubes cada) ou "2x20" (A e B, 20 cada). Sem ele, é deduzido dos clubes. */
+  divisionFormat?: LeagueFormat
   teams: LeagueFileTeam[]
+}
+
+/** Formato de um arquivo de liga (declarado ou deduzido dos clubes). */
+export function leagueFileFormat(league: Pick<LeagueFile, 'divisionFormat' | 'teams'>): LeagueFormat {
+  return league.divisionFormat ?? formatOfTeams(league.teams)
 }
 
 const STORAGE_KEY = 'neobrasfoot:liga-personalizada'
@@ -67,7 +78,8 @@ export function teamsToLeagueFile(teams: Team[], info: { name?: string; author?:
     version: LEAGUE_FORMAT_VERSION,
     exportedAt: new Date().toISOString(),
     ...metaFields(info),
-    teams: DIVISIONS.flatMap((d) => teams.filter((t) => t.division === d)).map((t) => ({
+    divisionFormat: formatOfTeams(teams),
+    teams: ALL_DIVISIONS.flatMap((d) => teams.filter((t) => t.division === d)).map((t) => ({
       id: t.id,
       name: t.name,
       shortName: t.shortName,
@@ -149,7 +161,7 @@ export function parseLeagueFile(text: string): ParseResult {
     usedNames.add(name.toLowerCase())
 
     const division = item.division as DivisionId
-    if (!DIVISIONS.includes(division)) return fail('"division" precisa ser "A", "B", "C" ou "D".')
+    if (!ALL_DIVISIONS.includes(division)) return fail('"division" precisa ser "A", "B", "C" ou "D".')
 
     let id = typeof item.id === 'string' && item.id.trim() ? slugify(item.id) : slugify(name)
     if (!id) id = `clube-${index + 1}`
@@ -225,15 +237,25 @@ export function parseLeagueFile(text: string): ParseResult {
     })
   })
 
-  // O calendário, o acesso/rebaixamento e a Copa (32 clubes em mata-mata) dependem de 8 clubes por série.
-  for (const d of DIVISIONS) {
+  // O calendário, o acesso/rebaixamento e a Copa dependem do número exato de clubes por série.
+  const declared = isObject(raw) && isLeagueFormat(raw.divisionFormat) ? raw.divisionFormat : null
+  const divisionFormat = declared ?? formatOfTeams(teams)
+  const rules = LEAGUE_FORMATS[divisionFormat]
+  for (const d of ALL_DIVISIONS) {
     const count = teams.filter((t) => t.division === d).length
-    if (count !== TEAMS_PER_DIVISION) errors.push(`A ${DIVISION_LABELS[d]} precisa ter exatamente ${TEAMS_PER_DIVISION} clubes (tem ${count}).`)
+    if (!rules.divisions.includes(d)) {
+      if (count) errors.push(`No formato ${LEAGUE_FORMAT_LABELS[divisionFormat]} não existe a ${DIVISION_LABELS[d]} (tem ${count} clube(s)).`)
+    } else if (count !== rules.teamsPerDivision) {
+      errors.push(`A ${DIVISION_LABELS[d]} precisa ter exatamente ${rules.teamsPerDivision} clubes (tem ${count}).`)
+    }
   }
 
   return errors.length
     ? { league: null, errors }
-    : { league: { format: LEAGUE_FORMAT, version: LEAGUE_FORMAT_VERSION, ...metaFields(isObject(raw) ? raw : {}), teams }, errors: [] }
+    : {
+        league: { format: LEAGUE_FORMAT, version: LEAGUE_FORMAT_VERSION, ...metaFields(isObject(raw) ? raw : {}), divisionFormat, teams },
+        errors: [],
+      }
 }
 
 // --- Liga personalizada salva no navegador ---

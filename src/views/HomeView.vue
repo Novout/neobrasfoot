@@ -2,9 +2,11 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
+import { DIVISION_LABELS, formatOfTeams, LEAGUE_FORMAT_LABELS, LEAGUE_FORMATS, type LeagueFormat } from '../data/divisions'
 import { clearCustomLeague, getCustomLeague, parseLeagueFile, saveCustomLeague } from '../data/leagueFile'
-import { getLeagueBase, LEAGUE_BASE_LABELS, leagueTeams, setLeagueBase, type LeagueBase } from '../data/league'
+import {
+  getLeagueBase, getLeagueFormat, LEAGUE_BASE_LABELS, leagueTeams, setLeagueBase, setLeagueFormat, type LeagueBase,
+} from '../data/league'
 import type { DivisionId } from '../types/game'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
@@ -19,6 +21,10 @@ const teams = ref(leagueTeams())
 const isCustomLeague = ref(!!getCustomLeague())
 const leagueName = ref(getCustomLeague()?.name ?? null)
 const leagueBase = ref<LeagueBase>(getLeagueBase())
+/** Formato escolhido para o Brasileirão e a liga gerada (uma liga importada tem o seu próprio). */
+const leagueFormat = ref<LeagueFormat>(getLeagueFormat())
+/** Séries da liga mostrada (pelo formato dos próprios clubes). */
+const divisions = computed(() => LEAGUE_FORMATS[formatOfTeams(teams.value)].divisions)
 const selectedId = ref<string | null>(null)
 const managerName = ref('')
 const division = ref<DivisionId>('A')
@@ -51,6 +57,8 @@ function refreshLeague() {
   isCustomLeague.value = !!getCustomLeague()
   leagueName.value = getCustomLeague()?.name ?? null
   leagueBase.value = getLeagueBase()
+  leagueFormat.value = getLeagueFormat()
+  if (!divisions.value.includes(division.value)) division.value = 'A'
   selectedId.value = null
 }
 
@@ -75,8 +83,24 @@ async function importLeague(event: Event) {
     '. Ela vale para as próximas carreiras.'
 }
 
+const FORMAT_MESSAGES: Record<LeagueFormat, string> = {
+  '4x8': 'Formato 4 séries × 8 clubes: Séries A a D, 14 rodadas, 2 sobem e 2 descem.',
+  '2x20': 'Formato 2 séries × 20 clubes: Séries A e B, 38 rodadas, 4 sobem e 4 descem. A Copa reúne os 32 mais fortes.',
+}
+
+/** Troca o formato das séries (vale para o Brasileirão e a liga gerada; descarta a liga importada, se houver). */
+function chooseFormat(format: LeagueFormat) {
+  if (!isCustomLeague.value && leagueFormat.value === format) return
+  if (isCustomLeague.value && !confirm(`Deixar de usar "${leagueName.value ?? 'liga importada'}" e jogar no formato ${LEAGUE_FORMAT_LABELS[format]}?`)) return
+  clearCustomLeague()
+  setLeagueFormat(format)
+  refreshLeague()
+  importErrors.value = []
+  leagueMessage.value = FORMAT_MESSAGES[format]
+}
+
 const BASE_MESSAGES: Record<LeagueBase, string> = {
-  brasileirao: 'Brasileirão ativado: 32 clubes reais com seus elencos, nas Séries A a D. Vale para as próximas carreiras.',
+  brasileirao: 'Brasileirão ativado: clubes reais com seus elencos. Vale para as próximas carreiras.',
   gerada: 'Liga gerada ativada: clubes fictícios com elencos sorteados. Vale para as próximas carreiras.',
 }
 
@@ -143,6 +167,18 @@ function startCareer() {
             🎲 Liga gerada
           </button>
         </div>
+        <div class="league__bases" role="group" aria-label="Formato das séries">
+          <button
+            v-for="f in (['4x8', '2x20'] as const)"
+            :key="f"
+            class="btn btn--sm"
+            :class="{ 'btn--ghost': isCustomLeague || leagueFormat !== f }"
+            :title="f === '4x8' ? 'Séries A a D com 8 clubes cada (14 rodadas)' : 'Séries A e B com 20 clubes cada (38 rodadas), como o Brasileirão real'"
+            @click="chooseFormat(f)"
+          >
+            {{ LEAGUE_FORMAT_LABELS[f] }}
+          </button>
+        </div>
         <RouterLink class="btn btn--sm btn--ghost create-link" :to="{ name: 'league-editor' }">🛠️ Editor de times</RouterLink>
         <input ref="fileInput" type="file" accept="application/json,.json" hidden @change="importLeague" />
       </div>
@@ -158,7 +194,7 @@ function startCareer() {
 
     <nav class="divisions">
       <button
-        v-for="d in DIVISIONS"
+        v-for="d in divisions"
         :key="d"
         class="btn"
         :class="{ 'btn--ghost': division !== d }"

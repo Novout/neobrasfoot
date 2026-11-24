@@ -57,6 +57,21 @@ const TEAMS: TemplateTeam[] = [
   { id: 'avai', name: 'Avaí', shortName: 'AVA', division: 'D', primaryColor: '#0055a5', secondaryColor: '#ffffff', reputation: 45, stadiumName: 'Ressacada' },
 ]
 
+/**
+ * Clubes reais que só entram no formato 2×20 (40 clubes). Nesse formato as séries são refeitas pela
+ * reputação: os 20 mais fortes na Série A, os outros 20 na B. A série abaixo não é usada.
+ */
+const EXTRA_TEAMS: TemplateTeam[] = [
+  { id: 'mirassol', name: 'Mirassol', shortName: 'MIR', division: 'C', primaryColor: '#f5d000', secondaryColor: '#00843d', reputation: 64, stadiumName: 'Maião' },
+  { id: 'atletico-go', name: 'Atlético Goianiense', shortName: 'ACG', division: 'C', primaryColor: '#c8102e', secondaryColor: '#000000', reputation: 61, stadiumName: 'Antônio Accioly' },
+  { id: 'criciuma', name: 'Criciúma', shortName: 'CRI', division: 'C', primaryColor: '#f5d000', secondaryColor: '#000000', reputation: 60, stadiumName: 'Heriberto Hülse' },
+  { id: 'chapecoense', name: 'Chapecoense', shortName: 'CHA', division: 'C', primaryColor: '#00843d', secondaryColor: '#ffffff', reputation: 58, stadiumName: 'Arena Condá' },
+  { id: 'novorizontino', name: 'Novorizontino', shortName: 'NOV', division: 'D', primaryColor: '#f5d000', secondaryColor: '#000000', reputation: 57, stadiumName: 'Jorge Ismael de Biasi' },
+  { id: 'operario-pr', name: 'Operário-PR', shortName: 'OPE', division: 'D', primaryColor: '#000000', secondaryColor: '#ffffff', reputation: 55, stadiumName: 'Germano Krüger' },
+  { id: 'vila-nova', name: 'Vila Nova', shortName: 'VIL', division: 'D', primaryColor: '#c8102e', secondaryColor: '#ffffff', reputation: 54, stadiumName: 'Onésio Brasileiro Alvarenga' },
+  { id: 'amazonas', name: 'Amazonas', shortName: 'AMA', division: 'D', primaryColor: '#f5d000', secondaryColor: '#000000', reputation: 52, stadiumName: 'Arena da Amazônia' },
+]
+
 // --- Elencos reais ---
 
 interface RawPlayer {
@@ -150,15 +165,21 @@ function realSquad(teamId: string, reputation: number): LeagueFilePlayer[] | und
 }
 
 import { BRASILEIRAO_TEMPLATE_NAME } from './names'
+import { arrangeForFormat, type LeagueFormat } from '../divisions'
 export { BRASILEIRAO_TEMPLATE_NAME }
 
-/** Nova cópia a cada chamada (o editor altera o rascunho direto). */
-export function brasileiraoTemplate(): LeagueFile {
+/**
+ * Nova cópia a cada chamada (o editor altera o rascunho direto).
+ * "4x8": 32 clubes nas Séries A a D; "2x20": 40 clubes (com os extras) nas Séries A e B, pela reputação.
+ */
+export function brasileiraoTemplate(divisionFormat: LeagueFormat = '4x8'): LeagueFile {
+  const teams = divisionFormat === '4x8' ? TEAMS : arrangeForFormat([...TEAMS, ...EXTRA_TEAMS], divisionFormat)
   return {
     format: LEAGUE_FORMAT,
     version: LEAGUE_FORMAT_VERSION,
     name: BRASILEIRAO_TEMPLATE_NAME,
-    teams: TEAMS.map((t) => ({
+    divisionFormat,
+    teams: teams.map((t) => ({
       ...t,
       ...(RAW[t.id]?.manager ? { manager: RAW[t.id]!.manager } : {}),
       ...(BRASILEIRAO_CRESTS[t.id] ? { crest: BRASILEIRAO_CRESTS[t.id] } : {}),

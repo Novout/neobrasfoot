@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import TeamBadge from '../components/TeamBadge.vue'
-import { CUP_NAME, CUP_PRIZES, CUP_RUNNER_UP_PRIZE, CUP_SCHEDULE, inRound, roundName } from '../data/cup'
+import { CUP_NAME, cupPhases, cupPrize, CUP_RUNNER_UP_PRIZE, cupSchedule, hasPreliminary, inRound } from '../data/cup'
 import { DIVISION_LABELS } from '../data/divisions'
 import { useGameStore } from '../stores/game'
 import type { CupTie } from '../types/game'
@@ -10,22 +10,21 @@ import { formatMoney } from '../utils/random'
 const game = useGameStore()
 
 const cup = computed(() => game.cup)
+/** Clubes na Copa: os que jogam a 1ª fase sorteada mais os que entraram direto. */
+const participantCount = computed(() => (cup.value?.byes?.length ?? 0) + (cup.value?.rounds[0]?.ties.length ?? 0) * 2)
 
 /** Fases já sorteadas + fases futuras ainda vazias, para desenhar a chave completa. */
 const columns = computed(() => {
   const c = cup.value
   if (!c) return []
-  const firstTies = c.rounds[0]?.ties.length ?? 16
-  const total = Math.log2(firstTies) + 1
-  return Array.from({ length: total }, (_, i) => {
-    const tieCount = firstTies / 2 ** i
+  return cupPhases(c).map((phase, i) => {
     const drawn = c.rounds[i]
     return {
       index: i,
-      name: drawn?.name ?? roundName(tieCount),
+      name: phase.name,
       ties: drawn?.ties ?? null,
-      tieCount,
-      afterLeagueRound: c.schedule[i] ?? CUP_SCHEDULE[i],
+      tieCount: phase.ties,
+      afterLeagueRound: c.schedule[i] ?? cupSchedule(game.totalRounds, hasPreliminary(c))[i],
       isCurrent: !game.cupFinished && i === c.currentRound,
     }
   })
@@ -36,6 +35,11 @@ const status = computed(() => {
   if (!s) return null
   if (s.state === 'champion') return { tone: 'good', text: '🏆 Seu time é o campeão da Copa!' }
   if (s.state === 'eliminated') return { tone: 'bad', text: `Seu time foi eliminado ${inRound(s.roundName)}.` }
+  if (s.state === 'absent') return { tone: 'muted', text: 'Seu time não está na Copa nesta temporada.' }
+  const c = cup.value
+  if (c && hasPreliminary(c) && c.currentRound === 0 && c.byes?.includes(game.managedTeamId ?? '')) {
+    return { tone: 'accent', text: 'Seu time está classificado direto para a 1ª fase (não joga a fase preliminar).' }
+  }
   return { tone: 'accent', text: `Seu time segue vivo. Próxima fase: ${s.roundName}.` }
 })
 
@@ -62,7 +66,7 @@ function sideClass(tie: CupTie, teamId: string) {
 const prizes = computed(() =>
   columns.value.map((col, i) => ({
     name: col.name,
-    value: CUP_PRIZES[i] ?? 0,
+    value: cup.value ? cupPrize(cup.value, i) : 0,
     label: i === columns.value.length - 1 ? 'Título' : `Vencer ${inRound(col.name)}`,
   })),
 )
@@ -73,7 +77,13 @@ const prizes = computed(() =>
     <section class="card cup__header">
       <div>
         <h1>🏆 {{ CUP_NAME }} {{ cup.season }}</h1>
-        <p class="muted">Mata-mata em jogo único com os 32 clubes. Empate vai para os pênaltis.</p>
+        <p class="muted">
+          Mata-mata em jogo único com os {{ participantCount }} clubes. Empate vai para os pênaltis.
+          <template v-if="hasPreliminary(cup)">
+            Os {{ cup.rounds[0]!.ties.length * 2 }} mais fracos jogam a fase preliminar; os outros {{ cup.byes!.length }} entram
+            direto na 1ª fase.
+          </template>
+        </p>
         <p v-if="status" :class="status.tone"><strong>{{ status.text }}</strong></p>
         <p v-if="nextPhaseInfo" class="muted small">{{ nextPhaseInfo }}</p>
         <p v-if="cup.championId" class="champion">
@@ -98,7 +108,7 @@ const prizes = computed(() =>
       </table>
     </section>
 
-    <section class="bracket">
+    <section class="bracket" :style="{ '--phases': columns.length }">
       <div v-for="col in columns" :key="col.index" class="bracket__col" :class="{ current: col.isCurrent }">
         <header>
           <strong>{{ col.name }}</strong>
@@ -175,7 +185,7 @@ const prizes = computed(() =>
 }
 .bracket {
   display: grid;
-  grid-template-columns: repeat(5, minmax(150px, 1fr));
+  grid-template-columns: repeat(var(--phases, 5), minmax(150px, 1fr));
   gap: 0.75rem;
   overflow-x: auto;
   padding-bottom: 0.5rem;

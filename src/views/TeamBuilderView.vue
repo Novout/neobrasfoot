@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, DIVISIONS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from '../data/divisions'
+import { DIVISION_LABELS, formatOfTeams, LEAGUE_FORMATS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from '../data/divisions'
 import { leagueTeams } from '../data/league'
 import { createStadium, stadiumCapacity } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
@@ -30,16 +30,21 @@ const MIN_BY_POSITION: Record<Position, number> = { GOL: MIN_GOALKEEPERS, DEF: 4
 
 // Liga em uso nas carreiras novas (padrão ou importada).
 const referenceTeams = leagueTeams()
+/** Séries do formato dessa liga (4×8 ou 2×20). */
+const divisions = LEAGUE_FORMATS[formatOfTeams(referenceTeams)].divisions
 const divisionAverages = Object.fromEntries(
-  DIVISIONS.map((d) => {
+  divisions.map((d) => {
     const players = referenceTeams.filter((t) => t.division === d).flatMap((t) => t.players)
     return [d, players.reduce((sum, p) => sum + p.overall, 0) / players.length]
   }),
 ) as Record<DivisionId, number>
 /** Nível (média de OVR) típico de cada série, usado nos atalhos da barra. */
-const levelPresets = Object.fromEntries(DIVISIONS.map((d) => [d, Math.round(divisionAverages[d])])) as Record<DivisionId, number>
+const levelPresets = Object.fromEntries(divisions.map((d) => [d, Math.round(divisionAverages[d])])) as Record<DivisionId, number>
 
 // --- Rascunho ---
+
+/** O clube criado começa na última série do formato (Série D no 4×8, Série B no 2×20). */
+const lowestDivision = divisions.at(-1)!
 
 function emptyDraft(): CustomTeamDraft {
   return {
@@ -47,17 +52,19 @@ function emptyDraft(): CustomTeamDraft {
     shortName: '',
     primaryColor: '#1e88e5',
     secondaryColor: '#ffffff',
-    division: 'D',
-    players: generateRealisticSquad(levelPresets.D),
+    division: lowestDivision,
+    players: generateRealisticSquad(levelPresets[lowestDivision]),
   }
 }
 
 const draft = ref<CustomTeamDraft>(emptyDraft())
 const managerName = ref('')
 /** Nível do elenco: a média de OVR que a barra controla. */
-const targetLevel = ref(levelPresets.D)
+const targetLevel = ref(levelPresets[lowestDivision])
 // O rascunho fica salvo para não se perder ao recarregar a página.
 persistRefs('team-builder', { draft, managerName, targetLevel })
+// Rascunho de outro formato (ex.: Série D salva e agora a liga é 2×20): vai para a última série deste.
+if (!divisions.includes(draft.value.division)) draft.value.division = lowestDivision
 
 // Rascunhos antigos não têm talento: deduz a partir do OVR atual, com o nível igual à média do elenco.
 if (draft.value.players.some((p) => p.talent === undefined)) {
@@ -87,7 +94,7 @@ const squadAverage = computed(() => {
 
 /** Série cujo nível médio é o mais próximo do elenco criado. */
 const equivalentDivision = computed(() =>
-  DIVISIONS.reduce((best, d) =>
+  divisions.reduce((best, d) =>
     Math.abs(divisionAverages[d] - squadAverage.value) < Math.abs(divisionAverages[best] - squadAverage.value) ? d : best,
   ),
 )
@@ -220,7 +227,7 @@ function startCareer() {
           <h2>Divisão inicial</h2>
           <div class="divisions">
             <button
-              v-for="d in DIVISIONS"
+              v-for="d in divisions"
               :key="d"
               class="btn btn--sm"
               :class="{ 'btn--ghost': draft.division !== d }"
@@ -249,7 +256,7 @@ function startCareer() {
           <input v-model.number="targetLevel" type="range" :min="MIN_PLAYER_OVERALL + 5" :max="MAX_PLAYER_OVERALL - 5" />
           <div class="presets">
             <button
-              v-for="d in DIVISIONS"
+              v-for="d in divisions"
               :key="d"
               class="btn btn--sm"
               :class="{ 'btn--ghost': targetLevel !== levelPresets[d] }"
@@ -269,7 +276,7 @@ function startCareer() {
 
           <table class="compare">
             <tbody>
-              <tr v-for="d in DIVISIONS" :key="d" :class="{ chosen: d === draft.division }">
+              <tr v-for="d in divisions" :key="d" :class="{ chosen: d === draft.division }">
                 <td>Média da {{ DIVISION_LABELS[d] }}</td>
                 <td class="num">{{ divisionAverages[d].toFixed(1) }}</td>
               </tr>

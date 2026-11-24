@@ -152,6 +152,11 @@ export interface CupState {
   /** Para cada fase: quantas rodadas do campeonato precisam ter sido jogadas antes dela. */
   schedule: number[]
   championId: string | null
+  /**
+   * Clubes que pulam a fase preliminar e entram direto na 1ª fase (só quando há mais de 32 clubes, no 2×20).
+   * Ausente quando a Copa começa direto na 1ª fase.
+   */
+  byes?: string[]
 }
 
 export interface LiveMatch {

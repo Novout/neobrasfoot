@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, DIVISIONS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from '../data/divisions'
+import {
+  DIVISION_LABELS, LEAGUE_FORMAT_LABELS, LEAGUE_FORMATS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL, type LeagueFormat,
+} from '../data/divisions'
 import {
   clearCustomLeague, downloadJson, getCustomLeague, LEAGUE_FORMAT, LEAGUE_FORMAT_VERSION, parseLeagueFile,
-  saveCustomLeague, TEAMS_PER_DIVISION, teamsFromLeagueFile, teamsToLeagueFile,
+  leagueFileFormat, saveCustomLeague, teamsFromLeagueFile, teamsToLeagueFile,
   type LeagueFile, type LeagueFilePlayer, type LeagueFileTeam,
 } from '../data/leagueFile'
 import { FOOT_LABELS, playerFoot, type Foot } from '../data/feet'
 import { playerSkills, SKILLS, SKILLS_BY_POSITION, type SkillId } from '../data/skills'
 import { POSITION_ORDER } from '../data/tactics'
 import { BRASILEIRAO_TEMPLATE_NAME } from '../data/templates/brasileirao'
-import { brasileiraoLeague, getLeagueBase, LEAGUE_BASE_LABELS } from '../data/league'
+import { brasileiraoLeague, getLeagueBase, getLeagueFormat, LEAGUE_BASE_LABELS } from '../data/league'
 import { crestFromFile, isValidCrest } from '../data/crests'
 import { createTeams, DIVISION_REPUTATION, generateSquadFor } from '../data/teams'
 import type { DivisionId, Position } from '../types/game'
@@ -24,7 +26,7 @@ function toEditable(league: LeagueFile): LeagueFile {
 
 /** Liga de clubes fictícios, com elencos sorteados. */
 function generatedLeague(): LeagueFile {
-  return teamsToLeagueFile(createTeams(), { name: LEAGUE_BASE_LABELS.gerada })
+  return teamsToLeagueFile(createTeams(getLeagueFormat()), { name: LEAGUE_BASE_LABELS.gerada })
 }
 
 /** Sem liga do editor, o rascunho começa pela liga base das carreiras (Brasileirão, por padrão). */
@@ -49,6 +51,20 @@ const importErrors = ref<string[]>([])
 
 const divisionTeams = computed(() => draft.value.teams.filter((t) => t.division === division.value))
 const countBy = (d: DivisionId) => draft.value.teams.filter((t) => t.division === d).length
+
+/** Formato do rascunho (4×8 ou 2×20): define as séries e quantos clubes cada uma precisa ter. */
+const draftFormat = computed<LeagueFormat>({
+  get: () => leagueFileFormat(draft.value),
+  set: (format) => {
+    draft.value.divisionFormat = format
+    const valid = LEAGUE_FORMATS[format].divisions
+    // Clubes em séries que não existem no novo formato vão para a última série dele.
+    for (const t of draft.value.teams) if (!valid.includes(t.division)) t.division = valid.at(-1)!
+    if (!valid.includes(division.value)) selectDivision('A')
+  },
+})
+const divisions = computed(() => LEAGUE_FORMATS[draftFormat.value].divisions)
+const teamsPerDivision = computed(() => LEAGUE_FORMATS[draftFormat.value].teamsPerDivision)
 const team = computed(() => draft.value.teams.find((t) => t.id === selectedId.value) ?? null)
 
 function selectDivision(d: DivisionId) {
@@ -234,7 +250,7 @@ function exportFile() {
     exportedAt: new Date().toISOString(),
     ...(draft.value.name?.trim() ? { name: draft.value.name.trim() } : {}),
     ...(draft.value.author?.trim() ? { author: draft.value.author.trim() } : {}),
-    teams: DIVISIONS.flatMap((d) => draft.value.teams.filter((t) => t.division === d)),
+    teams: divisions.value.flatMap((d) => draft.value.teams.filter((t) => t.division === d)),
   }
   downloadJson(file, `${slug(draft.value.name ?? '') || 'liga'}.neobrasfoot.json`)
   if (!isValid.value) {
@@ -310,6 +326,12 @@ const isCustomInUse = computed(() => {
         <input v-model="draft.name" type="text" maxlength="60" placeholder="Ex.: Brasileirão 2026" />
       </label>
       <label>
+        Formato
+        <select v-model="draftFormat" title="Séries A a D com 8 clubes, ou Séries A e B com 20 clubes">
+          <option v-for="f in (['4x8', '2x20'] as const)" :key="f" :value="f">{{ LEAGUE_FORMAT_LABELS[f] }}</option>
+        </select>
+      </label>
+      <label>
         Autor
         <input v-model="draft.author" type="text" maxlength="60" placeholder="Opcional" />
       </label>
@@ -349,14 +371,14 @@ const isCustomInUse = computed(() => {
 
     <nav class="divisions">
       <button
-        v-for="d in DIVISIONS"
+        v-for="d in divisions"
         :key="d"
         class="btn btn--sm"
         :class="{ 'btn--ghost': division !== d }"
         @click="selectDivision(d)"
       >
         {{ DIVISION_LABELS[d] }}
-        <span :class="countBy(d) === TEAMS_PER_DIVISION ? '' : 'count-bad'">({{ countBy(d) }}/{{ TEAMS_PER_DIVISION }})</span>
+        <span :class="countBy(d) === teamsPerDivision ? '' : 'count-bad'">({{ countBy(d) }}/{{ teamsPerDivision }})</span>
       </button>
     </nav>
     <p v-for="e in generalErrors.filter((e) => e.includes(DIVISION_LABELS[division]))" :key="e" class="bad small center">{{ e }}</p>
@@ -387,7 +409,7 @@ const isCustomInUse = computed(() => {
             <label>
               Série
               <select :value="team.division" @change="changeDivision(($event.target as HTMLSelectElement).value as DivisionId)">
-                <option v-for="d in DIVISIONS" :key="d" :value="d">{{ DIVISION_LABELS[d] }}</option>
+                <option v-for="d in divisions" :key="d" :value="d">{{ DIVISION_LABELS[d] }}</option>
               </select>
             </label>
             <label>Cor 1 <input v-model="team.primaryColor" type="color" /></label>

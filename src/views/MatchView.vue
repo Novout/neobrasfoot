@@ -231,14 +231,14 @@ onBeforeUnmount(() => match.stop())
       </article>
     </section>
 
-    <section class="board" :class="{ 'board--cup': isCup }">
+    <section class="board" :class="{ 'board--cup': isCup }" :style="{ '--board-cols': columns.length }">
       <div v-for="col in columns" :key="col.key" class="board__col">
         <h3 v-if="col.label && col.division" class="board__title" :class="{ 'board__title--mine': col.division === game.managedDivision }">
           {{ col.label }}
           <span v-if="col.division === game.managedDivision" title="Sua divisão">★</span>
           <span class="goals" :title="`${goalsIn(col.division)} gols nesta rodada`">⚽ {{ goalsIn(col.division) }}</span>
         </h3>
-        <div class="board__list">
+        <div class="board__list" :class="{ 'board__list--split': !isCup && col.matches.length > 5 }">
           <article
             v-for="m in col.matches"
             :key="m.id"
@@ -418,7 +418,7 @@ onBeforeUnmount(() => match.stop())
 /* Painel com todos os jogos: uma coluna por série. */
 .board {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--board-cols, 4), minmax(0, 1fr));
   gap: 0.75rem;
   align-items: start;
 }
@@ -460,6 +460,17 @@ onBeforeUnmount(() => match.stop())
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+}
+/* Séries grandes (2×20: 10 jogos cada) ficam em duas subcolunas para caber na tela. */
+.board__list--split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+@media (max-width: 1100px) {
+  .board__list--split {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .mini {
   padding: 0.35rem 0.5rem;

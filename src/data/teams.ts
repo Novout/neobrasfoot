@@ -2,7 +2,7 @@ import type { DivisionId, Player, Position, Team } from '../types/game'
 import { createRng, hashString } from '../utils/random'
 import { isFoot, playerFoot, type Foot } from './feet'
 import { defaultSkills, isValidSkillFor, SKILLS_PER_PLAYER, type SkillId } from './skills'
-import { MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from './divisions'
+import { arrangeForFormat, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL, type LeagueFormat } from './divisions'
 import { STAR_CHANCE, STAR_OVERALL_BOOST, STAR_SALARY_FACTOR, starBoost } from './stars'
 
 type TeamSeed = Omit<Team, 'players'>
@@ -48,6 +48,18 @@ const TEAM_SEEDS: TeamSeed[] = [
   { id: 'cajueiro-fc', division: 'D', name: 'Cajueiro FC', shortName: 'CAJ', primaryColor: '#d84315', secondaryColor: '#fff176', reputation: 43 },
   { id: 'porto-pedras', division: 'D', name: 'Porto das Pedras', shortName: 'PDP', primaryColor: '#37474f', secondaryColor: '#4fc3f7', reputation: 42 },
   { id: 'jatoba-ec', division: 'D', name: 'Jatobá EC', shortName: 'JAT', primaryColor: '#3e2723', secondaryColor: '#a5d6a7', reputation: 40 },
+]
+
+/** Clubes fictícios extras, usados só no formato 2×20 (40 clubes). */
+const EXTRA_TEAM_SEEDS: TeamSeed[] = [
+  { id: 'gaviao-norte', division: 'D', name: 'Gavião do Norte', shortName: 'GAV', primaryColor: '#1a237e', secondaryColor: '#ffca28', reputation: 50 },
+  { id: 'maracaja-ec', division: 'D', name: 'Maracajá EC', shortName: 'MCJ', primaryColor: '#ff6f00', secondaryColor: '#212121', reputation: 48 },
+  { id: 'brisa-mar', division: 'D', name: 'Brisa do Mar FC', shortName: 'BRM', primaryColor: '#0097a7', secondaryColor: '#ffffff', reputation: 46 },
+  { id: 'ipiranga-ac', division: 'D', name: 'Ipiranga AC', shortName: 'IPI', primaryColor: '#2e7d32', secondaryColor: '#fdd835', reputation: 45 },
+  { id: 'serra-azul', division: 'D', name: 'Serra Azul EC', shortName: 'SAZ', primaryColor: '#1565c0', secondaryColor: '#ffffff', reputation: 44 },
+  { id: 'vale-sol', division: 'D', name: 'Vale do Sol FC', shortName: 'VDS', primaryColor: '#f57f17', secondaryColor: '#4e342e', reputation: 42 },
+  { id: 'pantaneiro-fc', division: 'D', name: 'Pantaneiro FC', shortName: 'PAN', primaryColor: '#558b2f', secondaryColor: '#000000', reputation: 41 },
+  { id: 'cacique-ec', division: 'D', name: 'Cacique EC', shortName: 'CAC', primaryColor: '#8e24aa', secondaryColor: '#ffffff', reputation: 39 },
 ]
 
 const FIRST_NAMES = [
@@ -217,8 +229,10 @@ export function generateSquadFor(seed: Pick<Team, 'id' | 'reputation'>): Player[
   return generatePlayers(seed as TeamSeed)
 }
 
-export function createTeams(): Team[] {
-  return TEAM_SEEDS.map((seed) => ({ ...seed, players: generatePlayers(seed) }))
+/** Liga de clubes fictícios. No formato 2×20 entram mais 8 clubes e as séries são refeitas pela reputação. */
+export function createTeams(format: LeagueFormat = '4x8'): Team[] {
+  const seeds = format === '4x8' ? TEAM_SEEDS : arrangeForFormat([...TEAM_SEEDS, ...EXTRA_TEAM_SEEDS], format)
+  return seeds.map((seed) => ({ ...seed, players: generatePlayers(seed) }))
 }
 
 // --- Clube personalizado ---
