@@ -3,7 +3,7 @@ import {
   clearCustomLeague, getCustomLeague, parseLeagueFile, saveCustomLeague, teamsFromLeagueFile,
   teamsToLeagueFile, type LeagueFile,
 } from '../leagueFile'
-import { baseLeagueTeams, getLeagueBase, leagueTeams, setLeagueBase } from '../league'
+import { baseLeagueTeams, getLeagueBase, getLeagueFormat, leagueTeams, setLeagueBase } from '../league'
 import { createTeams } from '../teams'
 
 const defaultFile = () => teamsToLeagueFile(createTeams(), { name: 'Brasileirão Teste', author: 'Eu' })
@@ -170,11 +170,12 @@ describe('técnicos', () => {
 })
 
 describe('liga base das carreiras', () => {
-  it('sem escolha, o padrão é o Brasileirão com clubes reais', () => {
+  it('sem escolha, o padrão é o Brasileirão com clubes reais no formato 2×20', () => {
     localStorage.clear()
     expect(getLeagueBase()).toBe('brasileirao')
+    expect(getLeagueFormat()).toBe('2x20')
     const teams = leagueTeams()
-    expect(teams).toHaveLength(32)
+    expect(teams).toHaveLength(40)
     expect(teams.some((t) => t.id === 'flamengo')).toBe(true)
   })
 

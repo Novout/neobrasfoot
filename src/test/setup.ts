@@ -1,5 +1,5 @@
 import { beforeEach } from 'vitest'
-import { setLeagueBase } from '../data/league'
+import { setLeagueBase, setLeagueFormat } from '../data/league'
 import { setActiveFormat } from '../data/divisions'
 
 // Cada teste começa sem save: as stores restauram o localStorage ao serem criadas.
@@ -7,6 +7,8 @@ import { setActiveFormat } from '../data/divisions'
 beforeEach(() => {
   localStorage.clear()
   setLeagueBase('gerada')
+  // A maioria dos testes foi escrita para o formato 4×8 (32 clubes, 14 rodadas); o 2×20 tem testes próprios.
+  setLeagueFormat('4x8')
   // O formato ativo é estado do módulo: volta ao padrão a cada teste.
   setActiveFormat('4x8')
 })

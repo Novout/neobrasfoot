@@ -34,7 +34,7 @@ describe('formato 2 séries × 20 clubes', () => {
     }
   })
 
-  it('o formato padrão (4×8) continua com os 32 clubes de antes', () => {
+  it('o formato 4×8 continua com os 32 clubes de antes', () => {
     const teams = teamsFromLeagueFile(parseLeagueFile(JSON.stringify(brasileiraoTemplate())).league!)
     expect(teams).toHaveLength(32)
     expect(teams.some((t) => NEW_CLUBS.includes(t.id))).toBe(false)

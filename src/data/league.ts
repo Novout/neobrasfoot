@@ -13,7 +13,7 @@ export type LeagueBase = 'brasileirao' | 'gerada'
 const BASE_KEY = 'neobrasfoot:liga-base'
 const FORMAT_KEY = 'neobrasfoot:liga-formato'
 
-/** Formato das séries para carreiras novas: 4×8 (padrão) ou 2×20. Vale para o Brasileirão e para a liga gerada. */
+/** Formato das séries para carreiras novas: 2×20 (padrão) ou 4×8. Vale para o Brasileirão e para a liga gerada. */
 export function getLeagueFormat(): LeagueFormat {
   try {
     const v = localStorage.getItem(FORMAT_KEY)

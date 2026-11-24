@@ -328,7 +328,7 @@ const isCustomInUse = computed(() => {
       <label>
         Formato
         <select v-model="draftFormat" title="Séries A a D com 8 clubes, ou Séries A e B com 20 clubes">
-          <option v-for="f in (['4x8', '2x20'] as const)" :key="f" :value="f">{{ LEAGUE_FORMAT_LABELS[f] }}</option>
+          <option v-for="f in (['2x20', '4x8'] as const)" :key="f" :value="f">{{ LEAGUE_FORMAT_LABELS[f] }}</option>
         </select>
       </label>
       <label>

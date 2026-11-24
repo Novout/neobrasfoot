@@ -2,8 +2,8 @@ import type { DivisionId } from '../types/game'
 
 /**
  * Formatos de liga:
- * - "4x8": Séries A a D com 8 clubes cada (padrão, 14 rodadas);
- * - "2x20": Séries A e B com 20 clubes cada (como o Brasileirão real, 38 rodadas).
+ * - "2x20": Séries A e B com 20 clubes cada (padrão, como o Brasileirão real, 38 rodadas);
+ * - "4x8": Séries A a D com 8 clubes cada (14 rodadas).
  */
 export type LeagueFormat = '4x8' | '2x20'
 
@@ -25,7 +25,7 @@ export const LEAGUE_FORMAT_LABELS: Record<LeagueFormat, string> = {
   '2x20': '2 séries × 20 clubes',
 }
 
-export const DEFAULT_FORMAT: LeagueFormat = '4x8'
+export const DEFAULT_FORMAT: LeagueFormat = '2x20'
 
 /** Todas as séries que existem em algum formato, da mais forte para a mais fraca. */
 export const ALL_DIVISIONS: DivisionId[] = ['A', 'B', 'C', 'D']

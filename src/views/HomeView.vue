@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, formatOfTeams, LEAGUE_FORMAT_LABELS, LEAGUE_FORMATS, type LeagueFormat } from '../data/divisions'
+import { DEFAULT_FORMAT, DIVISION_LABELS, formatOfTeams, LEAGUE_FORMAT_LABELS, LEAGUE_FORMATS, type LeagueFormat } from '../data/divisions'
 import { clearCustomLeague, getCustomLeague, parseLeagueFile, saveCustomLeague } from '../data/leagueFile'
 import {
   getLeagueBase, getLeagueFormat, LEAGUE_BASE_LABELS, leagueTeams, setLeagueBase, setLeagueFormat, type LeagueBase,
@@ -169,14 +169,14 @@ function startCareer() {
         </div>
         <div class="league__bases" role="group" aria-label="Formato das séries">
           <button
-            v-for="f in (['4x8', '2x20'] as const)"
+            v-for="f in (['2x20', '4x8'] as const)"
             :key="f"
             class="btn btn--sm"
             :class="{ 'btn--ghost': isCustomLeague || leagueFormat !== f }"
             :title="f === '4x8' ? 'Séries A a D com 8 clubes cada (14 rodadas)' : 'Séries A e B com 20 clubes cada (38 rodadas), como o Brasileirão real'"
             @click="chooseFormat(f)"
           >
-            {{ LEAGUE_FORMAT_LABELS[f] }}
+            {{ LEAGUE_FORMAT_LABELS[f] }}{{ f === DEFAULT_FORMAT ? ' (padrão)' : '' }}
           </button>
         </div>
         <RouterLink class="btn btn--sm btn--ghost create-link" :to="{ name: 'league-editor' }">🛠️ Editor de times</RouterLink>
