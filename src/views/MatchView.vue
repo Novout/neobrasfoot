@@ -62,6 +62,34 @@ function scorers(m: LiveMatch, teamId: string) {
     .join(', ')
 }
 
+const EVENT_DETAILS: Record<MatchEventType, string> = {
+  gol: 'gol',
+  amarelo: 'cartão amarelo',
+  vermelho: 'expulso',
+  lesao: 'lesionado',
+  sub: 'entra',
+  'penalti-perdido': 'perdeu o pênalti',
+}
+
+/** Último acontecimento do jogo, para a notificação à direita do cartão. */
+function lastEvent(m: LiveMatch) {
+  const e = m.events.at(-1)
+  if (!e) return null
+  let detail = EVENT_DETAILS[e.type]
+  if (e.type === 'gol' && e.penalty) detail = 'gol de pênalti'
+  if (e.type === 'vermelho' && e.secondYellow) detail = 'expulso (2º amarelo)'
+  if (e.type === 'sub' && e.outName) detail = `entra no lugar de ${e.outName}`
+  return {
+    key: `${m.id}-${m.events.length}`,
+    type: e.type,
+    icon: EVENT_ICONS[e.type],
+    clock: clockLabel(e.minute, e.extra),
+    player: e.playerName,
+    team: game.getTeam(e.teamId)?.shortName ?? '',
+    detail,
+  }
+}
+
 function redCards(m: LiveMatch, teamId: string) {
   return m.events.filter((e) => e.type === 'vermelho' && e.teamId === teamId).length
 }
@@ -261,50 +289,76 @@ onBeforeUnmount(() => {
       </article>
     </section>
 
-    <section class="board" :class="{ 'board--cup': isCup }" :style="{ '--board-cols': columns.length }">
+    <!-- Todos os jogos numa coluna só: cada cartão largo traz estádio, placar e o último lance. -->
+    <section class="board">
       <div v-for="col in columns" :key="col.key" class="board__col">
         <h3 v-if="col.label && col.division" class="board__title" :class="{ 'board__title--mine': col.division === game.managedDivision }">
           {{ col.label }}
           <span v-if="col.division === game.managedDivision" title="Sua divisão">★</span>
           <span class="goals" :title="`${goalsIn(col.division)} gols nesta rodada`">⚽ {{ goalsIn(col.division) }}</span>
         </h3>
-        <div class="board__list" :class="{ 'board__list--split': !isCup && col.matches.length > 5 }">
+        <div class="board__list">
           <article
             v-for="m in col.matches"
             :key="m.id"
-            class="mini"
-            :class="{ 'mini--mine': isMine(m), 'mini--flash': flashing.has(m.id) }"
+            class="wide"
+            :class="{ 'wide--mine': isMine(m), 'wide--flash': flashing.has(m.id) }"
             :style="flashStyle(m.id)"
             :title="expanded.has(m.id) ? 'Clique para recolher' : 'Clique para ver os lances'"
             @click="toggle(m.id)"
           >
-            <div class="mini__row">
-              <span class="mini__team" :title="game.getTeam(m.homeId)?.name">{{ game.getTeam(m.homeId)?.name }}</span>
-              <TeamBadge :team="game.getTeam(m.homeId)!" :size="20" />
-              <strong class="mini__score">{{ m.homeGoals }}<span class="muted">-</span>{{ m.awayGoals }}</strong>
-              <TeamBadge :team="game.getTeam(m.awayId)!" :size="20" />
-              <span class="mini__team mini__team--away" :title="game.getTeam(m.awayId)?.name">{{ game.getTeam(m.awayId)?.name }}</span>
+            <div class="wide__venue">
+              <template v-if="m.venue">
+                <span class="wide__stadium" :title="m.venue.name">🏟️ {{ m.venue.name }}</span>
+                <span class="muted" :title="`Capacidade: ${m.venue.capacity.toLocaleString('pt-BR')} lugares`">
+                  {{ m.venue.attendance.toLocaleString('pt-BR') }} torcedores
+                  <span v-if="occupancy(m.venue) >= 100" class="sold-out">lotado</span>
+                  <template v-else>({{ occupancy(m.venue) }}%)</template>
+                </span>
+              </template>
             </div>
-            <div class="mini__meta">
-              <span class="mini__scorers mini__scorers--home">
-                <span v-if="redCards(m, m.homeId)" class="red">🟥{{ redCards(m, m.homeId) > 1 ? redCards(m, m.homeId) : '' }}</span>
-                {{ scorers(m, m.homeId) }}
-              </span>
-              <span class="mini__center">
-                <span v-if="m.penalties" class="pens">pên. {{ m.penalties.home }}-{{ m.penalties.away }}</span>
-                <span v-else-if="matchClock(m)" class="match-clock">{{ matchClock(m) }}</span>
-              </span>
-              <span class="mini__scorers">
-                {{ scorers(m, m.awayId) }}
-                <span v-if="redCards(m, m.awayId)" class="red">🟥{{ redCards(m, m.awayId) > 1 ? redCards(m, m.awayId) : '' }}</span>
-              </span>
+
+            <div class="wide__game">
+              <div class="wide__row">
+                <span class="wide__team" :title="game.getTeam(m.homeId)?.name">{{ game.getTeam(m.homeId)?.name }}</span>
+                <TeamBadge :team="game.getTeam(m.homeId)!" :size="24" />
+                <strong class="wide__score">{{ m.homeGoals }}<span class="muted">-</span>{{ m.awayGoals }}</strong>
+                <TeamBadge :team="game.getTeam(m.awayId)!" :size="24" />
+                <span class="wide__team wide__team--away" :title="game.getTeam(m.awayId)?.name">{{ game.getTeam(m.awayId)?.name }}</span>
+              </div>
+              <div class="wide__meta">
+                <span class="wide__scorers wide__scorers--home">
+                  <span v-if="redCards(m, m.homeId)" class="red">🟥{{ redCards(m, m.homeId) > 1 ? redCards(m, m.homeId) : '' }}</span>
+                  {{ scorers(m, m.homeId) }}
+                </span>
+                <span class="wide__center">
+                  <span v-if="m.penalties" class="pens">pên. {{ m.penalties.home }}-{{ m.penalties.away }}</span>
+                  <span v-else-if="matchClock(m)" class="match-clock">{{ matchClock(m) }}</span>
+                </span>
+                <span class="wide__scorers">
+                  {{ scorers(m, m.awayId) }}
+                  <span v-if="redCards(m, m.awayId)" class="red">🟥{{ redCards(m, m.awayId) > 1 ? redCards(m, m.awayId) : '' }}</span>
+                </span>
+              </div>
             </div>
+
+            <div class="wide__last">
+              <!-- A chave muda a cada lance novo: a notificação reaparece com uma animação curta. -->
+              <span v-if="lastEvent(m)" :key="lastEvent(m)!.key" class="notice" :class="`notice--${lastEvent(m)!.type}`">
+                <span class="notice__icon">{{ lastEvent(m)!.icon }}</span>
+                <span class="notice__text">
+                  <strong>{{ lastEvent(m)!.clock }} {{ lastEvent(m)!.player }}</strong>
+                  <small>{{ lastEvent(m)!.detail }} · {{ lastEvent(m)!.team }}</small>
+                </span>
+              </span>
+              <span v-else class="notice notice--empty muted">Sem lances ainda</span>
+            </div>
+
             <ul v-if="expanded.has(m.id) && m.events.length" class="events events--mini">
               <li v-for="(e, i) in m.events" :key="i" :class="e.teamId === m.homeId ? 'home' : 'away'">
                 {{ EVENT_ICONS[e.type] }} {{ clockLabel(e.minute, e.extra) }} {{ e.playerName }}
               </li>
             </ul>
-            <p v-else-if="expanded.has(m.id)" class="muted mini__empty">Sem lances ainda.</p>
           </article>
         </div>
       </div>
@@ -390,6 +444,7 @@ onBeforeUnmount(() => {
 }
 .controls {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.4rem;
   align-items: center;
 }
@@ -446,29 +501,11 @@ onBeforeUnmount(() => {
   overflow-y: auto;
 }
 
-/* Painel com todos os jogos: uma coluna por série. */
+/* Painel com todos os jogos: uma coluna só, as séries uma embaixo da outra. */
 .board {
-  display: grid;
-  grid-template-columns: repeat(var(--board-cols, 4), minmax(0, 1fr));
-  gap: 0.75rem;
-  align-items: start;
-}
-.board--cup {
-  grid-template-columns: minmax(0, 1fr);
-}
-.board--cup .board__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-}
-@media (max-width: 1100px) {
-  .board:not(.board--cup) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 620px) {
-  .board:not(.board--cup) {
-    grid-template-columns: minmax(0, 1fr);
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
 }
 .board__title {
   display: flex;
@@ -492,34 +529,29 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 0.35rem;
 }
-/* Séries grandes (2×20: 10 jogos cada) ficam em duas subcolunas para caber na tela. */
-.board__list--split {
+
+/* Cartão largo: estádio à esquerda, jogo no centro, último lance à direita. */
+.wide {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-}
-@media (max-width: 1100px) {
-  .board__list--split {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-.mini {
-  padding: 0.35rem 0.5rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.75rem;
   border-radius: 8px;
   background: var(--surface);
   border: 1px solid var(--border);
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   transition: border-color 0.2s, background-color 0.4s;
 }
-.mini:hover {
+.wide:hover {
   border-color: var(--muted);
 }
-.mini--mine {
+.wide--mine {
   border-color: var(--accent);
 }
 /* Gol: fundo na cor primária de quem marcou, misturada ao fundo para o texto continuar legível. */
-.mini--flash,
+.wide--flash,
 .match--flash {
   background: color-mix(in srgb, var(--goal-color) 30%, var(--surface));
   border-color: var(--accent);
@@ -527,55 +559,138 @@ onBeforeUnmount(() => {
   box-shadow: 0 0 14px color-mix(in srgb, var(--goal-color) 40%, transparent);
   transition: none;
 }
-.mini--flash .mini__team,
-.mini--flash .mini__score,
+.wide--flash .wide__team,
+.wide--flash .wide__score,
 .match--flash .team-name,
 .match--flash .score {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
 }
-.mini__row {
+.wide__venue {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+.wide__venue > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wide__stadium {
+  font-weight: 600;
+}
+.wide__game {
+  min-width: 0;
+}
+.wide__row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr);
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
-.mini__team {
+.wide__team {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: right;
   font-weight: 600;
 }
-.mini__team--away {
+.wide__team--away {
   text-align: left;
 }
-.mini__score {
-  min-width: 2.6rem;
+.wide__score {
+  min-width: 2.8rem;
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-variant-numeric: tabular-nums;
 }
-.mini__meta {
+.wide__meta {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  gap: 0.35rem;
+  gap: 0.4rem;
   min-height: 1rem;
   font-size: 0.68rem;
   color: var(--muted);
 }
-.mini__scorers {
+.wide__scorers {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.mini__scorers--home {
+.wide__scorers--home {
   text-align: right;
 }
-.mini__center {
+.wide__center {
   text-align: center;
 }
-.mini__center .match-clock {
+.wide__center .match-clock {
   margin-left: 0;
+}
+.wide__last {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+/* Notificação do último lance; a cor da borda indica o tipo. */
+.notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--border);
+  background: var(--surface-2);
+  animation: notice-in 0.6s ease-out;
+}
+.notice--gol {
+  border-left-color: var(--good);
+}
+.notice--amarelo {
+  border-left-color: var(--warn);
+}
+.notice--vermelho,
+.notice--penalti-perdido {
+  border-left-color: var(--bad);
+}
+.notice--lesao {
+  border-left-color: #f97316;
+}
+.notice--sub {
+  border-left-color: #60a5fa;
+}
+.notice--empty {
+  border-left-color: transparent;
+  background: transparent;
+  font-size: 0.72rem;
+  animation: none;
+}
+.notice__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.2;
+}
+.notice__text strong,
+.notice__text small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.notice__text strong {
+  font-size: 0.75rem;
+}
+.notice__text small {
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+@keyframes notice-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+    background: var(--accent-soft);
+  }
 }
 .pens {
   color: var(--warn);
@@ -585,14 +700,20 @@ onBeforeUnmount(() => {
   font-size: 0.6rem;
 }
 .events--mini {
-  margin-top: 0.35rem;
+  grid-column: 1 / -1;
+  margin-top: 0.2rem;
   padding-top: 0.3rem;
   font-size: 0.72rem;
 }
-.mini__empty {
-  margin: 0.3rem 0 0;
-  font-size: 0.72rem;
-  text-align: center;
+/* Telas estreitas: o placar fica em cima; estádio e último lance embaixo, lado a lado. */
+@media (max-width: 760px) {
+  .wide {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .wide__game {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
 }
 .scoreboard {
   display: grid;
