@@ -94,8 +94,10 @@ function quit() {
   display: block;
   color: var(--muted);
 }
+/* As abas quebram linha quando não cabem: nenhuma fica escondida. */
 .app-header__nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.25rem;
 }
 .app-header__nav a {
@@ -142,5 +144,67 @@ function quit() {
 .money {
   font-weight: 700;
   color: var(--accent);
+  white-space: nowrap;
+}
+
+/* Telas estreitas: em cima o clube, o caixa e Sair; embaixo as abas (em quantas linhas precisarem). */
+@media (max-width: 900px) {
+  .app-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'team meta'
+      'nav nav';
+    gap: 0.4rem 0.75rem;
+    padding: 0.5rem 0.75rem 0;
+  }
+  .app-header__team {
+    grid-area: team;
+    min-width: 0;
+    gap: 0.5rem;
+  }
+  .app-header__team > div {
+    min-width: 0;
+  }
+  .app-header__team strong,
+  .app-header__team small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .app-header__team small {
+    font-size: 0.72rem;
+  }
+  .app-header__meta {
+    grid-area: meta;
+    gap: 0.5rem;
+  }
+  .app-header__meta .btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  .money {
+    font-size: 0.85rem;
+  }
+  .app-header__nav {
+    grid-area: nav;
+    gap: 0.15rem;
+    padding-bottom: 0.45rem;
+  }
+  .app-header__nav a {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.85rem;
+  }
+}
+/* Celular: os medidores de confiança ficam no Dashboard, para sobrar espaço ao nome do clube. */
+@media (max-width: 520px) {
+  .app-header__meta :deep(.meters) {
+    display: none;
+  }
+  .app-header__nav a {
+    padding: 0.25rem 0.45rem;
+    font-size: 0.8rem;
+  }
 }
 </style>
