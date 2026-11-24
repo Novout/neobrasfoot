@@ -66,20 +66,41 @@ function redCards(m: LiveMatch, teamId: string) {
   return m.events.filter((e) => e.type === 'vermelho' && e.teamId === teamId).length
 }
 
-// Jogo que acabou de ter gol pisca por alguns segundos no painel.
-const flashing = ref(new Set<string>())
+/** Tempo que o fundo da partida fica na cor de quem marcou. */
+const GOAL_FLASH_MS = 2500
+
+// Jogo que acabou de ter gol fica por um momento com o fundo na cor primária de quem marcou
+// (a borda usa a cor secundária, para clubes de cor escura também aparecerem no fundo escuro).
+const flashing = ref(new Map<string, { primary: string; secondary: string }>())
 const goalCounts = computed(() => Object.fromEntries(match.matches.map((m) => [m.id, m.homeGoals + m.awayGoals])))
+const timers = new Map<string, ReturnType<typeof setTimeout>>()
 watch(goalCounts, (now, before) => {
   for (const [id, n] of Object.entries(now)) {
     if (!before || n <= (before[id] ?? 0)) continue
-    flashing.value = new Set(flashing.value).add(id)
-    setTimeout(() => {
-      const next = new Set(flashing.value)
-      next.delete(id)
-      flashing.value = next
-    }, 2500)
+    const m = match.matches.find((x) => x.id === id)
+    const scorer = m?.events.filter((e) => e.type === 'gol').at(-1)
+    const team = scorer && game.getTeam(scorer.teamId)
+    if (!team) continue
+    flashing.value = new Map(flashing.value).set(id, { primary: team.primaryColor, secondary: team.secondaryColor })
+    // Gol seguido no mesmo jogo: reinicia o tempo (e troca a cor, se foi do outro time).
+    clearTimeout(timers.get(id))
+    timers.set(
+      id,
+      setTimeout(() => {
+        const next = new Map(flashing.value)
+        next.delete(id)
+        flashing.value = next
+        timers.delete(id)
+      }, GOAL_FLASH_MS),
+    )
   }
 })
+
+/** Estilo do fundo de um jogo enquanto pisca o gol. */
+function flashStyle(id: string) {
+  const c = flashing.value.get(id)
+  return c ? { '--goal-color': c.primary, '--goal-border': c.secondary } : undefined
+}
 
 function goalsIn(division: DivisionId) {
   return match.matches
@@ -123,7 +144,10 @@ watch(
 onMounted(() => {
   if (match.minute === 0) match.start()
 })
-onBeforeUnmount(() => match.stop())
+onBeforeUnmount(() => {
+  match.stop()
+  timers.forEach((t) => clearTimeout(t))
+})
 </script>
 
 <template>
@@ -181,7 +205,13 @@ onBeforeUnmount(() => match.stop())
     <h2 class="round-title" :class="{ 'round-title--cup': isCup }">{{ isCup ? '🏆 ' : '' }}{{ game.nextEventLabel }}</h2>
 
     <section v-if="myMatch" class="match-list">
-      <article v-for="m in [myMatch]" :key="m.id" class="card match match--mine" :class="{ 'match--flash': flashing.has(m.id) }">
+      <article
+        v-for="m in [myMatch]"
+        :key="m.id"
+        class="card match match--mine"
+        :class="{ 'match--flash': flashing.has(m.id) }"
+        :style="flashStyle(m.id)"
+      >
         <div class="scoreboard">
           <div class="side">
             <span class="team-name">{{ game.getTeam(m.homeId)?.name }}</span>
@@ -244,6 +274,7 @@ onBeforeUnmount(() => match.stop())
             :key="m.id"
             class="mini"
             :class="{ 'mini--mine': isMine(m), 'mini--flash': flashing.has(m.id) }"
+            :style="flashStyle(m.id)"
             :title="expanded.has(m.id) ? 'Clique para recolher' : 'Clique para ver os lances'"
             @click="toggle(m.id)"
           >
@@ -487,9 +518,19 @@ onBeforeUnmount(() => match.stop())
 .mini--mine {
   border-color: var(--accent);
 }
+/* Gol: fundo na cor primária de quem marcou, misturada ao fundo para o texto continuar legível. */
 .mini--flash,
 .match--flash {
-  background: rgba(74, 222, 128, 0.16);
+  background: color-mix(in srgb, var(--goal-color) 55%, var(--surface));
+  border-color: var(--goal-border);
+  box-shadow: 0 0 0 1px var(--goal-border), 0 0 18px color-mix(in srgb, var(--goal-color) 60%, transparent);
+  transition: none;
+}
+.mini--flash .mini__team,
+.mini--flash .mini__score,
+.match--flash .team-name,
+.match--flash .score {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
 }
 .mini__row {
   display: grid;
