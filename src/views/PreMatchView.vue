@@ -8,10 +8,10 @@ import StarMark from '../components/StarMark.vue'
 import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { isAvailable, unavailableReason } from '../data/discipline'
-import { FORMATIONS, PLAY_STYLES, playingPosition, POSITION_ORDER } from '../data/tactics'
+import { FORMATIONS, markingOf, MARKINGS, PLAY_STYLES, playingPosition, POSITION_ORDER } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
-import type { Formation, PlayStyle } from '../types/game'
+import type { Formation, Marking, PlayStyle } from '../types/game'
 
 const game = useGameStore()
 const match = useMatchStore()
@@ -28,6 +28,8 @@ function changeFormation(formation: Formation) {
 /** Campo com camisas para arrastar ou a lista clássica por posição. */
 const lineupView = ref<'campo' | 'lista'>('campo')
 const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
+const markings = Object.keys(MARKINGS) as Marking[]
+const marking = computed(() => markingOf(game.tactic))
 
 const required = computed(() => FORMATIONS[game.tactic.formation])
 const startersByPos = computed(() =>
@@ -169,6 +171,22 @@ function play() {
               {{ PLAY_STYLES[s].label }}
             </button>
           </div>
+        </div>
+        <div class="field">
+          Marcação
+          <div class="styles">
+            <button
+              v-for="mk in markings"
+              :key="mk"
+              class="btn btn--sm"
+              :class="{ 'btn--ghost': marking !== mk }"
+              :title="MARKINGS[mk].hint"
+              @click="game.setMarking(mk)"
+            >
+              {{ MARKINGS[mk].label }}
+            </button>
+          </div>
+          <small class="muted marking-hint">{{ MARKINGS[marking].hint }}</small>
         </div>
         <div v-if="lineupChanges?.changes.length" class="lineup-changes small">
           <strong>Escalação ajustada para o {{ lineupChanges.formation }}:</strong>
@@ -316,6 +334,10 @@ function play() {
 .styles {
   display: flex;
   gap: 0.35rem;
+}
+.marking-hint {
+  font-size: 0.75rem;
+  line-height: 1.3;
 }
 .lineup-changes {
   margin: 0 0 0.75rem;

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { LiveMatch, Player } from '../types/game'
 import { matchEnergyCost } from '../data/energy'
-import { playingPosition } from '../data/tactics'
+import { markingOf, MARKINGS, playingPosition } from '../data/tactics'
 import {
   DIRECT_RED_CHANCE, injuryChanceFor, isAvailable, pickCardedPlayer, pickInjuredPlayer, rollInjuryGames, SENT_OFF_PENALTY,
   YELLOW_CHANCE,
@@ -390,12 +390,14 @@ export const useMatchStore = defineStore('match', () => {
     const home = lineups.value[m.homeId] ?? []
     const away = lineups.value[m.awayId] ?? []
     // Jogo limpo do time diminui; dribladores do adversário aumentam.
-    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.homeId).style] * foulFactor(home, away)) {
+    // A marcação forte faz mais faltas; a leve, menos.
+    const fouls = (teamId: string) => FOUL_STYLE_FACTOR[game.tacticFor(teamId).style] * MARKINGS[markingOf(game.tacticFor(teamId))].fouls
+    if (Math.random() < FOUL_CHANCE * fouls(m.homeId) * foulFactor(home, away)) {
       m.fouls.home++
       // Falta dentro da área: pênalti para o adversário.
       if (Math.random() < PENALTY_FOUL_SHARE) awardPenalty(m, m.awayId)
     }
-    if (Math.random() < FOUL_CHANCE * FOUL_STYLE_FACTOR[game.tacticFor(m.awayId).style] * foulFactor(away, home)) {
+    if (Math.random() < FOUL_CHANCE * fouls(m.awayId) * foulFactor(away, home)) {
       m.fouls.away++
       if (Math.random() < PENALTY_FOUL_SHARE) awardPenalty(m, m.homeId)
     }
@@ -625,7 +627,9 @@ export const useMatchStore = defineStore('match', () => {
       removeFromPitch(m, teamId, p.id)
     }
 
-    if (Math.random() < YELLOW_CHANCE) {
+    // Marcação forte leva mais cartões (amarelos e vermelhos diretos); a leve, menos.
+    const cardRate = MARKINGS[markingOf(useGameStore().tacticFor(teamId))].cards
+    if (Math.random() < YELLOW_CHANCE * cardRate) {
       const booked = new Set(m.events.filter((e) => e.type === 'amarelo' && e.teamId === teamId).map((e) => e.playerId!))
       const p = pickCardedPlayer(onPitch, booked)
       if (p) {
@@ -634,7 +638,7 @@ export const useMatchStore = defineStore('match', () => {
         m.events.push({ ...at, teamId, type: 'amarelo', ...eventPlayer(p) })
         if (alreadyBooked) sendOff(p, true)
       }
-    } else if (Math.random() < DIRECT_RED_CHANCE) {
+    } else if (Math.random() < DIRECT_RED_CHANCE * cardRate) {
       const p = pickCardedPlayer(onPitch)
       if (p) {
         foul()

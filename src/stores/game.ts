@@ -21,7 +21,7 @@ import { matchEnergyCost, playedRecovery, REST_RECOVERY, SUB_ENTRY_ENERGY, TRAIN
 import { shootoutScore, simulateShootout } from '../data/penalties'
 import { teamSkillBonus } from '../data/skills'
 import { sideFits } from '../data/feet'
-import { FORMATIONS, PLAY_STYLES, playingPosition, POSITION_ORDER, positionFit } from '../data/tactics'
+import { FORMATIONS, markingOf, MARKINGS, PLAY_STYLES, playingPosition, POSITION_ORDER, positionFit } from '../data/tactics'
 import {
   AWAY_GAME_INCOME, bestTicketPrice, idealTicketPrice, buildRounds, createStadium, estimateGate, gateRevenue, homeAdvantageBonus,
   matchAttendance,
@@ -36,7 +36,7 @@ import {
   assignStarsToLegacyTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
-  Academy, Competition, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  Academy, Competition, Marking, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord, Position,
 } from '../types/game'
 import { clamp, createRng, formatMoney, hashString } from '../utils/random'
@@ -147,7 +147,8 @@ export function lineupStrength(starters: Player[], tactic: Tactic) {
   defense *= skills.defense
 
   const style = PLAY_STYLES[tactic.style]
-  return { attack: attack * style.attack, defense: defense / style.defense, matchesFormation }
+  const marking = MARKINGS[markingOf(tactic)]
+  return { attack: attack * style.attack, defense: defense / style.defense / marking.concede, matchesFormation }
 }
 
 export const useGameStore = defineStore('game', () => {
@@ -159,7 +160,7 @@ export const useGameStore = defineStore('game', () => {
   const round = ref(0)
   const fixtures = ref<Fixture[][]>([])
   const standings = ref<StandingRow[]>([])
-  const tactic = ref<Tactic>({ formation: '4-4-2', style: 'equilibrado' })
+  const tactic = ref<Tactic>({ formation: '4-4-2', style: 'equilibrado', marking: 'media' })
   const trainedThisRound = ref<string[]>([])
   const news = ref<string[]>([])
   /** Giro da rodada: goleadas, zebras e negócios caros da liga inteira. */
@@ -402,7 +403,7 @@ export const useGameStore = defineStore('game', () => {
     managerName.value = name.trim() || 'Treinador'
     season.value = 1
     round.value = 0
-    tactic.value = { formation: '4-4-2', style: 'equilibrado' }
+    tactic.value = { formation: '4-4-2', style: 'equilibrado', marking: 'media' }
     news.value = []
     headlines.value = []
     transferOffers.value = []
@@ -965,6 +966,10 @@ export const useGameStore = defineStore('game', () => {
     tactic.value.style = style
   }
 
+  function setMarking(marking: Marking) {
+    tactic.value.marking = marking
+  }
+
   /** Tática em uso: a sua para o clube gerenciado, a padrão da IA para os outros. */
   function tacticFor(teamId: string): Tactic {
     return teamId === managedTeamId.value ? tactic.value : AI_TACTIC
@@ -1358,7 +1363,7 @@ export const useGameStore = defineStore('game', () => {
     addNews, addHeadlines, refreshAcademy, youthBlocker, promoteYouth, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
     roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,
-    toggleStarter, setRole, substituteStarter, arrangeLine, autoSelectStarters, setFormation, setStyle, teamStrength, tacticFor,
+    toggleStarter, setRole, substituteStarter, arrangeLine, autoSelectStarters, setFormation, setStyle, setMarking, teamStrength, tacticFor,
     applyRoundResults,
   }
 })

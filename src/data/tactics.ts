@@ -1,4 +1,4 @@
-import type { Formation, Player, PlayStyle, Position } from '../types/game'
+import type { Formation, Marking, Player, PlayStyle, Position, Tactic } from '../types/game'
 
 export const FORMATIONS: Record<Formation, Record<Position, number>> = {
   '4-4-2': { GOL: 1, DEF: 4, MEI: 4, ATA: 2 },
@@ -13,6 +13,32 @@ export const PLAY_STYLES: Record<PlayStyle, { label: string; attack: number; def
   defensivo: { label: 'Defensivo', attack: 0.8, defense: 0.75 },
   equilibrado: { label: 'Equilibrado', attack: 1, defense: 1 },
   ofensivo: { label: 'Ofensivo', attack: 1.25, defense: 1.2 },
+}
+
+/**
+ * Marcação: `concede` multiplica a chance de sofrer gol (como o `defense` do estilo), `cards` a de levar
+ * cartão e `fouls` a de cometer falta (e, com ela, pênaltis contra).
+ */
+export const MARKINGS: Record<Marking, { label: string; concede: number; cards: number; fouls: number; hint: string }> = {
+  leve: {
+    label: 'Leve',
+    concede: 1.1,
+    cards: 0.55,
+    fouls: 0.85,
+    hint: 'Menos faltas e cartões, mas o adversário encontra mais espaço: mais chance de sofrer gol.',
+  },
+  media: { label: 'Média', concede: 1, cards: 1, fouls: 1, hint: 'Equilíbrio entre proteger o gol e evitar cartões.' },
+  forte: {
+    label: 'Forte',
+    concede: 0.9,
+    cards: 1.7,
+    fouls: 1.2,
+    hint: 'Menos chance de sofrer gol, mas mais faltas, cartões (e pênaltis contra).',
+  },
+}
+
+export function markingOf(t: Pick<Tactic, 'marking'>): Marking {
+  return t.marking ?? 'media'
 }
 
 export const POSITION_ORDER: Position[] = ['GOL', 'DEF', 'MEI', 'ATA']

@@ -70,10 +70,14 @@ export interface Team {
 
 export type Formation = '4-4-2' | '4-3-3' | '3-5-2' | '5-3-2' | '4-5-1'
 export type PlayStyle = 'defensivo' | 'equilibrado' | 'ofensivo'
+/** Intensidade da marcação: leve (menos cartões, mais gols sofridos) até forte (o contrário). */
+export type Marking = 'leve' | 'media' | 'forte'
 
 export interface Tactic {
   formation: Formation
   style: PlayStyle
+  /** Ausente em saves antigos: vale "media". */
+  marking?: Marking
 }
 
 export interface Fixture {

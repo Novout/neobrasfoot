@@ -204,3 +204,29 @@ describe('cansaço', () => {
     expect(Math.round(fullMatchDrain(cases[0]!)) - playedRecovery(cases[0]!)).toBeLessThanOrEqual(6)
   })
 })
+
+describe('marcação', () => {
+  it('forte protege mais o gol e leva mais cartões; leve o contrário; média é neutra', async () => {
+    const { MARKINGS, markingOf } = await import('../tactics')
+    expect(markingOf({})).toBe('media')
+    expect(MARKINGS.media).toMatchObject({ concede: 1, cards: 1, fouls: 1 })
+    expect(MARKINGS.forte.concede).toBeLessThan(1)
+    expect(MARKINGS.forte.cards).toBeGreaterThan(1)
+    expect(MARKINGS.leve.concede).toBeGreaterThan(1)
+    expect(MARKINGS.leve.cards).toBeLessThan(1)
+  })
+
+  it('a marcação muda a defesa do time na força calculada', async () => {
+    const { lineupStrength } = await import('../../stores/game')
+    const { createTeams } = await import('../teams')
+    const players = createTeams()[0]!.players
+    const pick = (pos: string, n: number) => players.filter((p) => p.position === pos).slice(0, n)
+    const starters = [...pick('GOL', 1), ...pick('DEF', 4), ...pick('MEI', 4), ...pick('ATA', 2)]
+    const def = (marking: 'leve' | 'media' | 'forte') =>
+      lineupStrength(starters, { formation: '4-4-2', style: 'equilibrado', marking }).defense
+    expect(def('forte')).toBeGreaterThan(def('media'))
+    expect(def('leve')).toBeLessThan(def('media'))
+    // Saves antigos (sem marcação) jogam como "média".
+    expect(lineupStrength(starters, { formation: '4-4-2', style: 'equilibrado' }).defense).toBe(def('media'))
+  })
+})
