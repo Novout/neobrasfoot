@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "repository": "https://github.com/Novout/neobrasfoot",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
@@ -11,7 +12,10 @@
     "test:watch": "vitest",
     "generate-pwa-assets": "pwa-assets-generator",
     "update-brasileirao": "node scripts/fetch-brasileirao-squads.mjs",
-    "update-escudos": "node scripts/fetch-brasileirao-crests.mjs"
+    "update-escudos": "node scripts/fetch-brasileirao-crests.mjs",
+    "patch": "generi log patch",
+    "minor": "generi log minor",
+    "major": "generi log major"
   },
   "dependencies": {
     "pinia": "^4.1.0",
@@ -23,9 +27,11 @@
     "@vite-pwa/assets-generator": "^2.0.0",
     "@vitejs/plugin-vue": "^6.0.10",
     "@vue/tsconfig": "^0.9.1",
+    "generi": "^2.0.4",
     "happy-dom": "^21.0.4",
     "typescript": "~6.0.3",
     "vite": "^8.3.6",
+    "vite-plugin-package-version": "^1.1.0",
     "vite-plugin-pwa": "^2.0.0",
     "vitest": "^5.1.1",
     "vue-tsc": "^3.3.14"

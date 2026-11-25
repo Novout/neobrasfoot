@@ -1,11 +1,20 @@
 import vue from '@vitejs/plugin-vue'
+import packageVersion from 'vite-plugin-package-version'
 import { VitePWA } from 'vite-plugin-pwa'
 import { defineConfig } from 'vitest/config'
+import type { Plugin } from 'vite'
+
+// O pacote publica os tipos no formato CommonJS: o TypeScript enxerga o módulo inteiro no import padrão.
+// Em tempo de execução o import já é a função; o `.default` cobre o outro caso.
+const packageVersionModule = packageVersion as unknown as (() => Plugin) & { default?: () => Plugin }
+const version = packageVersionModule.default ?? packageVersionModule
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
+    // Versão do package.json em import.meta.env.PACKAGE_VERSION (mostrada na tela inicial).
+    version(),
     // App instalável (PWA): manifesto + service worker que guarda o jogo para abrir offline.
     VitePWA({
       // Versões novas são baixadas em segundo plano; quando terminam, src/utils/pwaUpdate.ts ativa o service

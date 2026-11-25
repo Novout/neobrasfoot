@@ -18,6 +18,9 @@ const game = useGameStore()
 const match = useMatchStore()
 const router = useRouter()
 
+/** Versão do jogo (do package.json, via vite-plugin-package-version). */
+const appVersion = import.meta.env.PACKAGE_VERSION
+
 /** Clubes disponíveis para uma carreira nova (Brasileirão, liga gerada ou liga importada). */
 const teams = ref(leagueTeams())
 const isCustomLeague = ref(!!getCustomLeague())
@@ -155,7 +158,10 @@ function startCareer() {
         </svg>
       </a>
       <h1>⚽ Neobrasfoot</h1>
-      <p class="muted">Escolha um clube, monte sua equipe e leve-o ao título.</p>
+      <p class="muted">
+        Escolha um clube, monte sua equipe e leve-o ao título.
+        <span v-if="appVersion" class="version" title="Versão do jogo">v{{ appVersion }}</span>
+      </p>
       <div class="hero-actions">
         <button v-if="game.hasCareer" class="btn btn--ghost" @click="router.push({ name: 'dashboard' })">
           Continuar carreira com {{ game.managedTeam?.name }}
@@ -311,6 +317,15 @@ function startCareer() {
 }
 .home__hero h1 {
   font-size: 2.6rem;
+}
+.version {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 1.3rem;
+  font-variant-numeric: tabular-nums;
 }
 .hero-actions {
   display: flex;
