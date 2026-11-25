@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { formatMoney } from '../utils/random'
+import { formatDate } from '../data/calendar'
 import ConfidenceMeters from './ConfidenceMeters.vue'
 import TeamBadge from './TeamBadge.vue'
 
@@ -24,8 +25,9 @@ function goToMenu() {
       <div>
         <strong>{{ game.managedTeam.name }}</strong>
         <small>
-          {{ game.managerName }} · Temporada {{ game.season }} · Próximo:
+          {{ game.managerName }} · Temporada {{ game.currentYear }} · Próximo:
           <span :class="{ 'cup-next': game.nextEvent === 'cup' }">{{ game.nextEventLabel }}</span>
+          <template v-if="game.nextEventDate"> · {{ formatDate(game.nextEventDate) }}</template>
         </small>
       </div>
     </div>
@@ -54,6 +56,7 @@ function goToMenu() {
         Estádio
         <span v-if="game.stadium?.construction" class="nav-badge nav-badge--build" title="Obra em andamento">🚧</span>
       </RouterLink>
+      <RouterLink :to="{ name: 'calendar' }">Calendário</RouterLink>
       <RouterLink :to="{ name: 'cup' }">
         Copa
         <span v-if="game.nextEvent === 'cup'" class="nav-badge nav-badge--build" title="Próximo jogo é da Copa">🏆</span>

@@ -17,6 +17,7 @@ import { useMatchStore } from '../stores/match'
 import { useTransferStore } from '../stores/transfers'
 import type { DivisionId, Position } from '../types/game'
 import { formatMoney } from '../utils/random'
+import { formatDate } from '../data/calendar'
 
 const game = useGameStore()
 const transfers = useTransferStore()
@@ -176,6 +177,10 @@ function standingPoints(row: { wins: number; draws: number }) {
         </template>
         <template v-else-if="game.nextOpponent">
           <h3 :class="{ 'cup-title': game.nextEvent === 'cup' }">{{ game.nextEventLabel }}</h3>
+          <p v-if="game.nextEventDate" class="muted match-date">
+            📅 {{ formatDate(game.nextEventDate, true) }} ·
+            <RouterLink :to="{ name: 'calendar' }">ver calendário</RouterLink>
+          </p>
           <div class="versus">
             <TeamBadge :team="isHome ? game.managedTeam : game.nextOpponent" :size="48" />
             <span class="muted">x</span>
@@ -443,6 +448,13 @@ tr.mine td {
 }
 .next-match {
   text-align: center;
+}
+.match-date {
+  margin: -0.4rem 0 0.25rem;
+  font-size: 0.82rem;
+}
+.match-date a {
+  color: var(--accent);
 }
 .news {
   margin: 0;

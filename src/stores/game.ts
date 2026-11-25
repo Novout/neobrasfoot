@@ -41,6 +41,7 @@ import type {
 } from '../types/game'
 import { clamp, createRng, formatMoney, hashString } from '../utils/random'
 import { persistRefs, updateSaveSummary } from '../utils/storage'
+import { defaultStartYear, seasonCalendar, seasonYear as yearOfSeason, type CalendarEntry, type IsoDate } from '../data/calendar'
 import { loanHeadline, matchHeadlines, MAX_HEADLINES, saleHeadline, type Headline } from '../data/headlines'
 
 export const MIN_SQUAD_SIZE = 16
@@ -167,6 +168,10 @@ export const useGameStore = defineStore('game', () => {
   const headlines = ref<Headline[]>([])
   /** Categorias de base do clube gerenciado: jovens que o técnico pode subir ao elenco. Renovada a cada temporada. */
   const academy = ref<Academy | null>(null)
+  /** Ano da temporada 1 da carreira (o calendário da temporada N é desse ano + N − 1). */
+  const calendarStartYear = ref<number | null>(null)
+  /** Resultados do clube gerenciado no campeonato desta temporada, por rodada (0 = primeira). */
+  const leagueResults = ref<Record<number, { homeId: string; awayId: string; homeGoals: number; awayGoals: number }>>({})
   const transferOffers = ref<TransferOffer[]>([])
   const transferHistory = ref<TransferRecord[]>([])
   /** Propostas já feitas por jogador nesta rodada (limita a barganha). */
@@ -189,7 +194,7 @@ export const useGameStore = defineStore('game', () => {
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers, managers, trophiesAwardedSeason,
-    confidence, confidenceLog, dismissal, headlines, academy,
+    confidence, confidenceLog, dismissal, headlines, academy, calendarStartYear, leagueResults,
   }, 2)
 
   // O formato da liga (4×8 ou 2×20) vem dos próprios clubes da carreira salva.
@@ -268,6 +273,23 @@ export const useGameStore = defineStore('game', () => {
     (summary) => updateSaveSummary(summary),
     { immediate: true },
   )
+
+  // --- Calendário ---
+
+  // Saves anteriores ao calendário: a temporada atual fica no ano que vem (ou neste, até setembro).
+  if (hasCareer.value && calendarStartYear.value === null) calendarStartYear.value = defaultStartYear() - (season.value - 1)
+
+  /** Ano da temporada atual. */
+  const currentYear = computed(() => yearOfSeason(calendarStartYear.value ?? defaultStartYear(), season.value))
+  /** Datas de todas as rodadas e fases da Copa da temporada, em ordem. */
+  const calendar = computed<CalendarEntry[]>(() => seasonCalendar(currentYear.value, totalRounds.value, cup.value?.schedule ?? []))
+  /** Data do próximo compromisso (rodada do campeonato ou fase da Copa). */
+  const nextEventDate = computed<IsoDate | null>(() => {
+    const event = nextEvent.value
+    if (!event) return null
+    const index = event === 'league' ? round.value : (cup.value?.currentRound ?? 0)
+    return calendar.value.find((e) => e.kind === event && e.index === index)?.date ?? null
+  })
 
   /** Situação do clube gerenciado na Copa desta temporada. */
   const managedCupStatus = computed(() => {
@@ -397,6 +419,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function beginCareer(league: Team[], teamId: string, name: string) {
+    calendarStartYear.value = defaultStartYear()
     setActiveFormat(formatOfTeams(league))
     teams.value = league
     managedTeamId.value = teamId
@@ -425,6 +448,7 @@ export const useGameStore = defineStore('game', () => {
   function startSeason() {
     round.value = 0
     trainedThisRound.value = []
+    leagueResults.value = {}
     // Cada divisão tem seu turno e returno; todas jogam a mesma rodada ao mesmo tempo.
     const perDivision = DIVISIONS.map((d) => generateFixtures(teamsByDivision(teams.value, d).map((t) => t.id)))
     const totalRounds = Math.max(...perDivision.map((r) => r.length))
@@ -1054,6 +1078,7 @@ export const useGameStore = defineStore('game', () => {
         const result = isHome ? homeResult : -homeResult
         const opp = getTeam(isHome ? m.awayId : m.homeId)!
         const verb = result > 0 ? 'Vitória' : result < 0 ? 'Derrota' : 'Empate'
+        leagueResults.value[round.value] = { homeId: m.homeId, awayId: m.awayId, homeGoals: m.homeGoals, awayGoals: m.awayGoals }
         addNews(`${verb} contra o ${opp.name}: ${m.homeGoals} x ${m.awayGoals}.`)
 
         budget.value += result > 0 ? 100_000 : 0
@@ -1355,6 +1380,7 @@ export const useGameStore = defineStore('game', () => {
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers,
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
     nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
+    calendarStartYear, leagueResults, currentYear, calendar, nextEventDate,
     payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate, matchVenue,
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
