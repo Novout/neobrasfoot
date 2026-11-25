@@ -387,6 +387,30 @@ function startCareer() {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  max-width: 100%;
+}
+.home__footer input {
+  min-width: 0;
+  flex: 1;
+}
+/* No celular o rótulo fica em cima e o campo ocupa a largura toda, sem vazar da tela. */
+@media (max-width: 600px) {
+  .home__footer {
+    gap: 0.75rem;
+  }
+  .home__footer label {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.3rem;
+  }
+  .home__footer input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .home__footer .btn {
+    width: 100%;
+  }
 }
 .home__selected {
   flex: 1;
