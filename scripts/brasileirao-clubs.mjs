@@ -13,6 +13,9 @@ export const CLUBS = {
   mirassol: 'Mirassol Futebol Clube', criciuma: 'Criciúma Esporte Clube', 'atletico-go': 'Atlético Clube Goianiense',
   chapecoense: 'Associação Chapecoense de Futebol', 'operario-pr': 'Operário Ferroviário Esporte Clube',
   'vila-nova': 'Vila Nova Futebol Clube', novorizontino: 'Grêmio Novorizontino', amazonas: 'Amazonas Futebol Clube',
+  // Série C (fora da liga) no formato 2×20: sobem no fim da primeira temporada.
+  'athletic-mg': 'Athletic Club (Minas Gerais)', 'botafogo-sp': 'Botafogo Futebol Clube (SP)',
+  ferroviaria: 'Associação Ferroviária de Esportes', 'volta-redonda': 'Volta Redonda Futebol Clube',
 }
 
 /** Clubes escolhidos com --clubes=a,b (todos se a opção não for usada). */

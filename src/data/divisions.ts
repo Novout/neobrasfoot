@@ -38,10 +38,18 @@ export let DIVISIONS: DivisionId[] = LEAGUE_FORMATS[DEFAULT_FORMAT].divisions
 export let PROMOTION_SPOTS = LEAGUE_FORMATS[DEFAULT_FORMAT].promotionSpots
 export let RELEGATION_SPOTS = LEAGUE_FORMATS[DEFAULT_FORMAT].relegationSpots
 
+/** A última série também rebaixa (2×20 com Série C fora da liga). */
+export let BOTTOM_RELEGATION = false
+
+export function setBottomRelegation(value: boolean) {
+  BOTTOM_RELEGATION = value
+}
+
 /** Troca o formato ativo (ao começar ou carregar uma carreira). */
 export function setActiveFormat(format: LeagueFormat) {
   const rules = LEAGUE_FORMATS[format]
   ACTIVE_FORMAT = format
+  BOTTOM_RELEGATION = false
   DIVISIONS = rules.divisions
   PROMOTION_SPOTS = rules.promotionSpots
   RELEGATION_SPOTS = rules.relegationSpots
@@ -85,8 +93,13 @@ export type TableZone = 'champion' | 'promotion' | 'relegation' | null
 export function tableZone(division: DivisionId, position: number, size: number): TableZone {
   if (position === 1 && division === DIVISIONS[0]) return 'champion'
   if (divisionAbove(division) && position <= PROMOTION_SPOTS) return 'promotion'
-  if (divisionBelow(division) && position > size - RELEGATION_SPOTS) return 'relegation'
+  if (relegatesFrom(division) && position > size - RELEGATION_SPOTS) return 'relegation'
   return null
+}
+
+/** A série tem rebaixamento (para a série de baixo, ou para a Série C fora da liga no 2×20). */
+export function relegatesFrom(division: DivisionId) {
+  return !!divisionBelow(division) || (BOTTOM_RELEGATION && division === DIVISIONS.at(-1))
 }
 
 /**

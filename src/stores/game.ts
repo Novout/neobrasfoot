@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, watchEffect } from 'vue'
 import {
   createCup, CUP_NAME, cupPrize, CUP_RUNNER_UP_PRIZE, inRound, nextCupRound, tieWinner,
 } from '../data/cup'
@@ -11,7 +11,7 @@ import {
   DIRECT_RED_SUSPENSION, injuryGames, isAvailable, SECOND_YELLOW_SUSPENSION, YELLOWS_FOR_SUSPENSION,
 } from '../data/discipline'
 import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
-import { leagueTeams } from '../data/league'
+import { baseReserveTeams, leagueReserveTeams, leagueTeams } from '../data/league'
 import { BRASILEIRAO_CRESTS } from '../data/crests'
 import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, createAcademy, renewSquad } from '../data/youth'
@@ -30,7 +30,7 @@ import {
 } from '../data/stadium'
 import {
   DIVISION_LABELS, DIVISIONS, divisionAbove, divisionBelow, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL, PROMOTION_SPOTS,
-  RELEGATION_SPOTS, REPUTATION_SWING, tableZone, formatOfTeams, setActiveFormat,
+  RELEGATION_SPOTS, REPUTATION_SWING, tableZone, formatOfTeams, setActiveFormat, ACTIVE_FORMAT, setBottomRelegation,
 } from '../data/divisions'
 import {
   assignStarsToLegacyTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
@@ -168,6 +168,11 @@ export const useGameStore = defineStore('game', () => {
   const headlines = ref<Headline[]>([])
   /** Categorias de base do clube gerenciado: jovens que o técnico pode subir ao elenco. Renovada a cada temporada. */
   const academy = ref<Academy | null>(null)
+  /**
+   * Série C (fora da liga) do formato 2×20: clubes que não jogam a temporada. No fim dela, os 4 últimos da
+   * Série B caem para cá e 4 daqui sobem para o lugar deles.
+   */
+  const reserveTeams = ref<Team[]>([])
   /** Ano da temporada 1 da carreira (o calendário da temporada N é desse ano + N − 1). */
   const calendarStartYear = ref<number | null>(null)
   /** Resultados do clube gerenciado no campeonato desta temporada, por rodada (0 = primeira). */
@@ -194,7 +199,7 @@ export const useGameStore = defineStore('game', () => {
   persistRefs('career', {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers, managers, trophiesAwardedSeason,
-    confidence, confidenceLog, dismissal, headlines, academy, calendarStartYear, leagueResults,
+    confidence, confidenceLog, dismissal, headlines, academy, calendarStartYear, leagueResults, reserveTeams,
   }, 2)
 
   // O formato da liga (4×8 ou 2×20) vem dos próprios clubes da carreira salva.
@@ -273,6 +278,16 @@ export const useGameStore = defineStore('game', () => {
     (summary) => updateSaveSummary(summary),
     { immediate: true },
   )
+
+  // Saves no 2×20 anteriores à Série C: cria a dela pela liga base que a carreira usa.
+  if (hasCareer.value && !reserveTeams.value.length && formatOfTeams(teams.value) === '2x20') {
+    const ids = new Set(teams.value.map((t) => t.id))
+    const base = ids.has('flamengo') ? 'brasileirao' : ids.has('atletico-serrano') ? 'gerada' : null
+    if (base) {
+      reserveTeams.value = baseReserveTeams(base, '2x20').filter((t) => !ids.has(t.id))
+      addReserveManagers()
+    }
+  }
 
   // --- Calendário ---
 
@@ -408,19 +423,21 @@ export const useGameStore = defineStore('game', () => {
   }
 
   function startCareer(teamId: string, name: string) {
-    beginCareer(leagueTeams(), teamId, name)
+    beginCareer(leagueTeams(), teamId, name, leagueReserveTeams())
   }
 
   /** Começa a carreira com um clube criado pelo jogador, no lugar do mais fraco da série. */
   function startCustomCareer(draft: CustomTeamDraft, name: string) {
     const { teams: league, replaced } = createTeamsWithCustom(draft, leagueTeams())
-    beginCareer(league, CUSTOM_TEAM_ID, name)
+    beginCareer(league, CUSTOM_TEAM_ID, name, leagueReserveTeams())
     addNews(`O ${replaced.name} deixa a ${DIVISION_LABELS[draft.division]} para dar lugar ao ${draft.name.trim()}.`)
   }
 
-  function beginCareer(league: Team[], teamId: string, name: string) {
+  function beginCareer(league: Team[], teamId: string, name: string, reserve: Team[] = []) {
     calendarStartYear.value = defaultStartYear()
     setActiveFormat(formatOfTeams(league))
+    // Depois do formato: a Série C só vale no 2×20 (e marca a zona de rebaixamento da última série).
+    reserveTeams.value = reserve
     teams.value = league
     managedTeamId.value = teamId
     managerName.value = name.trim() || 'Treinador'
@@ -438,6 +455,7 @@ export const useGameStore = defineStore('game', () => {
     budget.value = team.reputation * 100_000
     stadium.value = createStadium(team)
     managers.value = createManagers(teams.value, teamId, managerName.value)
+    addReserveManagers()
     trophiesAwardedSeason.value = 0
     resetConfidence(START_CONFIDENCE)
     dismissal.value = null
@@ -480,9 +498,64 @@ export const useGameStore = defineStore('game', () => {
       }
       if (below) {
         table.slice(-RELEGATION_SPOTS).forEach((r) => moves.push({ team: getTeam(r.teamId)!, to: below, up: false }))
+      } else if (hasReserve()) {
+        // Última série do 2×20: os últimos caem para a Série C, que fica fora da liga.
+        table.slice(-RELEGATION_SPOTS).forEach((r) => moves.push({ team: getTeam(r.teamId)!, to: 'C', up: false }))
       }
     }
     return moves
+  }
+
+  /** Há Série C para trocar clubes com a última série (só no 2×20 das ligas base). */
+  function hasReserve() {
+    // Lê a Série C primeiro: assim o watchEffect abaixo volta a rodar quando ela muda.
+    return reserveTeams.value.length >= RELEGATION_SPOTS && ACTIVE_FORMAT === '2x20'
+  }
+
+  // A tabela mostra a zona de rebaixamento da última série quando há Série C.
+  watchEffect(() => setBottomRelegation(hasReserve()), { flush: 'sync' })
+
+  /** O clube gerenciado cai para a Série C (fora da liga) nesta virada: precisa trocar de clube. */
+  const managedFallsOut = computed(
+    () => !!managedTeamId.value && isSeasonOver.value && projectedDivision(managedTeamId.value) === 'C',
+  )
+
+  /** Técnicos para os clubes da Série C (quem sobe já chega com o seu técnico). */
+  function addReserveManagers() {
+    const missing = reserveTeams.value.filter((t) => !managers.value.some((m) => m.teamId === t.id))
+    if (!missing.length) return
+    managers.value.push(...createManagers(missing, '__ninguem__', '').filter((m) => !m.isPlayer))
+  }
+
+  /**
+   * Troca com a Série C: quem caiu sai da liga e 4 clubes de lá sobem para a última série
+   * (os mais fortes têm mais chance; quem acabou de cair não volta na mesma virada).
+   */
+  function exchangeWithReserve() {
+    const out = teams.value.filter((t) => t.division === 'C')
+    if (!out.length) return
+    const last = DIVISIONS.at(-1)!
+    const pool = [...reserveTeams.value]
+    const promoted: Team[] = []
+    while (promoted.length < out.length && pool.length) {
+      const total = pool.reduce((sum, t) => sum + t.reputation ** 2, 0)
+      let roll = Math.random() * total
+      const index = pool.findIndex((t) => (roll -= t.reputation ** 2) <= 0)
+      promoted.push(...pool.splice(index < 0 ? pool.length - 1 : index, 1))
+    }
+    for (const t of promoted) {
+      t.division = last
+      t.players.forEach((p) => {
+        p.forSale = false
+        delete p.loan
+      })
+      applyLineup(t, AI_TACTIC.formation)
+    }
+    teams.value = [...teams.value.filter((t) => t.division !== 'C'), ...promoted]
+    reserveTeams.value = [...pool, ...out]
+    addReserveManagers()
+    addNews(`⬇️ Caem para a Série C: ${out.map((t) => t.name).join(', ')}.`)
+    addNews(`⬆️ Sobem da Série C para a ${DIVISION_LABELS[last]}: ${promoted.map((t) => t.name).join(', ')}.`)
   }
 
   /** Série de um clube na próxima temporada (já com acesso e rebaixamento). */
@@ -506,10 +579,15 @@ export const useGameStore = defineStore('game', () => {
   function ensureJobOffers() {
     if (!seasonReview.value || jobOffers.value.length || !managedTeamId.value) return
     const divisions = new Map(teams.value.map((t) => [t.id, projectedDivision(t.id)]))
+    const last = DIVISIONS.at(-1)!
+    const staying = teams.value.filter((t) => t.id === managedTeamId.value || divisions.get(t.id) !== 'C')
     jobOffers.value = generateJobOffers(
-      teams.value,
+      staying,
       managedTeamId.value,
-      (id) => divisions.get(id) ?? 'D',
+      (id) => {
+        const d = divisions.get(id) ?? last
+        return d === 'C' ? last : d
+      },
       seasonReview.value.score,
     )
     addNews(`💼 Janela de técnicos aberta: ${jobOffers.value.length} clubes querem contratar você.`)
@@ -558,10 +636,16 @@ export const useGameStore = defineStore('game', () => {
 
   /** Vira a temporada; com `newTeamId`, o técnico assume outro clube (janela de técnicos). */
   function nextSeason(newTeamId?: string) {
+    // Seu clube caiu para a Série C (fora da liga): não dá para ficar nele.
+    if (!newTeamId && managedFallsOut.value) {
+      ensureJobOffers()
+      newTeamId = jobOffers.value[0]?.teamId
+    }
     // Emprestados voltam antes de qualquer troca de clube ou de série.
     returnAllLoans()
     applyPromotionsAndRelegations()
     if (newTeamId) switchClub(newTeamId)
+    exchangeWithReserve()
     jobOffers.value = []
     season.value++
     renewSquads()
@@ -575,7 +659,8 @@ export const useGameStore = defineStore('game', () => {
    */
   function renewSquads() {
     const rng = createRng(hashString(`temporada-${season.value}`) ^ Date.now())
-    for (const team of teams.value) {
+    // A Série C também envelhece e se renova (como clubes da IA).
+    for (const team of [...teams.value, ...reserveTeams.value]) {
       for (const p of team.players) {
         p.age++
         applyProgression(p, rng)
@@ -1381,6 +1466,7 @@ export const useGameStore = defineStore('game', () => {
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
     nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
     calendarStartYear, leagueResults, currentYear, calendar, nextEventDate,
+    reserveTeams, hasReserve, managedFallsOut,
     payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate, matchVenue,
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,

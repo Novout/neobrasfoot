@@ -169,6 +169,27 @@ import { arrangeForFormat, type LeagueFormat } from '../divisions'
 export { BRASILEIRAO_TEMPLATE_NAME }
 
 /**
+ * Série C (fora da liga) no formato 2×20: não é disputada; esses clubes sobem para a Série B no fim da
+ * temporada, no lugar dos 4 últimos dela (que passam a ser os candidatos a subir depois).
+ */
+const RESERVE_TEAMS: TemplateTeam[] = [
+  { id: 'athletic-mg', name: 'Athletic', shortName: 'ATH', division: 'C', primaryColor: '#111111', secondaryColor: '#f5f5f5', reputation: 52, stadiumName: 'Joaquim Portugal' },
+  { id: 'botafogo-sp', name: 'Botafogo-SP', shortName: 'BFC', division: 'C', primaryColor: '#c8102e', secondaryColor: '#000000', reputation: 51, stadiumName: 'Santa Cruz' },
+  { id: 'ferroviaria', name: 'Ferroviária', shortName: 'AFE', division: 'C', primaryColor: '#7b1e2e', secondaryColor: '#ffffff', reputation: 50, stadiumName: 'Fonte Luminosa' },
+  { id: 'volta-redonda', name: 'Volta Redonda', shortName: 'VRE', division: 'C', primaryColor: '#f5d000', secondaryColor: '#000000', reputation: 49, stadiumName: 'Raulino de Oliveira' },
+]
+
+/** Clubes reais da Série C (fora da liga) do formato 2×20, com elenco, técnico e escudo. */
+export function brasileiraoReserve(): LeagueFileTeam[] {
+  return RESERVE_TEAMS.map((t) => ({
+    ...t,
+    ...(RAW[t.id]?.manager ? { manager: RAW[t.id]!.manager } : {}),
+    ...(BRASILEIRAO_CRESTS[t.id] ? { crest: BRASILEIRAO_CRESTS[t.id] } : {}),
+    players: realSquad(t.id, t.reputation),
+  }))
+}
+
+/**
  * Nova cópia a cada chamada (o editor altera o rascunho direto).
  * "4x8": 32 clubes nas Séries A a D; "2x20": 40 clubes (com os extras) nas Séries A e B, pela reputação.
  */

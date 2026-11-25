@@ -229,6 +229,19 @@ export function generateSquadFor(seed: Pick<Team, 'id' | 'reputation'>): Player[
   return generatePlayers(seed as TeamSeed)
 }
 
+/** Série C (fora da liga) da liga gerada no formato 2×20: sobem no fim da temporada. */
+const RESERVE_TEAM_SEEDS: TeamSeed[] = [
+  { id: 'aguia-dourada', division: 'C', name: 'Águia Dourada EC', shortName: 'AGD', primaryColor: '#ffb300', secondaryColor: '#3e2723', reputation: 40 },
+  { id: 'rio-claro-fc', division: 'C', name: 'Rio Claro do Sul', shortName: 'RCS', primaryColor: '#0288d1', secondaryColor: '#ffffff', reputation: 39 },
+  { id: 'uniao-mineira', division: 'C', name: 'União Mineira', shortName: 'UMI', primaryColor: '#424242', secondaryColor: '#ef5350', reputation: 38 },
+  { id: 'colonial-ac', division: 'C', name: 'Colonial AC', shortName: 'COL', primaryColor: '#2e7d32', secondaryColor: '#fff176', reputation: 37 },
+]
+
+/** Clubes fictícios da Série C (fora da liga), usados só no formato 2×20. */
+export function createReserveTeams(): Team[] {
+  return RESERVE_TEAM_SEEDS.map((seed) => ({ ...seed, players: generatePlayers(seed) }))
+}
+
 /** Liga de clubes fictícios. No formato 2×20 entram mais 8 clubes e as séries são refeitas pela reputação. */
 export function createTeams(format: LeagueFormat = '4x8'): Team[] {
   const seeds = format === '4x8' ? TEAM_SEEDS : arrangeForFormat([...TEAM_SEEDS, ...EXTRA_TEAM_SEEDS], format)

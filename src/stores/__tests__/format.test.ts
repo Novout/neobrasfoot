@@ -109,7 +109,9 @@ describe('carreira no formato 2×20', () => {
     expect(game.cup!.byes).toHaveLength(24)
     expect(tableZone('A', 17, 20)).toBe('relegation')
     expect(tableZone('B', 4, 20)).toBe('promotion')
-    expect(tableZone('B', 20, 20)).toBeNull()
+    // Com a Série C fora da liga, os 4 últimos da B também caem.
+    expect(tableZone('B', 20, 20)).toBe('relegation')
+    expect(tableZone('B', 16, 20)).toBeNull()
   })
 
   it('uma temporada inteira: a Copa termina e a virada mantém 20 clubes por série', () => {
@@ -130,12 +132,53 @@ describe('carreira no formato 2×20', () => {
     expect(cup.byes!.every((id) => firstPhase.includes(id))).toBe(true)
     expect(cup.rounds[0]!.ties.every((t) => firstPhase.includes(t.winnerId!))).toBe(true)
     const before = Object.fromEntries(game.teams.map((t) => [t.id, t.division]))
+    const reserveBefore = game.reserveTeams.map((t) => t.id)
+    const lastOfB = game.divisionStandings('B').slice(-4).map((r) => r.teamId)
+    const managerStays = !lastOfB.includes(game.managedTeamId!)
     game.nextSeason()
-    const moved = game.teams.filter((t) => before[t.id] !== t.division)
+    const moved = game.teams.filter((t) => before[t.id] && before[t.id] !== t.division)
     expect(moved.filter((t) => t.division === 'A')).toHaveLength(4)
     expect(moved.filter((t) => t.division === 'B')).toHaveLength(4)
+    // Os 4 últimos da Série B saem da liga para a Série C, e os 4 da Série C sobem para a B.
+    expect(lastOfB.every((id) => !game.teams.some((t) => t.id === id))).toBe(true)
+    expect(game.reserveTeams.map((t) => t.id).sort()).toEqual([...lastOfB].sort())
+    expect(reserveBefore.every((id) => game.getTeam(id)?.division === 'B')).toBe(true)
+    if (managerStays) expect(game.managedTeam).not.toBeNull()
+    // Quem sobe chega com o técnico real dele.
+    expect(game.managerOf('ferroviaria')?.name).toBeTruthy()
     expect(game.teams.filter((t) => t.division === 'A')).toHaveLength(20)
     expect(game.teams.filter((t) => t.division === 'B')).toHaveLength(20)
     expect(game.fixtures).toHaveLength(38)
   }, 240_000)
+
+  it('começa com a Série C: 4 clubes reais com elenco, técnico e escudo', () => {
+    expect(game.reserveTeams.map((t) => t.id).sort()).toEqual(['athletic-mg', 'botafogo-sp', 'ferroviaria', 'volta-redonda'])
+    for (const t of game.reserveTeams) {
+      expect(t.division).toBe('C')
+      expect(t.players.length, t.id).toBeGreaterThanOrEqual(16)
+      expect(t.managerName, t.id).toBeTruthy()
+      expect(t.crest, t.id).toBe(`escudos/${t.id}.png`)
+    }
+    // Não jogam: fora da tabela, do calendário e da Copa.
+    expect(game.teams.some((t) => t.division === 'C')).toBe(false)
+    expect(game.standings).toHaveLength(40)
+    expect(tableZone('B', 17, 20)).toBe('relegation')
+  })
+
+  it('seu clube caindo para a Série C: não dá para ficar, e o técnico assume outro clube', () => {
+    // Coloca o seu clube na Série B e força a última colocação.
+    setLeagueBase('brasileirao')
+    setActivePinia(createPinia())
+    game = useGameStore()
+    game.startCareer('amazonas', 'Técnico')
+    const myRow = game.standings.find((r) => r.teamId === 'amazonas')!
+    for (const r of game.standings) if (game.getTeam(r.teamId)?.division === 'B' && r !== myRow) r.wins = 10
+    game.round = game.totalRounds
+    if (game.cup) game.cup.championId = game.cup.rounds[0]!.ties[0]!.homeId
+    expect(game.managedFallsOut).toBe(true)
+    game.nextSeason()
+    expect(game.managedTeamId).not.toBe('amazonas')
+    expect(game.managedTeam).not.toBeNull()
+    expect(game.reserveTeams.some((t) => t.id === 'amazonas')).toBe(true)
+  })
 })

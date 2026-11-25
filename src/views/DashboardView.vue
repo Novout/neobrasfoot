@@ -9,7 +9,7 @@ import SaveControls from '../components/SaveControls.vue'
 import StarMark from '../components/StarMark.vue'
 import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, DIVISIONS, tableZone } from '../data/divisions'
+import { DIVISION_LABELS, DIVISIONS, relegatesFrom, tableZone } from '../data/divisions'
 import { stadiumUpkeep } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
 import { askingPriceOf, canTrain, marketValue, trainingEnergyCost, useGameStore } from '../stores/game'
@@ -247,7 +247,7 @@ function standingPoints(row: { wins: number; draws: number }) {
         <p class="legend">
           <span v-if="tableDivision === DIVISIONS[0]" class="zone-champion">Campeão</span>
           <span v-else class="zone-promotion">Acesso</span>
-          <span v-if="tableDivision !== DIVISIONS.at(-1)" class="zone-relegation">Rebaixamento</span>
+          <span v-if="relegatesFrom(tableDivision)" class="zone-relegation">Rebaixamento</span>
         </p>
       </div>
 

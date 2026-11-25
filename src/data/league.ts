@@ -1,8 +1,9 @@
 import type { Team } from '../types/game'
 import { DEFAULT_FORMAT, isLeagueFormat, type LeagueFormat } from './divisions'
 import { getCustomLeague, parseLeagueFile, teamsFromLeagueFile, type LeagueFile } from './leagueFile'
-import { createTeams } from './teams'
-import { brasileiraoTemplate, BRASILEIRAO_TEMPLATE_NAME } from './templates/brasileirao'
+import { createReserveTeams, createTeams } from './teams'
+import { brasileiraoReserve, brasileiraoTemplate, BRASILEIRAO_TEMPLATE_NAME } from './templates/brasileirao'
+import { LEAGUE_FORMAT as FILE_FORMAT, LEAGUE_FORMAT_VERSION } from './leagueFile'
 
 /**
  * Liga base das carreiras novas: o Brasileirão com clubes e elencos reais (padrão) ou a liga de clubes
@@ -54,6 +55,21 @@ export function brasileiraoLeague(format: LeagueFormat = getLeagueFormat()): Lea
 /** Clubes da liga base escolhida, no formato escolhido. */
 export function baseLeagueTeams(base: LeagueBase = getLeagueBase(), format: LeagueFormat = getLeagueFormat()): Team[] {
   return base === 'gerada' ? createTeams(format) : teamsFromLeagueFile(brasileiraoLeague(format))
+}
+
+/**
+ * Série C (fora da liga) do formato 2×20: clubes que não jogam, mas sobem para a Série B no fim da temporada
+ * no lugar dos 4 últimos. Só nas ligas base (Brasileirão e gerada); ligas importadas não têm.
+ */
+export function baseReserveTeams(base: LeagueBase = getLeagueBase(), format: LeagueFormat = getLeagueFormat()): Team[] {
+  if (format !== '2x20') return []
+  if (base === 'gerada') return createReserveTeams()
+  return teamsFromLeagueFile({ format: FILE_FORMAT, version: LEAGUE_FORMAT_VERSION, teams: brasileiraoReserve() })
+}
+
+/** Série C das carreiras novas (vazia com liga importada/do editor). */
+export function leagueReserveTeams(): Team[] {
+  return getCustomLeague() ? [] : baseReserveTeams()
 }
 
 /** Clubes usados ao começar uma carreira: a liga importada/do editor, se houver, ou a liga base. */

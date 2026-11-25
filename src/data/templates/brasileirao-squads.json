@@ -7689,6 +7689,714 @@
      "fame": 0
     }
    ]
+  },
+  "athletic-mg": {
+   "source": "https://en.wikipedia.org/wiki/Athletic_Club_(MG)",
+   "revision": 1386427354,
+   "manager": "Alex",
+   "players": [
+    {
+     "name": "Eduardo Freire",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "Glauco",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "Luan Polli",
+     "position": "GOL",
+     "birthDate": "1993-04-06",
+     "fame": 8
+    },
+    {
+     "name": "Tony Batista",
+     "position": "GOL",
+     "birthDate": "1992-09-25",
+     "fame": 6
+    },
+    {
+     "name": "Jhonatan Silva",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Jhan Pool Torres",
+     "position": "DEF",
+     "birthDate": "2001-04-15",
+     "fame": 1
+    },
+    {
+     "name": "Lucas Belezi",
+     "position": "DEF",
+     "birthDate": "2003-00-00",
+     "fame": 2
+    },
+    {
+     "name": "Philipe Sampaio",
+     "position": "DEF",
+     "birthDate": "1994-11-11",
+     "fame": 12
+    },
+    {
+     "name": "Sidimar",
+     "position": "DEF",
+     "birthDate": "1992-07-09",
+     "fame": 4
+    },
+    {
+     "name": "Diogo Batista",
+     "position": "DEF",
+     "birthDate": "2003-08-29",
+     "fame": 3
+    },
+    {
+     "name": "Douglas Pelé",
+     "position": "DEF",
+     "birthDate": "1999-08-25",
+     "fame": 1
+    },
+    {
+     "name": "Enzo Santos",
+     "position": "DEF",
+     "birthDate": "2002-07-18",
+     "fame": 1
+    },
+    {
+     "name": "Felipe Vieira",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Marcelo Henrique",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Zeca",
+     "position": "DEF",
+     "birthDate": "1994-05-16",
+     "fame": 20
+    },
+    {
+     "name": "Alexandre Pena",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Felipe Negrucci",
+     "position": "MEI",
+     "birthDate": "2004-05-04",
+     "fame": 2
+    },
+    {
+     "name": "Fabrício Isidoro",
+     "position": "MEI",
+     "birthDate": "1992-01-28",
+     "fame": 6
+    },
+    {
+     "name": "Yago Santos",
+     "position": "MEI",
+     "birthDate": "2003-01-01",
+     "fame": 1
+    },
+    {
+     "name": "Assis",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Gian Cabezas",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Gustavinho",
+     "position": "MEI",
+     "birthDate": "2001-10-29",
+     "fame": 2
+    },
+    {
+     "name": "João Miguel",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Jota",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Kauan Lindes",
+     "position": "MEI",
+     "birthDate": "2003-11-28",
+     "fame": 2
+    },
+    {
+     "name": "Kauan Rodrigues",
+     "position": "MEI",
+     "birthDate": "2005-04-16",
+     "fame": 5
+    },
+    {
+     "name": "Pedro Oliveira",
+     "position": "MEI",
+     "birthDate": "1998-07-11",
+     "fame": 1
+    },
+    {
+     "name": "Bruninho",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Yarlen",
+     "position": "ATA",
+     "birthDate": "2006-02-20",
+     "fame": 4
+    },
+    {
+     "name": "Dixon Vera",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Carlinhos",
+     "position": "ATA",
+     "birthDate": "1997-02-12",
+     "fame": 5
+    },
+    {
+     "name": "Max",
+     "position": "ATA",
+     "birthDate": "2002-06-28",
+     "fame": 3
+    },
+    {
+     "name": "Wilinton Aponzá",
+     "position": "ATA",
+     "birthDate": "2000-03-29",
+     "fame": 6
+    },
+    {
+     "name": "Ronaldo Tavares",
+     "position": "ATA",
+     "birthDate": "1997-07-22",
+     "fame": 5
+    },
+    {
+     "name": "Gustavão",
+     "position": "ATA",
+     "fame": 1
+    }
+   ]
+  },
+  "botafogo-sp": {
+   "source": "https://en.wikipedia.org/wiki/Botafogo_Futebol_Clube_(SP)",
+   "revision": 1386868218,
+   "manager": "Cláudio Tencati",
+   "players": [
+    {
+     "name": "Victor Souza",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "Jonathan",
+     "position": "DEF",
+     "birthDate": "1992-08-25",
+     "fame": 6
+    },
+    {
+     "name": "Ericson",
+     "position": "DEF",
+     "birthDate": "1999-05-11",
+     "fame": 2
+    },
+    {
+     "name": "Gustavo Vilar",
+     "position": "DEF",
+     "birthDate": "2000-04-18",
+     "fame": 1
+    },
+    {
+     "name": "Kelvin",
+     "position": "ATA",
+     "birthDate": "1997-08-18",
+     "fame": 3
+    },
+    {
+     "name": "Everton Morelli",
+     "position": "MEI",
+     "birthDate": "1997-11-04",
+     "fame": 2
+    },
+    {
+     "name": "Hygor",
+     "position": "ATA",
+     "birthDate": "1992-08-13",
+     "fame": 4
+    },
+    {
+     "name": "Rafael Gava",
+     "position": "MEI",
+     "birthDate": "1993-05-20",
+     "fame": 2
+    },
+    {
+     "name": "Jordan",
+     "position": "GOL",
+     "birthDate": "1998-02-26",
+     "fame": 1
+    },
+    {
+     "name": "Wallace",
+     "position": "DEF",
+     "birthDate": "1994-10-14",
+     "fame": 19
+    },
+    {
+     "name": "Carlos Eduardo",
+     "position": "DEF",
+     "birthDate": "2001-03-12",
+     "fame": 1
+    },
+    {
+     "name": "Gui Mariano",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Matheus Sales",
+     "position": "MEI",
+     "birthDate": "1995-05-13",
+     "fame": 8
+    },
+    {
+     "name": "Guilherme Queiróz",
+     "position": "ATA",
+     "birthDate": "1990-05-23",
+     "fame": 4
+    },
+    {
+     "name": "Arthur Caíke",
+     "position": "ATA",
+     "birthDate": "1992-06-15",
+     "fame": 13
+    },
+    {
+     "name": "Yuri Felipe",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Jadson",
+     "position": "ATA",
+     "birthDate": "2005-08-10",
+     "fame": 2
+    },
+    {
+     "name": "Gabriel Inocêncio",
+     "position": "DEF",
+     "birthDate": "1994-08-20",
+     "fame": 2
+    },
+    {
+     "name": "Wesley Santos",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Darlan",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Marco Antônio",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Thiaguinho",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Zé Hugo",
+     "position": "ATA",
+     "birthDate": "1999-10-17",
+     "fame": 2
+    },
+    {
+     "name": "Pedrinho",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Erik Rebello",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Badaró",
+     "position": "DEF",
+     "fame": 0
+    }
+   ]
+  },
+  "ferroviaria": {
+   "source": "https://en.wikipedia.org/wiki/Associa%C3%A7%C3%A3o_Ferrovi%C3%A1ria_de_Esportes",
+   "revision": 1386385840,
+   "manager": "Rogério Corrêa",
+   "players": [
+    {
+     "name": "Lucas Rodrigues",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Erik",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Guilherme Ferreira",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Ricardinho",
+     "position": "MEI",
+     "birthDate": "1989-03-27",
+     "fame": 4
+    },
+    {
+     "name": "Rhuan",
+     "position": "DEF",
+     "fame": 1
+    },
+    {
+     "name": "Fábio Soares",
+     "position": "ATA",
+     "fame": 1
+    },
+    {
+     "name": "Alencar",
+     "position": "MEI",
+     "birthDate": "2002-08-07",
+     "fame": 1
+    },
+    {
+     "name": "Denilson Silva",
+     "position": "ATA",
+     "birthDate": "1998-03-07",
+     "fame": 2
+    },
+    {
+     "name": "Albano",
+     "position": "MEI",
+     "birthDate": "1997-06-09",
+     "fame": 1
+    },
+    {
+     "name": "Vitor Barreto",
+     "position": "ATA",
+     "fame": 1
+    },
+    {
+     "name": "Fábio Rampi",
+     "position": "GOL",
+     "birthDate": "1989-01-23",
+     "fame": 1
+    },
+    {
+     "name": "Gustavo Medina",
+     "position": "DEF",
+     "birthDate": "2001-07-09",
+     "fame": 1
+    },
+    {
+     "name": "Jhonatan Garcia",
+     "position": "MEI",
+     "birthDate": "2004-02-14",
+     "fame": 1
+    },
+    {
+     "name": "Fernandinho",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Vinícius Meireles",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Rafael Carrilho",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Thiago",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "David Souza",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Alan Stence",
+     "position": "MEI",
+     "birthDate": "2002-07-03",
+     "fame": 1
+    },
+    {
+     "name": "Felipe Rodrigues",
+     "position": "DEF",
+     "birthDate": "1995-10-31",
+     "fame": 6
+    },
+    {
+     "name": "Arthur Schilling",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Igor",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "Vinicius Kauê",
+     "position": "DEF",
+     "birthDate": "2003-03-01",
+     "fame": 2
+    },
+    {
+     "name": "Igor Henrique",
+     "position": "MEI",
+     "birthDate": "1991-12-20",
+     "fame": 3
+    },
+    {
+     "name": "Denilson Chaves",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Eduardo Oliveira",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Raoni",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Denis Júnior",
+     "position": "GOL",
+     "birthDate": "1998-08-10",
+     "fame": 1
+    },
+    {
+     "name": "Pedro Estevam",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Gustavo Jundi",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "Douglas Skilo",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Gadu",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Zé Vitor",
+     "position": "DEF",
+     "birthDate": "2002-06-10",
+     "fame": 1
+    },
+    {
+     "name": "Carlão",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Juninho",
+     "position": "MEI",
+     "birthDate": "1995-09-03",
+     "fame": 2
+    },
+    {
+     "name": "Maranhão",
+     "position": "ATA",
+     "birthDate": "1996-04-01",
+     "fame": 1
+    }
+   ]
+  },
+  "volta-redonda": {
+   "source": "https://en.wikipedia.org/wiki/Volta_Redonda_FC",
+   "revision": 1385046824,
+   "manager": "Neto Colucci",
+   "players": [
+    {
+     "name": "Avelino",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "Wellington Silva",
+     "position": "DEF",
+     "birthDate": "1988-03-06",
+     "fame": 5
+    },
+    {
+     "name": "Lucas Adell",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Fabrício",
+     "position": "DEF",
+     "birthDate": "1990-02-20",
+     "fame": 13
+    },
+    {
+     "name": "Bruno Barra",
+     "position": "MEI",
+     "birthDate": "1986-04-11",
+     "fame": 2
+    },
+    {
+     "name": "Jean Victor",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Marquinhos",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Dener",
+     "position": "MEI",
+     "birthDate": "1992-03-13",
+     "fame": 5
+    },
+    {
+     "name": "Yamilo Zuniga",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Luciano Naninho",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Bernardo Carvalho",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Heitor Silva",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "Alan Ferreira",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Matheus Régis",
+     "position": "ATA",
+     "fame": 1
+    },
+    {
+     "name": "Lucas Rocha",
+     "position": "DEF",
+     "birthDate": "1995-06-19",
+     "fame": 4
+    },
+    {
+     "name": "Du Fernandes",
+     "position": "MEI",
+     "birthDate": "2001-06-11",
+     "fame": 1
+    },
+    {
+     "name": "Wagninho",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Andrey",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Juninho",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Henrique Silva",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Levi",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Wendel",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Juliano Fabro",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Rafael Furtado",
+     "position": "ATA",
+     "birthDate": "1999-12-09",
+     "fame": 6
+    },
+    {
+     "name": "Caetano",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Juninho Ramos",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Deivity",
+     "position": "GOL",
+     "fame": 0
+    }
+   ]
   }
  },
  "managersFetchedAt": "2026-11-22"

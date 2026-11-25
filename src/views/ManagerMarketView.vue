@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, DIVISIONS, REPUTATION_SWING } from '../data/divisions'
+import { ALL_DIVISIONS, DIVISION_LABELS, DIVISIONS, REPUTATION_SWING } from '../data/divisions'
 import { createStadium, stadiumCapacity } from '../data/stadium'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
@@ -42,7 +42,8 @@ interface ClubCard {
 function clubCard(team: Team, reason?: string): ClubCard {
   const isCurrent = team.id === game.managedTeamId
   const nextDivision = game.projectedDivision(team.id)
-  const diff = DIVISIONS.indexOf(nextDivision) - DIVISIONS.indexOf(team.division)
+  // Série C (fora da liga) conta como a série abaixo da última.
+  const diff = ALL_DIVISIONS.indexOf(nextDivision) - ALL_DIVISIONS.indexOf(team.division)
   const venue = isCurrent && game.stadium ? game.stadium : createStadium(team)
   // A reputação muda com acesso/rebaixamento; o caixa do clube novo segue a reputação da próxima temporada.
   const nextReputation = team.reputation + (diff < 0 ? REPUTATION_SWING : diff > 0 ? -REPUTATION_SWING : 0)
@@ -124,7 +125,10 @@ function accept(card: ClubCard) {
           <dt>Caixa</dt><dd>{{ formatMoney(current.budget) }}</dd>
           <dt>Estádio</dt><dd>{{ current.stadiumName }} ({{ current.capacity.toLocaleString('pt-BR') }})</dd>
         </dl>
-        <button class="btn" @click="stay">Ficar e iniciar a temporada {{ game.season + 1 }}</button>
+        <p v-if="game.managedFallsOut" class="falls-out">
+          O {{ current.team.name }} caiu para a Série C, que não é disputada no jogo. Escolha um dos clubes que querem você.
+        </p>
+        <button v-else class="btn" @click="stay">Ficar e iniciar a temporada {{ game.season + 1 }}</button>
       </article>
 
       <article v-for="card in offers" :key="card.team.id" class="card club" :style="{ '--team-color': card.team.primaryColor }">
@@ -163,6 +167,14 @@ function accept(card: ClubCard) {
 </template>
 
 <style scoped>
+.falls-out {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #fecaca;
+  font-size: 0.85rem;
+}
 .window {
   display: flex;
   flex-direction: column;
