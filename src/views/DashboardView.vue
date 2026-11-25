@@ -193,8 +193,6 @@ function standingPoints(row: { wins: number; draws: number }) {
         </template>
       </div>
 
-      <HeadlinesFeed :headlines="game.headlines" :my-team-id="game.managedTeamId" />
-
       <div class="card">
         <h3>Confiança no técnico</h3>
         <ConfidenceMeters :confidence="game.confidence" />
@@ -207,6 +205,8 @@ function standingPoints(row: { wins: number; draws: number }) {
           </li>
         </ul>
       </div>
+
+      <HeadlinesFeed :headlines="game.headlines" :my-team-id="game.managedTeamId" />
 
       <div class="card">
         <h3>Finanças</h3>
