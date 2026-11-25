@@ -12,6 +12,7 @@ import {
 } from '../data/discipline'
 import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
 import { baseReserveTeams, leagueReserveTeams, leagueTeams } from '../data/league'
+import { bestEleven, recordMatch, type BestXIEntry, type BestXIRecord, type PlayerSeasonStats } from '../data/seasonStats'
 import { BRASILEIRAO_CRESTS } from '../data/crests'
 import { createManagers, trophyLabel } from '../data/trophies'
 import { applyProgression, createAcademy, renewSquad } from '../data/youth'
@@ -173,6 +174,10 @@ export const useGameStore = defineStore('game', () => {
    * Série B caem para cá e 4 daqui sobem para o lugar deles.
    */
   const reserveTeams = ref<Team[]>([])
+  /** Estatísticas de cada jogador no campeonato desta temporada (jogos, gols, notas...). */
+  const seasonStats = ref<Record<string, PlayerSeasonStats>>({})
+  /** Seleções das temporadas encerradas (uma por série), da mais recente para a mais antiga. */
+  const bestXIHistory = ref<BestXIRecord[]>([])
   /** Ano da temporada 1 da carreira (o calendário da temporada N é desse ano + N − 1). */
   const calendarStartYear = ref<number | null>(null)
   /** Resultados do clube gerenciado no campeonato desta temporada, por rodada (0 = primeira). */
@@ -200,6 +205,7 @@ export const useGameStore = defineStore('game', () => {
     teams, managedTeamId, managerName, budget, season, round, fixtures, standings, tactic, trainedThisRound, news,
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers, managers, trophiesAwardedSeason,
     confidence, confidenceLog, dismissal, headlines, academy, calendarStartYear, leagueResults, reserveTeams,
+    seasonStats, bestXIHistory,
   }, 2)
 
   // O formato da liga (4×8 ou 2×20) vem dos próprios clubes da carreira salva.
@@ -446,6 +452,7 @@ export const useGameStore = defineStore('game', () => {
     tactic.value = { formation: '4-4-2', style: 'equilibrado', marking: 'media' }
     news.value = []
     headlines.value = []
+    bestXIHistory.value = []
     transferOffers.value = []
     transferHistory.value = []
     negotiationAttempts.value = {}
@@ -467,6 +474,7 @@ export const useGameStore = defineStore('game', () => {
     round.value = 0
     trainedThisRound.value = []
     leagueResults.value = {}
+    seasonStats.value = {}
     // Cada divisão tem seu turno e returno; todas jogam a mesma rodada ao mesmo tempo.
     const perDivision = DIVISIONS.map((d) => generateFixtures(teamsByDivision(teams.value, d).map((t) => t.id)))
     const totalRounds = Math.max(...perDivision.map((r) => r.length))
@@ -1154,6 +1162,7 @@ export const useGameStore = defineStore('game', () => {
       else if (homeResult < 0) { away.wins++; home.losses++ }
       else { home.draws++; away.draws++ }
 
+      recordMatch(seasonStats.value, m, playedIn(m), (id) => getTeam(id)?.division ?? 'A')
       updateTeamAfterMatch(m.homeId, homeResult, m.playedEnergy)
       updateTeamAfterMatch(m.awayId, -homeResult, m.playedEnergy)
       if (!m.playedEnergy) applySubstitutionFatigue(m)
@@ -1399,6 +1408,37 @@ export const useGameStore = defineStore('game', () => {
     give(cup.value?.championId, { kind: 'cup' })
   }
 
+  /** Quem entrou em campo por cada time (titulares e quem entrou; partidas antigas: só os titulares). */
+  function playedIn(m: LiveMatch): Record<string, Player[]> {
+    const out: Record<string, Player[]> = {}
+    for (const teamId of [m.homeId, m.awayId]) {
+      const players = getTeam(teamId)?.players ?? []
+      out[teamId] = m.playedEnergy ? players.filter((p) => m.playedEnergy![p.id] !== undefined) : players.filter((p) => p.starter)
+    }
+    return out
+  }
+
+  // --- Seleção da temporada ---
+
+  /** Seleção de cada série com os jogos até agora (parcial durante a temporada, final quando ela acaba). */
+  const bestXI = computed(() => {
+    const result: Partial<Record<DivisionId, BestXIEntry[]>> = {}
+    for (const d of DIVISIONS) result[d] = bestEleven(seasonStats.value, d, round.value)
+    return result
+  })
+
+  /** Guarda a seleção da temporada que acabou e avisa se tem jogador seu nela (uma vez por temporada). */
+  function saveBestXI() {
+    if (bestXIHistory.value.some((r) => r.season === season.value)) return
+    bestXIHistory.value = [{ season: season.value, year: currentYear.value, divisions: bestXI.value }, ...bestXIHistory.value].slice(0, 20)
+    const mine = (bestXI.value[managedDivision.value] ?? []).filter((e) => e.teamId === managedTeamId.value)
+    addNews(
+      mine.length
+        ? `⭐ Seleção da ${DIVISION_LABELS[managedDivision.value]}: ${mine.map((e) => e.name).join(', ')} ${mine.length > 1 ? 'estão' : 'está'} entre os melhores da temporada!`
+        : `⭐ Saiu a seleção da temporada de cada série. Nenhum jogador seu entrou na da ${DIVISION_LABELS[managedDivision.value]}.`,
+    )
+  }
+
   function announceSeasonEnd() {
     if (isSeasonOver.value) {
       const division = managedDivision.value
@@ -1408,6 +1448,7 @@ export const useGameStore = defineStore('game', () => {
       const zone = tableZone(division, position, sortedStandings.value.length)
       if (zone === 'promotion') addNews(`Seu time terminou em ${position}º e garantiu o acesso!`)
       if (zone === 'relegation') addNews(`Seu time terminou em ${position}º e será rebaixado.`)
+      saveBestXI()
       // O balanço da temporada vale uma vez só (mesma trava da entrega de troféus).
       const firstTime = trophiesAwardedSeason.value !== season.value
       awardTrophies()
@@ -1467,6 +1508,7 @@ export const useGameStore = defineStore('game', () => {
     nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
     calendarStartYear, leagueResults, currentYear, calendar, nextEventDate,
     reserveTeams, hasReserve, managedFallsOut,
+    seasonStats, bestXIHistory, bestXI,
     payroll, managedDivision, sortedStandings, divisionStandings, gateContext, gateEstimate, matchVenue,
     homeAdvantage, setTicketPrice, upgradeBlocker, startStadiumUpgrade,
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,

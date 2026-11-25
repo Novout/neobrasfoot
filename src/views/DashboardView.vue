@@ -165,6 +165,7 @@ function standingPoints(row: { wins: number; draws: number }) {
             Campeão da Copa do Brasil: <strong>{{ game.getTeam(game.cup.championId)?.name }}</strong>
             <span v-if="game.cup.championId === game.managedTeamId" class="good"> 🏆</span>
           </p>
+          <RouterLink class="btn btn--ghost best-link" :to="{ name: 'best-xi' }">⭐ Ver a seleção da temporada</RouterLink>
           <RouterLink class="btn window-link" :to="{ name: 'manager-market' }">
             💼 Abrir janela de técnicos
             <span v-if="game.jobOffers.length" class="offers-count">{{ game.jobOffers.length }} propostas</span>
@@ -244,6 +245,7 @@ function standingPoints(row: { wins: number; draws: number }) {
             </tr>
           </tbody>
         </table>
+        <RouterLink class="partial-best" :to="{ name: 'best-xi' }">⭐ Seleção da temporada{{ game.isSeasonOver ? '' : ' (parcial)' }}</RouterLink>
         <p class="legend">
           <span v-if="tableDivision === DIVISIONS[0]" class="zone-champion">Campeão</span>
           <span v-else class="zone-promotion">Acesso</span>
@@ -448,6 +450,17 @@ tr.mine td {
 }
 .next-match {
   text-align: center;
+}
+.best-link {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+}
+.partial-best {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--accent);
 }
 .match-date {
   margin: -0.4rem 0 0.25rem;

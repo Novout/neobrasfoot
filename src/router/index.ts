@@ -57,6 +57,12 @@ const router = createRouter({
       meta: { requiresCareer: true, title: 'Estádio' },
     },
     {
+      path: '/selecao',
+      name: 'best-xi',
+      component: () => import('../views/BestXIView.vue'),
+      meta: { requiresCareer: true, title: 'Seleção da temporada' },
+    },
+    {
       path: '/calendario',
       name: 'calendar',
       component: () => import('../views/CalendarView.vue'),
