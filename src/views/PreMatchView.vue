@@ -9,6 +9,7 @@ import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { isAvailable, unavailableReason } from '../data/discipline'
 import { defenseSplit } from '../data/defense'
+import CountryTag from '../components/CountryTag.vue'
 import PosTag from '../components/PosTag.vue'
 import { FORMATIONS, markingOf, MARKINGS, PLAY_STYLES, playingPosition, POSITION_ORDER } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
@@ -118,9 +119,12 @@ function play() {
     </section>
 
     <aside class="prematch__side">
-      <div v-if="game.nextOpponent" class="card versus" :class="{ 'versus--cup': game.nextEvent === 'cup' }">
+      <div v-if="game.nextOpponent" class="card versus" :class="{ 'versus--cup': game.nextEvent === 'cup' || game.nextEvent === 'libertadores' }">
         <h3>{{ game.nextEventLabel }}</h3>
-        <p v-if="game.nextEvent === 'cup'" class="muted small">Jogo único: se empatar, decide nos pênaltis.</p>
+        <p v-if="game.nextEvent === 'cup' || (game.nextEvent === 'libertadores' && game.libertadoresKnockout)" class="muted small">
+          Jogo único: se empatar, decide nos pênaltis.
+        </p>
+        <p v-else-if="game.nextEvent === 'libertadores'" class="muted small">Fase de grupos: passam os 2 primeiros de cada grupo.</p>
         <div class="versus__teams">
           <div>
             <TeamBadge :team="game.managedTeam" :size="56" />
@@ -129,7 +133,7 @@ function play() {
           <span class="muted">x</span>
           <div>
             <TeamBadge :team="game.nextOpponent" :size="56" />
-            <strong>{{ game.nextOpponent.name }}</strong>
+            <strong>{{ game.nextOpponent.name }} <CountryTag v-if="game.nextOpponent.country" :team="game.nextOpponent" /></strong>
           </div>
         </div>
         <table v-if="myStrength && oppStrength" class="compare">

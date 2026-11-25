@@ -5,10 +5,11 @@ import { DIVISION_LABELS } from './divisions'
 export const PLAYER_MANAGER_ID = 'tecnico-jogador'
 
 /** Pontos de cada conquista no ranking de técnicos. */
-export const TROPHY_POINTS = { A: 10, B: 6, C: 4, D: 3, cup: 8 } as const
+export const TROPHY_POINTS = { libertadores: 14, A: 10, B: 6, C: 4, D: 3, cup: 8 } as const
 
 export function trophyKey(t: Trophy): keyof typeof TROPHY_POINTS {
-  return t.kind === 'cup' ? 'cup' : (t.division ?? 'D')
+  if (t.kind === 'cup' || t.kind === 'libertadores') return t.kind
+  return t.division ?? 'D'
 }
 
 export function trophyPoints(t: Trophy) {
@@ -16,11 +17,14 @@ export function trophyPoints(t: Trophy) {
 }
 
 export function trophyLabel(t: Trophy) {
-  return t.kind === 'cup' ? 'Copa do Brasil' : `Campeão da ${DIVISION_LABELS[t.division ?? 'D']}`
+  if (t.kind === 'cup') return 'Copa do Brasil'
+  if (t.kind === 'libertadores') return 'Libertadores'
+  return `Campeão da ${DIVISION_LABELS[t.division ?? 'D']}`
 }
 
 /** Ícone e cor da taça na prateleira. */
 export const TROPHY_STYLE: Record<keyof typeof TROPHY_POINTS, { icon: string; color: string; name: string }> = {
+  libertadores: { icon: '🏆', color: '#f97316', name: 'Libertadores' },
   A: { icon: '🏆', color: '#fbbf24', name: 'Série A' },
   cup: { icon: '🏆', color: '#60a5fa', name: 'Copa do Brasil' },
   B: { icon: '🥈', color: '#cbd5e1', name: 'Série B' },
@@ -64,7 +68,7 @@ export interface RankingRow {
 export function managerRanking(managers: Manager[]): RankingRow[] {
   return managers
     .map((manager) => {
-      const counts = { A: 0, B: 0, C: 0, D: 0, cup: 0 }
+      const counts = { libertadores: 0, A: 0, B: 0, C: 0, D: 0, cup: 0 }
       for (const t of manager.trophies) counts[trophyKey(t)]++
       return {
         manager,
@@ -76,6 +80,7 @@ export function managerRanking(managers: Manager[]): RankingRow[] {
     .sort(
       (a, b) =>
         b.points - a.points ||
+        b.counts.libertadores - a.counts.libertadores ||
         b.counts.A - a.counts.A ||
         b.counts.cup - a.counts.cup ||
         b.total - a.total ||

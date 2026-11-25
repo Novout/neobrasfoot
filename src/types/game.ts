@@ -69,6 +69,8 @@ export interface Team {
   managerName?: string
   /** Escudo do clube (link, caminho no jogo ou imagem embutida); sem ele, o distintivo usa as cores. */
   crest?: string
+  /** País dos clubes estrangeiros da Libertadores (código de 3 letras, ex.: "ARG"). Ausente nos clubes da liga. */
+  country?: string
   players: Player[]
 }
 
@@ -124,7 +126,7 @@ export interface PenaltyKick {
   scored: boolean
 }
 
-export type Competition = 'league' | 'cup'
+export type Competition = 'league' | 'cup' | 'libertadores'
 
 export interface PenaltyScore {
   home: number
@@ -167,9 +169,31 @@ export interface CupState {
   byes?: string[]
 }
 
+/** Grupo da Libertadores: 4 clubes em turno e returno; os 2 primeiros vão às oitavas. */
+export interface LibertadoresGroup {
+  name: string
+  teamIds: string[]
+}
+
+export interface LibertadoresState {
+  season: number
+  groups: LibertadoresGroup[]
+  /** Jogos de cada rodada da fase de grupos (6 rodadas, 16 jogos cada). */
+  groupRounds: CupTie[][]
+  /** Mata-mata em jogo único: oitavas, quartas, semifinal e final (sorteadas conforme avançam). */
+  knockout: CupRound[]
+  /** Próxima etapa: 0 a 5 = rodadas da fase de grupos; 6 em diante = fases do mata-mata. */
+  stage: number
+  /** Para cada etapa: quantas rodadas do campeonato precisam ter sido jogadas antes dela. */
+  schedule: number[]
+  championId: string | null
+}
+
 export interface LiveMatch {
   id: string
   competition: Competition
+  /** Mata-mata (empate vai para os pênaltis). Ausente em partidas antigas: vale só para a Copa. */
+  knockout?: boolean
   /** Disputa de pênaltis (só em mata-mata empatado). */
   penalties: PenaltyScore | null
   homeId: string
@@ -226,7 +250,7 @@ export interface Dismissal {
   reason: string
 }
 
-export type TrophyKind = 'league' | 'cup'
+export type TrophyKind = 'league' | 'cup' | 'libertadores'
 
 export interface Trophy {
   kind: TrophyKind

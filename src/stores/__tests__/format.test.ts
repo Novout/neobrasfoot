@@ -175,6 +175,7 @@ describe('carreira no formato 2×20', () => {
     for (const r of game.standings) if (game.getTeam(r.teamId)?.division === 'B' && r !== myRow) r.wins = 10
     game.round = game.totalRounds
     if (game.cup) game.cup.championId = game.cup.rounds[0]!.ties[0]!.homeId
+    if (game.libertadores) game.libertadores.championId = game.libertadores.groups[0]!.teamIds[0]!
     expect(game.managedFallsOut).toBe(true)
     game.nextSeason()
     expect(game.managedTeamId).not.toBe('amazonas')

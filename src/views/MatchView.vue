@@ -28,8 +28,9 @@ function matchDivision(m: { homeId: string }) {
 
 const EVENT_ICONS: Record<MatchEventType, string> = { gol: '⚽', amarelo: '🟨', vermelho: '🟥', lesao: '🩹', sub: '🔄', 'penalti-perdido': '❌' }
 
-/** Rodada da Copa reúne clubes de todas as séries: sem abas de divisão. */
-const isCup = computed(() => match.matches[0]?.competition === 'cup')
+/** Rodada de copa (Copa do Brasil ou Libertadores) reúne clubes de todas as séries: sem abas de divisão. */
+const isCup = computed(() => !!match.matches[0] && match.matches[0].competition !== 'league')
+const cupIcon = computed(() => (match.matches[0]?.competition === 'libertadores' ? '🌎 ' : '🏆 '))
 
 /** Jogo do seu clube, em destaque no topo com todos os lances. */
 const myMatch = computed(() => match.matches.find((m) => isMine(m)) ?? null)
@@ -230,7 +231,7 @@ onBeforeUnmount(() => {
     <HalftimePanel v-if="match.halftime || match.injuryBreak" :key="match.injuryBreak ? 'lesao-' + match.injuryBreak.minute : 'intervalo'" />
     <PenaltyPanel v-if="match.penaltyBreak || match.shootout" />
 
-    <h2 class="round-title" :class="{ 'round-title--cup': isCup }">{{ isCup ? '🏆 ' : '' }}{{ game.nextEventLabel }}</h2>
+    <h2 class="round-title" :class="{ 'round-title--cup': isCup }">{{ isCup ? cupIcon : '' }}{{ game.nextEventLabel }}</h2>
 
     <section v-if="myMatch" class="match-list">
       <article

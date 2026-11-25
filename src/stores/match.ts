@@ -45,6 +45,11 @@ function eventPlayer(p: Player) {
   return { playerName: p.name, playerId: p.id, star: p.star ?? false }
 }
 
+/** Jogo de mata-mata (empate vai para os pênaltis). Partidas antigas sem a marcação: só as da Copa. */
+export function isKnockout(m: Pick<LiveMatch, 'knockout' | 'competition'>) {
+  return !!m.knockout || m.competition === 'cup'
+}
+
 function goalChance(attack: number, defense: number) {
   return BASE_GOAL_CHANCE * (attack / Math.max(defense, 1)) ** 2
 }
@@ -333,6 +338,10 @@ export const useMatchStore = defineStore('match', () => {
     finalWhistleDone.value = false
     extra.value = 0
     const competition = game.nextEvent ?? 'league'
+    // Copa e mata-mata da Libertadores: empate vai para os pênaltis. Na fase de grupos, empate vale 1 ponto.
+    const knockout = competition === 'cup' || (competition === 'libertadores' && game.libertadoresKnockout)
+    // Duas etapas da Libertadores podem cair no mesmo intervalo entre rodadas: a etapa entra no id.
+    const stage = competition === 'libertadores' ? `-${game.libertadores?.stage ?? 0}` : ''
     matches.value = game.currentFixtures.map((f, index) => {
       const home = game.teamStrength(f.homeId)
       const away = game.teamStrength(f.awayId)
@@ -341,8 +350,9 @@ export const useMatchStore = defineStore('match', () => {
         lineups.value[id] = game.getTeam(id)!.players.filter((p) => p.starter && isAvailable(p)).map((p) => ({ ...p }))
       }
       return {
-        id: `${competition}-${game.season}-${game.round}-${index}`,
+        id: `${competition}-${game.season}-${game.round}${stage}-${index}`,
         competition,
+        knockout,
         penalties: null,
         homeId: f.homeId,
         awayId: f.awayId,
@@ -534,7 +544,7 @@ export const useMatchStore = defineStore('match', () => {
     const id = useGameStore().managedTeamId
     for (const m of matches.value) {
       for (const teamId of [m.homeId, m.awayId]) for (const p of lineups.value[teamId] ?? []) recordEnergy(m, p)
-      if (m.competition !== 'cup' || m.homeGoals !== m.awayGoals || m.penalties) continue
+      if (!isKnockout(m) || m.homeGoals !== m.awayGoals || m.penalties) continue
       const home = lineups.value[m.homeId] ?? []
       const away = lineups.value[m.awayId] ?? []
       if (m.homeId === id || m.awayId === id) {
@@ -713,7 +723,7 @@ export const useMatchStore = defineStore('match', () => {
     // Rodadas salvas antes do apito final ser separado: processa agora.
     finalWhistle()
     if (shootout.value) return
-    const wasLeague = matches.value[0]?.competition !== 'cup'
+    const wasLeague = matches.value[0]?.competition === 'league'
     useGameStore().applyRoundResults(matches.value)
     // Propostas de transferência chegam só após rodadas do campeonato (uma janela por rodada).
     if (wasLeague) {

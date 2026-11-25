@@ -28,7 +28,8 @@ const shelf = computed(() =>
   [...(selected.value?.manager.trophies ?? [])].sort((a, b) => trophyPoints(b) - trophyPoints(a) || b.season - a.season),
 )
 
-const KEYS = ['A', 'cup', 'B', 'C', 'D'] as const
+const KEYS = ['libertadores', 'A', 'cup', 'B', 'C', 'D'] as const
+const KEY_LABELS: Record<(typeof KEYS)[number], string> = { libertadores: 'Lib', A: 'A', cup: 'Copa', B: 'B', C: 'C', D: 'D' }
 </script>
 
 <template>
@@ -87,7 +88,7 @@ const KEYS = ['A', 'cup', 'B', 'C', 'D'] as const
             <th>#</th>
             <th>Técnico</th>
             <th>Clube atual</th>
-            <th v-for="k in KEYS" :key="k" class="num" :title="TROPHY_STYLE[k].name">{{ TROPHY_STYLE[k].icon }} {{ k === 'cup' ? 'Copa' : k }}</th>
+            <th v-for="k in KEYS" :key="k" class="num" :title="TROPHY_STYLE[k].name">{{ TROPHY_STYLE[k].icon }} {{ KEY_LABELS[k] }}</th>
             <th class="num">Troféus</th>
             <th class="num">Pontos</th>
           </tr>

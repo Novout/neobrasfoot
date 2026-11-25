@@ -177,6 +177,10 @@ function standingPoints(row: { wins: number; draws: number }) {
             Campeão da Copa do Brasil: <strong>{{ game.getTeam(game.cup.championId)?.name }}</strong>
             <span v-if="game.cup.championId === game.managedTeamId" class="good"> 🏆</span>
           </p>
+          <p v-if="game.libertadores?.championId">
+            Campeão da Libertadores: <strong>{{ game.getTeam(game.libertadores.championId)?.name }}</strong>
+            <span v-if="game.libertadores.championId === game.managedTeamId" class="good"> 🏆</span>
+          </p>
           <RouterLink class="btn btn--ghost best-link" :to="{ name: 'best-xi' }">⭐ Ver a seleção da temporada</RouterLink>
           <RouterLink class="btn window-link" :to="{ name: 'manager-market' }">
             💼 Abrir janela de técnicos
@@ -189,7 +193,7 @@ function standingPoints(row: { wins: number; draws: number }) {
           <button class="btn" @click="watchCupRound">Acompanhar a rodada da Copa</button>
         </template>
         <template v-else-if="game.nextOpponent">
-          <h3 :class="{ 'cup-title': game.nextEvent === 'cup' }">{{ game.nextEventLabel }}</h3>
+          <h3 :class="{ 'cup-title': game.nextEvent === 'cup', 'libertadores-title': game.nextEvent === 'libertadores' }">{{ game.nextEventLabel }}</h3>
           <p v-if="game.nextEventDate" class="muted match-date">
             📅 {{ formatDate(game.nextEventDate, true) }} ·
             <RouterLink :to="{ name: 'calendar' }">ver calendário</RouterLink>
@@ -390,6 +394,9 @@ a.tag {
 }
 .cup-title {
   color: var(--warn);
+}
+.libertadores-title {
+  color: #fb923c;
 }
 .table-header {
   display: flex;

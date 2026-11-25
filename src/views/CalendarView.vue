@@ -4,6 +4,8 @@ import TeamBadge from '../components/TeamBadge.vue'
 import { formatDate, leagueEnd, leagueStart, MONTH_NAMES, monthOf, weekdayOf } from '../data/calendar'
 import { CUP_NAME, cupPhases } from '../data/cup'
 import { DIVISION_LABELS } from '../data/divisions'
+import { GROUP_ROUNDS, groupOf, LIBERTADORES_NAME, stageName } from '../data/libertadores'
+import type { CalendarKind } from '../data/calendar'
 import { useGameStore } from '../stores/game'
 import type { Team } from '../types/game'
 
@@ -14,7 +16,7 @@ type Outcome = 'win' | 'draw' | 'loss'
 interface Row {
   key: string
   date: string
-  kind: 'league' | 'cup'
+  kind: CalendarKind
   label: string
   opponent: Team | null
   home: boolean | null
@@ -96,9 +98,49 @@ function cupRow(index: number, date: string): Row {
   }
 }
 
+/** Etapa da Libertadores (só aparece no calendário de quem disputa o torneio). */
+function libertadoresRow(index: number, date: string): Row {
+  const l = game.libertadores!
+  const ties = index < GROUP_ROUNDS ? l.groupRounds[index] : l.knockout[index - GROUP_ROUNDS]?.ties
+  const tie = ties?.find((t) => t.homeId === myId.value || t.awayId === myId.value)
+  const played = index < l.stage || (l.championId !== null && index <= l.stage)
+  const home = tie ? tie.homeId === myId.value : null
+  let score: string | null = null
+  let outcome: Outcome | null = null
+  if (tie && tie.homeGoals !== null && tie.awayGoals !== null) {
+    const mine = home ? tie.homeGoals : tie.awayGoals
+    const theirs = home ? tie.awayGoals : tie.homeGoals
+    const pens = tie.penalties ? ` (pên. ${home ? tie.penalties.home : tie.penalties.away}-${home ? tie.penalties.away : tie.penalties.home})` : ''
+    score = `${mine} x ${theirs}${pens}`
+    outcome = tie.winnerId === myId.value ? 'win' : tie.winnerId ? 'loss' : 'draw'
+  }
+  let note: string | null = null
+  if (!tie) note = ties ? 'seu time não está nesta fase' : 'adversário a definir'
+  return {
+    key: `L${index}-lib`,
+    date,
+    kind: 'libertadores',
+    label: `${LIBERTADORES_NAME} · ${stageName(index)}`,
+    opponent: tie ? game.getTeam(home ? tie.awayId : tie.homeId) : null,
+    home,
+    score,
+    outcome,
+    note,
+    played,
+    next: game.nextEvent === 'libertadores' && index === l.stage,
+  }
+}
+
+/** O clube gerenciado disputa a Libertadores desta temporada. */
+const inLibertadores = computed(() => !!game.libertadores && !!myId.value && !!groupOf(game.libertadores, myId.value))
+
 /** Compromissos da temporada agrupados por mês. */
 const months = computed(() => {
-  const rows = game.calendar.map((e) => (e.kind === 'league' ? leagueRow(e.index, e.date) : cupRow(e.index, e.date)))
+  const rows = game.calendar
+    .filter((e) => e.kind !== 'libertadores' || inLibertadores.value)
+    .map((e) =>
+      e.kind === 'league' ? leagueRow(e.index, e.date) : e.kind === 'cup' ? cupRow(e.index, e.date) : libertadoresRow(e.index, e.date),
+    )
   const groups: { month: number; rows: Row[] }[] = []
   for (const row of rows) {
     const month = monthOf(row.date)
@@ -114,6 +156,7 @@ const totals = computed(() => {
     league: rows.filter((r) => r.kind === 'league').length,
     midweek: rows.filter((r) => r.kind === 'league' && weekdayOf(r.date) !== 0).length,
     cup: rows.filter((r) => r.kind === 'cup').length,
+    libertadores: rows.filter((r) => r.kind === 'libertadores').length,
   }
 })
 
@@ -128,7 +171,8 @@ const OUTCOME_LABEL: Record<Outcome, string> = { win: 'V', draw: 'E', loss: 'D' 
         <p class="muted">
           Campeonato de {{ formatDate(leagueStart(game.currentYear)) }} a {{ formatDate(leagueEnd(game.currentYear)) }}:
           {{ totals.league }} rodadas<template v-if="totals.midweek"> ({{ totals.midweek }} no meio de semana)</template>
-          · {{ totals.cup }} fases da {{ CUP_NAME }} no meio de semana.
+          · {{ totals.cup }} fases da {{ CUP_NAME }}<template v-if="totals.libertadores">
+            e {{ totals.libertadores }} jogos da {{ LIBERTADORES_NAME }}</template> no meio de semana.
         </p>
       </div>
       <div v-if="game.nextEventDate" class="calendar__next">
@@ -151,8 +195,8 @@ const OUTCOME_LABEL: Record<Outcome, string> = { win: 'V', draw: 'E', loss: 'D' 
           :class="[`row--${row.kind}`, { 'row--played': row.played, 'row--next': row.next }]"
         >
           <span class="row__date">{{ formatDate(row.date) }}</span>
-          <span class="row__comp" :class="{ 'row__comp--cup': row.kind === 'cup' }">
-            {{ row.kind === 'cup' ? '🏆 ' : '' }}{{ row.label }}
+          <span class="row__comp" :class="{ 'row__comp--cup': row.kind === 'cup', 'row__comp--lib': row.kind === 'libertadores' }">
+            {{ row.kind === 'cup' ? '🏆 ' : row.kind === 'libertadores' ? '🌎 ' : '' }}{{ row.label }}
           </span>
           <span class="row__match">
             <template v-if="row.opponent">
@@ -253,6 +297,9 @@ const OUTCOME_LABEL: Record<Outcome, string> = { win: 'V', draw: 'E', loss: 'D' 
 }
 .row__comp--cup {
   color: var(--warn);
+}
+.row__comp--lib {
+  color: #fb923c;
 }
 .row__match {
   display: flex;

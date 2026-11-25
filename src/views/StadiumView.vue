@@ -190,7 +190,7 @@ function build(key: StadiumUpgradeKey, label: string, cost: number) {
         </thead>
         <tbody>
           <tr v-for="(g, i) in stadium.history" :key="i">
-            <td class="muted">T{{ g.season }} · {{ g.competition === 'cup' ? 'Copa' : `R${g.round}` }}</td>
+            <td class="muted">T{{ g.season }} · {{ g.competition === 'cup' ? 'Copa' : g.competition === 'libertadores' ? 'Libertadores' : `R${g.round}` }}</td>
             <td>{{ game.getTeam(g.opponentId)?.name }}</td>
             <td class="num">{{ g.attendance.toLocaleString('pt-BR') }}</td>
             <td class="num">{{ Math.round((g.attendance / g.capacity) * 100) }}%</td>

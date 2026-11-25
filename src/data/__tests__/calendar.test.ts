@@ -66,7 +66,7 @@ describe('calendário na carreira', () => {
     const match = useMatchStore()
     game.startCareer(createTeams()[0]!.id, 'Técnico')
     const year = game.currentYear
-    expect(game.calendar).toHaveLength(game.totalRounds + game.cup!.schedule.length)
+    expect(game.calendar).toHaveLength(game.totalRounds + game.cup!.schedule.length + game.libertadores!.schedule.length)
     expect(game.nextEventDate).toBe(leagueDates(year, game.totalRounds)[0])
 
     match.setupRound()
@@ -78,6 +78,7 @@ describe('calendário na carreira', () => {
 
     game.round = game.totalRounds
     if (game.cup) game.cup.championId = game.managedTeamId
+    if (game.libertadores) game.libertadores.championId = game.managedTeamId
     game.nextSeason()
     expect(game.currentYear).toBe(year + 1)
     expect(game.leagueResults).toEqual({})

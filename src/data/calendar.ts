@@ -69,36 +69,54 @@ export function leagueDates(year: number, rounds: number): IsoDate[] {
 }
 
 /**
- * Datas das fases da Copa. `schedule[i]` = rodadas do campeonato jogadas antes da fase i.
- * A fase fica entre essa rodada e a próxima: de domingo a domingo, na quarta; se a próxima for no meio
+ * Data de um jogo de meio de semana. `afterRounds` = rodadas do campeonato jogadas antes dele.
+ * O jogo fica entre essa rodada e a próxima: de domingo a domingo, na quarta; se a próxima for no meio
  * da semana, no meio do intervalo. Depois da última rodada, três dias depois.
+ * `slot` > 0: outro jogo no mesmo intervalo (Copa e Libertadores), um dia depois a cada vez, sem passar da rodada seguinte.
  */
-export function cupDates(league: IsoDate[], schedule: number[]): IsoDate[] {
-  return schedule.map((afterRounds) => {
-    const prev = league[afterRounds - 1]
-    const next = league[afterRounds]
-    if (!prev) return next ? toIso(fromIso(next) - 4 * DAY) : league[0] ?? ''
-    if (!next) return toIso(fromIso(prev) + 3 * DAY)
-    const gap = Math.round((fromIso(next) - fromIso(prev)) / DAY)
-    return toIso(fromIso(prev) + Math.max(1, Math.min(3, Math.floor(gap / 2))) * DAY)
-  })
+function midweekDate(league: IsoDate[], afterRounds: number, slot = 0): IsoDate {
+  const prev = league[afterRounds - 1]
+  const next = league[afterRounds]
+  if (!prev) return next ? toIso(fromIso(next) - (4 - Math.min(slot, 3)) * DAY) : league[0] ?? ''
+  if (!next) return toIso(fromIso(prev) + (3 + slot) * DAY)
+  const gap = Math.round((fromIso(next) - fromIso(prev)) / DAY)
+  const base = Math.max(1, Math.min(3, Math.floor(gap / 2)))
+  return toIso(fromIso(prev) + Math.max(1, Math.min(gap - 1, base + slot)) * DAY)
 }
 
+/** Datas das fases da Copa. `schedule[i]` = rodadas do campeonato jogadas antes da fase i. */
+export function cupDates(league: IsoDate[], schedule: number[]): IsoDate[] {
+  return schedule.map((afterRounds) => midweekDate(league, afterRounds))
+}
+
+export type CalendarKind = 'league' | 'cup' | 'libertadores'
+
 export interface CalendarEntry {
-  kind: 'league' | 'cup'
-  /** Rodada do campeonato (0 = primeira) ou fase da Copa (0 = primeira). */
+  kind: CalendarKind
+  /** Rodada do campeonato, fase da Copa ou etapa da Libertadores (0 = primeira). */
   index: number
   date: IsoDate
 }
 
-/** Calendário completo da temporada, em ordem de data (Copa antes da rodada do mesmo dia, se houver). */
-export function seasonCalendar(year: number, leagueRounds: number, cupSchedule: number[]): CalendarEntry[] {
+/**
+ * Calendário completo da temporada, em ordem de data (copas antes da rodada do mesmo dia, se houver).
+ * Copa e Libertadores no mesmo intervalo entre rodadas ficam em dias seguidos (a Copa primeiro).
+ */
+export function seasonCalendar(year: number, leagueRounds: number, cupSchedule: number[], libertadoresSchedule: number[] = []): CalendarEntry[] {
   const league = leagueDates(year, leagueRounds)
-  const cup = cupDates(league, cupSchedule)
+  const slots = new Map<number, number>()
+  const midweek = (kind: 'cup' | 'libertadores', schedule: number[]) =>
+    schedule.map((afterRounds, index) => {
+      const slot = slots.get(afterRounds) ?? 0
+      slots.set(afterRounds, slot + 1)
+      return { kind, index, date: midweekDate(league, afterRounds, slot) }
+    })
+  const order: Record<CalendarKind, number> = { cup: 0, libertadores: 1, league: 2 }
   return [
     ...league.map((date, index) => ({ kind: 'league' as const, index, date })),
-    ...cup.map((date, index) => ({ kind: 'cup' as const, index, date })),
-  ].sort((a, b) => a.date.localeCompare(b.date) || (a.kind === 'cup' ? -1 : 1))
+    ...midweek('cup', cupSchedule),
+    ...midweek('libertadores', libertadoresSchedule),
+  ].sort((a, b) => a.date.localeCompare(b.date) || order[a.kind] - order[b.kind] || a.index - b.index)
 }
 
 const WEEKDAYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
