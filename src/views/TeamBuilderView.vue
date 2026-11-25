@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
+import { applyPositionChoice, POSITION_CHOICES, positionChoiceOf, type PositionChoice } from '../data/defense'
 import { crestFromFile } from '../data/crests'
 import { DIVISION_LABELS, formatOfTeams, LEAGUE_FORMATS, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from '../data/divisions'
 import { leagueTeams } from '../data/league'
@@ -375,8 +376,13 @@ function startCareer() {
           <tbody>
             <tr v-for="(p, i) in draft.players" :key="i">
               <td>
-                <select v-model="p.position" class="pos-select" :class="`pos--${p.position}`">
-                  <option v-for="pos in POSITION_ORDER" :key="pos" :value="pos">{{ pos }}</option>
+                <select
+                  :value="positionChoiceOf(p)"
+                  class="pos-select"
+                  :class="`pos--${positionChoiceOf(p)}`"
+                  @change="applyPositionChoice(p, ($event.target as HTMLSelectElement).value as PositionChoice)"
+                >
+                  <option v-for="pos in POSITION_CHOICES" :key="pos" :value="pos">{{ pos }}</option>
                 </select>
               </td>
               <td class="name-cell">

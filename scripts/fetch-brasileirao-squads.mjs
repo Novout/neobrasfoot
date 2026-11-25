@@ -174,7 +174,49 @@ async function main() {
     for (const [id, e] of Object.entries(r.entities ?? {})) {
       const time = e.claims?.P569?.[0]?.mainsnak?.datavalue?.value?.time
       const fame = Object.keys(e.sitelinks ?? {}).filter((k) => /wiki$/.test(k) && !['commonswiki', 'specieswiki', 'wikidatawiki'].includes(k)).length
-      info[id] = { birthDate: time ? time.slice(1, 11) : undefined, fame }
+      // Posição jogada (P413): diz se o defensor é lateral ou zagueiro.
+      const roles = (e.claims?.P413 ?? []).map((c) => c.mainsnak?.datavalue?.value?.id).filter(Boolean)
+      info[id] = { birthDate: time ? time.slice(1, 11) : undefined, fame, roles }
+    }
+  }
+
+  // Nome (em inglês) de cada posição citada, para separar laterais de zagueiros.
+  const roleIds = [...new Set(Object.values(info).flatMap((x) => x.roles))]
+  const roleLabel = {}
+  for (let i = 0; i < roleIds.length; i += 50) {
+    const r = await wikidata(`action=wbgetentities&props=labels&languages=en&ids=${roleIds.slice(i, i + 50).join('|')}`)
+    for (const [id, e] of Object.entries(r.entities ?? {})) roleLabel[id] = (e.labels?.en?.value ?? '').toLowerCase()
+  }
+  /** "LAT" (lateral/ala), "ZAG" (zagueiro) ou nada, pela primeira posição reconhecível. */
+  const defRole = (roles) => {
+    for (const id of roles) {
+      const label = roleLabel[id] ?? ''
+      if (/full[- ]?back|left[- ]back|right[- ]back|wing[- ]?back|side[- ]back/.test(label)) return 'LAT'
+      if (/cent(re|er)[- ]back|sweeper|libero|central defender/.test(label)) return 'ZAG'
+    }
+    return undefined
+  }
+
+  // Ficha (infobox) de cada defensor na Wikipédia: "Left-back", "Centre-back"... é mais precisa que o Wikidata.
+  const defenderLinks = [...new Set(Object.values(squads).flatMap((sq) => sq.players.filter((p) => p.position === 'DEF' && p.link).map((p) => p.link)))]
+  const infoboxRole = {}
+  const roleFromText = (text) => {
+    const t = text.toLowerCase()
+    if (/full[- ]?back|left[- ]back|right[- ]back|wing[- ]?back|side[- ]back|lateral/.test(t)) return 'LAT'
+    if (/cent(re|er)[- ]back|central defender|sweeper|libero|zagueiro/.test(t)) return 'ZAG'
+    return undefined
+  }
+  for (let i = 0; i < defenderLinks.length; i += 50) {
+    const batch = defenderLinks.slice(i, i + 50)
+    const r = await wiki(`action=query&prop=revisions&rvprop=content&rvslots=main&redirects=1&titles=${encodeURIComponent(batch.join('|'))}`)
+    const norm = Object.fromEntries((r.query?.normalized ?? []).map((n) => [n.from, n.to]))
+    const red = Object.fromEntries((r.query?.redirects ?? []).map((n) => [n.from, n.to]))
+    const byTitle = Object.fromEntries((r.query?.pages ?? []).map((p) => [p.title, p.revisions?.[0]?.slots?.main?.content ?? '']))
+    for (const link of batch) {
+      const title = red[norm[link] ?? link] ?? norm[link] ?? link
+      const field = (byTitle[title] ?? '').match(/\n\s*\|\s*position\s*=\s*([^\n]*)/i)
+      const role = field ? roleFromText(field[1]) : undefined
+      if (role) infoboxRole[link] = role
     }
   }
 
@@ -188,7 +230,14 @@ async function main() {
           ...(s.manager ? { manager: s.manager } : {}),
           players: s.players.map(({ name, position, link }) => {
             const q = link && qid[link]
-            return { name, position, ...(q && info[q]?.birthDate ? { birthDate: info[q].birthDate } : {}), fame: q ? info[q]?.fame ?? 0 : 0 }
+            const role = position === 'DEF' ? (infoboxRole[link] ?? (q ? defRole(info[q]?.roles ?? []) : undefined)) : undefined
+            return {
+              name,
+              position,
+              ...(role ? { defRole: role } : {}),
+              ...(q && info[q]?.birthDate ? { birthDate: info[q].birthDate } : {}),
+              fame: q ? info[q]?.fame ?? 0 : 0,
+            }
           }),
         },
       ]),

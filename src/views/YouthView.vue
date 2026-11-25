@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import YouthAcademy from '../components/YouthAcademy.vue'
-import { POSITION_ORDER } from '../data/tactics'
+import { defRoleOf, POSITION_CHOICES, positionChoiceOf } from '../data/defense'
 import { useGameStore } from '../stores/game'
 
 const game = useGameStore()
 
 /** Quantos jogadores o elenco tem em cada posição (ajuda a decidir quem subir). */
 const byPosition = computed(() =>
-  POSITION_ORDER.map((pos) => ({ pos, count: game.managedTeam?.players.filter((p) => p.position === pos).length ?? 0 })),
+  POSITION_CHOICES.map((pos) => ({
+    pos,
+    count: game.managedTeam?.players.filter((p) => positionChoiceOf({ position: p.position, defRole: defRoleOf(p) ?? undefined }) === pos).length ?? 0,
+  })),
 )
 </script>
 

@@ -2,6 +2,8 @@ import type { Foot } from '../data/feet'
 import type { SkillId } from '../data/skills'
 
 export type Position = 'GOL' | 'DEF' | 'MEI' | 'ATA'
+/** Função do defensor: lateral (pontas da linha) ou zagueiro (meio). */
+export type DefRole = 'LAT' | 'ZAG'
 
 export interface Player {
   id: string
@@ -20,6 +22,8 @@ export interface Player {
   skills?: SkillId[]
   /** Pé preferido: D destro, E canhoto, A ambidestro. Ausente em saves antigos: ver playerFoot(). */
   foot?: Foot
+  /** Defensores: lateral (LAT) ou zagueiro (ZAG). Ausente em saves antigos: ver defRoleOf(). */
+  defRole?: DefRole
   /** Ordem do titular na linha do campo (0 = mais à esquerda), definida pelo técnico. Ausente = lado do pé. */
   lineupSlot?: number
   /** Amarelos acumulados na temporada (zera ao cumprir suspensão por acúmulo). */

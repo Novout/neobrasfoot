@@ -8,6 +8,8 @@ import StarMark from '../components/StarMark.vue'
 import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { isAvailable, unavailableReason } from '../data/discipline'
+import { defenseSplit } from '../data/defense'
+import PosTag from '../components/PosTag.vue'
 import { FORMATIONS, markingOf, MARKINGS, PLAY_STYLES, playingPosition, POSITION_ORDER } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
@@ -88,6 +90,9 @@ function play() {
           <span :class="startersByPos[group.pos] === required[group.pos] ? 'ok' : 'warn'">
             {{ startersByPos[group.pos] }}/{{ required[group.pos] }}
           </span>
+          <small v-if="group.pos === 'DEF'" class="muted def-split">
+            {{ defenseSplit(required.DEF).LAT ? `${defenseSplit(required.DEF).LAT} laterais + ` : '' }}{{ defenseSplit(required.DEF).ZAG }} zagueiros
+          </small>
         </h3>
         <ul>
           <li
@@ -100,6 +105,7 @@ function play() {
           >
             <input type="checkbox" :checked="p.starter" tabindex="-1" />
             <span class="name">
+              <PosTag v-if="p.position === 'DEF'" :player="p" />
               {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
               <span v-if="p.forSale" class="for-sale" title="Listado para venda">à venda</span>
             </span>
@@ -269,6 +275,10 @@ function play() {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
   gap: 0.35rem;
+}
+.def-split {
+  font-size: 0.78rem;
+  font-weight: 400;
 }
 .player-row {
   display: grid;

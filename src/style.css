@@ -124,5 +124,8 @@ th.num {
 }
 .pos--GOL { background: #b45309; }
 .pos--DEF { background: #1d4ed8; }
+/* Defensores: laterais em azul mais claro, zagueiros em azul-escuro. */
+.pos--LAT { background: #2563eb; }
+.pos--ZAG { background: #1e3a8a; }
 .pos--MEI { background: #15803d; }
 .pos--ATA { background: #b91c1c; }

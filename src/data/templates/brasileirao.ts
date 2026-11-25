@@ -1,4 +1,4 @@
-import type { Position } from '../../types/game'
+import type { DefRole, Position } from '../../types/game'
 import { LEAGUE_FORMAT, LEAGUE_FORMAT_VERSION, type LeagueFile, type LeagueFilePlayer, type LeagueFileTeam } from '../leagueFile'
 import { POSITION_ORDER } from '../tactics'
 import { generateSquadFor } from '../teams'
@@ -77,6 +77,8 @@ const EXTRA_TEAMS: TemplateTeam[] = [
 interface RawPlayer {
   name: string
   position: string
+  /** Defensores: "LAT" (lateral) ou "ZAG" (zagueiro), pela posição no Wikidata. */
+  defRole?: string
   birthDate?: string
   /** Em quantas Wikipédias o jogador tem artigo: indica o quanto ele é conhecido. */
   fame: number
@@ -138,7 +140,8 @@ function realSquad(teamId: string, reputation: number): LeagueFilePlayer[] | und
     .map((p) => {
       const age = Math.max(16, Math.min(45, ageOn(p.birthDate, SQUADS_DATE)))
       const { overall, star } = estimateOverall(reputation, p.fame, age)
-      return { name: p.name.slice(0, 30), position: p.position as Position, age, overall, ...(star ? { star: true } : {}) }
+      const defRole = p.position === 'DEF' && (p.defRole === 'LAT' || p.defRole === 'ZAG') ? { defRole: p.defRole as DefRole } : {}
+      return { name: p.name.slice(0, 30), position: p.position as Position, age, overall, ...(star ? { star: true } : {}), ...defRole }
     })
     .sort((a, b) => b.overall - a.overall)
 

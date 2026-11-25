@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PosTag from '../components/PosTag.vue'
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PlayerStatus from '../components/PlayerStatus.vue'
@@ -201,7 +202,7 @@ const players = computed(() => {
           </thead>
           <tbody>
             <tr v-for="p in players" :key="p.id" :class="{ highlight: term && p.name.toLowerCase().includes(term) }">
-              <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
+              <td><PosTag :player="p" /></td>
               <td>
                 {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag" title="Titular">T</span>

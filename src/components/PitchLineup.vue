@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue'
 import { isAvailable, unavailableReason } from '../data/discipline'
 import { FOOT_LABELS, footFit, lineupSides, orderLine, playerFoot, SIDE_LABELS, type Side } from '../data/feet'
 import { playerSkills, SKILLS } from '../data/skills'
+import { DEF_ROLE_LABELS, DEF_ROLE_MISFIT, defenseSlots, defRoleOf, positionLabel } from '../data/defense'
 import { FORMATIONS, playingPosition, POSITION_ORDER, positionFit } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
 import type { Player, Position } from '../types/game'
@@ -15,6 +16,8 @@ import type { Player, Position } from '../types/game'
  */
 
 const game = useGameStore()
+/** Lugar (LAT/ZAG) de cada titular da defesa, pela ordem da linha: laterais nas pontas. */
+const defSlots = computed(() => defenseSlots(game.starters))
 
 const wrapper = ref<HTMLDivElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
@@ -331,7 +334,10 @@ function drawShirt(ctx: CanvasRenderingContext2D, spot: Spot, x: number, y: numb
   ctx.fill()
   ctx.shadowColor = 'transparent'
   ctx.lineWidth = 2
-  const improvised = spot.zone === 'pitch' && playingPosition(p) !== p.position
+  // Lateral jogando no meio da zaga (ou zagueiro na lateral) também está fora da função.
+  const slotRole = spot.zone === 'pitch' ? defSlots.value.get(p.id) : undefined
+  const offRole = !!slotRole && !!defRoleOf(p) && slotRole !== defRoleOf(p)
+  const improvised = spot.zone === 'pitch' && (playingPosition(p) !== p.position || offRole)
   ctx.strokeStyle = !available ? theme.bad : spot.extra ? theme.warn : improvised ? theme.orange : trim
   ctx.stroke()
 
@@ -372,7 +378,14 @@ function drawShirt(ctx: CanvasRenderingContext2D, spot: Spot, x: number, y: numb
   const nameY = y + s * 0.5 + 11
   ctx.font = `600 ${Math.max(10, Math.round(s * 0.28))}px system-ui, sans-serif`
   // No banco mostra a posição; no campo, só quando o jogador está improvisado (ex.: "MEI→ATA").
-  const prefix = spot.zone === 'bench' ? `${p.position} ` : improvised ? `${p.position}→${playingPosition(p)} ` : ''
+  const prefix =
+    spot.zone === 'bench'
+      ? `${positionLabel(p)} `
+      : offRole
+        ? `${defRoleOf(p)}→${slotRole} `
+        : improvised
+          ? `${positionLabel(p)}→${playingPosition(p)} `
+          : ''
   const label = `${prefix}${shortName(p.name)}`
   const tw = ctx.measureText(label).width + 8
   ctx.fillStyle = improvised ? 'rgba(120, 53, 15, 0.9)' : 'rgba(0,0,0,0.55)'
@@ -478,13 +491,16 @@ function footLine(p: Player) {
 
 function drawTooltip(ctx: CanvasRenderingContext2D, p: Player, x: number, y: number) {
   const lines = [
-    `${p.position} · ${p.name}${p.star ? ' ★' : ''}`,
+    `${positionLabel(p)} · ${p.name}${p.star ? ' ★' : ''}`,
     `OVR ${p.overall} · ${p.age} anos`,
     `Energia ${Math.round(p.energy)} · Moral ${Math.round(p.morale)}`,
     playerSkills(p).map((s) => `${SKILLS[s].icon} ${SKILLS[s].label}`).join('  '),
     footLine(p),
     ...(p.starter && playingPosition(p) !== p.position
       ? [`Improvisado como ${playingPosition(p)}: rende ${Math.round(positionFit(p.position, playingPosition(p)) * 100)}%`]
+      : []),
+    ...(p.starter && defSlots.value.get(p.id) && defRoleOf(p) && defSlots.value.get(p.id) !== defRoleOf(p)
+      ? [`Fora da função: joga de ${DEF_ROLE_LABELS[defSlots.value.get(p.id)!].toLowerCase()}, rende ${Math.round(DEF_ROLE_MISFIT * 100)}%`]
       : []),
     ...(isAvailable(p) ? [] : [`Fora: ${unavailableReason(p)}`]),
   ]

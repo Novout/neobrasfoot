@@ -1,4 +1,4 @@
-import type { DivisionId, Position, Team } from '../types/game'
+import type { DefRole, DivisionId, Position, Team } from '../types/game'
 import {
   ALL_DIVISIONS, DIVISION_LABELS, formatOfTeams, isLeagueFormat, LEAGUE_FORMAT_LABELS, LEAGUE_FORMATS, MAX_PLAYER_OVERALL,
   MIN_PLAYER_OVERALL, type LeagueFormat,
@@ -7,7 +7,8 @@ import { FOOT_LABELS, isFoot, playerFoot, type Foot } from './feet'
 import { isValidSkillFor, playerSkills, SKILLS_BY_POSITION, SKILLS_PER_PLAYER, type SkillId } from './skills'
 import { stadiumNameFor } from './stadium'
 import { POSITION_ORDER } from './tactics'
-import { buildPlayer, DIVISION_REPUTATION, generateSquadFor } from './teams'
+import { buildPlayer, DIVISION_REPUTATION, generateSquadFor, withBalancedDefense } from './teams'
+import { defRoleOf, isDefRole } from './defense'
 import { isValidCrest } from './crests'
 
 /**
@@ -29,6 +30,8 @@ export interface LeagueFilePlayer {
   skills?: SkillId[]
   /** Pé preferido: "D" destro, "E" canhoto, "A" ambidestro (opcional: sem ele o jogo sorteia). */
   foot?: Foot
+  /** Defensores: "LAT" (lateral) ou "ZAG" (zagueiro). Opcional: sem isso o jogo equilibra o elenco. */
+  defRole?: DefRole
 }
 
 export interface LeagueFileTeam {
@@ -93,7 +96,7 @@ export function teamsToLeagueFile(teams: Team[], info: { name?: string; author?:
       players: [...t.players]
         .sort((a, b) => POSITION_ORDER.indexOf(a.position) - POSITION_ORDER.indexOf(b.position) || b.overall - a.overall)
         .map((p) => ({
-          name: p.name, position: p.position, age: p.age, overall: p.overall, ...(p.star ? { star: true } : {}), skills: playerSkills(p), foot: playerFoot(p),
+          name: p.name, position: p.position, age: p.age, overall: p.overall, ...(p.star ? { star: true } : {}), skills: playerSkills(p), foot: playerFoot(p), ...(p.position === 'DEF' ? { defRole: defRoleOf(p)! } : {}),
         })),
     })),
   }
@@ -201,6 +204,9 @@ export function parseLeagueFile(text: string): ParseResult {
           }
           skills = list as SkillId[]
         }
+        if (p.defRole !== undefined && (p.position !== 'DEF' || !isDefRole(p.defRole))) {
+          return fail(`${pName}: "defRole" vale só para defensores (DEF) e precisa ser "LAT" (lateral) ou "ZAG" (zagueiro).`)
+        }
         if (p.foot !== undefined && !isFoot(p.foot)) {
           return fail(`${pName}: "foot" precisa ser "D" (${FOOT_LABELS.D}), "E" (${FOOT_LABELS.E}) ou "A" (${FOOT_LABELS.A}).`)
         }
@@ -208,6 +214,7 @@ export function parseLeagueFile(text: string): ParseResult {
           name: pName, position: p.position as Position, age: p.age as number, overall: Math.round(p.overall), star: p.star === true,
           ...(skills ? { skills } : {}),
           ...(isFoot(p.foot) ? { foot: p.foot } : {}),
+          ...(isDefRole(p.defRole) ? { defRole: p.defRole } : {}),
         })
       }
       for (const pos of POSITION_ORDER) {
@@ -296,7 +303,7 @@ export function teamsFromLeagueFile(league: LeagueFile): Team[] {
       players: [],
     }
     team.players = t.players
-      ? t.players.map((p, i) => buildPlayer(p, `${team.id}-${i}`, 70))
+      ? withBalancedDefense(t.players.map((p, i) => buildPlayer(p, `${team.id}-${i}`, 70)))
       : generateSquadFor(team)
     return team
   })

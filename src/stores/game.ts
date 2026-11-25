@@ -12,6 +12,7 @@ import {
 } from '../data/discipline'
 import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
 import { baseReserveTeams, leagueReserveTeams, leagueTeams } from '../data/league'
+import { balanceDefRoles, defenseFits, defenseSplit, defRoleOf, DEF_ROLE_MISFIT } from '../data/defense'
 import { bestEleven, recordMatch, type BestXIEntry, type BestXIRecord, type PlayerSeasonStats } from '../data/seasonStats'
 import { BRASILEIRAO_CRESTS } from '../data/crests'
 import { createManagers, trophyLabel } from '../data/trophies'
@@ -98,11 +99,18 @@ function pickBestLineup(players: Player[], formation: Formation): Set<string> {
   const byPreference = (a: Player, b: Player) =>
     Number(a.forSale) - Number(b.forSale) || effectiveRating(b) - effectiveRating(a)
   for (const position of POSITION_ORDER) {
-    available
-      .filter((p) => p.position === position)
-      .sort(byPreference)
-      .slice(0, FORMATIONS[formation][position])
-      .forEach((p) => chosen.add(p.id))
+    const count = FORMATIONS[formation][position]
+    const pool = available.filter((p) => p.position === position).sort(byPreference)
+    if (position === 'DEF') {
+      // Laterais e zagueiros na quantidade da formação; faltando um tipo, completa com o outro.
+      const split = defenseSplit(count)
+      for (const role of ['LAT', 'ZAG'] as const) {
+        pool.filter((p) => defRoleOf(p) === role).slice(0, split[role]).forEach((p) => chosen.add(p.id))
+      }
+      pool.filter((p) => !chosen.has(p.id)).slice(0, count - pool.filter((p) => chosen.has(p.id)).length).forEach((p) => chosen.add(p.id))
+      continue
+    }
+    pool.slice(0, count).forEach((p) => chosen.add(p.id))
   }
   available
     .filter((p) => !chosen.has(p.id) && p.position !== 'GOL')
@@ -119,10 +127,11 @@ export function lineupStrength(starters: Player[], tactic: Tactic) {
   // Improvisados contam na linha em que jogam, com o rendimento reduzido.
   // Pé x lado: destro pela direita e canhoto pela esquerda rendem mais; no lado contrário, menos.
   const sides = sideFits(starters)
+  const roles = defenseFits(starters)
   const byPos = (pos: Player['position']) =>
     starters
       .filter((p) => playingPosition(p) === pos)
-      .map((p) => effectiveRating(p) * positionFit(p.position, pos) * (sides.get(p.id) ?? 1))
+      .map((p) => effectiveRating(p) * positionFit(p.position, pos) * (sides.get(p.id) ?? 1) * (roles.get(p.id) ?? 1))
   const gol = byPos('GOL')
   const def = byPos('DEF')
   const mei = byPos('MEI')
@@ -292,6 +301,13 @@ export const useGameStore = defineStore('game', () => {
     if (base) {
       reserveTeams.value = baseReserveTeams(base, '2x20').filter((t) => !ids.has(t.id))
       addReserveManagers()
+    }
+  }
+
+  // Saves anteriores à divisão da defesa: define laterais e zagueiros de cada elenco (uma vez só).
+  if (hasCareer.value) {
+    for (const t of [...teams.value, ...reserveTeams.value]) {
+      if (t.players.some((p) => p.position === 'DEF' && !p.defRole)) balanceDefRoles(t.players)
     }
   }
 
@@ -1038,7 +1054,22 @@ export const useGameStore = defineStore('game', () => {
     const starting = () => team.players.filter((p) => p.starter)
     const count = (pos: Position) => starting().filter((p) => playingPosition(p) === pos).length
     const surplusLines = () => POSITION_ORDER.filter((pos) => count(pos) > required[pos])
-    const value = (p: Player, pos: Position) => effectiveRating(p) * positionFit(p.position, pos) * (p.forSale ? 0.97 : 1)
+    // Na defesa, conta a função (LAT/ZAG) que falta para a formação: o jogador certo vale mais.
+    const defNeed = () => {
+      const split = defenseSplit(required.DEF)
+      const current = starting().filter((p) => playingPosition(p) === 'DEF')
+      return {
+        LAT: split.LAT - current.filter((p) => defRoleOf(p) === 'LAT').length,
+        ZAG: split.ZAG - current.filter((p) => defRoleOf(p) === 'ZAG').length,
+      }
+    }
+    const roleFactor = (p: Player, pos: Position) => {
+      const role = defRoleOf(p)
+      if (pos !== 'DEF' || !role) return 1
+      return defNeed()[role] > 0 ? 1 : DEF_ROLE_MISFIT
+    }
+    const value = (p: Player, pos: Position) =>
+      effectiveRating(p) * positionFit(p.position, pos) * roleFactor(p, pos) * (p.forSale ? 0.97 : 1)
     const bench = () => team.players.filter((p) => !p.starter && isAvailable(p))
 
     for (const pos of POSITION_ORDER) {
@@ -1053,8 +1084,14 @@ export const useGameStore = defineStore('game', () => {
 
         if (useBench) {
           if (!missingStarter) {
-            // Sai o titular mais fraco de uma linha que ficou com gente a mais.
-            const out = [...extras].sort((a, b) => value(a, playingPosition(a)) - value(b, playingPosition(b)))[0]
+            // Sai o titular mais fraco de uma linha que ficou com gente a mais (na defesa, da função que sobra).
+            const surplus = (p: Player) => {
+              const role = playingPosition(p) === 'DEF' ? defRoleOf(p) : null
+              return role && defNeed()[role] < 0 ? 0.5 : 1
+            }
+            const out = [...extras].sort(
+              (a, b) => value(a, playingPosition(a)) * surplus(a) - value(b, playingPosition(b)) * surplus(b),
+            )[0]
             if (!out) break
             out.starter = false
             delete out.role

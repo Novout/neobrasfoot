@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PosTag from '../components/PosTag.vue'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PlayerStatus from '../components/PlayerStatus.vue'
@@ -269,7 +270,7 @@ function quickSell(playerId: string, playerName: string) {
               :key="player.id"
               :class="{ selected: player.id === selectedId, locked: !!locked }"
             >
-              <td><span class="pos" :class="`pos--${player.position}`">{{ player.position }}</span></td>
+              <td><PosTag :player="player" /></td>
               <td>
                 {{ player.name }}<StarMark :star="player.star" /><SkillBadges :player="player" /><PlayerStatus :player="player" />
                 <span v-if="player.starter" class="tag" title="Titular no clube atual">T</span>
@@ -407,7 +408,7 @@ function quickSell(playerId: string, playerName: string) {
           <tbody>
             <tr v-for="{ offer, player, buyer } in receivedOffers" :key="offer.id">
               <td>
-                <span class="pos" :class="`pos--${player!.position}`">{{ player!.position }}</span>
+                <PosTag :player="player!" />
                 {{ player!.name }}<StarMark :star="player!.star" /> <span class="muted">({{ player!.overall }})</span>
               </td>
               <td><span class="club"><TeamBadge :team="buyer!" :size="22" /> {{ buyer!.name }}</span></td>
@@ -451,7 +452,7 @@ function quickSell(playerId: string, playerName: string) {
           <tbody>
             <tr v-for="p in listedPlayers" :key="p.id">
               <td>
-                <span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span>
+                <PosTag :player="p" />
                 {{ p.name }}<StarMark :star="p.star" /> <span class="muted">({{ p.overall }})</span>
               </td>
               <td class="num muted">{{ formatMoney(marketValue(p)) }}</td>
@@ -505,7 +506,7 @@ function quickSell(playerId: string, playerName: string) {
           </thead>
           <tbody>
             <tr v-for="p in mySquad" :key="p.id" :class="{ listed: p.forSale }">
-              <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
+              <td><PosTag :player="p" /></td>
               <td>
                 {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag">T</span>
@@ -553,7 +554,7 @@ function quickSell(playerId: string, playerName: string) {
           <tbody>
             <tr v-for="{ player, loan } in game.managedLoans.incoming" :key="player.id">
               <td>
-                <span class="pos" :class="`pos--${player.position}`">{{ player.position }}</span>
+                <PosTag :player="player" />
                 {{ player.name }}<StarMark :star="player.star" /> <span class="muted">({{ player.overall }})</span>
               </td>
               <td><span class="club"><TeamBadge :team="game.getTeam(loan.ownerTeamId)!" :size="22" /> {{ game.getTeam(loan.ownerTeamId)?.name }}</span></td>
@@ -579,7 +580,7 @@ function quickSell(playerId: string, playerName: string) {
           <tbody>
             <tr v-for="{ player, loan } in game.managedLoans.outgoing" :key="player.id">
               <td>
-                <span class="pos" :class="`pos--${player.position}`">{{ player.position }}</span>
+                <PosTag :player="player" />
                 {{ player.name }}<StarMark :star="player.star" /> <span class="muted">({{ player.overall }}, {{ player.age }}a)</span>
               </td>
               <td><span class="club"><TeamBadge :team="game.getTeam(loan.toTeamId)!" :size="22" /> {{ game.getTeam(loan.toTeamId)?.name }}</span></td>
@@ -601,7 +602,7 @@ function quickSell(playerId: string, playerName: string) {
           </thead>
           <tbody>
             <tr v-for="p in lendable" :key="p.id">
-              <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
+              <td><PosTag :player="p" /></td>
               <td>
                 {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag">T</span>

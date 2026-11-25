@@ -1,6 +1,7 @@
-import type { DivisionId, Player, Position, Team } from '../types/game'
+import type { DefRole, DivisionId, Player, Position, Team } from '../types/game'
 import { createRng, hashString } from '../utils/random'
 import { isFoot, playerFoot, type Foot } from './feet'
+import { balanceDefRoles, isDefRole } from './defense'
 import { defaultSkills, isValidSkillFor, SKILLS_PER_PLAYER, type SkillId } from './skills'
 import { arrangeForFormat, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL, type LeagueFormat } from './divisions'
 import { STAR_CHANCE, STAR_OVERALL_BOOST, STAR_SALARY_FACTOR, starBoost } from './stars'
@@ -99,6 +100,8 @@ export interface PlayerDraft {
   skills?: SkillId[]
   /** Pé preferido (ex.: liga importada); sem isso é sorteado. */
   foot?: Foot
+  /** Defensores: lateral ou zagueiro (sem isso o elenco é equilibrado automaticamente). */
+  defRole?: DefRole
 }
 
 type Rng = ReturnType<typeof createRng>
@@ -197,6 +200,7 @@ export function buildPlayer(draft: PlayerDraft, id: string, morale: number): Pla
     star: draft.star ?? false,
     skills: skillsFor(draft, id),
     foot: isFoot(draft.foot) ? draft.foot : playerFoot({ id }),
+    ...(draft.position === 'DEF' && isDefRole(draft.defRole) ? { defRole: draft.defRole } : {}),
   }
 }
 
@@ -219,9 +223,12 @@ export function assignStarsToLegacyTeams(teams: Team[]) {
 
 function generatePlayers(seed: TeamSeed): Player[] {
   const rng = createRng(hashString(seed.id))
-  return SQUAD_TEMPLATE.map((position, index) =>
+  const players = SQUAD_TEMPLATE.map((position, index) =>
     buildPlayer(randomPlayerDraft(position, seed.reputation, rng), `${seed.id}-${index}`, rng.int(60, 90)),
   )
+  // 7 defensores: 3 laterais e 4 zagueiros.
+  players.filter((p) => p.position === 'DEF').forEach((p, i) => (p.defRole = i % 2 === 1 && i < 6 ? 'LAT' : 'ZAG'))
+  return players
 }
 
 /** Elenco gerado (determinístico pelo id) para um clube sem jogadores definidos. */
@@ -285,9 +292,15 @@ export function createTeamsWithCustom(draft: CustomTeamDraft, base: Team[] = cre
     secondaryColor: draft.secondaryColor,
     reputation: DIVISION_REPUTATION[draft.division],
     ...(draft.crest ? { crest: draft.crest } : {}),
-    players: draft.players.map((p, i) => buildPlayer(p, `${CUSTOM_TEAM_ID}-${i}`, 75)),
+    players: withBalancedDefense(draft.players.map((p, i) => buildPlayer(p, `${CUSTOM_TEAM_ID}-${i}`, 75))),
   }
   return { teams: teams.map((t) => (t.id === replaced.id ? custom : t)), replaced }
+}
+
+/** Defensores sem função definida recebem lateral/zagueiro, mantendo o elenco equilibrado. */
+export function withBalancedDefense(players: Player[]) {
+  balanceDefRoles(players)
+  return players
 }
 
 export function teamsByDivision(teams: Team[], division: DivisionId) {

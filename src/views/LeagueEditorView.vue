@@ -10,6 +10,7 @@ import {
   type LeagueFile, type LeagueFilePlayer, type LeagueFileTeam,
 } from '../data/leagueFile'
 import { FOOT_LABELS, playerFoot, type Foot } from '../data/feet'
+import { applyPositionChoice, POSITION_CHOICES, positionChoiceOf, type PositionChoice } from '../data/defense'
 import { playerSkills, SKILLS, SKILLS_BY_POSITION, type SkillId } from '../data/skills'
 import { POSITION_ORDER } from '../data/tactics'
 import { BRASILEIRAO_TEMPLATE_NAME } from '../data/templates/brasileirao'
@@ -476,8 +477,13 @@ const isCustomInUse = computed(() => {
           <tbody>
             <tr v-for="(p, i) in team.players" :key="i">
               <td>
-                <select v-model="p.position" class="pos-select" :class="`pos--${p.position}`" @change="changePosition(p)">
-                  <option v-for="pos in POSITION_ORDER" :key="pos" :value="pos">{{ pos }}</option>
+                <select
+                  :value="positionChoiceOf(p)"
+                  class="pos-select"
+                  :class="`pos--${positionChoiceOf(p)}`"
+                  @change="applyPositionChoice(p, ($event.target as HTMLSelectElement).value as PositionChoice); changePosition(p)"
+                >
+                  <option v-for="pos in POSITION_CHOICES" :key="pos" :value="pos">{{ pos }}</option>
                 </select>
               </td>
               <td><input v-model="p.name" type="text" maxlength="30" /></td>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PosTag from '../components/PosTag.vue'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import StatBar from '../components/StatBar.vue'
@@ -88,7 +89,7 @@ function standingPoints(row: { wins: number; draws: number }) {
           </thead>
           <tbody>
             <tr v-for="p in squad" :key="p.id" :class="{ 'for-sale': p.forSale }">
-              <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
+              <td><PosTag :player="p" /></td>
               <td>
                 {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
                 <span v-if="p.starter" class="tag" title="Titular">T</span>

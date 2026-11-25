@@ -3,6 +3,7 @@ import { createRng } from '../utils/random'
 import { MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from './divisions'
 import { STAR_CHANCE, STAR_OVERALL_BOOST } from './stars'
 import { buildPlayer, randomPlayerName, SQUAD_TEMPLATE } from './teams'
+import { balanceDefRoles } from './defense'
 
 type Rng = ReturnType<typeof createRng>
 
@@ -96,6 +97,8 @@ export function renewSquad(team: Team, season: number, rng: Rng, { youth = true 
     else if (youth) promoted.push(createYouthPlayer(team, position, `${id}-base`, rng))
   })
   team.players.push(...promoted, ...signed)
+  // Defensores novos ganham a função que estiver faltando no elenco (lateral ou zagueiro).
+  balanceDefRoles(team.players)
 
   // Sem a base automática, garante o mínimo para o clube poder jogar.
   if (!youth) {
@@ -120,7 +123,10 @@ const ACADEMY_POSITIONS: Position[] = ['GOL', 'DEF', 'DEF', 'MEI', 'MEI', 'ATA']
 
 /** Nova geração da base: jovens de 17 a 19 anos, com OVR, idade e posição definidos. */
 export function createAcademy(team: Team, season: number, rng: Rng): Player[] {
-  return ACADEMY_POSITIONS.slice(0, ACADEMY_SIZE)
-    .map((position, i) => createYouthPlayer(team, position, `${team.id}-base-t${season}-${i}`, rng))
-    .sort((a, b) => b.overall - a.overall)
+  const youth = ACADEMY_POSITIONS.slice(0, ACADEMY_SIZE).map((position, i) =>
+    createYouthPlayer(team, position, `${team.id}-base-t${season}-${i}`, rng),
+  )
+  // Os dois defensores da base: um lateral e um zagueiro.
+  youth.filter((p) => p.position === 'DEF').forEach((p, i) => (p.defRole = i === 0 ? 'LAT' : 'ZAG'))
+  return youth.sort((a, b) => b.overall - a.overall)
 }

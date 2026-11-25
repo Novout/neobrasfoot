@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import StarMark from '../components/StarMark.vue'
+import PosTag from '../components/PosTag.vue'
 import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
 import { BEST_XI_SHAPE, MIN_APPS_SHARE, type BestXIEntry } from '../data/seasonStats'
 import { useGameStore } from '../stores/game'
@@ -33,7 +34,14 @@ watch(divisions, (list) => {
 const LINES: Position[] = ['ATA', 'MEI', 'DEF', 'GOL']
 const lines = computed(() => {
   const entries = record.value.divisions[division.value] ?? []
-  return LINES.map((pos) => ({ pos, players: entries.filter((e) => e.position === pos) }))
+  return LINES.map((pos) => {
+    const players = entries.filter((e) => e.position === pos)
+    if (pos !== 'DEF') return { pos, players }
+    // Defesa como no campo: um lateral em cada ponta e os zagueiros no meio.
+    const laterals = players.filter((e) => e.defRole === 'LAT')
+    const centre = players.filter((e) => e.defRole !== 'LAT')
+    return { pos, players: [...laterals.slice(0, 1), ...centre, ...laterals.slice(1)] }
+  })
 })
 const total = computed(() => (record.value.divisions[division.value] ?? []).length)
 const missing = computed(() => Object.values(BEST_XI_SHAPE).reduce((a, b) => a + b, 0) - total.value)
@@ -56,7 +64,7 @@ function stat(e: BestXIEntry) {
       <div>
         <h1>⭐ Seleção da temporada</h1>
         <p class="muted">
-          Os melhores de cada série no campeonato, pela média de nota: 1 goleiro, 4 defensores, 4 meias e 2 atacantes.
+          Os melhores de cada série no campeonato, pela média de nota: 1 goleiro, 2 laterais, 2 zagueiros, 4 meias e 2 atacantes.
           <template v-if="record.partial">Parcial: vale quem jogou pelo menos {{ minApps }} das {{ game.round }} rodadas.</template>
         </p>
       </div>
@@ -97,7 +105,7 @@ function stat(e: BestXIEntry) {
             <TeamBadge v-if="teamOf(e)" :team="teamOf(e)!" :size="34" />
             <strong class="player__name">{{ e.name }}<StarMark :star="e.star" /></strong>
             <small class="player__club">
-              <span class="pos" :class="`pos--${e.position}`">{{ e.position }}</span>
+              <PosTag :player="{ id: e.playerId, position: e.position, defRole: e.defRole }" />
               {{ teamOf(e)?.shortName }}
             </small>
             <small class="muted">{{ e.apps }} jogos · {{ stat(e) }}</small>

@@ -1,4 +1,5 @@
-import type { DivisionId, LiveMatch, Player, Position } from '../types/game'
+import type { DefRole, DivisionId, LiveMatch, Player, Position } from '../types/game'
+import { defRoleOf } from './defense'
 
 /**
  * Estatísticas de cada jogador no campeonato da temporada (a Copa não entra) e a seleção de cada série:
@@ -9,6 +10,8 @@ export interface PlayerSeasonStats {
   playerId: string
   name: string
   position: Position
+  /** Defensores: lateral ou zagueiro. */
+  defRole?: DefRole
   teamId: string
   division: DivisionId
   overall: number
@@ -23,8 +26,9 @@ export interface PlayerSeasonStats {
   ratingSum: number
 }
 
-/** Formação da seleção da temporada. */
+/** Formação da seleção da temporada (a defesa: 2 laterais e 2 zagueiros). */
 export const BEST_XI_SHAPE: Record<Position, number> = { GOL: 1, DEF: 4, MEI: 4, ATA: 2 }
+export const BEST_XI_DEFENSE: Record<DefRole, number> = { LAT: 2, ZAG: 2 }
 /** Fração mínima das rodadas jogadas para entrar na seleção (vale a regularidade, não um jogo bom). */
 export const MIN_APPS_SHARE = 0.4
 
@@ -32,6 +36,7 @@ export interface BestXIEntry {
   playerId: string
   name: string
   position: Position
+  defRole?: DefRole
   teamId: string
   apps: number
   goals: number
@@ -107,6 +112,8 @@ export function recordMatch(
       // Clube e série atuais (transferido no meio da temporada conta onde está jogando).
       entry.teamId = teamId
       entry.division = divisionOf(teamId)
+      const role = defRoleOf(p)
+      if (role) entry.defRole = role
       entry.name = p.name
       entry.overall = p.overall
       entry.apps++
@@ -131,19 +138,27 @@ export function bestEleven(stats: Record<string, PlayerSeasonStats>, division: D
   const minApps = Math.max(1, Math.ceil(roundsPlayed * MIN_APPS_SHARE))
   const pool = Object.values(stats).filter((s) => s.division === division && s.apps >= minApps)
   const result: BestXIEntry[] = []
+  const ranked = (list: PlayerSeasonStats[]) =>
+    [...list].sort(
+      (a, b) => averageRating(b) - averageRating(a) || b.goals - a.goals || b.cleanSheets - a.cleanSheets || b.apps - a.apps,
+    )
   for (const position of Object.keys(BEST_XI_SHAPE) as Position[]) {
-    pool
-      .filter((s) => s.position === position)
-      .sort(
-        (a, b) =>
-          averageRating(b) - averageRating(a) || b.goals - a.goals || b.cleanSheets - a.cleanSheets || b.apps - a.apps,
+    const candidates = pool.filter((s) => s.position === position)
+    // Defesa: os 2 melhores laterais e os 2 melhores zagueiros.
+    let chosen = ranked(candidates).slice(0, BEST_XI_SHAPE[position])
+    if (position === 'DEF') {
+      chosen = (['LAT', 'ZAG'] as const).flatMap((role) =>
+        ranked(candidates.filter((s) => (s.defRole ?? 'ZAG') === role)).slice(0, BEST_XI_DEFENSE[role]),
       )
-      .slice(0, BEST_XI_SHAPE[position])
-      .forEach((s) =>
+      // Faltando laterais (ou zagueiros) com jogos suficientes, completa com os melhores defensores que sobram.
+      chosen.push(...ranked(candidates.filter((s) => !chosen.includes(s))).slice(0, BEST_XI_SHAPE.DEF - chosen.length))
+    }
+    chosen.forEach((s) =>
         result.push({
           playerId: s.playerId,
           name: s.name,
           position,
+          ...(s.defRole ? { defRole: s.defRole } : {}),
           teamId: s.teamId,
           apps: s.apps,
           goals: s.goals,

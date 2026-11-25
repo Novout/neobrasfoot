@@ -1,10 +1,10 @@
 {
- "fetchedAt": "2026-11-21",
+ "fetchedAt": "2026-11-25",
  "clubs": {
   "flamengo": {
-   "manager": "Leonardo Jardim",
    "source": "https://en.wikipedia.org/wiki/CR_Flamengo",
-   "revision": 1383881225,
+   "revision": 1387647847,
+   "manager": "Leonardo Jardim",
    "players": [
     {
      "name": "Agustín Rossi",
@@ -15,18 +15,21 @@
     {
      "name": "Guillermo Varela",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-03-24",
      "fame": 39
     },
     {
      "name": "Léo Ortiz",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-01-03",
      "fame": 17
     },
     {
      "name": "Léo Pereira",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-01-31",
      "fame": 27
     },
@@ -39,6 +42,7 @@
     {
      "name": "Ayrton Lucas",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-06-19",
      "fame": 19
     },
@@ -75,6 +79,7 @@
     {
      "name": "Danilo",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1991-07-15",
      "fame": 53
     },
@@ -117,12 +122,14 @@
     {
      "name": "Emerson Royal",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-01-14",
      "fame": 34
     },
     {
      "name": "Alex Sandro",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1991-01-26",
      "fame": 48
     },
@@ -147,6 +154,7 @@
     {
      "name": "Vitão",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2000-02-02",
      "fame": 12
     },
@@ -165,15 +173,16 @@
     {
      "name": "João Victor",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2007-01-01",
      "fame": 5
     }
    ]
   },
   "palmeiras": {
-   "manager": "Abel Ferreira",
    "source": "https://en.wikipedia.org/wiki/SE_Palmeiras",
-   "revision": 1383883570,
+   "revision": 1387789961,
+   "manager": "Abel Ferreira",
    "players": [
     {
      "name": "Carlos Miguel",
@@ -184,24 +193,28 @@
     {
      "name": "Alexander Barboza",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-03-16",
      "fame": 14
     },
     {
      "name": "Bruno Fuchs",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-04-01",
      "fame": 18
     },
     {
      "name": "Agustín Giay",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2004-01-16",
      "fame": 14
     },
     {
      "name": "Jefté",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2003-12-21",
      "fame": 9
     },
@@ -238,6 +251,7 @@
     {
      "name": "Khellven",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2001-02-25",
      "fame": 10
     },
@@ -250,6 +264,7 @@
     {
      "name": "Gustavo Gómez",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1993-05-06",
      "fame": 39
     },
@@ -280,12 +295,14 @@
     {
      "name": "Joaquín Piquerez",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-08-24",
      "fame": 26
     },
     {
      "name": "Murilo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-03-27",
      "fame": 17
     },
@@ -310,8 +327,9 @@
     {
      "name": "Luiz Benedetti",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2006-06-07",
-     "fame": 4
+     "fame": 5
     },
     {
      "name": "Larson",
@@ -322,37 +340,42 @@
     {
      "name": "Arthur Gabriel",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2005-09-04",
-     "fame": 4
+     "fame": 5
     }
    ]
   },
   "botafogo": {
-   "manager": "Tite",
    "source": "https://en.wikipedia.org/wiki/Botafogo_FR",
    "revision": 1384943090,
+   "manager": "Tite",
    "players": [
     {
      "name": "Vitinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-07-23",
      "fame": 17
     },
     {
      "name": "Arthur Chaves",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-01-29",
      "fame": 7
     },
     {
      "name": "Mateo Ponte",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2003-05-24",
      "fame": 14
     },
     {
      "name": "Nahuel Ferraresi",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-11-19",
      "fame": 13
     },
@@ -401,6 +424,7 @@
     {
      "name": "Alex Telles",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-12-15",
      "fame": 43
     },
@@ -425,6 +449,7 @@
     {
      "name": "Marçal",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1989-02-19",
      "fame": 23
     },
@@ -443,30 +468,35 @@
     {
      "name": "Anthony",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2005-07-12",
      "fame": 1
     },
     {
      "name": "Paulinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-01-03",
      "fame": 10
     },
     {
      "name": "Kaio Pantaleão",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-09-18",
      "fame": 8
     },
     {
      "name": "Lucas Monzón",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-09-29",
      "fame": 6
     },
     {
      "name": "Gabriel Justino",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2006-04-16",
      "fame": 1
     },
@@ -479,6 +509,7 @@
     {
      "name": "Kadu",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2005-08-16",
      "fame": 1
     },
@@ -527,19 +558,21 @@
    ]
   },
   "sao-paulo": {
-   "manager": "Dorival Júnior",
    "source": "https://en.wikipedia.org/wiki/S%C3%A3o_Paulo_FC",
    "revision": 1386250610,
+   "manager": "Dorival Júnior",
    "players": [
     {
      "name": "Rafael Tolói",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1990-10-10",
      "fame": 40
     },
     {
      "name": "Robert Arboleda",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1991-10-22",
      "fame": 26
     },
@@ -576,12 +609,14 @@
     {
      "name": "Iago Borduchi",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-03-23",
      "fame": 14
     },
     {
      "name": "Enzo Díaz",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-12-07",
      "fame": 9
     },
@@ -600,30 +635,35 @@
     {
      "name": "Wendell",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-07-20",
      "fame": 30
     },
     {
      "name": "Lucas Ramon",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-03-07",
      "fame": 5
     },
     {
      "name": "Aurélio Buta",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-02-10",
      "fame": 19
     },
     {
      "name": "Cédric Soares",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1991-08-31",
      "fame": 47
     },
     {
      "name": "Domingos Duarte",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-03-10",
      "fame": 23
     },
@@ -660,6 +700,7 @@
     {
      "name": "Pedro Lima",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2006-07-01",
      "fame": 10
     },
@@ -671,6 +712,7 @@
     {
      "name": "Sabino",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-10-25",
      "fame": 4
     },
@@ -729,18 +771,21 @@
     {
      "name": "Isac",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2006-04-02",
      "fame": 2
     },
     {
      "name": "Luis Osorio",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2006-09-06",
      "fame": 1
     },
     {
      "name": "Nicolas",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2007-04-08",
      "fame": 1
     },
@@ -759,9 +804,9 @@
    ]
   },
   "corinthians": {
-   "manager": "Clarence Seedorf",
    "source": "https://en.wikipedia.org/wiki/SC_Corinthians_Paulista",
-   "revision": 1386719248,
+   "revision": 1387443542,
+   "manager": "Clarence Seedorf",
    "players": [
     {
      "name": "Hugo Souza",
@@ -772,24 +817,28 @@
     {
      "name": "Matheuzinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-09-08",
      "fame": 13
     },
     {
      "name": "Gabriel Paulista",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1990-11-26",
      "fame": 38
     },
     {
      "name": "João Pedro",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2003-12-31",
      "fame": 5
     },
     {
      "name": "André Ramalho",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1992-02-16",
      "fame": 20
     },
@@ -826,6 +875,7 @@
     {
      "name": "Gustavo Henrique",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1993-03-24",
      "fame": 16
     },
@@ -850,12 +900,14 @@
     {
      "name": "Pedro Milans",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2002-03-24",
      "fame": 6
     },
     {
      "name": "Matheus Bidu",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-05-04",
      "fame": 7
     },
@@ -868,6 +920,7 @@
     {
      "name": "Fabrizio Angileri",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-03-15",
      "fame": 13
     },
@@ -904,6 +957,7 @@
     {
      "name": "Hugo Farias",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-08-29",
      "fame": 5
     },
@@ -934,6 +988,7 @@
     {
      "name": "Iago Machado",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2009-02-17",
      "fame": 2
     },
@@ -964,9 +1019,9 @@
    ]
   },
   "atletico-mg": {
-   "manager": "Eduardo Domínguez",
    "source": "https://en.wikipedia.org/wiki/Clube_Atl%C3%A9tico_Mineiro",
-   "revision": 1383881127,
+   "revision": 1387666526,
+   "manager": "Eduardo Domínguez",
    "players": [
     {
      "name": "Gabriel Delfim",
@@ -977,18 +1032,21 @@
     {
      "name": "Natanael",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2002-01-05",
      "fame": 6
     },
     {
      "name": "Léo Duarte",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-07-17",
      "fame": 22
     },
     {
      "name": "Ruan Tressoldi",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-06-07",
      "fame": 7
     },
@@ -1001,6 +1059,7 @@
     {
      "name": "Renan Lodi",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-04-08",
      "fame": 37
     },
@@ -1037,12 +1096,14 @@
     {
      "name": "Lyanco",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-02-01",
      "fame": 21
     },
     {
      "name": "Vitor Hugo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1991-05-20",
      "fame": 19
     },
@@ -1085,6 +1146,7 @@
     {
      "name": "Ángelo Preciado",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-02-18",
      "fame": 31
     },
@@ -1125,6 +1187,7 @@
     {
      "name": "Kauã Pascini",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2008-03-05",
      "fame": 3
     },
@@ -1142,6 +1205,7 @@
     {
      "name": "Vitão",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2008-03-04",
      "fame": 1
     },
@@ -1159,9 +1223,9 @@
    ]
   },
   "fluminense": {
-   "manager": "Marcão",
    "source": "https://en.wikipedia.org/wiki/Fluminense_FC",
-   "revision": 1385018679,
+   "revision": 1387228905,
+   "manager": "Marcão",
    "players": [
     {
      "name": "Fábio",
@@ -1172,24 +1236,28 @@
     {
      "name": "Samuel Xavier",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1990-06-06",
      "fame": 11
     },
     {
      "name": "Thiago Silva",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1984-09-22",
      "fame": 67
     },
     {
      "name": "Ignácio",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-12-01",
      "fame": 7
     },
     {
      "name": "Renê",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-09-14",
      "fame": 16
     },
@@ -1226,6 +1294,7 @@
     {
      "name": "Guilherme Arana",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-04-14",
      "fame": 28
     },
@@ -1256,18 +1325,21 @@
     {
      "name": "Igor Rabello",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-04-28",
      "fame": 9
     },
     {
      "name": "Juan Pablo Freytes",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2000-01-11",
      "fame": 9
     },
     {
      "name": "Guga",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-08-29",
      "fame": 11
     },
@@ -1292,6 +1364,7 @@
     {
      "name": "Julián Millán",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1998-03-27",
      "fame": 3
     },
@@ -1316,12 +1389,14 @@
     {
      "name": "Jemmes",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2000-04-09",
      "fame": 3
     },
     {
      "name": "Júlio Fidelis",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2006-11-06",
      "fame": 3
     },
@@ -1346,9 +1421,9 @@
    ]
   },
   "internacional": {
-   "manager": "Eduardo Baptista",
    "source": "https://en.wikipedia.org/wiki/SC_Internacional",
-   "revision": 1383252733,
+   "revision": 1387642968,
+   "manager": "Eduardo Baptista",
    "players": [
     {
      "name": "Sergio Rochet",
@@ -1359,12 +1434,14 @@
     {
      "name": "Guillermo Maripán",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1994-05-06",
      "fame": 27
     },
     {
      "name": "Félix Torres",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-01-11",
      "fame": 28
     },
@@ -1377,6 +1454,7 @@
     {
      "name": "Matheus Bahia",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-08-11",
      "fame": 4
     },
@@ -1437,6 +1515,7 @@
     {
      "name": "Juninho",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-02-01",
      "fame": 12
     },
@@ -1455,12 +1534,14 @@
     {
      "name": "Gabriel Mercado",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1987-03-18",
      "fame": 42
     },
     {
      "name": "Alexandro Bernabei",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-09-24",
      "fame": 13
     },
@@ -1496,21 +1577,23 @@
     {
      "name": "Braian Aguirre",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-07-28",
      "fame": 7
     },
     {
      "name": "Victor Gabriel",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2004-04-28",
      "fame": 3
     }
    ]
   },
   "gremio": {
-   "manager": "Renato Portaluppi",
    "source": "https://en.wikipedia.org/wiki/Gr%C3%AAmio_FBPA",
    "revision": 1380626257,
+   "manager": "Renato Portaluppi",
    "players": [
     {
      "name": "Weverton",
@@ -1521,18 +1604,21 @@
     {
      "name": "Fabián Balbuena",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1991-08-23",
      "fame": 33
     },
     {
      "name": "Wagner Leonardo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-07-23",
      "fame": 5
     },
     {
      "name": "Walter Kannemann",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1991-03-14",
      "fame": 19
     },
@@ -1545,6 +1631,7 @@
     {
      "name": "Gustavo Martins",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2002-08-11",
      "fame": 3
     },
@@ -1587,6 +1674,7 @@
     {
      "name": "Marcos Rocha",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1988-12-11",
      "fame": 23
     },
@@ -1605,6 +1693,7 @@
     {
      "name": "João Pedro",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1996-11-15",
      "fame": 14
     },
@@ -1623,6 +1712,7 @@
     {
      "name": "Marlon",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-05-20",
      "fame": 10
     },
@@ -1635,6 +1725,7 @@
     {
      "name": "Diego Caito",
      "position": "DEF",
+     "defRole": "LAT",
      "fame": 1
     },
     {
@@ -1652,6 +1743,7 @@
     {
      "name": "Caio Paulista",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-05-11",
      "fame": 7
     },
@@ -1669,6 +1761,7 @@
     {
      "name": "Luis Eduardo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2008-01-16",
      "fame": 3
     },
@@ -1681,6 +1774,7 @@
     {
      "name": "Pedro Gabriel",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2007-06-06",
      "fame": 1
     },
@@ -1699,6 +1793,7 @@
     {
      "name": "Wallace",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2004-12-06",
      "fame": 1
     },
@@ -1717,9 +1812,9 @@
    ]
   },
   "cruzeiro": {
-   "manager": "Artur Jorge",
    "source": "https://en.wikipedia.org/wiki/Cruzeiro_EC",
-   "revision": 1381496002,
+   "revision": 1387786625,
+   "manager": "Artur Jorge",
    "players": [
     {
      "name": "Cássio",
@@ -1730,6 +1825,7 @@
     {
      "name": "Kauã Moraes",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2006-09-29",
      "fame": 4
     },
@@ -1742,6 +1838,7 @@
     {
      "name": "Matías Viña",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-11-09",
      "fame": 33
     },
@@ -1778,12 +1875,14 @@
     {
      "name": "William",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-04-03",
      "fame": 22
     },
     {
      "name": "Fabrício Bruno",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-02-12",
      "fame": 15
     },
@@ -1820,6 +1919,7 @@
     {
      "name": "Fagner",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1989-06-11",
      "fame": 33
     },
@@ -1831,12 +1931,14 @@
     {
      "name": "Lucas Villalba",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-08-18",
      "fame": 10
     },
     {
      "name": "Gabriel Rojas",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-06-22",
      "fame": 10
     },
@@ -1849,6 +1951,7 @@
     {
      "name": "Jonathan Jesus",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2004-05-27",
      "fame": 6
     },
@@ -1866,6 +1969,7 @@
     {
      "name": "João Marcelo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2000-06-13",
      "fame": 7
     },
@@ -1925,9 +2029,9 @@
    ]
   },
   "vasco": {
-   "manager": "Pedro Emanuel",
    "source": "https://en.wikipedia.org/wiki/CR_Vasco_da_Gama",
    "revision": 1386869132,
+   "manager": "Pedro Emanuel",
    "players": [
     {
      "name": "Léo Jardim",
@@ -1938,6 +2042,7 @@
     {
      "name": "Puma Rodríguez",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-03-14",
      "fame": 23
     },
@@ -1950,6 +2055,7 @@
     {
      "name": "Alan Saldivia",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2002-04-06",
      "fame": 7
     },
@@ -1962,6 +2068,7 @@
     {
      "name": "Lucas Piton",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-10-09",
      "fame": 8
     },
@@ -2046,12 +2153,14 @@
     {
      "name": "Paulinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2004-06-29",
      "fame": 1
     },
     {
      "name": "Robert Renan",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2003-10-11",
      "fame": 18
     },
@@ -2063,6 +2172,7 @@
     {
      "name": "Lucas Freitas",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-01-20",
      "fame": 4
     },
@@ -2075,24 +2185,28 @@
     {
      "name": "Carlos Cuesta",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-03-09",
      "fame": 23
     },
     {
      "name": "Gabriel Pereira",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2000-05-07",
      "fame": 6
     },
     {
      "name": "João Vitor",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2005-05-29",
      "fame": 1
     },
     {
      "name": "Cuiabano",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2003-02-16",
      "fame": 11
     },
@@ -2123,15 +2237,16 @@
     {
      "name": "Paulo Henrique",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1996-07-25",
      "fame": 4
     }
    ]
   },
   "bahia": {
-   "manager": "Rogério Ceni",
    "source": "https://en.wikipedia.org/wiki/Esporte_Clube_Bahia",
    "revision": 1380914087,
+   "manager": "Rogério Ceni",
    "players": [
     {
      "name": "Ronaldo",
@@ -2142,12 +2257,14 @@
     {
      "name": "Marco Moreno",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-07-31",
      "fame": 4
     },
     {
      "name": "Kanu",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-03-07",
      "fame": 5
     },
@@ -2250,30 +2367,35 @@
     {
      "name": "Román Gómez",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2004-07-14",
      "fame": 4
     },
     {
      "name": "David Duarte",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-01-24",
      "fame": 5
     },
     {
      "name": "Luiz Gustavo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2006-04-12",
      "fame": 2
     },
     {
      "name": "Marcos Victor",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-12-26",
      "fame": 3
     },
     {
      "name": "Luciano Juba",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-08-29",
      "fame": 6
     },
@@ -2292,6 +2414,7 @@
     {
      "name": "Zé Guilherme",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2005-03-16",
      "fame": 5
     },
@@ -2310,9 +2433,9 @@
    ]
   },
   "fortaleza": {
-   "manager": "Juan Pablo Vojvoda",
    "source": "https://en.wikipedia.org/wiki/Fortaleza_Esporte_Clube",
    "revision": 1385050654,
+   "manager": "Juan Pablo Vojvoda",
    "players": [
     {
      "name": "João Ricardo",
@@ -2323,12 +2446,14 @@
     {
      "name": "Lucas Gazal",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-08-06",
      "fame": 4
     },
     {
      "name": "Luan Freitas",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-01-20",
      "fame": 2
     },
@@ -2341,6 +2466,7 @@
     {
      "name": "Tomás Cardona",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-10-10",
      "fame": 7
     },
@@ -2371,6 +2497,7 @@
     {
      "name": "Kaio Henrique",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2006-03-22",
      "fame": 1
     },
@@ -2400,6 +2527,7 @@
     {
      "name": "Gabriel Fuentes",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-02-09",
      "fame": 10
     },
@@ -2422,12 +2550,14 @@
     {
      "name": "Maílton",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-05-31",
      "fame": 5
     },
     {
      "name": "Neris",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1992-06-17",
      "fame": 7
     },
@@ -2440,6 +2570,7 @@
     {
      "name": "Paulinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2005-05-23",
      "fame": 3
     },
@@ -2469,6 +2600,7 @@
     {
      "name": "Bastos",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1991-03-27",
      "fame": 25
     },
@@ -2522,9 +2654,9 @@
    ]
   },
   "athletico-pr": {
-   "manager": "Odair Hellmann",
    "source": "https://en.wikipedia.org/wiki/Club_Athletico_Paranaense",
-   "revision": 1384925356,
+   "revision": 1387215101,
+   "manager": "Odair Hellmann",
    "players": [
     {
      "name": "Mycael",
@@ -2535,18 +2667,21 @@
     {
      "name": "Gilberto dos Santos",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2005-03-27",
      "fame": 2
     },
     {
      "name": "Léo Pelé",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-03-06",
      "fame": 11
     },
     {
      "name": "Arthur Dias",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2007-04-10",
      "fame": 7
     },
@@ -2559,6 +2694,7 @@
     {
      "name": "Léo Derik",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2005-07-24",
      "fame": 4
     },
@@ -2589,6 +2725,7 @@
     {
      "name": "Gilberto Moraes",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-03-07",
      "fame": 20
     },
@@ -2631,6 +2768,7 @@
     {
      "name": "Carlos Terán",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2000-09-24",
      "fame": 9
     },
@@ -2643,12 +2781,14 @@
     {
      "name": "Dantas",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2004-07-25",
      "fame": 2
     },
     {
      "name": "Claudinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2005-10-26",
      "fame": 2
     },
@@ -2661,18 +2801,21 @@
     {
      "name": "Gastón Benavídez",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-10-23",
      "fame": 4
     },
     {
      "name": "Juan Felipe Aguirre",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-01-01",
      "fame": 9
     },
     {
      "name": "Lucas Esquivel",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2001-10-14",
      "fame": 10
     },
@@ -2713,9 +2856,9 @@
    ]
   },
   "santos": {
-   "manager": "Cuca",
    "source": "https://en.wikipedia.org/wiki/Santos_FC",
-   "revision": 1382900401,
+   "revision": 1387204907,
+   "manager": "Cuca",
    "players": [
     {
      "name": "Diógenes",
@@ -2726,12 +2869,14 @@
     {
      "name": "Vinicius Lira",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2007-10-12",
      "fame": 3
     },
     {
      "name": "Lucas Veríssimo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-07-07",
      "fame": 22
     },
@@ -2780,6 +2925,7 @@
     {
      "name": "Luan Peres",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-07-19",
      "fame": 16
     },
@@ -2804,6 +2950,7 @@
     {
      "name": "Igor Vinícius",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-04-01",
      "fame": 10
     },
@@ -2827,24 +2974,28 @@
     {
      "name": "Rodinei",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-01-29",
      "fame": 16
     },
     {
      "name": "Gabriel Menino",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-09-29",
      "fame": 22
     },
     {
      "name": "João Ananias",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2007-02-12",
      "fame": 2
     },
     {
      "name": "Davizinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2008-07-27",
      "fame": 1
     },
@@ -2863,6 +3014,7 @@
     {
      "name": "Gonzalo Escobar",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-03-16",
      "fame": 9
     },
@@ -2887,12 +3039,14 @@
     {
      "name": "Rafael Gonzaga",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2008-02-07",
      "fame": 2
     },
     {
      "name": "João Alencar",
      "position": "DEF",
+     "defRole": "ZAG",
      "fame": 1
     },
     {
@@ -2940,9 +3094,9 @@
    ]
   },
   "bragantino": {
-   "manager": "Vagner Mancini",
    "source": "https://en.wikipedia.org/wiki/Red_Bull_Bragantino",
    "revision": 1384873435,
+   "manager": "Vagner Mancini",
    "players": [
     {
      "name": "Cleiton",
@@ -2953,18 +3107,21 @@
     {
      "name": "Guzmán Rodríguez",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2000-02-08",
      "fame": 7
     },
     {
      "name": "Eduardo Santos",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-11-28",
      "fame": 6
     },
     {
      "name": "Alix Vinicius",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-11-06",
      "fame": 2
     },
@@ -3007,6 +3164,7 @@
     {
      "name": "Vanderlan",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2002-09-07",
      "fame": 9
     },
@@ -3019,6 +3177,7 @@
     {
      "name": "Gustavo Marques",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-10-09",
      "fame": 5
     },
@@ -3061,6 +3220,7 @@
     {
      "name": "Agustín Sant'Anna",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-09-27",
      "fame": 8
     },
@@ -3079,6 +3239,7 @@
     {
      "name": "Juninho Capixaba",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-07-06",
      "fame": 7
     },
@@ -3097,6 +3258,7 @@
     {
      "name": "Andrés Hurtado",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2001-12-23",
      "fame": 12
     },
@@ -3121,6 +3283,7 @@
     {
      "name": "Cauê Nascimento",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2006-12-13",
      "fame": 1
     },
@@ -3138,9 +3301,9 @@
    ]
   },
   "vitoria": {
-   "manager": "Rafael Lacerda",
    "source": "https://en.wikipedia.org/wiki/Esporte_Clube_Vit%C3%B3ria",
    "revision": 1386843516,
+   "manager": "Rafael Lacerda",
    "players": [
     {
      "name": "Lucas Arcanjo",
@@ -3151,18 +3314,21 @@
     {
      "name": "Emanuel Brítez",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-03-26",
      "fame": 7
     },
     {
      "name": "Darlan",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2003-07-03",
      "fame": 1
     },
     {
      "name": "Camutanga",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1993-09-27",
      "fame": 1
     },
@@ -3211,6 +3377,7 @@
     {
      "name": "Ramon",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2001-03-13",
      "fame": 8
     },
@@ -3252,12 +3419,14 @@
     {
      "name": "Cacá",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-04-25",
      "fame": 14
     },
     {
      "name": "Edenilson",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2005-06-17",
      "fame": 1
     },
@@ -3280,6 +3449,7 @@
     {
      "name": "Luan Cândido",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2001-02-02",
      "fame": 10
     },
@@ -3292,6 +3462,7 @@
     {
      "name": "Edu Ribeiro",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2000-06-16",
      "fame": 4
     },
@@ -3304,12 +3475,14 @@
     {
      "name": "Nathan Mendes",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2002-08-19",
      "fame": 4
     },
     {
      "name": "Fabiano",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-03-14",
      "fame": 5
     },
@@ -3334,6 +3507,7 @@
     {
      "name": "Jamerson",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-09-09",
      "fame": 2
     },
@@ -3358,15 +3532,16 @@
     {
      "name": "Mateus Silva",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-10-07",
      "fame": 2
     }
    ]
   },
   "sport": {
-   "manager": "Mariano Soso",
    "source": "https://en.wikipedia.org/wiki/Sport_Club_do_Recife",
-   "revision": 1384180008,
+   "revision": 1387814508,
+   "manager": "Mariano Soso",
    "players": [
     {
      "name": "Marcelo Ajul",
@@ -3376,6 +3551,7 @@
     {
      "name": "Marcelo Benevenuto",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-01-07",
      "fame": 4
     },
@@ -3402,12 +3578,6 @@
      "position": "ATA",
      "birthDate": "1997-11-22",
      "fame": 11
-    },
-    {
-     "name": "Carlos de Pena",
-     "position": "MEI",
-     "birthDate": "1992-03-11",
-     "fame": 15
     },
     {
      "name": "Denis",
@@ -3440,18 +3610,6 @@
      "fame": 14
     },
     {
-     "name": "Zé Gabriel",
-     "position": "MEI",
-     "birthDate": "1999-01-21",
-     "fame": 5
-    },
-    {
-     "name": "Clayson",
-     "position": "ATA",
-     "birthDate": "1995-03-19",
-     "fame": 14
-    },
-    {
      "name": "Thiago Couto",
      "position": "GOL",
      "birthDate": "1999-03-26",
@@ -3460,12 +3618,14 @@
     {
      "name": "Claudinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-09-24",
      "fame": 2
     },
     {
      "name": "Habraão",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-06-26",
      "fame": 2
     },
@@ -3490,6 +3650,7 @@
     {
      "name": "Kayky Almeida",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2005-01-01",
      "fame": 2
     },
@@ -3512,6 +3673,7 @@
     {
      "name": "Felipinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-01-01",
      "fame": 2
     },
@@ -3523,6 +3685,7 @@
     {
      "name": "Rafinha",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2006-04-17",
      "fame": 2
     },
@@ -3535,12 +3698,6 @@
      "name": "Raí Lopes",
      "position": "DEF",
      "fame": 0
-    },
-    {
-     "name": "Dudu Teodora",
-     "position": "ATA",
-     "birthDate": "1999-08-10",
-     "fame": 3
     },
     {
      "name": "Kervin Andrade",
@@ -3562,9 +3719,9 @@
    ]
   },
   "ceara": {
-   "manager": "Daniel Paulista",
    "source": "https://en.wikipedia.org/wiki/Cear%C3%A1_Sporting_Club",
    "revision": 1378240701,
+   "manager": "Daniel Paulista",
    "players": [
     {
      "name": "Richard Costa",
@@ -3575,24 +3732,28 @@
     {
      "name": "Rafael Ramos",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-01-09",
      "fame": 9
     },
     {
      "name": "Thalisson",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2002-01-20",
      "fame": 3
     },
     {
      "name": "Luizão",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1992-10-09",
      "fame": 8
     },
     {
      "name": "Sávio",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-05-26",
      "fame": 3
     },
@@ -3623,12 +3784,14 @@
     {
      "name": "Sanchez",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-09-28",
      "fame": 1
     },
     {
      "name": "Luiz Otávio",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1988-09-14",
      "fame": 6
     },
@@ -3640,6 +3803,7 @@
     {
      "name": "Júlio César",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2003-09-28",
      "fame": 3
     },
@@ -3682,12 +3846,14 @@
     {
      "name": "Bryan Borges",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1996-08-03",
      "fame": 4
     },
     {
      "name": "Éder",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-04-05",
      "fame": 3
     },
@@ -3739,25 +3905,28 @@
    ]
   },
   "juventude": {
-   "manager": "Maurício Barbieri",
    "source": "https://en.wikipedia.org/wiki/Esporte_Clube_Juventude",
    "revision": 1385719902,
+   "manager": "Maurício Barbieri",
    "players": [
     {
      "name": "Raí Ramos",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-05-06",
      "fame": 2
     },
     {
      "name": "Titi",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1988-03-12",
      "fame": 11
     },
     {
      "name": "Messias",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1994-11-03",
      "fame": 6
     },
@@ -3810,12 +3979,14 @@
     {
      "name": "Aderlan",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1990-08-18",
      "fame": 10
     },
     {
      "name": "Diogo Barbosa",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-08-17",
      "fame": 11
     },
@@ -3846,6 +4017,7 @@
     {
      "name": "Nathan Santos",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2001-09-05",
      "fame": 4
     },
@@ -3869,6 +4041,7 @@
     {
      "name": "Alan Ruschel",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1989-08-23",
      "fame": 15
     },
@@ -3881,6 +4054,7 @@
     {
      "name": "Patryck Lanza",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2003-01-18",
      "fame": 6
     },
@@ -3892,12 +4066,14 @@
     {
      "name": "Rodrigo Sam",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-07-24",
      "fame": 5
     },
     {
      "name": "Bernardo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2005-03-11",
      "fame": 1
     },
@@ -3910,6 +4086,7 @@
     {
      "name": "Marcos Paulo Lima",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2003-01-01",
      "fame": 3
     },
@@ -3945,6 +4122,7 @@
     {
      "name": "Gabriel Pinheiro",
      "position": "DEF",
+     "defRole": "ZAG",
      "fame": 1
     },
     {
@@ -3955,9 +4133,9 @@
    ]
   },
   "goias": {
-   "manager": "Mozart",
    "source": "https://en.wikipedia.org/wiki/Goi%C3%A1s_Esporte_Clube",
    "revision": 1382874481,
+   "manager": "Mozart",
    "players": [
     {
      "name": "Thiago Rodrigues",
@@ -3968,18 +4146,21 @@
     {
      "name": "Rodrigo Soares",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-12-26",
      "fame": 7
     },
     {
      "name": "Luiz Felipe",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1993-09-09",
      "fame": 9
     },
     {
      "name": "Ramon Menezes",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-05-03",
      "fame": 7
     },
@@ -3992,6 +4173,7 @@
     {
      "name": "Nicolas Vichiatto",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-02-24",
      "fame": 6
     },
@@ -4021,6 +4203,7 @@
     {
      "name": "Lucas Ribeiro",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-01-19",
      "fame": 13
     },
@@ -4057,6 +4240,7 @@
     {
      "name": "Luisão",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2003-00-00",
      "fame": 2
     },
@@ -4097,6 +4281,7 @@
     {
      "name": "Djalma Silva",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-09-19",
      "fame": 2
     },
@@ -4108,6 +4293,7 @@
     {
      "name": "Marcos Vinícius",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-03-26",
      "fame": 2
     },
@@ -4136,7 +4322,7 @@
   },
   "coritiba": {
    "source": "https://en.wikipedia.org/wiki/Coritiba_Foot_Ball_Club",
-   "revision": 1386869225,
+   "revision": 1387003152,
    "players": [
     {
      "name": "Pedro Morisco",
@@ -4147,18 +4333,21 @@
     {
      "name": "Tinga",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-09-01",
      "fame": 6
     },
     {
      "name": "Maicon",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1988-09-14",
      "fame": 23
     },
     {
      "name": "Rodrigo Moledo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1987-10-27",
      "fame": 18
     },
@@ -4171,6 +4360,7 @@
     {
      "name": "Felipe Jonatan",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-02-15",
      "fame": 7
     },
@@ -4201,6 +4391,7 @@
     {
      "name": "Fabricio Bustos",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1996-04-28",
      "fame": 16
     },
@@ -4247,6 +4438,7 @@
     {
      "name": "Tiago Cóser",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2004-01-16",
      "fame": 3
     },
@@ -4259,6 +4451,7 @@
     {
      "name": "Bruno Melo",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-10-26",
      "fame": 6
     },
@@ -4294,12 +4487,14 @@
     {
      "name": "Jacy Maranhão",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-07-11",
      "fame": 3
     },
     {
      "name": "Rodrigo Gelado",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2003-09-28",
      "fame": 1
     },
@@ -4323,6 +4518,7 @@
     {
      "name": "Lucas Taverna",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2007-05-08",
      "fame": 1
     },
@@ -4335,9 +4531,9 @@
    ]
   },
   "america-mg": {
-   "manager": "Roger",
    "source": "https://en.wikipedia.org/wiki/Am%C3%A9rica_Futebol_Clube_(MG)",
    "revision": 1386505855,
+   "manager": "Roger",
    "players": [
     {
      "name": "Gustavo",
@@ -4348,6 +4544,7 @@
     {
      "name": "Emerson Santos",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-04-05",
      "fame": 16
     },
@@ -4377,7 +4574,7 @@
      "name": "Guilherme Parede",
      "position": "ATA",
      "birthDate": "1995-09-19",
-     "fame": 10
+     "fame": 11
     },
     {
      "name": "Felipe Amaral",
@@ -4399,6 +4596,7 @@
     {
      "name": "Alex Silva",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-05-15",
      "fame": 5
     },
@@ -4438,6 +4636,7 @@
     {
      "name": "Manoel",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1990-02-26",
      "fame": 17
     },
@@ -4459,6 +4658,7 @@
     {
      "name": "Ricardo Silva",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1992-08-13",
      "fame": 7
     },
@@ -4507,9 +4707,9 @@
    ]
   },
   "cuiaba": {
-   "manager": "Eduardo Barros",
    "source": "https://en.wikipedia.org/wiki/Cuiab%C3%A1_Esporte_Clube",
    "revision": 1386614356,
+   "manager": "Eduardo Barros",
    "players": [
     {
      "name": "João Carlos",
@@ -4520,12 +4720,14 @@
     {
      "name": "Igor Inocêncio",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-04-20",
      "fame": 2
     },
     {
      "name": "Vitor Mendes",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-02-13",
      "fame": 5
     },
@@ -4560,12 +4762,14 @@
     {
      "name": "João Basso",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-01-13",
      "fame": 8
     },
     {
      "name": "Eric Melo",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-08-07",
      "fame": 1
     },
@@ -4623,6 +4827,7 @@
     {
      "name": "Raylan",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-03-10",
      "fame": 2
     },
@@ -4679,9 +4884,9 @@
    ]
   },
   "ponte-preta": {
-   "manager": "Gilson Kleina",
    "source": "https://en.wikipedia.org/wiki/Associa%C3%A7%C3%A3o_Atl%C3%A9tica_Ponte_Preta",
    "revision": 1386510443,
+   "manager": "Gilson Kleina",
    "players": [
     {
      "name": "Guilherme Viana",
@@ -4696,6 +4901,7 @@
     {
      "name": "Lucas Cunha",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-01-23",
      "fame": 8
     },
@@ -4740,12 +4946,14 @@
     {
      "name": "Diego Porfírio",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-08-01",
      "fame": 2
     },
     {
      "name": "Danilo Barcelos",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1991-08-17",
      "fame": 7
     },
@@ -4795,6 +5003,7 @@
     {
      "name": "Sergio Palacios",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2005-02-14",
      "fame": 3
     },
@@ -4806,6 +5015,7 @@
     {
      "name": "Kevyson",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2004-03-29",
      "fame": 3
     },
@@ -4843,9 +5053,9 @@
    ]
   },
   "guarani": {
-   "manager": "Anderson Gomes",
    "source": "https://en.wikipedia.org/wiki/Guarani_FC",
    "revision": 1384874785,
+   "manager": "Anderson Gomes",
    "players": [
     {
      "name": "Mateus Claus",
@@ -4872,18 +5082,21 @@
     {
      "name": "Maurício Antônio",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1992-02-06",
      "fame": 24
     },
     {
      "name": "Rafael Donato",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1989-03-17",
      "fame": 5
     },
     {
      "name": "Raphael Rodrigues",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-01-01",
      "fame": 1
     },
@@ -4900,6 +5113,7 @@
     {
      "name": "Ynaiã",
      "position": "DEF",
+     "defRole": "LAT",
      "fame": 1
     },
     {
@@ -4981,9 +5195,9 @@
    ]
   },
   "paysandu": {
-   "manager": "Ignácio Neto",
    "source": "https://en.wikipedia.org/wiki/Paysandu_Sport_Club",
    "revision": 1384853824,
+   "manager": "Ignácio Neto",
    "players": [
     {
      "name": "Jean Drosny",
@@ -4994,12 +5208,14 @@
     {
      "name": "Edílson",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-04-13",
      "fame": 1
     },
     {
      "name": "Gustavo Henrique",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-10-17",
      "fame": 4
     },
@@ -5044,6 +5260,7 @@
     {
      "name": "Castro",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-01-01",
      "fame": 1
     },
@@ -5067,6 +5284,7 @@
     {
      "name": "Renan Castro",
      "position": "DEF",
+     "defRole": "LAT",
      "fame": 1
     },
     {
@@ -5097,6 +5315,7 @@
     {
      "name": "Facundo Bonifazi",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-09-29",
      "fame": 6
     },
@@ -5118,6 +5337,7 @@
     {
      "name": "Pedro Carrerette",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1998-10-30",
      "fame": 1
     },
@@ -5167,9 +5387,9 @@
    ]
   },
   "remo": {
-   "manager": "Thiago Carpini",
    "source": "https://en.wikipedia.org/wiki/Clube_do_Remo",
-   "revision": 1386668435,
+   "revision": 1387619539,
+   "manager": "Thiago Carpini",
    "players": [
     {
      "name": "Alexandre",
@@ -5179,24 +5399,28 @@
     {
      "name": "João Lucas",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-03-09",
      "fame": 7
     },
     {
      "name": "Matheus Felipe",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1998-11-09",
      "fame": 3
     },
     {
      "name": "Léo Andrade",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1998-04-18",
      "fame": 6
     },
     {
      "name": "Marlon",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-02-13",
      "fame": 2
     },
@@ -5227,6 +5451,7 @@
     {
      "name": "Marllon",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1992-04-16",
      "fame": 6
     },
@@ -5240,11 +5465,12 @@
      "name": "Vitor Bueno",
      "position": "MEI",
      "birthDate": "1994-09-05",
-     "fame": 18
+     "fame": 19
     },
     {
      "name": "Duplexe Tchamba",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1998-07-10",
      "fame": 9
     },
@@ -5275,6 +5501,7 @@
     {
      "name": "Zé Ivaldo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-02-21",
      "fame": 9
     },
@@ -5299,13 +5526,13 @@
      "name": "Eduardo Melo",
      "position": "ATA",
      "birthDate": "2001-05-13",
-     "fame": 5
+     "fame": 6
     },
     {
      "name": "Zé Ricardo",
      "position": "MEI",
      "birthDate": "1999-02-03",
-     "fame": 7
+     "fame": 8
     },
     {
      "name": "Tico",
@@ -5316,12 +5543,14 @@
     {
      "name": "Mayk",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-08-31",
      "fame": 3
     },
     {
      "name": "Marcelinho",
      "position": "DEF",
+     "defRole": "LAT",
      "fame": 1
     },
     {
@@ -5345,15 +5574,16 @@
     {
      "name": "Matheus Alexandre",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-04-07",
      "fame": 3
     }
    ]
   },
   "nautico": {
-   "manager": "Bruno Pivetti",
    "source": "https://en.wikipedia.org/wiki/Clube_N%C3%A1utico_Capibaribe",
    "revision": 1386437138,
+   "manager": "Bruno Pivetti",
    "players": [
     {
      "name": "Muriel",
@@ -5364,6 +5594,7 @@
     {
      "name": "Arnaldo",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-04-15",
      "fame": 6
     },
@@ -5381,6 +5612,7 @@
     {
      "name": "Ryan Carlos",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2002-05-14",
      "fame": 5
     },
@@ -5422,6 +5654,7 @@
     {
      "name": "Matheus Ribeiro",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-02-23",
      "fame": 7
     },
@@ -5453,6 +5686,7 @@
     {
      "name": "Igor Fernandes",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-06-06",
      "fame": 5
     },
@@ -5482,6 +5716,7 @@
     {
      "name": "Wanderson",
      "position": "DEF",
+     "defRole": "ZAG",
      "fame": 1
     },
     {
@@ -5519,6 +5754,7 @@
     {
      "name": "Reginaldo",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-02-22",
      "fame": 6
     },
@@ -5530,9 +5766,9 @@
    ]
   },
   "santa-cruz": {
-   "manager": "Cristian de Souza",
    "source": "https://en.wikipedia.org/wiki/Santa_Cruz_Futebol_Clube",
    "revision": 1381646145,
+   "manager": "Cristian de Souza",
    "players": [
     {
      "name": "Thiago Coelho",
@@ -5543,6 +5779,7 @@
     {
      "name": "Thiago Ennes",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1996-03-05",
      "fame": 2
     },
@@ -5555,6 +5792,7 @@
     {
      "name": "William Alves",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1987-04-29",
      "fame": 10
     },
@@ -5566,6 +5804,7 @@
     {
      "name": "Alex Ruan",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-02-05",
      "fame": 2
     },
@@ -5657,7 +5896,7 @@
      "name": "Eron",
      "position": "ATA",
      "birthDate": "1998-07-16",
-     "fame": 7
+     "fame": 8
     },
     {
      "name": "Alex Sandro",
@@ -5668,6 +5907,7 @@
     {
      "name": "Zé Mário",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-02-20",
      "fame": 5
     },
@@ -5690,9 +5930,9 @@
    ]
   },
   "crb": {
-   "manager": "Eduardo Barroca",
    "source": "https://en.wikipedia.org/wiki/Clube_de_Regatas_Brasil",
    "revision": 1382880148,
+   "manager": "Eduardo Barroca",
    "players": [
     {
      "name": "Vitor Caetano",
@@ -5703,12 +5943,14 @@
     {
      "name": "Kevin",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-09-07",
      "fame": 3
     },
     {
      "name": "Reverson",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-02-02",
      "fame": 2
     },
@@ -5785,6 +6027,7 @@
     {
      "name": "Bressan",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1993-01-15",
      "fame": 12
     },
@@ -5802,6 +6045,7 @@
     {
      "name": "Fábio Alemão",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-10-08",
      "fame": 1
     },
@@ -5819,6 +6063,7 @@
     {
      "name": "Hereda",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1998-09-20",
      "fame": 2
     },
@@ -5831,6 +6076,7 @@
     {
      "name": "Lucas Lovat",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-01-15",
      "fame": 8
     },
@@ -5892,9 +6138,9 @@
    ]
   },
   "avai": {
-   "manager": "Marquinhos",
    "source": "https://en.wikipedia.org/wiki/Ava%C3%AD_FC",
-   "revision": 1386479616,
+   "revision": 1387018678,
+   "manager": "Marquinhos",
    "players": [
     {
      "name": "Igor Bohn",
@@ -5905,6 +6151,7 @@
     {
      "name": "Wallison",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2001-07-24",
      "fame": 3
     },
@@ -5917,6 +6164,7 @@
     {
      "name": "Gabriel Simples",
      "position": "DEF",
+     "defRole": "LAT",
      "fame": 1
     },
     {
@@ -5996,6 +6244,7 @@
     {
      "name": "João Vitor",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2002-07-25",
      "fame": 2
     },
@@ -6018,12 +6267,14 @@
     {
      "name": "Pedrão",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2004-01-06",
      "fame": 1
     },
     {
      "name": "Douglas Teixeira",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2001-03-29",
      "fame": 1
     },
@@ -6041,6 +6292,7 @@
     {
      "name": "Reynaldo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-01-03",
      "fame": 4
     },
@@ -6057,6 +6309,7 @@
     {
      "name": "Mateus Quaresma",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1996-08-22",
      "fame": 4
     },
@@ -6105,12 +6358,14 @@
     {
      "name": "Lucas Oliveira",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-02-02",
      "fame": 9
     },
     {
      "name": "Willian Machado",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1996-11-13",
      "fame": 2
     },
@@ -6123,6 +6378,7 @@
     {
      "name": "Reinaldo",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1989-09-28",
      "fame": 11
     },
@@ -6159,6 +6415,7 @@
     {
      "name": "Victor Luis",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-06-23",
      "fame": 10
     },
@@ -6177,12 +6434,14 @@
     {
      "name": "Elias",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-07-16",
      "fame": 1
     },
     {
      "name": "Daniel Borges",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-03-23",
      "fame": 6
     },
@@ -6219,6 +6478,7 @@
     {
      "name": "Igor Formiga",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-01-08",
      "fame": 2
     },
@@ -6231,12 +6491,14 @@
     {
      "name": "João Victor",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-09-02",
      "fame": 3
     },
     {
      "name": "Gabriel Knesowitsch",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2003-10-18",
      "fame": 3
     },
@@ -6309,6 +6571,7 @@
     {
      "name": "Luciano Castán",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1989-09-13",
      "fame": 7
     },
@@ -6321,6 +6584,7 @@
     {
      "name": "Marcinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1996-05-16",
      "fame": 7
     },
@@ -6379,6 +6643,7 @@
     {
      "name": "Marcelo Hermes",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-02-01",
      "fame": 7
     },
@@ -6407,12 +6672,14 @@
     {
      "name": "Bruno Alves",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1991-04-16",
      "fame": 8
     },
     {
      "name": "César Martins",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1992-12-28",
      "fame": 9
     },
@@ -6430,6 +6697,7 @@
     {
      "name": "Rômulo Júnior",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2004-01-31",
      "fame": 4
     },
@@ -6469,6 +6737,7 @@
     {
      "name": "Willean Lepo",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-01-16",
      "fame": 1
     }
@@ -6509,6 +6778,7 @@
     {
      "name": "Adriano Martins",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-04-01",
      "fame": 2
     },
@@ -6525,6 +6795,7 @@
     {
      "name": "Natã Felipe",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-06-05",
      "fame": 2
     },
@@ -6536,6 +6807,7 @@
     {
      "name": "Ewerthon",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-11-10",
      "fame": 2
     },
@@ -6547,6 +6819,7 @@
     {
      "name": "Guilherme Lopes",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2002-02-14",
      "fame": 3
     },
@@ -6568,12 +6841,14 @@
     {
      "name": "Yuri Silva",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1996-01-08",
      "fame": 6
     },
     {
      "name": "Warley",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-01-01",
      "fame": 4
     },
@@ -6702,30 +6977,34 @@
   },
   "chapecoense": {
    "source": "https://en.wikipedia.org/wiki/Associa%C3%A7%C3%A3o_Chapecoense_de_Futebol",
-   "revision": 1386560255,
+   "revision": 1387618564,
    "manager": "Vinícius Bergantin",
    "players": [
     {
      "name": "Eduardo Doma",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1998-08-29",
      "fame": 1
     },
     {
      "name": "João Paulo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1997-07-04",
      "fame": 1
     },
     {
      "name": "Heitor",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-11-05",
      "fame": 6
     },
     {
      "name": "Mancha",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2001-02-13",
      "fame": 2
     },
@@ -6755,6 +7034,7 @@
     {
      "name": "Fernando",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-09-14",
      "fame": 2
     },
@@ -6767,6 +7047,7 @@
     {
      "name": "Rafael Thyere",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1993-03-27",
      "fame": 9
     },
@@ -6791,12 +7072,14 @@
     {
      "name": "Bruno Tubarão",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-03-28",
      "fame": 5
     },
     {
      "name": "Kauan Faria",
      "position": "DEF",
+     "defRole": "ZAG",
      "fame": 1
     },
     {
@@ -6808,11 +7091,13 @@
     {
      "name": "Victor Caetano",
      "position": "DEF",
+     "defRole": "ZAG",
      "fame": 1
     },
     {
      "name": "Everton",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-04-10",
      "fame": 1
     },
@@ -6848,6 +7133,7 @@
     {
      "name": "Vinicius Eduardo",
      "position": "DEF",
+     "defRole": "ZAG",
      "fame": 1
     },
     {
@@ -6881,6 +7167,7 @@
     {
      "name": "Bruno Pacheco",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1991-12-08",
      "fame": 6
     },
@@ -6918,6 +7205,7 @@
     {
      "name": "Mikael Doka",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-01-24",
      "fame": 5
     },
@@ -6935,6 +7223,7 @@
     {
      "name": "Moraes Júnior",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1997-10-03",
      "fame": 4
     },
@@ -7002,6 +7291,7 @@
     {
      "name": "Maguinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-01-06",
      "fame": 13
     },
@@ -7098,12 +7388,14 @@
     {
      "name": "Tiago Pagnussat",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1990-06-17",
      "fame": 14
     },
     {
      "name": "Douglas Mendes",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2004-06-13",
      "fame": 9
     },
@@ -7115,6 +7407,7 @@
     {
      "name": "Higor Luiz",
      "position": "DEF",
+     "defRole": "LAT",
      "fame": 1
     },
     {
@@ -7149,12 +7442,14 @@
     {
      "name": "Willian Formiga",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-01-22",
      "fame": 3
     },
     {
      "name": "Anderson Jesus",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-03-02",
      "fame": 3
     },
@@ -7166,6 +7461,7 @@
     {
      "name": "Igor Cariús",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1993-05-01",
      "fame": 2
     },
@@ -7195,12 +7491,14 @@
     {
      "name": "Hayner",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-10-02",
      "fame": 8
     },
     {
      "name": "Jonathan Costa",
      "position": "DEF",
+     "defRole": "ZAG",
      "fame": 1
     },
     {
@@ -7280,24 +7578,28 @@
     {
      "name": "Madson",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-01-13",
      "fame": 8
     },
     {
      "name": "Carlinhos",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-06-16",
-     "fame": 4
+     "fame": 5
     },
     {
      "name": "Patrick",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-04-09",
      "fame": 1
     },
     {
      "name": "Sander",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1990-10-03",
      "fame": 5
     },
@@ -7381,18 +7683,21 @@
     {
      "name": "Iván Alvariño",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-02-01",
      "fame": 3
     },
     {
      "name": "Jhilmar Lora",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2000-10-24",
      "fame": 48
     },
     {
      "name": "Gabriel Bahia",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1998-11-24",
      "fame": 1
     },
@@ -7428,6 +7733,7 @@
     {
      "name": "Renato Palm",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1991-10-14",
      "fame": 2
     },
@@ -7461,6 +7767,7 @@
     {
      "name": "Maykon Jesus",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2005-00-00",
      "fame": 2
     },
@@ -7514,24 +7821,28 @@
     {
      "name": "Joílson",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1991-05-25",
      "fame": 5
     },
     {
      "name": "Bruno Ramires",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1994-03-18",
      "fame": 9
     },
     {
      "name": "Marcondes",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1993-03-03",
      "fame": 1
     },
     {
      "name": "Diego Ivo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1989-04-06",
      "fame": 4
     },
@@ -7543,6 +7854,7 @@
     {
      "name": "Rafael Furlan",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-09-20",
      "fame": 4
     },
@@ -7554,6 +7866,7 @@
     {
      "name": "Alyson",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1996-04-05",
      "fame": 4
     },
@@ -7565,6 +7878,7 @@
     {
      "name": "Cicinho",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1988-12-26",
      "fame": 13
     },
@@ -7725,42 +8039,49 @@
     {
      "name": "Jhan Pool Torres",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-04-15",
      "fame": 1
     },
     {
      "name": "Lucas Belezi",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2003-00-00",
      "fame": 2
     },
     {
      "name": "Philipe Sampaio",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1994-11-11",
      "fame": 12
     },
     {
      "name": "Sidimar",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1992-07-09",
      "fame": 4
     },
     {
      "name": "Diogo Batista",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2003-08-29",
      "fame": 3
     },
     {
      "name": "Douglas Pelé",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1999-08-25",
      "fame": 1
     },
     {
      "name": "Enzo Santos",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2002-07-18",
      "fame": 1
     },
@@ -7777,6 +8098,7 @@
     {
      "name": "Zeca",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-05-16",
      "fame": 20
     },
@@ -7907,18 +8229,21 @@
     {
      "name": "Jonathan",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1992-08-25",
      "fame": 6
     },
     {
      "name": "Ericson",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1999-05-11",
      "fame": 2
     },
     {
      "name": "Gustavo Vilar",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2000-04-18",
      "fame": 1
     },
@@ -7955,12 +8280,14 @@
     {
      "name": "Wallace",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1994-10-14",
      "fame": 19
     },
     {
      "name": "Carlos Eduardo",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-03-12",
      "fame": 1
     },
@@ -8001,6 +8328,7 @@
     {
      "name": "Gabriel Inocêncio",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1994-08-20",
      "fame": 2
     },
@@ -8076,6 +8404,7 @@
     {
      "name": "Rhuan",
      "position": "DEF",
+     "defRole": "LAT",
      "fame": 1
     },
     {
@@ -8115,6 +8444,7 @@
     {
      "name": "Gustavo Medina",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2001-07-09",
      "fame": 1
     },
@@ -8158,6 +8488,7 @@
     {
      "name": "Felipe Rodrigues",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1995-10-31",
      "fame": 6
     },
@@ -8174,6 +8505,7 @@
     {
      "name": "Vinicius Kauê",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "2003-03-01",
      "fame": 2
     },
@@ -8227,6 +8559,7 @@
     {
      "name": "Zé Vitor",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "2002-06-10",
      "fame": 1
     },
@@ -8262,6 +8595,7 @@
     {
      "name": "Wellington Silva",
      "position": "DEF",
+     "defRole": "LAT",
      "birthDate": "1988-03-06",
      "fame": 5
     },
@@ -8273,6 +8607,7 @@
     {
      "name": "Fabrício",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1990-02-20",
      "fame": 13
     },
@@ -8331,6 +8666,7 @@
     {
      "name": "Lucas Rocha",
      "position": "DEF",
+     "defRole": "ZAG",
      "birthDate": "1995-06-19",
      "fame": 4
     },
@@ -8398,6 +8734,5 @@
     }
    ]
   }
- },
- "managersFetchedAt": "2026-11-22"
+ }
 }

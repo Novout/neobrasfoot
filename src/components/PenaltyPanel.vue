@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PosTag from './PosTag.vue'
 import { computed } from 'vue'
 import { nextKickingTeam, shootoutScore } from '../data/penalties'
 import { clockLabel } from '../data/stoppage'
@@ -56,7 +57,7 @@ function takePenalty(playerId: string) {
       </header>
       <ul class="takers">
         <li v-for="(t, i) in match.penaltyTakers" :key="t.player.id">
-          <span class="pos" :class="`pos--${t.player.position}`">{{ t.player.position }}</span>
+          <PosTag :player="t.player" />
           <span class="name">{{ t.player.name }}<StarMark :star="t.player.star" /><SkillBadges :player="t.player" /></span>
           <strong>{{ t.player.overall }}</strong>
           <span class="chance" :class="{ best: i === 0 }">{{ percent(t.chance) }}</span>
@@ -124,7 +125,7 @@ function takePenalty(playerId: string) {
         <h3>Escolha o próximo batedor</h3>
         <ul class="takers">
           <li v-for="(t, i) in match.shootoutTakers" :key="t.player.id">
-            <span class="pos" :class="`pos--${t.player.position}`">{{ t.player.position }}</span>
+            <PosTag :player="t.player" />
             <span class="name">{{ t.player.name }}<StarMark :star="t.player.star" /><SkillBadges :player="t.player" /></span>
             <strong>{{ t.player.overall }}</strong>
             <span class="chance" :class="{ best: i === 0 }">{{ percent(t.chance) }}</span>

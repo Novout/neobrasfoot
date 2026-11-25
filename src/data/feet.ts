@@ -1,5 +1,6 @@
 import type { Player } from '../types/game'
 import { createRng, hashString } from '../utils/random'
+import { defRoleOf } from './defense'
 import { playingPosition, POSITION_ORDER } from './tactics'
 
 /**
@@ -53,7 +54,9 @@ export function footFit(foot: Foot, side: Side) {
 /** Preferência de lado quando o técnico não arrumou a linha: canhotos à esquerda, destros à direita. */
 const DEFAULT_RANK: Record<Foot, number> = { E: 0, A: 1, D: 2 }
 
-type LinePlayer = Pick<Player, 'id' | 'foot' | 'lineupSlot'>
+type LinePlayer = Pick<Player, 'id' | 'foot' | 'lineupSlot'> & Partial<Pick<Player, 'position' | 'defRole'>>
+
+const isLateral = (p: LinePlayer) => p.position === 'DEF' && defRoleOf({ id: p.id, position: 'DEF', defRole: p.defRole }) === 'LAT'
 
 /**
  * Ordem da linha da esquerda para a direita: quem tem lugar definido pelo técnico (`lineupSlot`) fica nele;
@@ -61,7 +64,19 @@ type LinePlayer = Pick<Player, 'id' | 'foot' | 'lineupSlot'>
  */
 export function orderLine<T extends LinePlayer>(players: T[]): T[] {
   const placed = players.filter((p) => p.lineupSlot !== undefined).sort((a, b) => a.lineupSlot! - b.lineupSlot!)
-  const free = players.filter((p) => p.lineupSlot === undefined).sort((a, b) => DEFAULT_RANK[playerFoot(a)] - DEFAULT_RANK[playerFoot(b)])
+  const byFoot = (a: T, b: T) => DEFAULT_RANK[playerFoot(a)] - DEFAULT_RANK[playerFoot(b)]
+  // Defesa: laterais livres vão para as pontas (o mais canhoto à esquerda, o mais destro à direita).
+  const freeLaterals = players.filter((p) => p.lineupSlot === undefined && isLateral(p)).sort(byFoot)
+  if (freeLaterals.length) {
+    const rest = players.filter((p) => !freeLaterals.includes(p))
+    const leftEdge = freeLaterals.length > 1 || playerFoot(freeLaterals[0]!) !== 'D' ? freeLaterals[0] : undefined
+    const rightEdge = freeLaterals.length > 1 ? freeLaterals.at(-1) : leftEdge ? undefined : freeLaterals[0]
+    const inner = freeLaterals.filter((p) => p !== leftEdge && p !== rightEdge)
+    const middle = orderLine([...rest, ...inner.map((p) => ({ ...p, position: undefined }) as T)])
+      .map((p) => inner.find((x) => x.id === p.id) ?? p)
+    return [...(leftEdge ? [leftEdge] : []), ...middle, ...(rightEdge ? [rightEdge] : [])]
+  }
+  const free = players.filter((p) => p.lineupSlot === undefined).sort(byFoot)
   const left = free.filter((p) => playerFoot(p) === 'E')
   const middle = free.filter((p) => playerFoot(p) === 'A')
   const right = free.filter((p) => playerFoot(p) === 'D')

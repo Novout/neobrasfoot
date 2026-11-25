@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PosTag from './PosTag.vue'
 import { computed, ref } from 'vue'
 import { MAX_SQUAD_SIZE, useGameStore } from '../stores/game'
 import { formatMoney } from '../utils/random'
@@ -45,7 +46,7 @@ function promote(id: string) {
       </thead>
       <tbody>
         <tr v-for="p in players" :key="p.id">
-          <td><span class="pos" :class="`pos--${p.position}`">{{ p.position }}</span></td>
+          <td><PosTag :player="p" /></td>
           <td>
             {{ p.name }}<StarMark :star="p.star" />
             <SkillBadges :player="p" />
