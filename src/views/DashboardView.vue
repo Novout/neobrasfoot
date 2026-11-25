@@ -16,7 +16,8 @@ import { POSITION_ORDER } from '../data/tactics'
 import { askingPriceOf, canTrain, marketValue, trainingEnergyCost, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
 import { useTransferStore } from '../stores/transfers'
-import type { DivisionId, Position } from '../types/game'
+import type { DivisionId, Player, Position } from '../types/game'
+import { defRoleOf } from '../data/defense'
 import { formatMoney } from '../utils/random'
 import { formatDate } from '../data/calendar'
 
@@ -27,11 +28,21 @@ const router = useRouter()
 
 const positionFilter = ref<Position | 'TODOS'>('TODOS')
 
+function defRoleRank(p: Player) {
+  return defRoleOf(p) === 'ZAG' ? 1 : 0
+}
+
 const squad = computed(() => {
   const players = game.managedTeam?.players ?? []
   return players
     .filter((p) => positionFilter.value === 'TODOS' || p.position === positionFilter.value)
-    .sort((a, b) => POSITION_ORDER.indexOf(a.position) - POSITION_ORDER.indexOf(b.position) || b.overall - a.overall)
+    .sort(
+      (a, b) =>
+        POSITION_ORDER.indexOf(a.position) - POSITION_ORDER.indexOf(b.position) ||
+        // Na defesa, todos os laterais primeiro e depois todos os zagueiros.
+        defRoleRank(a) - defRoleRank(b) ||
+        b.overall - a.overall,
+    )
 })
 
 const isHome = computed(() => game.nextFixture?.homeId === game.managedTeamId)
