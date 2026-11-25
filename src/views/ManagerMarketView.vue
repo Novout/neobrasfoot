@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import TeamBadge from '../components/TeamBadge.vue'
-import { ALL_DIVISIONS, DIVISION_LABELS, DIVISIONS, REPUTATION_SWING } from '../data/divisions'
+import { ALL_DIVISIONS, DIVISION_LABELS, divisionLevel, REPUTATION_SWING } from '../data/divisions'
 import { createStadium, stadiumCapacity } from '../data/stadium'
 import { useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
@@ -69,7 +69,7 @@ const offers = computed(() =>
       return team ? clubCard(team, o.reason) : null
     })
     .filter((c): c is ClubCard => c !== null)
-    .sort((a, b) => DIVISIONS.indexOf(a.nextDivision) - DIVISIONS.indexOf(b.nextDivision) || b.squadAverage - a.squadAverage),
+    .sort((a, b) => divisionLevel(a.nextDivision) - divisionLevel(b.nextDivision) || b.squadAverage - a.squadAverage),
 )
 
 function stay() {

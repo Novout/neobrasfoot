@@ -10,7 +10,7 @@ import SaveControls from '../components/SaveControls.vue'
 import StarMark from '../components/StarMark.vue'
 import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, DIVISIONS, relegatesFrom, tableZone } from '../data/divisions'
+import { DIVISION_LABELS, DIVISIONS, isForeignDivision, LEAGUE_DIVISIONS, relegatesFrom, tableZone } from '../data/divisions'
 import { stadiumUpkeep } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
 import { askingPriceOf, canTrain, marketValue, trainingEnergyCost, useGameStore } from '../stores/game'
@@ -240,7 +240,7 @@ function standingPoints(row: { wins: number; draws: number }) {
         <div class="table-header">
           <h3>Classificação</h3>
           <select :value="tableDivision" @change="viewedDivision = ($event.target as HTMLSelectElement).value as DivisionId">
-            <option v-for="d in DIVISIONS" :key="d" :value="d">{{ DIVISION_LABELS[d] }}</option>
+            <option v-for="d in LEAGUE_DIVISIONS" :key="d" :value="d">{{ DIVISION_LABELS[d] }}</option>
           </select>
         </div>
         <table class="standings">
@@ -263,7 +263,7 @@ function standingPoints(row: { wins: number; draws: number }) {
         </table>
         <RouterLink class="partial-best" :to="{ name: 'best-xi' }">⭐ Seleção da temporada{{ game.isSeasonOver ? '' : ' (parcial)' }}</RouterLink>
         <p class="legend">
-          <span v-if="tableDivision === DIVISIONS[0]" class="zone-champion">Campeão</span>
+          <span v-if="tableDivision === DIVISIONS[0] || isForeignDivision(tableDivision)" class="zone-champion">Campeão</span>
           <span v-else class="zone-promotion">Acesso</span>
           <span v-if="relegatesFrom(tableDivision)" class="zone-relegation">Rebaixamento</span>
         </p>

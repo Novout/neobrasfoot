@@ -74,7 +74,7 @@ const EXTRA_TEAMS: TemplateTeam[] = [
 
 // --- Elencos reais ---
 
-interface RawPlayer {
+export interface RawPlayer {
   name: string
   position: string
   /** Defensores: "LAT" (lateral) ou "ZAG" (zagueiro), pela posição no Wikidata. */
@@ -133,12 +133,24 @@ export function estimateOverall(reputation: number, fame: number, age: number) {
 
 /** Elenco real do clube, limitado a 30 jogadores e com o mínimo por posição. */
 function realSquad(teamId: string, reputation: number): LeagueFilePlayer[] | undefined {
-  const raw = RAW[teamId]?.players
+  return realSquadFrom(RAW[teamId]?.players, teamId, reputation, SQUADS_DATE)
+}
+
+/**
+ * Elenco real a partir dos dados brutos baixados (de qualquer liga): idade na data dos dados, OVR estimado pela
+ * fama e calibrado pelo nível do clube. Sem dados suficientes, devolve undefined (o jogo gera um elenco).
+ */
+export function realSquadFrom(
+  raw: RawPlayer[] | undefined,
+  teamId: string,
+  reputation: number,
+  referenceDate: string,
+): LeagueFilePlayer[] | undefined {
   if (!raw?.length) return undefined
   const players = raw
     .filter((p) => POSITION_ORDER.includes(p.position as Position))
     .map((p) => {
-      const age = Math.max(16, Math.min(45, ageOn(p.birthDate, SQUADS_DATE)))
+      const age = Math.max(16, Math.min(45, ageOn(p.birthDate, referenceDate)))
       const { overall, star } = estimateOverall(reputation, p.fame, age)
       const defRole = p.position === 'DEF' && (p.defRole === 'LAT' || p.defRole === 'ZAG') ? { defRole: p.defRole as DefRole } : {}
       return { name: p.name.slice(0, 30), position: p.position as Position, age, overall, ...(star ? { star: true } : {}), ...defRole }

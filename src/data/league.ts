@@ -3,6 +3,7 @@ import { DEFAULT_FORMAT, isLeagueFormat, type LeagueFormat } from './divisions'
 import { getCustomLeague, parseLeagueFile, teamsFromLeagueFile, type LeagueFile } from './leagueFile'
 import { createReserveTeams, createTeams } from './teams'
 import { brasileiraoReserve, brasileiraoTemplate, BRASILEIRAO_TEMPLATE_NAME } from './templates/brasileirao'
+import { laLigaTeams } from './templates/laliga'
 import { LEAGUE_FORMAT as FILE_FORMAT, LEAGUE_FORMAT_VERSION } from './leagueFile'
 
 /**
@@ -52,9 +53,13 @@ export function brasileiraoLeague(format: LeagueFormat = getLeagueFormat()): Lea
   return parseLeagueFile(JSON.stringify(brasileiraoTemplate(format))).league!
 }
 
-/** Clubes da liga base escolhida, no formato escolhido. */
+/**
+ * Clubes da liga base escolhida, no formato escolhido. No 2×20 (38 rodadas, como a La Liga) entram também os
+ * clubes da La Liga, disputada em paralelo.
+ */
 export function baseLeagueTeams(base: LeagueBase = getLeagueBase(), format: LeagueFormat = getLeagueFormat()): Team[] {
-  return base === 'gerada' ? createTeams(format) : teamsFromLeagueFile(brasileiraoLeague(format))
+  const teams = base === 'gerada' ? createTeams(format) : teamsFromLeagueFile(brasileiraoLeague(format))
+  return format === '2x20' ? [...teams, ...laLigaTeams()] : teams
 }
 
 /**

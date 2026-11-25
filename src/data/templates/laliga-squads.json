@@ -1,0 +1,3397 @@
+{
+ "fetchedAt": "2026-11-25",
+ "clubs": {
+  "es-real-madrid": {
+   "source": "https://en.wikipedia.org/wiki/Real_Madrid_CF",
+   "revision": 1387569935,
+   "manager": "José Mourinho",
+   "players": [
+    {
+     "name": "Thibaut Courtois",
+     "position": "GOL",
+     "birthDate": "1992-05-11",
+     "fame": 83
+    },
+    {
+     "name": "Raúl Asencio",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2003-02-13",
+     "fame": 37
+    },
+    {
+     "name": "Éder Militão",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1998-01-18",
+     "fame": 54
+    },
+    {
+     "name": "Dean Huijsen",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2005-04-14",
+     "fame": 42
+    },
+    {
+     "name": "Jude Bellingham",
+     "position": "MEI",
+     "birthDate": "2003-06-29",
+     "fame": 76
+    },
+    {
+     "name": "Eduardo Camavinga",
+     "position": "MEI",
+     "birthDate": "2002-11-10",
+     "fame": 57
+    },
+    {
+     "name": "Vinícius Júnior",
+     "position": "ATA",
+     "birthDate": "2000-07-12",
+     "fame": 75
+    },
+    {
+     "name": "Federico Valverde",
+     "position": "MEI",
+     "birthDate": "1998-07-22",
+     "fame": 65
+    },
+    {
+     "name": "Endrick",
+     "position": "ATA",
+     "birthDate": "2006-07-21",
+     "fame": 47
+    },
+    {
+     "name": "Kylian Mbappé",
+     "position": "ATA",
+     "birthDate": "1998-12-20",
+     "fame": 119
+    },
+    {
+     "name": "Rodrygo",
+     "position": "ATA",
+     "birthDate": "2001-01-09",
+     "fame": 60
+    },
+    {
+     "name": "Trent Alexander-Arnold",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1998-10-07",
+     "fame": 62
+    },
+    {
+     "name": "Andriy Lunin",
+     "position": "GOL",
+     "birthDate": "1999-02-11",
+     "fame": 45
+    },
+    {
+     "name": "Aurélien Tchouaméni",
+     "position": "MEI",
+     "birthDate": "2000-01-27",
+     "fame": 56
+    },
+    {
+     "name": "Arda Güler",
+     "position": "MEI",
+     "birthDate": "2005-02-25",
+     "fame": 63
+    },
+    {
+     "name": "Ibrahima Konaté",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-05-25",
+     "fame": 54
+    },
+    {
+     "name": "Marc Cucurella",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1998-07-22",
+     "fame": 58
+    },
+    {
+     "name": "Álvaro Carreras",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-03-23",
+     "fame": 40
+    },
+    {
+     "name": "Carlos Espí",
+     "position": "ATA",
+     "birthDate": "2005-07-24",
+     "fame": 26
+    },
+    {
+     "name": "Bernardo Silva",
+     "position": "MEI",
+     "birthDate": "1994-08-10",
+     "fame": 61
+    },
+    {
+     "name": "Brahim Díaz",
+     "position": "ATA",
+     "birthDate": "1999-08-03",
+     "fame": 54
+    },
+    {
+     "name": "Antonio Rüdiger",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1993-03-03",
+     "fame": 64
+    },
+    {
+     "name": "Ferland Mendy",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1995-06-08",
+     "fame": 49
+    },
+    {
+     "name": "Denzel Dumfries",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1996-04-18",
+     "fame": 51
+    },
+    {
+     "name": "Yan Diomande",
+     "position": "ATA",
+     "birthDate": "2006-11-14",
+     "fame": 41
+    },
+    {
+     "name": "Thiago Pitarch",
+     "position": "MEI",
+     "birthDate": "2007-08-03",
+     "fame": 22
+    }
+   ]
+  },
+  "es-barcelona": {
+   "source": "https://en.wikipedia.org/wiki/FC_Barcelona",
+   "revision": 1387751642,
+   "manager": "Hansi Flick",
+   "players": [
+    {
+     "name": "Joan Garcia",
+     "position": "GOL",
+     "birthDate": "2001-05-04",
+     "fame": 43
+    },
+    {
+     "name": "João Cancelo",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1994-05-27",
+     "fame": 56
+    },
+    {
+     "name": "Alejandro Balde",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-10-18",
+     "fame": 47
+    },
+    {
+     "name": "Brian Fariñas",
+     "position": "MEI",
+     "birthDate": "2006-02-09",
+     "fame": 12
+    },
+    {
+     "name": "Pau Cubarsí",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2007-01-22",
+     "fame": 54
+    },
+    {
+     "name": "Gavi",
+     "position": "MEI",
+     "birthDate": "2004-08-05",
+     "fame": 65
+    },
+    {
+     "name": "Fermín López",
+     "position": "MEI",
+     "birthDate": "2003-05-11",
+     "fame": 46
+    },
+    {
+     "name": "Pedri",
+     "position": "MEI",
+     "birthDate": "2002-11-25",
+     "fame": 68
+    },
+    {
+     "name": "Gabriel Jesus",
+     "position": "ATA",
+     "birthDate": "1997-04-03",
+     "fame": 57
+    },
+    {
+     "name": "Lamine Yamal",
+     "position": "ATA",
+     "birthDate": "2007-07-13",
+     "fame": 96
+    },
+    {
+     "name": "Raphinha",
+     "position": "ATA",
+     "birthDate": "1996-12-14",
+     "fame": 59
+    },
+    {
+     "name": "Xavi Espart",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2007-05-21",
+     "fame": 24
+    },
+    {
+     "name": "Wojciech Szczęsny",
+     "position": "GOL",
+     "birthDate": "1990-04-18",
+     "fame": 67
+    },
+    {
+     "name": "Karim Adeyemi",
+     "position": "ATA",
+     "birthDate": "2002-01-18",
+     "fame": 45
+    },
+    {
+     "name": "Andreas Christensen",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1996-04-10",
+     "fame": 55
+    },
+    {
+     "name": "Rodri",
+     "position": "MEI",
+     "birthDate": "1996-06-22",
+     "fame": 72
+    },
+    {
+     "name": "Anthony Gordon",
+     "position": "ATA",
+     "birthDate": "2001-02-24",
+     "fame": 52
+    },
+    {
+     "name": "Gerard Martín",
+     "position": "DEF",
+     "birthDate": "2002-02-26",
+     "fame": 27
+    },
+    {
+     "name": "Roony Bardghji",
+     "position": "ATA",
+     "birthDate": "2005-11-15",
+     "fame": 31
+    },
+    {
+     "name": "Dani Olmo",
+     "position": "MEI",
+     "birthDate": "1998-05-07",
+     "fame": 59
+    },
+    {
+     "name": "Frenkie de Jong",
+     "position": "MEI",
+     "birthDate": "1997-05-12",
+     "fame": 58
+    },
+    {
+     "name": "Marc Bernal",
+     "position": "MEI",
+     "birthDate": "2007-05-26",
+     "fame": 28
+    },
+    {
+     "name": "Jules Koundé",
+     "position": "DEF",
+     "birthDate": "1998-11-12",
+     "fame": 53
+    },
+    {
+     "name": "Eric Garcia",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2001-01-09",
+     "fame": 49
+    },
+    {
+     "name": "Dominik Livaković",
+     "position": "GOL",
+     "birthDate": "1995-01-09",
+     "fame": 46
+    },
+    {
+     "name": "Jesse Bisiwu",
+     "position": "ATA",
+     "birthDate": "2008-01-22",
+     "fame": 13
+    },
+    {
+     "name": "Hamza Abdelkarim",
+     "position": "ATA",
+     "birthDate": "2008-01-01",
+     "fame": 29
+    }
+   ]
+  },
+  "es-atletico-madrid": {
+   "source": "https://en.wikipedia.org/wiki/Atl%C3%A9tico_Madrid",
+   "revision": 1385603471,
+   "manager": "Diego Simeone",
+   "players": [
+    {
+     "name": "Juan Musso",
+     "position": "GOL",
+     "birthDate": "1994-05-06",
+     "fame": 42
+    },
+    {
+     "name": "Obed Vargas",
+     "position": "MEI",
+     "birthDate": "2005-08-05",
+     "fame": 28
+    },
+    {
+     "name": "Rodrigo Mendoza",
+     "position": "MEI",
+     "birthDate": "2005-03-14",
+     "fame": 17
+    },
+    {
+     "name": "Johnny Cardoso",
+     "position": "MEI",
+     "birthDate": "2001-09-20",
+     "fame": 27
+    },
+    {
+     "name": "Koke",
+     "position": "MEI",
+     "birthDate": "1992-01-08",
+     "fame": 61
+    },
+    {
+     "name": "Lee Kang-in",
+     "position": "MEI",
+     "birthDate": "2001-02-19",
+     "fame": 41
+    },
+    {
+     "name": "Pablo Barrios",
+     "position": "MEI",
+     "birthDate": "2003-06-15",
+     "fame": 33
+    },
+    {
+     "name": "Alexander Sørloth",
+     "position": "ATA",
+     "birthDate": "1995-12-05",
+     "fame": 50
+    },
+    {
+     "name": "Álex Baena",
+     "position": "MEI",
+     "birthDate": "2001-07-20",
+     "fame": 44
+    },
+    {
+     "name": "Ademola Lookman",
+     "position": "ATA",
+     "birthDate": "1997-10-20",
+     "fame": 48
+    },
+    {
+     "name": "Jan Oblak",
+     "position": "GOL",
+     "birthDate": "1993-01-07",
+     "fame": 57
+    },
+    {
+     "name": "Marcos Llorente",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1995-01-30",
+     "fame": 52
+    },
+    {
+     "name": "Jonathan David",
+     "position": "ATA",
+     "birthDate": "2000-01-14",
+     "fame": 42
+    },
+    {
+     "name": "Arnau Ortiz",
+     "position": "MEI",
+     "birthDate": "2001-10-29",
+     "fame": 8
+    },
+    {
+     "name": "Dávid Hancko",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1997-12-13",
+     "fame": 33
+    },
+    {
+     "name": "Marc Pubill",
+     "position": "DEF",
+     "birthDate": "2003-06-20",
+     "fame": 38
+    },
+    {
+     "name": "Julián Alvarez",
+     "position": "ATA",
+     "birthDate": "2000-01-31",
+     "fame": 62
+    },
+    {
+     "name": "Giuliano Simeone",
+     "position": "MEI",
+     "birthDate": "2002-12-18",
+     "fame": 39
+    },
+    {
+     "name": "Cristian Romero",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1998-04-27",
+     "fame": 47
+    },
+    {
+     "name": "Alejandro Grimaldo",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1995-09-20",
+     "fame": 44
+    },
+    {
+     "name": "Morten Hjulmand",
+     "position": "MEI",
+     "birthDate": "1999-06-25",
+     "fame": 33
+    },
+    {
+     "name": "Robin Le Normand",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1996-11-11",
+     "fame": 45
+    },
+    {
+     "name": "Salvi Esquivel",
+     "position": "GOL",
+     "birthDate": "2005-09-30",
+     "fame": 5
+    },
+    {
+     "name": "Dani Martínez",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2004-05-05",
+     "fame": 4
+    }
+   ]
+  },
+  "es-athletic": {
+   "source": "https://en.wikipedia.org/wiki/Athletic_Bilbao",
+   "revision": 1387349437,
+   "manager": "Edin Terzić",
+   "players": [
+    {
+     "name": "Unai Simón",
+     "position": "GOL",
+     "birthDate": "1997-06-11",
+     "fame": 54
+    },
+    {
+     "name": "Dani Vivian",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-07-05",
+     "fame": 37
+    },
+    {
+     "name": "Aitor Paredes",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2000-04-29",
+     "fame": 22
+    },
+    {
+     "name": "Yeray Álvarez",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1995-01-24",
+     "fame": 30
+    },
+    {
+     "name": "Beñat Prados",
+     "position": "MEI",
+     "birthDate": "2001-02-08",
+     "fame": 17
+    },
+    {
+     "name": "Álex Berenguer",
+     "position": "ATA",
+     "birthDate": "1995-07-04",
+     "fame": 25
+    },
+    {
+     "name": "Oihan Sancet",
+     "position": "MEI",
+     "birthDate": "2000-04-25",
+     "fame": 29
+    },
+    {
+     "name": "Iñaki Williams",
+     "position": "ATA",
+     "birthDate": "1994-06-15",
+     "fame": 44
+    },
+    {
+     "name": "Nico Williams",
+     "position": "ATA",
+     "birthDate": "2002-07-12",
+     "fame": 58
+    },
+    {
+     "name": "Gorka Guruzeta",
+     "position": "ATA",
+     "birthDate": "1996-09-12",
+     "fame": 24
+    },
+    {
+     "name": "Jesús Areso",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1999-07-02",
+     "fame": 14
+    },
+    {
+     "name": "Álex Padilla",
+     "position": "GOL",
+     "birthDate": "2003-09-01",
+     "fame": 11
+    },
+    {
+     "name": "Aymeric Laporte",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1994-05-27",
+     "fame": 52
+    },
+    {
+     "name": "Hugo Rincón",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-01-27",
+     "fame": 11
+    },
+    {
+     "name": "Iñigo Ruiz de Galarreta",
+     "position": "MEI",
+     "birthDate": "1993-08-06",
+     "fame": 18
+    },
+    {
+     "name": "Yuri Berchiche",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1990-02-10",
+     "fame": 32
+    },
+    {
+     "name": "Mikel Jauregizar",
+     "position": "MEI",
+     "birthDate": "2003-11-13",
+     "fame": 17
+    },
+    {
+     "name": "Alejandro Rego",
+     "position": "MEI",
+     "birthDate": "2003-06-11",
+     "fame": 11
+    },
+    {
+     "name": "Maroan Sannadi",
+     "position": "ATA",
+     "birthDate": "2001-02-01",
+     "fame": 14
+    },
+    {
+     "name": "Nico Serrano",
+     "position": "ATA",
+     "birthDate": "2003-03-05",
+     "fame": 19
+    },
+    {
+     "name": "Robert Navarro",
+     "position": "ATA",
+     "birthDate": "2002-04-12",
+     "fame": 17
+    },
+    {
+     "name": "Beñat Gerenabarrena",
+     "position": "MEI",
+     "birthDate": "2003-03-29",
+     "fame": 5
+    },
+    {
+     "name": "Álvaro Djaló",
+     "position": "ATA",
+     "birthDate": "1999-08-16",
+     "fame": 16
+    },
+    {
+     "name": "Unai Egiluz",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2002-03-19",
+     "fame": 6
+    },
+    {
+     "name": "Peio Canales",
+     "position": "MEI",
+     "birthDate": "2005-01-17",
+     "fame": 10
+    },
+    {
+     "name": "Iker Monreal",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2005-07-03",
+     "fame": 3
+    },
+    {
+     "name": "Johaneko Louis-Jean",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2004-06-28",
+     "fame": 7
+    },
+    {
+     "name": "Christian Imga",
+     "position": "ATA",
+     "birthDate": "2009-02-17",
+     "fame": 5
+    },
+    {
+     "name": "Txus Vizcay",
+     "position": "ATA",
+     "birthDate": "2005-08-05",
+     "fame": 4
+    },
+    {
+     "name": "Aritz Conde",
+     "position": "ATA",
+     "fame": 0
+    },
+    {
+     "name": "Selton Sánchez",
+     "position": "MEI",
+     "birthDate": "2007-02-20",
+     "fame": 7
+    }
+   ]
+  },
+  "es-villarreal": {
+   "source": "https://en.wikipedia.org/wiki/Villarreal_CF",
+   "revision": 1387745409,
+   "manager": "Iñigo Pérez",
+   "players": [
+    {
+     "name": "Luiz Júnior",
+     "position": "GOL",
+     "birthDate": "2001-01-14",
+     "fame": 12
+    },
+    {
+     "name": "Logan Costa",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2001-04-01",
+     "fame": 28
+    },
+    {
+     "name": "Alex Freeman",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2004-08-09",
+     "fame": 29
+    },
+    {
+     "name": "Alassane Diatta",
+     "position": "MEI",
+     "birthDate": "2005-05-14",
+     "fame": 5
+    },
+    {
+     "name": "Pau Navarro",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2005-04-25",
+     "fame": 11
+    },
+    {
+     "name": "Gerard Moreno",
+     "position": "ATA",
+     "birthDate": "1992-04-07",
+     "fame": 44
+    },
+    {
+     "name": "Juan Foyth",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1998-01-12",
+     "fame": 42
+    },
+    {
+     "name": "Georges Mikautadze",
+     "position": "ATA",
+     "birthDate": "2000-10-31",
+     "fame": 43
+    },
+    {
+     "name": "Alberto Moleiro",
+     "position": "MEI",
+     "birthDate": "2003-09-30",
+     "fame": 17
+    },
+    {
+     "name": "Ilias Akhomach",
+     "position": "ATA",
+     "birthDate": "2004-04-16",
+     "fame": 27
+    },
+    {
+     "name": "Renato Veiga",
+     "position": "DEF",
+     "birthDate": "2003-07-29",
+     "fame": 36
+    },
+    {
+     "name": "Rubén Gómez",
+     "position": "GOL",
+     "birthDate": "2002-01-24",
+     "fame": 2
+    },
+    {
+     "name": "Santi Comesaña",
+     "position": "MEI",
+     "birthDate": "1996-10-05",
+     "fame": 20
+    },
+    {
+     "name": "Santiago Mouriño",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2002-02-13",
+     "fame": 13
+    },
+    {
+     "name": "Carlos Maciá",
+     "position": "MEI",
+     "birthDate": "2008-09-01",
+     "fame": 6
+    },
+    {
+     "name": "Tajon Buchanan",
+     "position": "MEI",
+     "birthDate": "1999-02-08",
+     "fame": 35
+    },
+    {
+     "name": "Pape Gueye",
+     "position": "MEI",
+     "birthDate": "1999-01-24",
+     "fame": 40
+    },
+    {
+     "name": "Nicolas Pépé",
+     "position": "ATA",
+     "birthDate": "1995-05-29",
+     "fame": 46
+    },
+    {
+     "name": "Carlos Romero",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2001-10-29",
+     "fame": 14
+    },
+    {
+     "name": "Tani Oluwaseyi",
+     "position": "ATA",
+     "birthDate": "2000-05-15",
+     "fame": 28
+    },
+    {
+     "name": "Ayoze Pérez",
+     "position": "ATA",
+     "birthDate": "1993-07-29",
+     "fame": 43
+    },
+    {
+     "name": "Sergi Cardona",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1999-01-01",
+     "fame": 13
+    },
+    {
+     "name": "Nathan Saliba",
+     "position": "MEI",
+     "birthDate": "2004-08-29",
+     "fame": 27
+    },
+    {
+     "name": "Péter Gulácsi",
+     "position": "GOL",
+     "birthDate": "1990-05-06",
+     "fame": 44
+    }
+   ]
+  },
+  "es-real-sociedad": {
+   "source": "https://en.wikipedia.org/wiki/Real_Sociedad",
+   "revision": 1383840546,
+   "manager": "Pellegrino Matarazzo",
+   "players": [
+    {
+     "name": "Álex Remiro",
+     "position": "GOL",
+     "birthDate": "1995-03-24",
+     "fame": 35
+    },
+    {
+     "name": "Jon Aramburu",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2002-07-23",
+     "fame": 20
+    },
+    {
+     "name": "Aihen Muñoz",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1997-08-16",
+     "fame": 18
+    },
+    {
+     "name": "Jon Gorrotxategi",
+     "position": "MEI",
+     "birthDate": "2002-09-02",
+     "fame": 14
+    },
+    {
+     "name": "Igor Zubeldia",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1997-03-30",
+     "fame": 29
+    },
+    {
+     "name": "Jon Martín",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2006-04-23",
+     "fame": 14
+    },
+    {
+     "name": "Ander Barrenetxea",
+     "position": "ATA",
+     "birthDate": "2001-12-27",
+     "fame": 27
+    },
+    {
+     "name": "Beñat Turrientes",
+     "position": "MEI",
+     "birthDate": "2002-01-31",
+     "fame": 24
+    },
+    {
+     "name": "Orri Óskarsson",
+     "position": "ATA",
+     "birthDate": "2004-08-29",
+     "fame": 26
+    },
+    {
+     "name": "Mikel Oyarzabal",
+     "position": "ATA",
+     "birthDate": "1997-04-21",
+     "fame": 56
+    },
+    {
+     "name": "Gonçalo Guedes",
+     "position": "ATA",
+     "birthDate": "1996-11-29",
+     "fame": 43
+    },
+    {
+     "name": "Job Ochieng",
+     "position": "ATA",
+     "birthDate": "2003-01-17",
+     "fame": 8
+    },
+    {
+     "name": "Unai Marrero",
+     "position": "GOL",
+     "birthDate": "2001-10-09",
+     "fame": 10
+    },
+    {
+     "name": "Takefusa Kubo",
+     "position": "MEI",
+     "birthDate": "2001-06-04",
+     "fame": 57
+    },
+    {
+     "name": "Pablo Marín",
+     "position": "MEI",
+     "birthDate": "2003-07-03",
+     "fame": 14
+    },
+    {
+     "name": "Jon Pacheco",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2001-01-08",
+     "fame": 23
+    },
+    {
+     "name": "Sergio Gómez",
+     "position": "MEI",
+     "birthDate": "2000-09-04",
+     "fame": 37
+    },
+    {
+     "name": "Carlos Soler",
+     "position": "MEI",
+     "birthDate": "1997-01-02",
+     "fame": 46
+    },
+    {
+     "name": "Mamadou Sarr",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2005-08-29",
+     "fame": 33
+    },
+    {
+     "name": "Álvaro Odriozola",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1995-12-14",
+     "fame": 52
+    },
+    {
+     "name": "Yangel Herrera",
+     "position": "MEI",
+     "birthDate": "1998-01-07",
+     "fame": 29
+    },
+    {
+     "name": "Héctor Fort",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2006-08-02",
+     "fame": 25
+    },
+    {
+     "name": "Arsen Zakharyan",
+     "position": "MEI",
+     "birthDate": "2003-05-26",
+     "fame": 29
+    },
+    {
+     "name": "Luka Sučić",
+     "position": "MEI",
+     "birthDate": "2002-09-08",
+     "fame": 37
+    }
+   ]
+  },
+  "es-betis": {
+   "source": "https://en.wikipedia.org/wiki/Real_Betis",
+   "revision": 1386711476,
+   "manager": "Manuel Pellegrini",
+   "players": [
+    {
+     "name": "Álvaro Valles",
+     "position": "GOL",
+     "birthDate": "1997-07-25",
+     "fame": 15
+    },
+    {
+     "name": "Héctor Bellerín",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1995-03-19",
+     "fame": 54
+    },
+    {
+     "name": "Diego Llorente",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1993-08-16",
+     "fame": 41
+    },
+    {
+     "name": "Natan",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2001-02-06",
+     "fame": 20
+    },
+    {
+     "name": "Marc Bartra",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1991-01-15",
+     "fame": 51
+    },
+    {
+     "name": "Facundo Bernal",
+     "position": "MEI",
+     "birthDate": "2003-08-21",
+     "fame": 10
+    },
+    {
+     "name": "Antony",
+     "position": "ATA",
+     "birthDate": "2000-02-24",
+     "fame": 47
+    },
+    {
+     "name": "Pablo Fornals",
+     "position": "MEI",
+     "birthDate": "1996-02-22",
+     "fame": 34
+    },
+    {
+     "name": "Cucho Hernández",
+     "position": "ATA",
+     "birthDate": "1999-04-22",
+     "fame": 34
+    },
+    {
+     "name": "Abde Ezzalzouli",
+     "position": "ATA",
+     "birthDate": "2001-12-17",
+     "fame": 35
+    },
+    {
+     "name": "Fran García",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1999-08-14",
+     "fame": 34
+    },
+    {
+     "name": "Ángel Ortiz",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2004-07-25",
+     "fame": 8
+    },
+    {
+     "name": "Diego Conde",
+     "position": "GOL",
+     "birthDate": "1998-10-28",
+     "fame": 11
+    },
+    {
+     "name": "Iker Losada",
+     "position": "ATA",
+     "birthDate": "2001-08-01",
+     "fame": 14
+    },
+    {
+     "name": "Álvaro Fidalgo",
+     "position": "MEI",
+     "birthDate": "1997-04-09",
+     "fame": 25
+    },
+    {
+     "name": "Valentín Gómez",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2003-06-26",
+     "fame": 14
+    },
+    {
+     "name": "Rodrigo Riquelme",
+     "position": "MEI",
+     "birthDate": "2000-04-02",
+     "fame": 26
+    },
+    {
+     "name": "Nelson Deossa",
+     "position": "MEI",
+     "birthDate": "2000-02-06",
+     "fame": 12
+    },
+    {
+     "name": "Troy Parrott",
+     "position": "ATA",
+     "birthDate": "2002-02-04",
+     "fame": 31
+    },
+    {
+     "name": "Giovanni Lo Celso",
+     "position": "MEI",
+     "birthDate": "1996-04-09",
+     "fame": 46
+    },
+    {
+     "name": "Marc Roca",
+     "position": "MEI",
+     "birthDate": "1996-11-26",
+     "fame": 29
+    },
+    {
+     "name": "Isco",
+     "position": "MEI",
+     "birthDate": "1992-04-21",
+     "fame": 64
+    },
+    {
+     "name": "Junior Firpo",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1996-08-22",
+     "fame": 32
+    },
+    {
+     "name": "Aitor Ruibal",
+     "position": "ATA",
+     "birthDate": "1996-03-22",
+     "fame": 14
+    },
+    {
+     "name": "Dani Ceballos",
+     "position": "MEI",
+     "birthDate": "1996-08-07",
+     "fame": 49
+    }
+   ]
+  },
+  "es-sevilla": {
+   "source": "https://en.wikipedia.org/wiki/Sevilla_FC",
+   "revision": 1385490242,
+   "manager": "Luis García Plaza",
+   "players": [
+    {
+     "name": "Odysseas Vlachodimos",
+     "position": "GOL",
+     "birthDate": "1994-04-26",
+     "fame": 28
+    },
+    {
+     "name": "Juan Iglesias",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1998-07-03",
+     "fame": 12
+    },
+    {
+     "name": "Julio Díaz",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2005-01-10",
+     "fame": 8
+    },
+    {
+     "name": "Kike Salas",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2002-04-23",
+     "fame": 17
+    },
+    {
+     "name": "Andrés Castrín",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2003-05-26",
+     "fame": 9
+    },
+    {
+     "name": "Lucien Agoumé",
+     "position": "MEI",
+     "birthDate": "2002-02-09",
+     "fame": 21
+    },
+    {
+     "name": "Alfon González",
+     "position": "ATA",
+     "birthDate": "1999-05-04",
+     "fame": 8
+    },
+    {
+     "name": "Giorgi Kochorashvili",
+     "position": "MEI",
+     "birthDate": "1999-06-29",
+     "fame": 25
+    },
+    {
+     "name": "Robbie Ure",
+     "position": "ATA",
+     "birthDate": "2004-02-24",
+     "fame": 11
+    },
+    {
+     "name": "Peque Fernández",
+     "position": "MEI",
+     "birthDate": "2002-10-04",
+     "fame": 12
+    },
+    {
+     "name": "Rubén Vargas",
+     "position": "ATA",
+     "birthDate": "1998-08-05",
+     "fame": 40
+    },
+    {
+     "name": "Arouna Sangante",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2002-04-12",
+     "fame": 15
+    },
+    {
+     "name": "Fran González",
+     "position": "GOL",
+     "birthDate": "2005-06-24",
+     "fame": 18
+    },
+    {
+     "name": "Manu Bueno",
+     "position": "MEI",
+     "birthDate": "2004-07-27",
+     "fame": 8
+    },
+    {
+     "name": "Fábio Cardoso",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1994-04-19",
+     "fame": 14
+    },
+    {
+     "name": "Isaac Romero",
+     "position": "ATA",
+     "birthDate": "2000-05-18",
+     "fame": 16
+    },
+    {
+     "name": "Gabriel Suazo",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1997-08-09",
+     "fame": 23
+    },
+    {
+     "name": "Jon Guridi",
+     "position": "MEI",
+     "birthDate": "1995-02-28",
+     "fame": 16
+    },
+    {
+     "name": "Lucas Stassin",
+     "position": "ATA",
+     "birthDate": "2004-11-29",
+     "fame": 11
+    },
+    {
+     "name": "Félix Correia",
+     "position": "ATA",
+     "birthDate": "2001-01-22",
+     "fame": 13
+    },
+    {
+     "name": "Chidera Ejuke",
+     "position": "ATA",
+     "birthDate": "1998-01-02",
+     "fame": 22
+    },
+    {
+     "name": "José Ángel Carmona",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2002-01-29",
+     "fame": 15
+    },
+    {
+     "name": "Marcão",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1996-06-05",
+     "fame": 21
+    },
+    {
+     "name": "Youssouf Fofana",
+     "position": "MEI",
+     "birthDate": "1999-01-10",
+     "fame": 39
+    },
+    {
+     "name": "Miguel Sierra",
+     "position": "ATA",
+     "birthDate": "2004-07-14",
+     "fame": 4
+    },
+    {
+     "name": "Rafa Romero",
+     "position": "GOL",
+     "fame": 0
+    }
+   ]
+  },
+  "es-valencia": {
+   "source": "https://en.wikipedia.org/wiki/Valencia_CF",
+   "revision": 1386917540,
+   "manager": "Javier Aguirre",
+   "players": [
+    {
+     "name": "Stole Dimitrievski",
+     "position": "GOL",
+     "birthDate": "1993-12-25",
+     "fame": 28
+    },
+    {
+     "name": "Guido Rodríguez",
+     "position": "MEI",
+     "birthDate": "1994-04-12",
+     "fame": 39
+    },
+    {
+     "name": "José Copete",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-10-10",
+     "fame": 9
+    },
+    {
+     "name": "Mouctar Diakhaby",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1996-12-19",
+     "fame": 30
+    },
+    {
+     "name": "César Tárrega",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2002-02-26",
+     "fame": 14
+    },
+    {
+     "name": "Umar Sadiq",
+     "position": "ATA",
+     "birthDate": "1997-02-02",
+     "fame": 34
+    },
+    {
+     "name": "Arnaut Danjuma",
+     "position": "ATA",
+     "birthDate": "1997-01-31",
+     "fame": 34
+    },
+    {
+     "name": "Javi Guerra",
+     "position": "MEI",
+     "birthDate": "2003-05-13",
+     "fame": 16
+    },
+    {
+     "name": "Hugo Duro",
+     "position": "ATA",
+     "birthDate": "1999-11-10",
+     "fame": 18
+    },
+    {
+     "name": "Harvey Elliott",
+     "position": "ATA",
+     "birthDate": "2003-04-04",
+     "fame": 42
+    },
+    {
+     "name": "Luis Rioja",
+     "position": "ATA",
+     "birthDate": "1993-10-16",
+     "fame": 14
+    },
+    {
+     "name": "Justin de Haas",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2000-02-01",
+     "fame": 10
+    },
+    {
+     "name": "Cristian Rivero",
+     "position": "GOL",
+     "birthDate": "1998-03-21",
+     "fame": 6
+    },
+    {
+     "name": "José Gayà",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1995-05-25",
+     "fame": 46
+    },
+    {
+     "name": "Aliou Dieng",
+     "position": "MEI",
+     "birthDate": "1997-10-16",
+     "fame": 16
+    },
+    {
+     "name": "Diego López",
+     "position": "ATA",
+     "birthDate": "2002-05-13",
+     "fame": 22
+    },
+    {
+     "name": "Pepelu",
+     "position": "MEI",
+     "birthDate": "1998-08-11",
+     "fame": 16
+    },
+    {
+     "name": "Dani Raba",
+     "position": "ATA",
+     "birthDate": "1995-10-29",
+     "fame": 16
+    },
+    {
+     "name": "Dimitri Foulquier",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1993-03-23",
+     "fame": 23
+    },
+    {
+     "name": "Jesús Vázquez",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-01-02",
+     "fame": 13
+    },
+    {
+     "name": "Arnau Martínez",
+     "position": "DEF",
+     "birthDate": "2003-04-25",
+     "fame": 16
+    },
+    {
+     "name": "Filip Ugrinić",
+     "position": "MEI",
+     "birthDate": "1999-01-05",
+     "fame": 17
+    },
+    {
+     "name": "Pablo Maffeo",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1997-07-12",
+     "fame": 28
+    },
+    {
+     "name": "Kayne van Oevelen",
+     "position": "GOL",
+     "birthDate": "2003-08-07",
+     "fame": 8
+    },
+    {
+     "name": "Ryūnosuke Satō",
+     "position": "MEI",
+     "birthDate": "2006-10-16",
+     "fame": 20
+    },
+    {
+     "name": "Sergi Canós",
+     "position": "ATA",
+     "birthDate": "1997-02-02",
+     "fame": 23
+    }
+   ]
+  },
+  "es-celta": {
+   "source": "https://en.wikipedia.org/wiki/RC_Celta_de_Vigo",
+   "revision": 1386990163,
+   "manager": "Claudio Giráldez",
+   "players": [
+    {
+     "name": "Altay Bayındır",
+     "position": "GOL",
+     "birthDate": "1998-04-14",
+     "fame": 41
+    },
+    {
+     "name": "Carl Starfelt",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1995-06-01",
+     "fame": 31
+    },
+    {
+     "name": "Marcos Alonso",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1990-12-28",
+     "fame": 49
+    },
+    {
+     "name": "Abdoulaye Faye",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2004-09-22",
+     "fame": 9
+    },
+    {
+     "name": "Sergio Carreira",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2000-10-13",
+     "fame": 13
+    },
+    {
+     "name": "Ilaix Moriba",
+     "position": "MEI",
+     "birthDate": "2003-01-19",
+     "fame": 33
+    },
+    {
+     "name": "Borja Iglesias",
+     "position": "ATA",
+     "birthDate": "1993-01-17",
+     "fame": 41
+    },
+    {
+     "name": "Miguel Román",
+     "position": "MEI",
+     "birthDate": "2002-12-26",
+     "fame": 6
+    },
+    {
+     "name": "Ferran Jutglà",
+     "position": "ATA",
+     "birthDate": "1999-02-01",
+     "fame": 20
+    },
+    {
+     "name": "Iago Aspas",
+     "position": "ATA",
+     "birthDate": "1987-08-01",
+     "fame": 53
+    },
+    {
+     "name": "Pablo Durán",
+     "position": "ATA",
+     "birthDate": "2001-05-25",
+     "fame": 12
+    },
+    {
+     "name": "Ionuț Radu",
+     "position": "GOL",
+     "birthDate": "1997-05-28",
+     "fame": 20
+    },
+    {
+     "name": "Aleix Febas",
+     "position": "MEI",
+     "birthDate": "1996-02-02",
+     "fame": 16
+    },
+    {
+     "name": "Álvaro Núñez",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2000-07-07",
+     "fame": 9
+    },
+    {
+     "name": "Hugo González",
+     "position": "ATA",
+     "birthDate": "2003-02-07",
+     "fame": 7
+    },
+    {
+     "name": "Javi Rueda",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2002-05-08",
+     "fame": 7
+    },
+    {
+     "name": "Yoel Lago",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2004-03-25",
+     "fame": 6
+    },
+    {
+     "name": "Williot Swedberg",
+     "position": "ATA",
+     "birthDate": "2004-02-01",
+     "fame": 20
+    },
+    {
+     "name": "Javi Rodríguez",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-06-26",
+     "fame": 9
+    },
+    {
+     "name": "Sebastián Cáceres",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-08-18",
+     "fame": 25
+    },
+    {
+     "name": "Javi Galán",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1994-11-19",
+     "fame": 23
+    },
+    {
+     "name": "Hugo Álvarez",
+     "position": "ATA",
+     "birthDate": "2003-07-02",
+     "fame": 10
+    },
+    {
+     "name": "Couhaib Driouech",
+     "position": "ATA",
+     "birthDate": "2002-04-17",
+     "fame": 14
+    },
+    {
+     "name": "Iván Villar",
+     "position": "GOL",
+     "birthDate": "1997-07-09",
+     "fame": 22
+    },
+    {
+     "name": "Jones El-Abdellaoui",
+     "position": "ATA",
+     "birthDate": "2006-01-12",
+     "fame": 10
+    }
+   ]
+  },
+  "es-osasuna": {
+   "source": "https://en.wikipedia.org/wiki/CA_Osasuna",
+   "revision": 1386006428,
+   "manager": "Jagoba Arrasate",
+   "players": [
+    {
+     "name": "Sergio Herrera",
+     "position": "GOL",
+     "birthDate": "1993-06-05",
+     "fame": 16
+    },
+    {
+     "name": "Jorge Herrando",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2001-02-28",
+     "fame": 12
+    },
+    {
+     "name": "Lucas Torró",
+     "position": "MEI",
+     "birthDate": "1994-07-19",
+     "fame": 19
+    },
+    {
+     "name": "Jon Moncayola",
+     "position": "MEI",
+     "birthDate": "1998-05-13",
+     "fame": 21
+    },
+    {
+     "name": "Iker Muñoz",
+     "position": "MEI",
+     "birthDate": "2002-11-05",
+     "fame": 11
+    },
+    {
+     "name": "Raúl García",
+     "position": "ATA",
+     "birthDate": "2000-11-03",
+     "fame": 10
+    },
+    {
+     "name": "Aimar Oroz",
+     "position": "MEI",
+     "birthDate": "2001-11-27",
+     "fame": 27
+    },
+    {
+     "name": "Kike Barja",
+     "position": "ATA",
+     "birthDate": "1997-04-01",
+     "fame": 20
+    },
+    {
+     "name": "Aitor Fernández",
+     "position": "GOL",
+     "birthDate": "1991-05-03",
+     "fame": 17
+    },
+    {
+     "name": "Rubén García",
+     "position": "MEI",
+     "birthDate": "1993-07-14",
+     "fame": 22
+    },
+    {
+     "name": "Diego Rico",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1993-02-23",
+     "fame": 24
+    },
+    {
+     "name": "Moi Gómez",
+     "position": "MEI",
+     "birthDate": "1994-06-23",
+     "fame": 26
+    },
+    {
+     "name": "Ante Budimir",
+     "position": "ATA",
+     "birthDate": "1991-07-22",
+     "fame": 44
+    },
+    {
+     "name": "Raúl Moro",
+     "position": "ATA",
+     "birthDate": "2002-12-05",
+     "fame": 12
+    },
+    {
+     "name": "Valentin Rosier",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1996-08-19",
+     "fame": 15
+    },
+    {
+     "name": "Romain Del Castillo",
+     "position": "ATA",
+     "birthDate": "1996-03-29",
+     "fame": 17
+    },
+    {
+     "name": "Jonathan Dubasin",
+     "position": "MEI",
+     "birthDate": "2000-02-02",
+     "fame": 6
+    },
+    {
+     "name": "Enzo Boyomo",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2001-10-07",
+     "fame": 14
+    },
+    {
+     "name": "Abel Bretones",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2000-08-21",
+     "fame": 10
+    },
+    {
+     "name": "Alejandro Catena",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1994-01-01",
+     "fame": 15
+    },
+    {
+     "name": "Mauro Echegoyen",
+     "position": "MEI",
+     "birthDate": "2005-03-03",
+     "fame": 3
+    },
+    {
+     "name": "Iñigo Arguibide",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2005-02-19",
+     "fame": 5
+    },
+    {
+     "name": "Asier Osambela",
+     "position": "MEI",
+     "birthDate": "2004-10-30",
+     "fame": 7
+    },
+    {
+     "name": "Rockson Yeboah",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2004-08-02",
+     "fame": 4
+    }
+   ]
+  },
+  "es-rayo": {
+   "source": "https://en.wikipedia.org/wiki/Rayo_Vallecano",
+   "revision": 1385794120,
+   "manager": "Beñat San José",
+   "players": [
+    {
+     "name": "Dani Cárdenas",
+     "position": "GOL",
+     "birthDate": "1997-03-28",
+     "fame": 9
+    },
+    {
+     "name": "Andrei Rațiu",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1998-06-20",
+     "fame": 28
+    },
+    {
+     "name": "Marash Kumbulla",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2000-02-08",
+     "fame": 31
+    },
+    {
+     "name": "Pedro Díaz",
+     "position": "MEI",
+     "birthDate": "1998-06-05",
+     "fame": 13
+    },
+    {
+     "name": "Luiz Felipe",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1997-03-22",
+     "fame": 25
+    },
+    {
+     "name": "Pathé Ciss",
+     "position": "MEI",
+     "birthDate": "1994-03-16",
+     "fame": 30
+    },
+    {
+     "name": "Isi Palazón",
+     "position": "ATA",
+     "birthDate": "1994-12-27",
+     "fame": 18
+    },
+    {
+     "name": "Unai López",
+     "position": "MEI",
+     "birthDate": "1995-10-30",
+     "fame": 23
+    },
+    {
+     "name": "Alemão",
+     "position": "ATA",
+     "birthDate": "1998-04-01",
+     "fame": 20
+    },
+    {
+     "name": "Sergio Camello",
+     "position": "ATA",
+     "birthDate": "2001-02-10",
+     "fame": 29
+    },
+    {
+     "name": "Randy Nteka",
+     "position": "ATA",
+     "birthDate": "1997-00-00",
+     "fame": 13
+    },
+    {
+     "name": "Augusto Batalla",
+     "position": "GOL",
+     "birthDate": "1996-04-30",
+     "fame": 20
+    },
+    {
+     "name": "Giorgi Tsitaishvili",
+     "position": "MEI",
+     "birthDate": "2000-11-18",
+     "fame": 23
+    },
+    {
+     "name": "Mujaid Sadick",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2000-03-14",
+     "fame": 14
+    },
+    {
+     "name": "Adrià Pedrosa",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1998-05-13",
+     "fame": 23
+    },
+    {
+     "name": "Álvaro García",
+     "position": "MEI",
+     "birthDate": "1992-10-27",
+     "fame": 16
+    },
+    {
+     "name": "Jorge de Frutos",
+     "position": "ATA",
+     "birthDate": "1997-02-20",
+     "fame": 18
+    },
+    {
+     "name": "Iván Balliu",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1992-01-01",
+     "fame": 28
+    },
+    {
+     "name": "Fran Pérez",
+     "position": "ATA",
+     "birthDate": "2002-09-09",
+     "fame": 11
+    },
+    {
+     "name": "Pelayo Fernández",
+     "position": "DEF",
+     "birthDate": "2003-04-29",
+     "fame": 4
+    },
+    {
+     "name": "Óscar Valentín",
+     "position": "MEI",
+     "birthDate": "1994-08-20",
+     "fame": 12
+    },
+    {
+     "name": "Florian Lejeune",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1991-05-20",
+     "fame": 21
+    },
+    {
+     "name": "Emil Audero",
+     "position": "GOL",
+     "birthDate": "1997-01-18",
+     "fame": 32
+    },
+    {
+     "name": "Jozhua Vertrouwd",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2004-08-21",
+     "fame": 10
+    },
+    {
+     "name": "Gnangoro Bouare",
+     "position": "MEI",
+     "birthDate": "2004-06-13",
+     "fame": 2
+    },
+    {
+     "name": "Rayane Belaid",
+     "position": "MEI",
+     "birthDate": "2005-02-11",
+     "fame": 9
+    }
+   ]
+  },
+  "es-getafe": {
+   "source": "https://en.wikipedia.org/wiki/Getafe_CF",
+   "revision": 1386953550,
+   "manager": "José Bordalás",
+   "players": [
+    {
+     "name": "Jiří Letáček",
+     "position": "GOL",
+     "birthDate": "1999-01-09",
+     "fame": 12
+    },
+    {
+     "name": "Dakonam Djené",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1991-12-31",
+     "fame": 20
+    },
+    {
+     "name": "Davinchi",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2007-10-16",
+     "fame": 11
+    },
+    {
+     "name": "Saba Sazonov",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2002-02-01",
+     "fame": 16
+    },
+    {
+     "name": "Abdel Abqar",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-03-10",
+     "fame": 20
+    },
+    {
+     "name": "Mario Martín",
+     "position": "MEI",
+     "birthDate": "2004-03-05",
+     "fame": 20
+    },
+    {
+     "name": "Juanmi",
+     "position": "ATA",
+     "birthDate": "1993-05-20",
+     "fame": 32
+    },
+    {
+     "name": "Nemanja Gudelj",
+     "position": "MEI",
+     "birthDate": "1991-11-16",
+     "fame": 35
+    },
+    {
+     "name": "Borja Mayoral",
+     "position": "ATA",
+     "birthDate": "1997-04-05",
+     "fame": 37
+    },
+    {
+     "name": "Martín Satriano",
+     "position": "ATA",
+     "birthDate": "2001-02-20",
+     "fame": 15
+    },
+    {
+     "name": "Ramon Terrats",
+     "position": "MEI",
+     "birthDate": "2000-10-18",
+     "fame": 16
+    },
+    {
+     "name": "David Soria",
+     "position": "GOL",
+     "birthDate": "1993-04-04",
+     "fame": 25
+    },
+    {
+     "name": "Dani Carvajal",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1992-01-11",
+     "fame": 67
+    },
+    {
+     "name": "Sebastián Boselli",
+     "position": "DEF",
+     "birthDate": "2003-12-04",
+     "fame": 11
+    },
+    {
+     "name": "Francho Serrano",
+     "position": "MEI",
+     "birthDate": "2001-10-17",
+     "fame": 10
+    },
+    {
+     "name": "Kiko Femenía",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1991-02-02",
+     "fame": 29
+    },
+    {
+     "name": "Christantus Uche",
+     "position": "MEI",
+     "birthDate": "2003-05-19",
+     "fame": 17
+    },
+    {
+     "name": "Enes Ünal",
+     "position": "ATA",
+     "birthDate": "1997-05-10",
+     "fame": 32
+    },
+    {
+     "name": "Iván Azón",
+     "position": "ATA",
+     "birthDate": "2002-12-24",
+     "fame": 11
+    },
+    {
+     "name": "Andrés García",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-02-07",
+     "fame": 14
+    },
+    {
+     "name": "Johan Mojica",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1992-08-21",
+     "fame": 31
+    },
+    {
+     "name": "Orel Mangala",
+     "position": "MEI",
+     "birthDate": "1998-03-18",
+     "fame": 29
+    },
+    {
+     "name": "Zaid Romero",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-12-15",
+     "fame": 11
+    },
+    {
+     "name": "Jean Ives Valou",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2005-12-22",
+     "fame": 2
+    }
+   ]
+  },
+  "es-espanyol": {
+   "source": "https://en.wikipedia.org/wiki/RCD_Espanyol",
+   "revision": 1387466404,
+   "manager": "Eder Sarabia",
+   "players": [
+    {
+     "name": "Ángel Fortuño",
+     "position": "GOL",
+     "birthDate": "2001-10-05",
+     "fame": 5
+    },
+    {
+     "name": "Andoni Gorosabel",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1996-08-04",
+     "fame": 17
+    },
+    {
+     "name": "Quilindschy Hartman",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2001-11-14",
+     "fame": 19
+    },
+    {
+     "name": "Urko González de Zárate",
+     "position": "MEI",
+     "birthDate": "2001-03-20",
+     "fame": 10
+    },
+    {
+     "name": "Clemens Riedel",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2003-07-19",
+     "fame": 9
+    },
+    {
+     "name": "Leandro Cabrera",
+     "position": "DEF",
+     "birthDate": "1991-06-17",
+     "fame": 21
+    },
+    {
+     "name": "Javi Puado",
+     "position": "ATA",
+     "birthDate": "1998-05-25",
+     "fame": 27
+    },
+    {
+     "name": "Edu Expósito",
+     "position": "MEI",
+     "birthDate": "1996-08-01",
+     "fame": 18
+    },
+    {
+     "name": "Roberto Fernández",
+     "position": "ATA",
+     "birthDate": "2002-07-03",
+     "fame": 17
+    },
+    {
+     "name": "Pol Lozano",
+     "position": "MEI",
+     "birthDate": "1999-10-06",
+     "fame": 18
+    },
+    {
+     "name": "Pere Milla",
+     "position": "ATA",
+     "birthDate": "1992-09-23",
+     "fame": 17
+    },
+    {
+     "name": "Marko Dmitrović",
+     "position": "GOL",
+     "birthDate": "1992-01-24",
+     "fame": 38
+    },
+    {
+     "name": "Unai Nuñez",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1997-01-30",
+     "fame": 26
+    },
+    {
+     "name": "Bryan Zaragoza",
+     "position": "ATA",
+     "birthDate": "2001-09-09",
+     "fame": 24
+    },
+    {
+     "name": "Vanja Drkušić",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-10-30",
+     "fame": 20
+    },
+    {
+     "name": "Jofre Carreras",
+     "position": "ATA",
+     "birthDate": "2001-06-17",
+     "fame": 10
+    },
+    {
+     "name": "Marcos Fernández",
+     "position": "ATA",
+     "birthDate": "2003-05-17",
+     "fame": 5
+    },
+    {
+     "name": "Kike García",
+     "position": "ATA",
+     "birthDate": "1989-11-25",
+     "fame": 25
+    },
+    {
+     "name": "Gabriel Moscardo",
+     "position": "MEI",
+     "birthDate": "2005-09-28",
+     "fame": 20
+    },
+    {
+     "name": "Roger Hinojo",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2005-02-21",
+     "fame": 4
+    },
+    {
+     "name": "Álex Calatrava",
+     "position": "MEI",
+     "birthDate": "2000-06-22",
+     "fame": 6
+    },
+    {
+     "name": "Omar El Hilali",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-09-03",
+     "fame": 17
+    },
+    {
+     "name": "Tyrhys Dolan",
+     "position": "ATA",
+     "birthDate": "2001-12-28",
+     "fame": 13
+    },
+    {
+     "name": "Rafel Bauzà",
+     "position": "MEI",
+     "birthDate": "2005-01-30",
+     "fame": 5
+    },
+    {
+     "name": "Javi Hernández",
+     "position": "ATA",
+     "birthDate": "2004-01-30",
+     "fame": 5
+    }
+   ]
+  },
+  "es-alaves": {
+   "source": "https://en.wikipedia.org/wiki/Deportivo_Alav%C3%A9s",
+   "revision": 1383820000,
+   "manager": "Quique Sánchez Flores",
+   "players": [
+    {
+     "name": "Antonio Sivera",
+     "position": "GOL",
+     "birthDate": "1996-08-11",
+     "fame": 19
+    },
+    {
+     "name": "Nicolás Valentini",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2001-04-06",
+     "fame": 15
+    },
+    {
+     "name": "Youssef Enríquez",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2005-10-07",
+     "fame": 14
+    },
+    {
+     "name": "Denis Suárez",
+     "position": "MEI",
+     "birthDate": "1994-01-06",
+     "fame": 48
+    },
+    {
+     "name": "Facundo Garcés",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-09-05",
+     "fame": 11
+    },
+    {
+     "name": "Ander Guevara",
+     "position": "MEI",
+     "birthDate": "1997-07-07",
+     "fame": 21
+    },
+    {
+     "name": "Ángel Pérez",
+     "position": "MEI",
+     "birthDate": "2002-08-29",
+     "fame": 6
+    },
+    {
+     "name": "Antonio Blanco",
+     "position": "MEI",
+     "birthDate": "2000-07-23",
+     "fame": 20
+    },
+    {
+     "name": "Mariano Díaz",
+     "position": "ATA",
+     "birthDate": "1993-08-01",
+     "fame": 43
+    },
+    {
+     "name": "Carles Aleñá",
+     "position": "MEI",
+     "birthDate": "1998-01-05",
+     "fame": 40
+    },
+    {
+     "name": "Toni Martínez",
+     "position": "ATA",
+     "birthDate": "1997-06-30",
+     "fame": 21
+    },
+    {
+     "name": "Hugo Novoa",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-01-24",
+     "fame": 17
+    },
+    {
+     "name": "Adrián Rodríguez",
+     "position": "GOL",
+     "birthDate": "2000-12-12",
+     "fame": 2
+    },
+    {
+     "name": "Nahuel Tenaglia",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1996-02-21",
+     "fame": 14
+    },
+    {
+     "name": "Lucas Boyé",
+     "position": "ATA",
+     "birthDate": "1996-02-28",
+     "fame": 28
+    },
+    {
+     "name": "Ville Koski",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2002-01-27",
+     "fame": 9
+    },
+    {
+     "name": "Jonny Otto",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1994-03-03",
+     "fame": 34
+    },
+    {
+     "name": "Mikel Rodríguez",
+     "position": "MEI",
+     "birthDate": "2002-04-03",
+     "fame": 5
+    },
+    {
+     "name": "Pablo Ibáñez",
+     "position": "MEI",
+     "birthDate": "1998-09-20",
+     "fame": 10
+    },
+    {
+     "name": "Aitor Mañas",
+     "position": "ATA",
+     "birthDate": "2003-01-05",
+     "fame": 2
+    },
+    {
+     "name": "Abde Rebbach",
+     "position": "MEI",
+     "birthDate": "1998-08-11",
+     "fame": 12
+    },
+    {
+     "name": "Miguel Rodríguez",
+     "position": "MEI",
+     "birthDate": "2003-04-29",
+     "fame": 14
+    },
+    {
+     "name": "Carlos Protesoni",
+     "position": "MEI",
+     "birthDate": "1998-03-30",
+     "fame": 14
+    },
+    {
+     "name": "Selu Diallo",
+     "position": "MEI",
+     "birthDate": "2003-10-01",
+     "fame": 4
+    },
+    {
+     "name": "Xanet Olaiz",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2005-07-18",
+     "fame": 2
+    },
+    {
+     "name": "Izei Hernández",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Grégoire Świderski",
+     "position": "GOL",
+     "birthDate": "2005-01-01",
+     "fame": 4
+    }
+   ]
+  },
+  "es-deportivo": {
+   "source": "https://en.wikipedia.org/wiki/Deportivo_de_A_Coru%C3%B1a",
+   "revision": 1384588682,
+   "manager": "Antonio Hidalgo",
+   "players": [
+    {
+     "name": "Germán Parreño",
+     "position": "GOL",
+     "birthDate": "1993-02-16",
+     "fame": 13
+    },
+    {
+     "name": "Adrià Altimira",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2001-03-28",
+     "fame": 10
+    },
+    {
+     "name": "Arnau Comas",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2000-04-11",
+     "fame": 11
+    },
+    {
+     "name": "Lucas Noubi",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2005-01-15",
+     "fame": 9
+    },
+    {
+     "name": "Dani Barcia",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2003-01-19",
+     "fame": 5
+    },
+    {
+     "name": "Marc Casadó",
+     "position": "MEI",
+     "birthDate": "2003-09-14",
+     "fame": 35
+    },
+    {
+     "name": "Pierre-Emerick Aubameyang",
+     "position": "ATA",
+     "birthDate": "1989-06-18",
+     "fame": 71
+    },
+    {
+     "name": "Diego Villares",
+     "position": "MEI",
+     "birthDate": "1996-06-17",
+     "fame": 6
+    },
+    {
+     "name": "Zakaria Eddahchouri",
+     "position": "ATA",
+     "birthDate": "2000-05-11",
+     "fame": 9
+    },
+    {
+     "name": "Yeremay Hernández",
+     "position": "ATA",
+     "birthDate": "2002-12-10",
+     "fame": 8
+    },
+    {
+     "name": "David Mella",
+     "position": "ATA",
+     "birthDate": "2005-05-23",
+     "fame": 8
+    },
+    {
+     "name": "Giacomo Quagliata",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2000-02-19",
+     "fame": 11
+    },
+    {
+     "name": "Leo Román",
+     "position": "GOL",
+     "birthDate": "2000-07-06",
+     "fame": 14
+    },
+    {
+     "name": "Riki Rodríguez",
+     "position": "MEI",
+     "birthDate": "1997-09-25",
+     "fame": 8
+    },
+    {
+     "name": "Miguel Loureiro",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1996-11-21",
+     "fame": 7
+    },
+    {
+     "name": "Lorenzo Amatucci",
+     "position": "MEI",
+     "birthDate": "2004-02-05",
+     "fame": 9
+    },
+    {
+     "name": "Angeliño",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1997-01-04",
+     "fame": 38
+    },
+    {
+     "name": "Jonathan Asp Jensen",
+     "position": "MEI",
+     "birthDate": "2006-01-14",
+     "fame": 11
+    },
+    {
+     "name": "Luismi Cruz",
+     "position": "ATA",
+     "birthDate": "2001-05-23",
+     "fame": 7
+    },
+    {
+     "name": "José María Giménez",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1995-01-20",
+     "fame": 51
+    },
+    {
+     "name": "Mario Soriano",
+     "position": "MEI",
+     "birthDate": "2002-04-22",
+     "fame": 9
+    },
+    {
+     "name": "Bright Ede",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2007-02-18",
+     "fame": 6
+    },
+    {
+     "name": "Ximo Navarro",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1990-01-23",
+     "fame": 19
+    },
+    {
+     "name": "Adama Traoré",
+     "position": "ATA",
+     "birthDate": "1996-01-25",
+     "fame": 48
+    },
+    {
+     "name": "Álvaro Fernández",
+     "position": "GOL",
+     "birthDate": "1998-04-13",
+     "fame": 27
+    },
+    {
+     "name": "Bil Nsongo",
+     "position": "ATA",
+     "birthDate": "2004-09-21",
+     "fame": 6
+    }
+   ]
+  },
+  "es-elche": {
+   "source": "https://en.wikipedia.org/wiki/Elche_CF",
+   "revision": 1387797549,
+   "manager": "Martín Anselmi",
+   "players": [
+    {
+     "name": "Matías Dituro",
+     "position": "GOL",
+     "birthDate": "1987-05-08",
+     "fame": 13
+    },
+    {
+     "name": "Buba Sangaré",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2007-08-06",
+     "fame": 10
+    },
+    {
+     "name": "Roy Revivo",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-05-22",
+     "fame": 11
+    },
+    {
+     "name": "Bambo Diaby",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1997-12-17",
+     "fame": 10
+    },
+    {
+     "name": "Federico Redondo",
+     "position": "MEI",
+     "birthDate": "2003-01-18",
+     "fame": 20
+    },
+    {
+     "name": "Pedro Bigas",
+     "position": "DEF",
+     "birthDate": "1990-05-15",
+     "fame": 21
+    },
+    {
+     "name": "Yago Santiago",
+     "position": "MEI",
+     "birthDate": "2003-04-15",
+     "fame": 9
+    },
+    {
+     "name": "Marc Aguado",
+     "position": "MEI",
+     "birthDate": "2000-02-22",
+     "fame": 8
+    },
+    {
+     "name": "Ezequiel Ponce",
+     "position": "ATA",
+     "birthDate": "1997-03-29",
+     "fame": 25
+    },
+    {
+     "name": "Facundo Buonanotte",
+     "position": "MEI",
+     "birthDate": "2004-12-23",
+     "fame": 22
+    },
+    {
+     "name": "Germán Valera",
+     "position": "MEI",
+     "birthDate": "2002-03-16",
+     "fame": 14
+    },
+    {
+     "name": "Gonzalo Villar",
+     "position": "MEI",
+     "birthDate": "1998-03-23",
+     "fame": 20
+    },
+    {
+     "name": "Alejandro Iturbe",
+     "position": "GOL",
+     "birthDate": "2003-09-02",
+     "fame": 18
+    },
+    {
+     "name": "Fer Niño",
+     "position": "ATA",
+     "birthDate": "2000-10-24",
+     "fame": 15
+    },
+    {
+     "name": "Kevin Lomónaco",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2002-01-08",
+     "fame": 8
+    },
+    {
+     "name": "Martim Neto",
+     "position": "MEI",
+     "birthDate": "2003-01-14",
+     "fame": 11
+    },
+    {
+     "name": "Josan",
+     "position": "MEI",
+     "birthDate": "1989-12-03",
+     "fame": 12
+    },
+    {
+     "name": "Thomas Lemar",
+     "position": "MEI",
+     "birthDate": "1995-11-12",
+     "fame": 50
+    },
+    {
+     "name": "Grady Diangana",
+     "position": "MEI",
+     "birthDate": "1998-04-19",
+     "fame": 22
+    },
+    {
+     "name": "Tete Morente",
+     "position": "ATA",
+     "birthDate": "1996-12-02",
+     "fame": 13
+    },
+    {
+     "name": "Lucas Cepeda",
+     "position": "ATA",
+     "birthDate": "2002-10-31",
+     "fame": 9
+    },
+    {
+     "name": "Rubén Sánchez",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2001-01-09",
+     "fame": 9
+    },
+    {
+     "name": "Víctor Chust",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2000-03-05",
+     "fame": 17
+    },
+    {
+     "name": "Abiel Osorio",
+     "position": "ATA",
+     "birthDate": "2002-06-13",
+     "fame": 5
+    },
+    {
+     "name": "Matía Barzić",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2004-01-01",
+     "fame": 3
+    },
+    {
+     "name": "Ali Houary",
+     "position": "MEI",
+     "birthDate": "2005-10-13",
+     "fame": 8
+    },
+    {
+     "name": "Adam Boayar",
+     "position": "MEI",
+     "birthDate": "2005-10-13",
+     "fame": 9
+    },
+    {
+     "name": "Javi Morcillo",
+     "position": "MEI",
+     "birthDate": "2006-03-15",
+     "fame": 5
+    }
+   ]
+  },
+  "es-malaga": {
+   "source": "https://en.wikipedia.org/wiki/M%C3%A1laga_CF",
+   "revision": 1386964986,
+   "manager": "Juan Francisco Funes",
+   "players": [
+    {
+     "name": "Alfonso Herrero",
+     "position": "GOL",
+     "birthDate": "1994-04-21",
+     "fame": 8
+    },
+    {
+     "name": "Jens Cajuste",
+     "position": "MEI",
+     "birthDate": "1999-08-10",
+     "fame": 27
+    },
+    {
+     "name": "Carlos Puga",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2000-11-26",
+     "fame": 3
+    },
+    {
+     "name": "Einar Galilea",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1994-05-22",
+     "fame": 12
+    },
+    {
+     "name": "Álex Pastor",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-10-01",
+     "fame": 7
+    },
+    {
+     "name": "Ramón",
+     "position": "MEI",
+     "birthDate": "2001-04-19",
+     "fame": 10
+    },
+    {
+     "name": "Haitam",
+     "position": "MEI",
+     "birthDate": "2002-06-01",
+     "fame": 8
+    },
+    {
+     "name": "Carlos Dotor",
+     "position": "MEI",
+     "birthDate": "2001-03-15",
+     "fame": 9
+    },
+    {
+     "name": "Chupete",
+     "position": "ATA",
+     "birthDate": "2004-08-24",
+     "fame": 7
+    },
+    {
+     "name": "David Larrubia",
+     "position": "MEI",
+     "birthDate": "2002-04-20",
+     "fame": 7
+    },
+    {
+     "name": "Joaquín Muñoz",
+     "position": "MEI",
+     "birthDate": "1999-03-10",
+     "fame": 7
+    },
+    {
+     "name": "José Salinas",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2000-09-30",
+     "fame": 9
+    },
+    {
+     "name": "Carlos López",
+     "position": "GOL",
+     "fame": 1
+    },
+    {
+     "name": "Rafa",
+     "position": "MEI",
+     "birthDate": "2003-07-10",
+     "fame": 4
+    },
+    {
+     "name": "Ángel Recio",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2003-01-05",
+     "fame": 1
+    },
+    {
+     "name": "Diego Murillo",
+     "position": "DEF",
+     "birthDate": "2001-03-14",
+     "fame": 4
+    },
+    {
+     "name": "Eneko Jauregi",
+     "position": "ATA",
+     "birthDate": "1996-07-13",
+     "fame": 8
+    },
+    {
+     "name": "Pablo Martínez",
+     "position": "MEI",
+     "birthDate": "1998-02-22",
+     "fame": 10
+    },
+    {
+     "name": "Juan Cruz",
+     "position": "MEI",
+     "birthDate": "2000-04-25",
+     "fame": 11
+    },
+    {
+     "name": "Fernando Calero",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1995-09-14",
+     "fame": 19
+    },
+    {
+     "name": "Adrián Niño",
+     "position": "ATA",
+     "birthDate": "2004-06-19",
+     "fame": 9
+    },
+    {
+     "name": "Dani Lorenzo",
+     "position": "MEI",
+     "birthDate": "2003-04-05",
+     "fame": 5
+    },
+    {
+     "name": "Izan Merino",
+     "position": "MEI",
+     "birthDate": "2006-04-15",
+     "fame": 8
+    },
+    {
+     "name": "Julen Lobete",
+     "position": "MEI",
+     "birthDate": "2000-09-18",
+     "fame": 11
+    },
+    {
+     "name": "Juan Berrocal",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-02-05",
+     "fame": 14
+    },
+    {
+     "name": "Rafita",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2004-11-09",
+     "fame": 2
+    },
+    {
+     "name": "Aarón Ochoa",
+     "position": "MEI",
+     "birthDate": "2007-04-18",
+     "fame": 7
+    },
+    {
+     "name": "Adam Aznou",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2006-06-02",
+     "fame": 21
+    }
+   ]
+  },
+  "es-racing": {
+   "source": "https://en.wikipedia.org/wiki/Racing_de_Santander",
+   "revision": 1384175421,
+   "manager": "José Alberto",
+   "players": [
+    {
+     "name": "Simon Eriksson",
+     "position": "GOL",
+     "birthDate": "2006-04-24",
+     "fame": 4
+    },
+    {
+     "name": "Álvaro Mantilla",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2000-05-09",
+     "fame": 6
+    },
+    {
+     "name": "Aarón Martín",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1997-04-22",
+     "fame": 21
+    },
+    {
+     "name": "Manu Hernando",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1998-07-19",
+     "fame": 8
+    },
+    {
+     "name": "Pablo Ramón",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2001-06-30",
+     "fame": 8
+    },
+    {
+     "name": "Íñigo Sainz-Maza",
+     "position": "MEI",
+     "birthDate": "1998-06-16",
+     "fame": 5
+    },
+    {
+     "name": "Giorgi Guliashvili",
+     "position": "ATA",
+     "birthDate": "2001-09-05",
+     "fame": 10
+    },
+    {
+     "name": "André Almeida",
+     "position": "MEI",
+     "birthDate": "2000-05-30",
+     "fame": 15
+    },
+    {
+     "name": "Juan Carlos Arana",
+     "position": "ATA",
+     "birthDate": "2000-02-08",
+     "fame": 5
+    },
+    {
+     "name": "Iñigo Vicente",
+     "position": "MEI",
+     "birthDate": "1998-01-06",
+     "fame": 10
+    },
+    {
+     "name": "Andrés Martín",
+     "position": "ATA",
+     "birthDate": "1999-07-11",
+     "fame": 10
+    },
+    {
+     "name": "Asier Villalibre",
+     "position": "ATA",
+     "birthDate": "1997-09-30",
+     "fame": 23
+    },
+    {
+     "name": "Julen Agirrezabala",
+     "position": "GOL",
+     "birthDate": "2000-12-26",
+     "fame": 17
+    },
+    {
+     "name": "Maguette Gueye",
+     "position": "MEI",
+     "birthDate": "2002-12-30",
+     "fame": 6
+    },
+    {
+     "name": "Pablo García",
+     "position": "ATA",
+     "birthDate": "2006-06-13",
+     "fame": 9
+    },
+    {
+     "name": "Facundo González",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2003-06-06",
+     "fame": 14
+    },
+    {
+     "name": "Jorge Salinas",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2007-04-03",
+     "fame": 10
+    },
+    {
+     "name": "Matteo Prati",
+     "position": "MEI",
+     "birthDate": "2003-12-28",
+     "fame": 10
+    },
+    {
+     "name": "Iker Luque",
+     "position": "ATA",
+     "birthDate": "2005-06-05",
+     "fame": 3
+    },
+    {
+     "name": "Sergio Canales",
+     "position": "MEI",
+     "birthDate": "1991-02-16",
+     "fame": 46
+    },
+    {
+     "name": "Yassir Zabiri",
+     "position": "ATA",
+     "birthDate": "2005-02-23",
+     "fame": 16
+    },
+    {
+     "name": "Pedro Felipe",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2004-05-23",
+     "fame": 3
+    },
+    {
+     "name": "Iván Martín",
+     "position": "MEI",
+     "birthDate": "1999-02-14",
+     "fame": 16
+    },
+    {
+     "name": "Jeanuël Belocian",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2005-02-17",
+     "fame": 16
+    }
+   ]
+  },
+  "es-levante": {
+   "source": "https://en.wikipedia.org/wiki/Levante_UD",
+   "revision": 1385674431,
+   "manager": "Luís Castro",
+   "players": [
+    {
+     "name": "Pablo Campos",
+     "position": "GOL",
+     "birthDate": "2002-04-28",
+     "fame": 11
+    },
+    {
+     "name": "Aïssa Mandi",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1991-10-22",
+     "fame": 38
+    },
+    {
+     "name": "Ifeanyi Ndukwe",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2008-03-03",
+     "fame": 8
+    },
+    {
+     "name": "Adrián Dela",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-02-26",
+     "fame": 8
+    },
+    {
+     "name": "Hugo Sotelo",
+     "position": "MEI",
+     "birthDate": "2003-12-19",
+     "fame": 11
+    },
+    {
+     "name": "Dani Requena",
+     "position": "MEI",
+     "birthDate": "2004-02-12",
+     "fame": 6
+    },
+    {
+     "name": "Roger Brugué",
+     "position": "ATA",
+     "birthDate": "1996-11-04",
+     "fame": 9
+    },
+    {
+     "name": "Jon Ander Olasagasti",
+     "position": "MEI",
+     "birthDate": "2000-08-16",
+     "fame": 12
+    },
+    {
+     "name": "Iván Romero",
+     "position": "ATA",
+     "birthDate": "2001-04-10",
+     "fame": 12
+    },
+    {
+     "name": "Petar Ratkov",
+     "position": "ATA",
+     "birthDate": "2003-08-18",
+     "fame": 23
+    },
+    {
+     "name": "Yanis Musuayi",
+     "position": "ATA",
+     "birthDate": "2007-06-26",
+     "fame": 3
+    },
+    {
+     "name": "Mathew Ryan",
+     "position": "GOL",
+     "birthDate": "1992-04-08",
+     "fame": 44
+    },
+    {
+     "name": "Jorge Cabello",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2004-04-25",
+     "fame": 6
+    },
+    {
+     "name": "Axel Tape",
+     "position": "MEI",
+     "birthDate": "2007-08-10",
+     "fame": 9
+    },
+    {
+     "name": "Víctor García",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1997-09-16",
+     "fame": 9
+    },
+    {
+     "name": "Enzo Bardeli",
+     "position": "MEI",
+     "birthDate": "2001-04-11",
+     "fame": 7
+    },
+    {
+     "name": "Oriol Rey",
+     "position": "MEI",
+     "birthDate": "1998-02-25",
+     "fame": 9
+    },
+    {
+     "name": "Karl Etta Eyong",
+     "position": "ATA",
+     "birthDate": "2003-10-14",
+     "fame": 17
+    },
+    {
+     "name": "Jeremy Toljan",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1994-08-08",
+     "fame": 30
+    },
+    {
+     "name": "Manu Sánchez",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2000-08-24",
+     "fame": 18
+    },
+    {
+     "name": "Thiago Fernández",
+     "position": "MEI",
+     "birthDate": "2004-04-03",
+     "fame": 8
+    },
+    {
+     "name": "Paco Cortés",
+     "position": "MEI",
+     "birthDate": "2007-08-11",
+     "fame": 5
+    },
+    {
+     "name": "Nacho Pérez",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2008-08-29",
+     "fame": 5
+    },
+    {
+     "name": "Álex Primo",
+     "position": "GOL",
+     "birthDate": "2004-07-10",
+     "fame": 4
+    },
+    {
+     "name": "Marc Santos",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2010-11-01",
+     "fame": 6
+    }
+   ]
+  }
+ }
+}

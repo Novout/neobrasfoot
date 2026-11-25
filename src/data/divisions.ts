@@ -38,6 +38,34 @@ export let DIVISIONS: DivisionId[] = LEAGUE_FORMATS[DEFAULT_FORMAT].divisions
 export let PROMOTION_SPOTS = LEAGUE_FORMATS[DEFAULT_FORMAT].promotionSpots
 export let RELEGATION_SPOTS = LEAGUE_FORMATS[DEFAULT_FORMAT].relegationSpots
 
+/**
+ * Ligas estrangeiras disputadas em paralelo às séries (só no 2×20, que também tem 38 rodadas): ficam fora da
+ * pirâmide (ninguém sobe nem cai), fora da Copa do Brasil e da Libertadores.
+ */
+export const FOREIGN_DIVISIONS: DivisionId[] = ['ESP']
+
+export function isForeignDivision(division: DivisionId) {
+  return FOREIGN_DIVISIONS.includes(division)
+}
+
+let activeForeign: DivisionId[] = []
+/** Todas as divisões disputadas na carreira atual: as séries do formato e as ligas estrangeiras presentes. */
+export let LEAGUE_DIVISIONS: DivisionId[] = [...DIVISIONS]
+
+/** Liga estrangeira presente na carreira (pelos clubes dela). */
+export function setForeignDivisions(divisions: DivisionId[]) {
+  activeForeign = FOREIGN_DIVISIONS.filter((d) => divisions.includes(d))
+  LEAGUE_DIVISIONS = [...DIVISIONS, ...activeForeign]
+}
+
+/**
+ * Nível de uma divisão para comparar clubes (0 = elite): uma liga estrangeira vale como a série mais alta.
+ * Usado no mercado (só compra de série igual ou abaixo) e nas propostas de emprego.
+ */
+export function divisionLevel(division: DivisionId) {
+  return isForeignDivision(division) ? 0 : DIVISIONS.indexOf(division)
+}
+
 /** A última série também rebaixa (2×20 com Série C fora da liga). */
 export let BOTTOM_RELEGATION = false
 
@@ -51,11 +79,12 @@ export function setActiveFormat(format: LeagueFormat) {
   ACTIVE_FORMAT = format
   BOTTOM_RELEGATION = false
   DIVISIONS = rules.divisions
+  LEAGUE_DIVISIONS = [...DIVISIONS, ...activeForeign]
   PROMOTION_SPOTS = rules.promotionSpots
   RELEGATION_SPOTS = rules.relegationSpots
 }
 
-/** Formato de uma liga pelos clubes: só Séries A e B com 20 cada é 2×20; o resto é 4×8. */
+/** Formato de uma liga pelos clubes: só Séries A e B com 20 cada é 2×20; o resto é 4×8 (ligas estrangeiras não contam). */
 export function formatOfTeams(teams: { division: DivisionId }[]): LeagueFormat {
   const count = (d: DivisionId) => teams.filter((t) => t.division === d).length
   return count('C') === 0 && count('D') === 0 && count('A') === 20 && count('B') === 20 ? '2x20' : '4x8'
@@ -70,6 +99,7 @@ export const DIVISION_LABELS: Record<DivisionId, string> = {
   B: 'Série B',
   C: 'Série C',
   D: 'Série D',
+  ESP: 'La Liga',
 }
 
 /** Ajuste de reputação ao subir ou cair de divisão. */
@@ -91,7 +121,7 @@ export type TableZone = 'champion' | 'promotion' | 'relegation' | null
 
 /** Zona de uma posição (1 = líder) numa tabela de `size` times. */
 export function tableZone(division: DivisionId, position: number, size: number): TableZone {
-  if (position === 1 && division === DIVISIONS[0]) return 'champion'
+  if (position === 1 && (division === DIVISIONS[0] || isForeignDivision(division))) return 'champion'
   if (divisionAbove(division) && position <= PROMOTION_SPOTS) return 'promotion'
   if (relegatesFrom(division) && position > size - RELEGATION_SPOTS) return 'relegation'
   return null

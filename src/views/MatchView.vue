@@ -5,7 +5,7 @@ import HalftimePanel from '../components/HalftimePanel.vue'
 import PenaltyPanel from '../components/PenaltyPanel.vue'
 import StarMark from '../components/StarMark.vue'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
+import { DIVISION_LABELS, LEAGUE_DIVISIONS } from '../data/divisions'
 import { clockLabel } from '../data/stoppage'
 import type { DivisionId, LiveMatch, MatchEventType, MatchVenue } from '../types/game'
 import { useGameStore } from '../stores/game'
@@ -38,7 +38,7 @@ const myMatch = computed(() => match.matches.find((m) => isMine(m)) ?? null)
 /** Painel com todos os jogos ao mesmo tempo: uma coluna por série (na Copa, todos juntos). */
 const columns = computed(() => {
   if (isCup.value) return [{ key: 'copa', label: null as string | null, division: null as DivisionId | null, matches: match.matches }]
-  return DIVISIONS.map((d) => ({
+  return LEAGUE_DIVISIONS.map((d) => ({
     key: d,
     label: DIVISION_LABELS[d] as string | null,
     division: d as DivisionId | null,

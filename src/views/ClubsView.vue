@@ -6,7 +6,7 @@ import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
 import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, DIVISIONS, tableZone } from '../data/divisions'
+import { DIVISION_LABELS, LEAGUE_DIVISIONS, tableZone } from '../data/divisions'
 import { createStadium, stadiumCapacity } from '../data/stadium'
 import { POSITION_ORDER } from '../data/tactics'
 import { marketValue, useGameStore } from '../stores/game'
@@ -46,7 +46,7 @@ const groups = computed(() => {
   const term = search.value.trim().toLowerCase()
   const matches = (t: Team) =>
     !term || t.name.toLowerCase().includes(term) || t.players.some((p) => p.name.toLowerCase().includes(term))
-  return DIVISIONS.map((d) => ({
+  return LEAGUE_DIVISIONS.map((d) => ({
     division: d,
     // Antes da 1ª rodada a tabela não diz nada: ordena pela reputação.
     teams: (seasonStarted.value

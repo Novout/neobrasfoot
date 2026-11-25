@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import StarMark from '../components/StarMark.vue'
 import PosTag from '../components/PosTag.vue'
-import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
+import { DIVISION_LABELS, LEAGUE_DIVISIONS } from '../data/divisions'
 import { BEST_XI_SHAPE, MIN_APPS_SHARE, type BestXIEntry } from '../data/seasonStats'
 import { useGameStore } from '../stores/game'
 import type { DivisionId, Position } from '../types/game'
@@ -24,7 +24,7 @@ const record = computed(() => {
   return { divisions: saved?.divisions ?? {}, partial: false }
 })
 
-const divisions = computed(() => DIVISIONS.filter((d) => record.value.divisions[d]))
+const divisions = computed(() => LEAGUE_DIVISIONS.filter((d) => record.value.divisions[d]))
 const division = ref<DivisionId>(game.managedDivision)
 watch(divisions, (list) => {
   if (!list.includes(division.value)) division.value = list[0] ?? 'A'

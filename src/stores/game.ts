@@ -38,6 +38,7 @@ import {
 import {
   DIVISION_LABELS, DIVISIONS, divisionAbove, divisionBelow, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL, PROMOTION_SPOTS,
   RELEGATION_SPOTS, REPUTATION_SWING, tableZone, formatOfTeams, setActiveFormat, ACTIVE_FORMAT, setBottomRelegation,
+  isForeignDivision, LEAGUE_DIVISIONS, setForeignDivisions,
 } from '../data/divisions'
 import {
   assignStarsToLegacyTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
@@ -230,6 +231,13 @@ export const useGameStore = defineStore('game', () => {
 
   // O formato da liga (4×8 ou 2×20) vem dos próprios clubes da carreira salva.
   if (managedTeamId.value) setActiveFormat(formatOfTeams(teams.value))
+  // Liga estrangeira (La Liga) disputada em paralelo: presente quando a carreira tem clubes dela.
+  watchEffect(() => setForeignDivisions(teams.value.map((t) => t.division)), { flush: 'sync' })
+
+  /** Clubes que disputam a Copa do Brasil: só os das séries brasileiras. */
+  function cupTeams() {
+    return teams.value.filter((t) => !isForeignDivision(t.division))
+  }
 
   const hasCareer = computed(() => managedTeamId.value !== null)
   const managedTeam = computed(() => teams.value.find((t) => t.id === managedTeamId.value) ?? null)
@@ -238,7 +246,7 @@ export const useGameStore = defineStore('game', () => {
   const totalRounds = computed(() => fixtures.value.length)
 
   // Saves anteriores à Copa: cria a Copa da temporada atual, encaixada nas rodadas restantes.
-  if (hasCareer.value && !cup.value) cup.value = createCup(teams.value, season.value, round.value, fixtures.value.length)
+  if (hasCareer.value && !cup.value) cup.value = createCup(cupTeams(), season.value, round.value, fixtures.value.length)
   // Saves anteriores aos troféus: cria os técnicos com prateleiras vazias.
   if (hasCareer.value && !managers.value.length && managedTeamId.value) {
     managers.value = createManagers(teams.value, managedTeamId.value, managerName.value)
@@ -536,7 +544,8 @@ export const useGameStore = defineStore('game', () => {
     leagueResults.value = {}
     seasonStats.value = {}
     // Cada divisão tem seu turno e returno; todas jogam a mesma rodada ao mesmo tempo.
-    const perDivision = DIVISIONS.map((d) => generateFixtures(teamsByDivision(teams.value, d).map((t) => t.id)))
+    // Inclui a liga estrangeira (La Liga), com o mesmo número de rodadas das séries no 2×20.
+    const perDivision = LEAGUE_DIVISIONS.map((d) => generateFixtures(teamsByDivision(teams.value, d).map((t) => t.id)))
     const totalRounds = Math.max(...perDivision.map((r) => r.length))
     fixtures.value = Array.from({ length: totalRounds }, (_, i) => perDivision.flatMap((rounds) => rounds[i] ?? []))
     standings.value = teams.value.map((t) => ({
@@ -551,7 +560,7 @@ export const useGameStore = defineStore('game', () => {
       })
       applyLineup(t, t.id === managedTeamId.value ? tactic.value.formation : AI_TACTIC.formation)
     })
-    cup.value = createCup(teams.value, season.value, 0, totalRounds)
+    cup.value = createCup(cupTeams(), season.value, 0, totalRounds)
     startLibertadores(0)
   }
 
@@ -1691,7 +1700,7 @@ export const useGameStore = defineStore('game', () => {
       manager.trophies.push(t)
       if (manager.isPlayer) addNews(`🏆 Troféu para a sua prateleira: ${trophyLabel(t)} (temporada ${season.value})!`)
     }
-    for (const division of DIVISIONS) give(divisionStandings(division)[0]?.teamId, { kind: 'league', division })
+    for (const division of LEAGUE_DIVISIONS) give(divisionStandings(division)[0]?.teamId, { kind: 'league', division })
     give(cup.value?.championId, { kind: 'cup' })
     give(libertadores.value?.championId, { kind: 'libertadores' })
   }
@@ -1711,7 +1720,7 @@ export const useGameStore = defineStore('game', () => {
   /** Seleção de cada série com os jogos até agora (parcial durante a temporada, final quando ela acaba). */
   const bestXI = computed(() => {
     const result: Partial<Record<DivisionId, BestXIEntry[]>> = {}
-    for (const d of DIVISIONS) result[d] = bestEleven(seasonStats.value, d, round.value)
+    for (const d of LEAGUE_DIVISIONS) result[d] = bestEleven(seasonStats.value, d, round.value)
     return result
   })
 

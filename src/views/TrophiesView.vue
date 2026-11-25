@@ -28,8 +28,8 @@ const shelf = computed(() =>
   [...(selected.value?.manager.trophies ?? [])].sort((a, b) => trophyPoints(b) - trophyPoints(a) || b.season - a.season),
 )
 
-const KEYS = ['libertadores', 'A', 'cup', 'B', 'C', 'D'] as const
-const KEY_LABELS: Record<(typeof KEYS)[number], string> = { libertadores: 'Lib', A: 'A', cup: 'Copa', B: 'B', C: 'C', D: 'D' }
+const KEYS = ['libertadores', 'A', 'ESP', 'cup', 'B', 'C', 'D'] as const
+const KEY_LABELS: Record<(typeof KEYS)[number], string> = { libertadores: 'Lib', A: 'A', ESP: 'Liga', cup: 'Copa', B: 'B', C: 'C', D: 'D' }
 </script>
 
 <template>

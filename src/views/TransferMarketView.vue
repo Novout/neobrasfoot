@@ -6,7 +6,7 @@ import PlayerStatus from '../components/PlayerStatus.vue'
 import StarMark from '../components/StarMark.vue'
 import SkillBadges from '../components/SkillBadges.vue'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
+import { DIVISION_LABELS, LEAGUE_DIVISIONS } from '../data/divisions'
 import { durationLabel, LOAN_DEVELOPMENT_AGE, LOAN_DURATIONS } from '../data/loans'
 import { POSITION_ORDER } from '../data/tactics'
 import { askingPriceOf, marketValue, MAX_SQUAD_SIZE, useGameStore } from '../stores/game'
@@ -42,7 +42,7 @@ const nameFilter = ref('')
 
 /** Clubes da IA agrupados por divisão, para o select de clubes. */
 const teamGroups = computed(() =>
-  DIVISIONS.filter((d) => !divisionFilter.value || d === divisionFilter.value).map((d) => ({
+  LEAGUE_DIVISIONS.filter((d) => !divisionFilter.value || d === divisionFilter.value).map((d) => ({
     division: d,
     teams: game.teams.filter((t) => t.division === d && t.id !== game.managedTeamId),
   })),
@@ -231,7 +231,7 @@ function quickSell(playerId: string, playerName: string) {
           </select>
           <select v-model="divisionFilter">
             <option value="">Todas as séries</option>
-            <option v-for="d in DIVISIONS" :key="d" :value="d">{{ DIVISION_LABELS[d] }}</option>
+            <option v-for="d in LEAGUE_DIVISIONS" :key="d" :value="d">{{ DIVISION_LABELS[d] }}</option>
           </select>
           <select v-model="teamFilter">
             <option value="">Todos os clubes</option>

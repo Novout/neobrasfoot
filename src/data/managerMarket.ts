@@ -1,5 +1,5 @@
 import type { DivisionId, JobOffer, Team } from '../types/game'
-import { DIVISION_LABELS, DIVISIONS, type TableZone } from './divisions'
+import { DIVISION_LABELS, divisionLevel, DIVISIONS, type TableZone } from './divisions'
 
 export interface SeasonReview {
   position: number
@@ -69,7 +69,9 @@ export function generateJobOffers(
   divisionOf: (teamId: string) => DivisionId,
   score: number,
 ): JobOffer[] {
-  const base = DIVISIONS.indexOf(divisionOf(currentTeamId))
+  // A La Liga vale como a série mais alta: propostas de clubes do mesmo patamar (Série A ou La Liga).
+  const base = divisionLevel(divisionOf(currentTeamId))
+  const sameLevel = (teamId: string, division: DivisionId) => divisionLevel(divisionOf(teamId)) === divisionLevel(division)
   const at = (offset: number) => DIVISIONS[base + offset]
   const plan: { division: DivisionId | undefined; count: number; reason: string }[] =
     score >= 4
@@ -104,18 +106,18 @@ export function generateJobOffers(
   const offers: JobOffer[] = []
   for (const { division, count, reason } of plan) {
     if (!division || count === 0) continue
-    let pool = teams.filter((t) => t.id !== currentTeamId && divisionOf(t.id) === division)
+    let pool = teams.filter((t) => t.id !== currentTeamId && sameLevel(t.id, division))
     // Na série de cima, só os clubes mais modestos arriscam num técnico vindo de baixo.
     if (DIVISIONS.indexOf(division) < base) {
       pool = [...pool].sort((a, b) => a.reputation - b.reputation).slice(0, Math.ceil(pool.length / 2))
     }
-    for (const team of shuffle(pool).slice(0, count)) offers.push({ teamId: team.id, division, reason })
+    for (const team of shuffle(pool).slice(0, count)) offers.push({ teamId: team.id, division: divisionOf(team.id), reason })
   }
 
   // Garantia: sempre há pelo menos duas opções além de ficar.
   if (offers.length < 2) {
     const extra = shuffle(teams.filter((t) => t.id !== currentTeamId && !offers.some((o) => o.teamId === t.id)))
-      .filter((t) => Math.abs(DIVISIONS.indexOf(divisionOf(t.id)) - base) <= 1)
+      .filter((t) => Math.abs(divisionLevel(divisionOf(t.id)) - base) <= 1)
       .slice(0, 2 - offers.length)
     for (const t of extra) offers.push({ teamId: t.id, division: divisionOf(t.id), reason: 'Procura um novo técnico para a temporada.' })
   }

@@ -19,11 +19,11 @@ export const CLUBS = {
 }
 
 /** Clubes escolhidos com --clubes=a,b (todos se a opção não for usada). */
-export function selectedClubs(argv = process.argv) {
+export function selectedClubs(argv = process.argv, all = CLUBS) {
   const arg = argv.find((a) => a.startsWith('--clubes='))
-  if (!arg) return CLUBS
+  if (!arg) return all
   const ids = arg.slice('--clubes='.length).split(',').map((s) => s.trim()).filter(Boolean)
-  const unknown = ids.filter((id) => !CLUBS[id])
+  const unknown = ids.filter((id) => !all[id])
   if (unknown.length) throw new Error(`Clubes desconhecidos: ${unknown.join(', ')}`)
-  return Object.fromEntries(ids.map((id) => [id, CLUBS[id]]))
+  return Object.fromEntries(ids.map((id) => [id, all[id]]))
 }

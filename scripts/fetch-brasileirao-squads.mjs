@@ -7,12 +7,18 @@
  * Uso: npm run update-brasileirao            (elencos + técnicos)
  *      npm run update-brasileirao -- --tecnicos  (só os técnicos, sem mexer nos elencos)
  *      npm run update-brasileirao -- --clubes=mirassol,criciuma  (só esses clubes; os outros ficam como estão)
- * Saída: src/data/templates/brasileirao-squads.json (dados brutos; idade e OVR são calculados no template).
+ *      npm run update-laliga                    (mesmo processo para os clubes da La Liga espanhola)
+ * Saída: src/data/templates/brasileirao-squads.json ou laliga-squads.json (dados brutos; idade e OVR são
+ * calculados no template).
  */
 import { readFile, writeFile } from 'node:fs/promises'
-import { CLUBS, selectedClubs } from './brasileirao-clubs.mjs'
+import { CLUBS as BRAZIL_CLUBS, selectedClubs } from './brasileirao-clubs.mjs'
+import { LALIGA_CLUBS } from './laliga-clubs.mjs'
 
-const OUT = new URL('../src/data/templates/brasileirao-squads.json', import.meta.url)
+/** --liga=espanha: clubes da La Liga, salvos no arquivo deles. */
+const SPAIN = process.argv.includes('--liga=espanha')
+const CLUBS = SPAIN ? LALIGA_CLUBS : BRAZIL_CLUBS
+const OUT = new URL(`../src/data/templates/${SPAIN ? 'laliga' : 'brasileirao'}-squads.json`, import.meta.url)
 const HEADERS = { 'User-Agent': 'NeobrasfootTemplateBuilder/1.0 (squad template generator)' }
 
 
@@ -137,7 +143,7 @@ async function onlyManagers() {
 async function main() {
   if (process.argv.includes('--tecnicos')) return onlyManagers()
   const squads = {}
-  const clubs = selectedClubs()
+  const clubs = selectedClubs(process.argv, CLUBS)
   const partial = clubs !== CLUBS
   for (const [id, title] of Object.entries(clubs)) {
     const r = await wiki(`action=parse&prop=wikitext|revid&redirects=1&page=${encodeURIComponent(title)}`)

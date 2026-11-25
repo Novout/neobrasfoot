@@ -175,7 +175,9 @@ describe('liga base das carreiras', () => {
     expect(getLeagueBase()).toBe('brasileirao')
     expect(getLeagueFormat()).toBe('2x20')
     const teams = leagueTeams()
-    expect(teams).toHaveLength(40)
+    // 40 clubes nas Séries A e B e mais os 20 da La Liga, disputada em paralelo.
+    expect(teams.filter((t) => t.division !== 'ESP')).toHaveLength(40)
+    expect(teams.filter((t) => t.division === 'ESP')).toHaveLength(20)
     expect(teams.some((t) => t.id === 'flamengo')).toBe(true)
   })
 

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import type { NegotiationResult, Player, Team, TransferOffer } from '../types/game'
 import { formatMoney } from '../utils/random'
-import { DIVISION_LABELS, DIVISIONS } from '../data/divisions'
+import { DIVISION_LABELS, divisionLevel } from '../data/divisions'
 import { durationLabel, loanFee, LOAN_OUT_FEE_PER_ROUND } from '../data/loans'
 import { askingPriceOf, marketValue, useGameStore } from './game'
 
@@ -51,7 +51,8 @@ export const useTransferStore = defineStore('transfers', () => {
     const buyer = game.getTeam(buyerTeamId)
     const seller = game.getTeam(sellerTeamId)
     if (!buyer || !seller) return null
-    if (DIVISIONS.indexOf(buyer.division) <= DIVISIONS.indexOf(seller.division)) return null
+    // La Liga conta como a série mais alta: negocia com a Série A e compra de qualquer série.
+    if (divisionLevel(buyer.division) <= divisionLevel(seller.division)) return null
     return buyer.id === game.managedTeamId
       ? `O ${seller.name} é da ${DIVISION_LABELS[seller.division]} e não negocia com clubes de séries abaixo.`
       : `O ${buyer.name} é de uma série abaixo e não pode contratar do ${seller.name}.`

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import CountryTag from '../components/CountryTag.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { inRound, roundName } from '../data/cup'
+import { DIVISION_LABELS, isForeignDivision } from '../data/divisions'
 import {
   BRAZIL_SPOTS, COUNTRY_NAMES, countryOf, GROUP_QUALIFIERS, GROUP_ROUNDS, groupOf, groupTable, LIBERTADORES_NAME, LIBERTADORES_PRIZES,
   STAGE_COUNT, stageName,
@@ -61,6 +62,9 @@ const status = computed(() => {
   const s = game.managedLibertadoresStatus
   if (s.state === 'champion') return { tone: 'good', text: `🏆 Seu time é o campeão da ${LIBERTADORES_NAME}!` }
   if (s.state === 'eliminated') return { tone: 'bad', text: `Seu time foi eliminado ${inRound(s.stageName)}.` }
+  if (s.state === 'absent' && game.managedTeam && isForeignDivision(game.managedTeam.division)) {
+    return { tone: 'muted', text: `Clubes da ${DIVISION_LABELS[game.managedTeam.division]} não disputam a ${LIBERTADORES_NAME}.` }
+  }
   if (s.state === 'absent') {
     return {
       tone: 'muted',

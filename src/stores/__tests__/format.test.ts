@@ -102,9 +102,11 @@ describe('carreira no formato 2×20', () => {
   it('séries A e B, 38 rodadas com 20 jogos cada, 4 sobem e 4 descem', () => {
     expect(DIVISIONS).toEqual(['A', 'B'])
     expect(PROMOTION_SPOTS).toBe(4)
-    expect(game.teams).toHaveLength(40)
+    expect(game.teams.filter((t) => t.division !== 'ESP')).toHaveLength(40)
+    expect(game.teams.filter((t) => t.division === 'ESP')).toHaveLength(20)
     expect(game.fixtures).toHaveLength(38)
-    expect(game.fixtures.every((r) => r.length === 20)).toBe(true)
+    // 20 jogos das Séries A e B e 10 da La Liga em cada rodada.
+    expect(game.fixtures.every((r) => r.length === 30)).toBe(true)
     expect(game.cup!.rounds[0]!.ties).toHaveLength(8)
     expect(game.cup!.byes).toHaveLength(24)
     expect(tableZone('A', 17, 20)).toBe('relegation')
@@ -161,7 +163,7 @@ describe('carreira no formato 2×20', () => {
     }
     // Não jogam: fora da tabela, do calendário e da Copa.
     expect(game.teams.some((t) => t.division === 'C')).toBe(false)
-    expect(game.standings).toHaveLength(40)
+    expect(game.standings).toHaveLength(60)
     expect(tableZone('B', 17, 20)).toBe('relegation')
   })
 

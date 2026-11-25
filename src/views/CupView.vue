@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { CUP_NAME, cupPhases, cupPrize, CUP_RUNNER_UP_PRIZE, cupSchedule, hasPreliminary, inRound } from '../data/cup'
-import { DIVISION_LABELS } from '../data/divisions'
+import { DIVISION_LABELS, isForeignDivision } from '../data/divisions'
 import { useGameStore } from '../stores/game'
 import type { CupTie } from '../types/game'
 import { formatMoney } from '../utils/random'
@@ -35,6 +35,9 @@ const status = computed(() => {
   if (!s) return null
   if (s.state === 'champion') return { tone: 'good', text: '🏆 Seu time é o campeão da Copa!' }
   if (s.state === 'eliminated') return { tone: 'bad', text: `Seu time foi eliminado ${inRound(s.roundName)}.` }
+  if (s.state === 'absent' && game.managedTeam && isForeignDivision(game.managedTeam.division)) {
+    return { tone: 'muted', text: `Clubes da ${DIVISION_LABELS[game.managedTeam.division]} não disputam a ${CUP_NAME}.` }
+  }
   if (s.state === 'absent') return { tone: 'muted', text: 'Seu time não está na Copa nesta temporada.' }
   const c = cup.value
   if (c && hasPreliminary(c) && c.currentRound === 0 && c.byes?.includes(game.managedTeamId ?? '')) {

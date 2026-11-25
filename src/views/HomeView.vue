@@ -3,7 +3,9 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import SavesPanel from '../components/SavesPanel.vue'
 import TeamBadge from '../components/TeamBadge.vue'
-import { DEFAULT_FORMAT, DIVISION_LABELS, formatOfTeams, LEAGUE_FORMAT_LABELS, LEAGUE_FORMATS, type LeagueFormat } from '../data/divisions'
+import {
+  DEFAULT_FORMAT, DIVISION_LABELS, FOREIGN_DIVISIONS, formatOfTeams, LEAGUE_FORMAT_LABELS, LEAGUE_FORMATS, type LeagueFormat,
+} from '../data/divisions'
 import { clearCustomLeague, getCustomLeague, parseLeagueFile, saveCustomLeague } from '../data/leagueFile'
 import {
   getLeagueBase, getLeagueFormat, LEAGUE_BASE_LABELS, leagueTeams, setLeagueBase, setLeagueFormat, type LeagueBase,
@@ -28,8 +30,11 @@ const leagueName = ref(getCustomLeague()?.name ?? null)
 const leagueBase = ref<LeagueBase>(getLeagueBase())
 /** Formato escolhido para o Brasileirão e a liga gerada (uma liga importada tem o seu próprio). */
 const leagueFormat = ref<LeagueFormat>(getLeagueFormat())
-/** Séries da liga mostrada (pelo formato dos próprios clubes). */
-const divisions = computed(() => LEAGUE_FORMATS[formatOfTeams(teams.value)].divisions)
+/** Séries da liga mostrada (pelo formato dos próprios clubes) e a liga estrangeira, se houver. */
+const divisions = computed(() => [
+  ...LEAGUE_FORMATS[formatOfTeams(teams.value)].divisions,
+  ...FOREIGN_DIVISIONS.filter((d) => teams.value.some((t) => t.division === d)),
+])
 const selectedId = ref<string | null>(null)
 const managerName = ref('')
 const division = ref<DivisionId>('A')
@@ -39,6 +44,7 @@ const DIVISION_HINTS: Record<DivisionId, string> = {
   B: 'Bons times e o objetivo de subir para a elite.',
   C: 'Orçamento apertado: será preciso garimpar no mercado.',
   D: 'O desafio máximo: levar um time pequeno da última divisão até a Série A.',
+  ESP: 'Clubes reais da 1ª divisão espanhola, disputada ao mesmo tempo que as séries. Sem acesso nem rebaixamento, e fora da Copa do Brasil e da Libertadores.',
 }
 
 const divisionTeams = computed(() => teams.value.filter((t) => t.division === division.value))
