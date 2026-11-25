@@ -8,8 +8,10 @@ export default defineConfig({
     vue(),
     // App instalável (PWA): manifesto + service worker que guarda o jogo para abrir offline.
     VitePWA({
-      // Versões novas são baixadas em segundo plano e entram ao reabrir o jogo (o save fica no localStorage).
-      registerType: 'autoUpdate',
+      // Versões novas são baixadas em segundo plano; quando terminam, src/utils/pwaUpdate.ts ativa o service
+      // worker novo e recarrega a página sozinho (esperando a partida ao vivo parar). O save fica no localStorage.
+      registerType: 'prompt',
+      injectRegister: false,
       includeAssets: ['favicon.ico', 'apple-touch-icon-180x180.png', 'logo.svg'],
       manifest: {
         id: '/',
