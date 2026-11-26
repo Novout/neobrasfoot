@@ -332,7 +332,7 @@ function startCareer() {
   padding: 0 0.4rem;
   border: 1px solid var(--border);
   border-radius: 999px;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-variant-numeric: tabular-nums;
 }
 .hero-actions {
