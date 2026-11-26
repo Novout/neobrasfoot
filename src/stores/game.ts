@@ -18,6 +18,7 @@ import {
 import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
 import { baseReserveTeams, leagueReserveTeams, leagueTeams } from '../data/league'
 import { balanceDefRoles, defenseFits, defenseSplit, defRoleOf, DEF_ROLE_MISFIT } from '../data/defense'
+import { assignShirtNumbers, changeShirtNumber } from '../data/shirtNumbers'
 import { bestEleven, recordMatch, type BestXIEntry, type BestXIRecord, type PlayerSeasonStats } from '../data/seasonStats'
 import { BRASILEIRAO_CRESTS } from '../data/crests'
 import { createManagers, trophyLabel } from '../data/trophies'
@@ -343,6 +344,12 @@ export const useGameStore = defineStore('game', () => {
       if (t.players.some((p) => p.position === 'DEF' && !p.defRole)) balanceDefRoles(t.players)
     }
   }
+  // Saves anteriores à numeração das camisas: numera os elencos (uma vez só; depois cada um mantém o seu).
+  if (hasCareer.value) {
+    for (const t of [...teams.value, ...reserveTeams.value, ...continentalTeams.value]) {
+      if (t.players.some((p) => p.number === undefined)) assignShirtNumbers(t.players)
+    }
+  }
 
   // --- Calendário ---
 
@@ -559,7 +566,10 @@ export const useGameStore = defineStore('game', () => {
         p.suspension = 0
       })
       applyLineup(t, t.id === managedTeamId.value ? tactic.value.formation : AI_TACTIC.formation)
+      // Elenco novo ou renovado: quem não tem número ganha um (os demais mantêm o seu).
+      assignShirtNumbers(t.players)
     })
+    reserveTeams.value.forEach((t) => assignShirtNumbers(t.players))
     cup.value = createCup(cupTeams(), season.value, 0, totalRounds)
     startLibertadores(0)
   }
@@ -571,7 +581,10 @@ export const useGameStore = defineStore('game', () => {
    */
   function startLibertadores(playedRounds: number) {
     continentalTeams.value = createContinentalTeams()
-    continentalTeams.value.forEach((t) => applyLineup(t, AI_TACTIC.formation))
+    continentalTeams.value.forEach((t) => {
+      applyLineup(t, AI_TACTIC.formation)
+      assignShirtNumbers(t.players)
+    })
     const topFlight = teams.value.filter((t) => t.division === DIVISIONS[0])
     const qualified = libertadoresQualified.value.map((id) => getTeam(id)).filter((t): t is Team => !!t && !t.country)
     const brazil = (qualified.length === BRAZIL_SPOTS ? qualified : [...topFlight].sort((a, b) => b.reputation - a.reputation))
@@ -819,6 +832,18 @@ export const useGameStore = defineStore('game', () => {
     return null
   }
 
+  /**
+   * Troca o número da camisa de um jogador do seu elenco (1 a 99). Se outro jogador usa o número,
+   * os dois trocam. Devolve uma mensagem de erro, ou null se deu certo.
+   */
+  function setShirtNumber(playerId: string, number: number): string | null {
+    const team = managedTeam.value
+    if (!team) return 'Sem clube.'
+    const result = changeShirtNumber(team.players, playerId, number)
+    if ('error' in result) return result.error
+    return null
+  }
+
   /** Sobe um jovem da base para o elenco principal. */
   function promoteYouth(playerId: string): string | null {
     const blocker = youthBlocker(playerId)
@@ -826,6 +851,7 @@ export const useGameStore = defineStore('game', () => {
     const player = academy.value!.players.find((p) => p.id === playerId)!
     academy.value!.players = academy.value!.players.filter((p) => p.id !== playerId)
     managedTeam.value!.players.push({ ...player, starter: false })
+    assignShirtNumbers(managedTeam.value!.players)
     addNews(`🎓 ${player.name}${player.star ? ' ★' : ''} sobe da base (${player.position}, ${player.age} anos, OVR ${player.overall}).`)
     return null
   }
@@ -979,6 +1005,8 @@ export const useGameStore = defineStore('game', () => {
 
     from.players = from.players.filter((p) => p.id !== playerId)
     to.players.push({ ...player, starter: false, forSale: false, askingPrice: undefined, morale: clamp(player.morale + 5, 0, 100) })
+    // Mantém o número se estiver livre no clube novo; senão ganha outro.
+    assignShirtNumbers(to.players)
 
     if (toTeamId === managedTeamId.value) budget.value -= fee
     if (fromTeamId === managedTeamId.value) budget.value += fee
@@ -1024,6 +1052,7 @@ export const useGameStore = defineStore('game', () => {
       askingPrice: undefined,
       loan: { ownerTeamId, toTeamId, roundsLeft: rounds, fee },
     })
+    assignShirtNumbers(to.players)
     if (toTeamId === managedTeamId.value) budget.value -= fee
     if (ownerTeamId === managedTeamId.value) budget.value += fee
     addHeadlines([
@@ -1045,6 +1074,8 @@ export const useGameStore = defineStore('game', () => {
     const involvesMe = holder.id === managedTeamId.value || owner.id === managedTeamId.value
     holder.players = holder.players.filter((p) => p.id !== playerId)
     owner.players.push({ ...player, starter: false, loan: undefined })
+    // Volta com o número antigo, se ninguém tiver pego enquanto ele estava fora.
+    assignShirtNumbers(owner.players)
     for (const team of [holder, owner]) if (team.id !== managedTeamId.value) applyLineup(team, AI_TACTIC.formation)
     if (involvesMe) addNews(`🔁 ${player.name} volta ao ${owner.name} (${reason}).`)
   }
@@ -1826,7 +1857,7 @@ export const useGameStore = defineStore('game', () => {
     getTeam, startCareer, startCustomCareer, nextSeason, endCareer,
     seasonReview, projectedDivision, ensureJobOffers, managers, managerOf,
     confidence, confidenceLog, dismissal, expectedPosition, changeConfidence, acceptJobAfterDismissal, reactToTransfer,
-    addNews, addHeadlines, refreshAcademy, youthBlocker, promoteYouth, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
+    addNews, addHeadlines, refreshAcademy, youthBlocker, promoteYouth, setShirtNumber, trainPlayer, restPlayer, toggleForSale, setAskingPrice,
     roundsLeftInSeason, managedLoans, startLoan, endLoan,
     releaseBlocker, hasSquadRoom, transferPlayer,
     toggleStarter, setRole, substituteStarter, arrangeLine, autoSelectStarters, setFormation, setStyle, setMarking, teamStrength, tacticFor,

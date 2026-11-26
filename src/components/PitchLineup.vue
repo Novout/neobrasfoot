@@ -386,7 +386,8 @@ function drawShirt(ctx: CanvasRenderingContext2D, spot: Spot, x: number, y: numb
         : improvised
           ? `${positionLabel(p)}→${playingPosition(p)} `
           : ''
-  const label = `${prefix}${shortName(p.name)}`
+  // Número da camisa antes do nome (ex.: "9 Pedro").
+  const label = `${prefix}${p.number ? `${p.number} ` : ''}${shortName(p.name)}`
   const tw = ctx.measureText(label).width + 8
   ctx.fillStyle = improvised ? 'rgba(120, 53, 15, 0.9)' : 'rgba(0,0,0,0.55)'
   ctx.fillRect(x - tw / 2, nameY - 8, tw, 16)
@@ -491,7 +492,7 @@ function footLine(p: Player) {
 
 function drawTooltip(ctx: CanvasRenderingContext2D, p: Player, x: number, y: number) {
   const lines = [
-    `${positionLabel(p)} · ${p.name}${p.star ? ' ★' : ''}`,
+    `${p.number ? `Nº ${p.number} · ` : ''}${positionLabel(p)} · ${p.name}${p.star ? ' ★' : ''}`,
     `OVR ${p.overall} · ${p.age} anos`,
     `Energia ${Math.round(p.energy)} · Moral ${Math.round(p.morale)}`,
     playerSkills(p).map((s) => `${SKILLS[s].icon} ${SKILLS[s].label}`).join('  '),

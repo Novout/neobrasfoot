@@ -18,6 +18,7 @@ import { useMatchStore } from '../stores/match'
 import { useTransferStore } from '../stores/transfers'
 import type { DivisionId, Player, Position } from '../types/game'
 import { defRoleOf } from '../data/defense'
+import { MAX_SHIRT_NUMBER, MIN_SHIRT_NUMBER } from '../data/shirtNumbers'
 import { formatMoney } from '../utils/random'
 import { formatDate } from '../data/calendar'
 
@@ -45,6 +46,36 @@ const squad = computed(() => {
     )
 })
 
+/** Resultado da última troca de número (some sozinho depois de alguns segundos). */
+const numberMessage = ref<{ text: string; error: boolean } | null>(null)
+let numberMessageTimer: ReturnType<typeof setTimeout> | undefined
+
+function showNumberMessage(text: string, error = false) {
+  numberMessage.value = { text, error }
+  clearTimeout(numberMessageTimer)
+  numberMessageTimer = setTimeout(() => (numberMessage.value = null), 4000)
+}
+
+/** Troca o número da camisa; se outro jogador usa o número, os dois trocam. */
+function changeNumber(p: Player, event: Event) {
+  const input = event.target as HTMLInputElement
+  const number = Number(input.value)
+  if (number === p.number) return
+  const holder = game.managedTeam?.players.find((x) => x.id !== p.id && x.number === number)
+  const previous = p.number
+  const error = game.setShirtNumber(p.id, number)
+  if (error) {
+    input.value = previous !== undefined ? String(previous) : ''
+    showNumberMessage(error, true)
+    return
+  }
+  showNumberMessage(
+    holder
+      ? `${p.name} agora veste a ${number}; ${holder.name} ficou com a ${holder.number ?? '–'}.`
+      : `${p.name} agora veste a ${number}.`,
+  )
+}
+
 const isHome = computed(() => game.nextFixture?.homeId === game.managedTeamId)
 
 // Divisão exibida na tabela; acompanha a do clube até o usuário escolher outra.
@@ -71,6 +102,9 @@ function standingPoints(row: { wins: number; draws: number }) {
       <div class="card">
         <div class="squad-header">
           <h2>Elenco ({{ game.managedTeam.players.length }})</h2>
+          <p v-if="numberMessage" class="number-message" :class="{ bad: numberMessage.error }" role="status">
+            👕 {{ numberMessage.text }}
+          </p>
           <div class="filters">
             <button
               v-for="pos in ['TODOS', ...POSITION_ORDER] as const"
@@ -87,6 +121,7 @@ function standingPoints(row: { wins: number; draws: number }) {
         <table>
           <thead>
             <tr>
+              <th class="num" title="Número da camisa (clique para trocar)">Nº</th>
               <th>Pos</th>
               <th>Nome</th>
               <th class="num">Idade</th>
@@ -100,6 +135,20 @@ function standingPoints(row: { wins: number; draws: number }) {
           </thead>
           <tbody>
             <tr v-for="p in squad" :key="p.id" :class="{ 'for-sale': p.forSale }">
+              <td class="num">
+                <input
+                  class="shirt-number"
+                  type="number"
+                  inputmode="numeric"
+                  :min="MIN_SHIRT_NUMBER"
+                  :max="MAX_SHIRT_NUMBER"
+                  :value="p.number"
+                  :aria-label="`Número da camisa de ${p.name}`"
+                  title="Número da camisa: digite outro (se alguém já usar, os dois trocam)"
+                  @change="changeNumber(p, $event)"
+                  @keydown.enter="($event.target as HTMLInputElement).blur()"
+                />
+              </td>
               <td><PosTag :player="p" /></td>
               <td>
                 {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
@@ -310,6 +359,44 @@ function standingPoints(row: { wins: number; draws: number }) {
 .filters {
   display: flex;
   gap: 0.25rem;
+}
+/* Número da camisa: parece texto até receber o foco (ou o mouse), aí vira campo editável. */
+.shirt-number {
+  width: 2.6rem;
+  padding: 0.1rem 0.2rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.shirt-number::-webkit-outer-spin-button,
+.shirt-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.shirt-number:hover,
+.shirt-number:focus {
+  border-color: var(--border);
+  background: var(--surface-2);
+  outline: none;
+}
+.shirt-number:focus {
+  border-color: var(--accent);
+}
+.number-message {
+  flex: 1;
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--good);
+}
+.number-message.bad {
+  color: var(--bad);
 }
 .actions {
   white-space: nowrap;

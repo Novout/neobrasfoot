@@ -24,6 +24,8 @@ export interface Player {
   foot?: Foot
   /** Defensores: lateral (LAT) ou zagueiro (ZAG). Ausente em saves antigos: ver defRoleOf(). */
   defRole?: DefRole
+  /** Número da camisa (1 a 99, único no elenco). Ausente até o jogo numerar o elenco: ver assignShirtNumbers(). */
+  number?: number
   /** Ordem do titular na linha do campo (0 = mais à esquerda), definida pelo técnico. Ausente = lado do pé. */
   lineupSlot?: number
   /** Amarelos acumulados na temporada (zera ao cumprir suspensão por acúmulo). */

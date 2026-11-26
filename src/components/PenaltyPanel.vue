@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PosTag from './PosTag.vue'
+import ShirtNumber from './ShirtNumber.vue'
 import { computed } from 'vue'
 import { nextKickingTeam, shootoutScore } from '../data/penalties'
 import { clockLabel } from '../data/stoppage'
@@ -58,7 +59,7 @@ function takePenalty(playerId: string) {
       <ul class="takers">
         <li v-for="(t, i) in match.penaltyTakers" :key="t.player.id">
           <PosTag :player="t.player" />
-          <span class="name">{{ t.player.name }}<StarMark :star="t.player.star" /><SkillBadges :player="t.player" /></span>
+          <span class="name"><ShirtNumber :number="t.player.number" />{{ t.player.name }}<StarMark :star="t.player.star" /><SkillBadges :player="t.player" /></span>
           <strong>{{ t.player.overall }}</strong>
           <span class="chance" :class="{ best: i === 0 }">{{ percent(t.chance) }}</span>
           <button class="btn btn--sm" @click="takePenalty(t.player.id)">Bater</button>
@@ -126,7 +127,7 @@ function takePenalty(playerId: string) {
         <ul class="takers">
           <li v-for="(t, i) in match.shootoutTakers" :key="t.player.id">
             <PosTag :player="t.player" />
-            <span class="name">{{ t.player.name }}<StarMark :star="t.player.star" /><SkillBadges :player="t.player" /></span>
+            <span class="name"><ShirtNumber :number="t.player.number" />{{ t.player.name }}<StarMark :star="t.player.star" /><SkillBadges :player="t.player" /></span>
             <strong>{{ t.player.overall }}</strong>
             <span class="chance" :class="{ best: i === 0 }">{{ percent(t.chance) }}</span>
             <button class="btn btn--sm" @click="kick(t.player.id)">Bater</button>

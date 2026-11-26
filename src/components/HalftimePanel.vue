@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PosTag from './PosTag.vue'
+import ShirtNumber from './ShirtNumber.vue'
 import { computed, ref } from 'vue'
 import { clockLabel } from '../data/stoppage'
 import { PLAY_STYLES, POSITION_ORDER } from '../data/tactics'
@@ -111,7 +112,7 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
           >
             <PosTag :player="p" />
             <span class="name">
-              {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" />
+              <ShirtNumber :number="p.number" />{{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" />
               <span v-if="booked.has(p.id)" title="Amarelado: pode ser expulso">🟨</span>
             </span>
             <strong>{{ p.overall }}</strong>
@@ -139,7 +140,7 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
             @click="inSelection = inSelection === p.id ? null : p.id"
           >
             <PosTag :player="p" />
-            <span class="name">{{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /></span>
+            <span class="name"><ShirtNumber :number="p.number" />{{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /></span>
             <strong>{{ p.overall }}</strong>
             <StatBar :value="p.energy" />
           </li>

@@ -11,6 +11,7 @@ import { isAvailable, unavailableReason } from '../data/discipline'
 import { defenseSplit } from '../data/defense'
 import CountryTag from '../components/CountryTag.vue'
 import PosTag from '../components/PosTag.vue'
+import ShirtNumber from '../components/ShirtNumber.vue'
 import { FORMATIONS, markingOf, MARKINGS, PLAY_STYLES, playingPosition, POSITION_ORDER } from '../data/tactics'
 import { effectiveRating, useGameStore } from '../stores/game'
 import { useMatchStore } from '../stores/match'
@@ -106,6 +107,7 @@ function play() {
           >
             <input type="checkbox" :checked="p.starter" tabindex="-1" />
             <span class="name">
+              <ShirtNumber :number="p.number" />
               <PosTag v-if="p.position === 'DEF'" :player="p" />
               {{ p.name }}<StarMark :star="p.star" /><SkillBadges :player="p" /><PlayerStatus :player="p" />
               <span v-if="p.forSale" class="for-sale" title="Listado para venda">à venda</span>

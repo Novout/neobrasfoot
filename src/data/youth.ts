@@ -4,6 +4,7 @@ import { MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL } from './divisions'
 import { STAR_CHANCE, STAR_OVERALL_BOOST } from './stars'
 import { buildPlayer, randomPlayerName, SQUAD_TEMPLATE } from './teams'
 import { balanceDefRoles } from './defense'
+import { assignShirtNumbers } from './shirtNumbers'
 
 type Rng = ReturnType<typeof createRng>
 
@@ -99,6 +100,8 @@ export function renewSquad(team: Team, season: number, rng: Rng, { youth = true 
   team.players.push(...promoted, ...signed)
   // Defensores novos ganham a função que estiver faltando no elenco (lateral ou zagueiro).
   balanceDefRoles(team.players)
+  // Quem chegou ganha um número livre (quem já estava mantém o seu).
+  assignShirtNumbers(team.players)
 
   // Sem a base automática, garante o mínimo para o clube poder jogar.
   if (!youth) {
@@ -110,6 +113,7 @@ export function renewSquad(team: Team, season: number, rng: Rng, { youth = true 
     }
     while (team.players.filter((p) => p.position === 'GOL').length < MIN_GOALKEEPERS) sign('GOL')
     while (team.players.length < MIN_SQUAD) sign(gaps[extra % Math.max(gaps.length, 1)] ?? 'MEI')
+    assignShirtNumbers(team.players)
   }
   return { retired, promoted, signed }
 }
