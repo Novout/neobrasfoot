@@ -1,0 +1,3857 @@
+{
+ "fetchedAt": "2026-11-26",
+ "clubs": {
+  "de-bayern": {
+   "source": "https://en.wikipedia.org/wiki/FC_Bayern_Munich",
+   "revision": 1387956217,
+   "manager": "Vincent Kompany",
+   "players": [
+    {
+     "name": "Manuel Neuer",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1986-03-27",
+     "fame": 96
+    },
+    {
+     "name": "Dayot Upamecano",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1998-10-27",
+     "fame": 50
+    },
+    {
+     "name": "Kim Min-jae",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1996-11-15",
+     "fame": 42
+    },
+    {
+     "name": "Jonathan Tah",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1996-02-11",
+     "fame": 53
+    },
+    {
+     "name": "Joshua Kimmich",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1995-02-08",
+     "fame": 70
+    },
+    {
+     "name": "Serge Gnabry",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1995-07-14",
+     "fame": 56
+    },
+    {
+     "name": "Tom Bischof",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2005-06-28",
+     "fame": 24
+    },
+    {
+     "name": "Harry Kane",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1993-07-28",
+     "fame": 92
+    },
+    {
+     "name": "Jamal Musiala",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2003-02-26",
+     "fame": 60
+    },
+    {
+     "name": "Nathaniel Brown",
+     "position": "DEF",
+     "number": 11,
+     "defRole": "LAT",
+     "birthDate": "2003-06-16",
+     "fame": 32
+    },
+    {
+     "name": "Luis Díaz",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1997-01-13",
+     "fame": 59
+    },
+    {
+     "name": "Michael Olise",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2001-12-12",
+     "fame": 64
+    },
+    {
+     "name": "Alphonso Davies",
+     "position": "DEF",
+     "number": 19,
+     "defRole": "LAT",
+     "birthDate": "2000-11-02",
+     "fame": 54
+    },
+    {
+     "name": "Hiroki Itō",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "1999-05-12",
+     "fame": 41
+    },
+    {
+     "name": "Sacha Boey",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "LAT",
+     "birthDate": "2000-09-13",
+     "fame": 24
+    },
+    {
+     "name": "Sven Ulreich",
+     "position": "GOL",
+     "number": 26,
+     "birthDate": "1988-08-03",
+     "fame": 43
+    },
+    {
+     "name": "Konrad Laimer",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "1997-05-27",
+     "fame": 40
+    },
+    {
+     "name": "Ismael Saibari",
+     "position": "MEI",
+     "number": 34,
+     "birthDate": "2001-01-28",
+     "fame": 43
+    },
+    {
+     "name": "Bara Sapoko Ndiaye",
+     "position": "MEI",
+     "number": 39,
+     "birthDate": "2007-12-31",
+     "fame": 25
+    },
+    {
+     "name": "Jonas Urbig",
+     "position": "GOL",
+     "number": 40,
+     "birthDate": "2003-08-08",
+     "fame": 24
+    },
+    {
+     "name": "Lennart Karl",
+     "position": "MEI",
+     "number": 42,
+     "birthDate": "2008-02-22",
+     "fame": 30
+    },
+    {
+     "name": "Josip Stanišić",
+     "position": "DEF",
+     "number": 44,
+     "defRole": "LAT",
+     "birthDate": "2000-04-02",
+     "fame": 36
+    },
+    {
+     "name": "Aleksandar Pavlović",
+     "position": "MEI",
+     "number": 45,
+     "birthDate": "2004-05-03",
+     "fame": 38
+    },
+    {
+     "name": "David Santos Daiber",
+     "position": "MEI",
+     "number": 47,
+     "birthDate": "2007-01-10",
+     "fame": 7
+    }
+   ]
+  },
+  "de-dortmund": {
+   "source": "https://en.wikipedia.org/wiki/Borussia_Dortmund",
+   "revision": 1387957397,
+   "manager": "Niko Kovač",
+   "players": [
+    {
+     "name": "Gregor Kobel",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1997-12-06",
+     "fame": 41
+    },
+    {
+     "name": "Waldemar Anton",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1996-07-20",
+     "fame": 38
+    },
+    {
+     "name": "Nico Schlotterbeck",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1999-12-01",
+     "fame": 44
+    },
+    {
+     "name": "Ramy Bensebaini",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "1995-04-16",
+     "fame": 37
+    },
+    {
+     "name": "Jobe Bellingham",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2005-09-23",
+     "fame": 36
+    },
+    {
+     "name": "Felix Nmecha",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2000-10-10",
+     "fame": 40
+    },
+    {
+     "name": "Serhou Guirassy",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1996-03-12",
+     "fame": 38
+    },
+    {
+     "name": "Maximilian Beier",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2002-10-17",
+     "fame": 35
+    },
+    {
+     "name": "Carney Chukwuemeka",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2003-10-20",
+     "fame": 36
+    },
+    {
+     "name": "Ethan Nwaneri",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2007-03-21",
+     "fame": 37
+    },
+    {
+     "name": "Konstantinos Karetsas",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2007-11-19",
+     "fame": 20
+    },
+    {
+     "name": "Marcel Sabitzer",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "1994-03-17",
+     "fame": 47
+    },
+    {
+     "name": "Fábio Silva",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2002-07-19",
+     "fame": 30
+    },
+    {
+     "name": "Joane Gadou",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "ZAG",
+     "birthDate": "2007-01-17",
+     "fame": 14
+    },
+    {
+     "name": "Emre Can",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "1994-01-12",
+     "fame": 60
+    },
+    {
+     "name": "Daniel Svensson",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "2002-02-12",
+     "fame": 32
+    },
+    {
+     "name": "Joey Veerman",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "1998-11-19",
+     "fame": 32
+    },
+    {
+     "name": "Julian Ryerson",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "LAT",
+     "birthDate": "1997-11-17",
+     "fame": 42
+    },
+    {
+     "name": "Justin Lerma",
+     "position": "MEI",
+     "number": 28,
+     "birthDate": "2008-05-05",
+     "fame": 10
+    },
+    {
+     "name": "Patrick Drewes",
+     "position": "GOL",
+     "number": 30,
+     "birthDate": "1993-02-04",
+     "fame": 8
+    },
+    {
+     "name": "Silas Ostrzinski",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "2003-11-19",
+     "fame": 5
+    },
+    {
+     "name": "Alexander Meyer",
+     "position": "GOL",
+     "number": 33,
+     "birthDate": "1991-04-13",
+     "fame": 15
+    },
+    {
+     "name": "Kauã Prates",
+     "position": "DEF",
+     "number": 36,
+     "defRole": "LAT",
+     "birthDate": "2008-08-12",
+     "fame": 10
+    },
+    {
+     "name": "Filippo Mane",
+     "position": "DEF",
+     "number": 39,
+     "defRole": "ZAG",
+     "birthDate": "2005-03-08",
+     "fame": 11
+    },
+    {
+     "name": "Samuele Inácio",
+     "position": "ATA",
+     "number": 40,
+     "birthDate": "2008-04-02",
+     "fame": 15
+    },
+    {
+     "name": "Mathis Albert",
+     "position": "ATA",
+     "number": 41,
+     "birthDate": "2009-05-21",
+     "fame": 12
+    },
+    {
+     "name": "Enzo dos Santos",
+     "position": "MEI",
+     "number": 44,
+     "birthDate": "2009-01-28",
+     "fame": 9
+    },
+    {
+     "name": "Giannis Konstantelias",
+     "position": "MEI",
+     "number": 45,
+     "birthDate": "2003-03-05",
+     "fame": 15
+    },
+    {
+     "name": "Mussa Kaba",
+     "position": "MEI",
+     "number": 48,
+     "birthDate": "2008-11-17",
+     "fame": 2
+    },
+    {
+     "name": "Luca Reggiani",
+     "position": "DEF",
+     "number": 49,
+     "defRole": "ZAG",
+     "birthDate": "2008-01-09",
+     "fame": 12
+    }
+   ]
+  },
+  "de-leverkusen": {
+   "source": "https://en.wikipedia.org/wiki/Bayer_04_Leverkusen",
+   "revision": 1387958512,
+   "manager": "Carles Martínez Novell",
+   "players": [
+    {
+     "name": "Mark Flekken",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1993-06-13",
+     "fame": 33
+    },
+    {
+     "name": "Facundo Medina",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1999-05-28",
+     "fame": 34
+    },
+    {
+     "name": "Miguel Gutiérrez",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2001-07-27",
+     "fame": 28
+    },
+    {
+     "name": "Jarell Quansah",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2003-01-29",
+     "fame": 37
+    },
+    {
+     "name": "Loïc Badé",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2000-04-11",
+     "fame": 30
+    },
+    {
+     "name": "Equi Fernández",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2002-07-25",
+     "fame": 22
+    },
+    {
+     "name": "Jonas Hofmann",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1992-07-14",
+     "fame": 39
+    },
+    {
+     "name": "Robert Andrich",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1994-09-22",
+     "fame": 40
+    },
+    {
+     "name": "Afonso Moreira",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2005-03-19",
+     "fame": 10
+    },
+    {
+     "name": "Malik Tillman",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2002-05-28",
+     "fame": 33
+    },
+    {
+     "name": "Martin Terrier",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1997-03-04",
+     "fame": 27
+    },
+    {
+     "name": "Edmond Tapsoba",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "ZAG",
+     "birthDate": "1999-02-02",
+     "fame": 35
+    },
+    {
+     "name": "Patrik Schick",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1996-01-24",
+     "fame": 49
+    },
+    {
+     "name": "Tim Oermann",
+     "position": "DEF",
+     "number": 15,
+     "birthDate": "2003-10-06",
+     "fame": 10
+    },
+    {
+     "name": "Lucas Vázquez",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "1991-07-01",
+     "fame": 60
+    },
+    {
+     "name": "Kennet Eichhorn",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2009-07-27",
+     "fame": 15
+    },
+    {
+     "name": "Moussa Diaby",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1999-07-07",
+     "fame": 35
+    },
+    {
+     "name": "Guéla Doué",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "LAT",
+     "birthDate": "2002-10-17",
+     "fame": 28
+    },
+    {
+     "name": "Victor Boniface",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2000-12-23",
+     "fame": 34
+    },
+    {
+     "name": "Nathan Tella",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "1999-07-05",
+     "fame": 26
+    },
+    {
+     "name": "Aleix García",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "1997-06-28",
+     "fame": 33
+    },
+    {
+     "name": "Janis Blaswich",
+     "position": "GOL",
+     "number": 28,
+     "birthDate": "1991-05-02",
+     "fame": 21
+    },
+    {
+     "name": "Eliesse Ben Seghir",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "2005-02-16",
+     "fame": 27
+    },
+    {
+     "name": "Ibrahim Maza",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "2005-11-24",
+     "fame": 29
+    },
+    {
+     "name": "Christian Kofane",
+     "position": "ATA",
+     "number": 35,
+     "birthDate": "2006-07-26",
+     "fame": 17
+    },
+    {
+     "name": "Niklas Lomb",
+     "position": "GOL",
+     "number": 36,
+     "birthDate": "1993-07-28",
+     "fame": 15
+    },
+    {
+     "name": "Montrell Culbreath",
+     "position": "MEI",
+     "number": 42,
+     "birthDate": "2007-08-29",
+     "fame": 11
+    }
+   ]
+  },
+  "de-leipzig": {
+   "source": "https://en.wikipedia.org/wiki/RB_Leipzig",
+   "revision": 1388085488,
+   "manager": "Martín Demichelis",
+   "players": [
+    {
+     "name": "Ørjan Nyland",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1990-09-10",
+     "fame": 41
+    },
+    {
+     "name": "Abdoul Koné",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2005-04-22",
+     "fame": 7
+    },
+    {
+     "name": "Maxime Estève",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2002-05-26",
+     "fame": 16
+    },
+    {
+     "name": "Willi Orbán",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1992-11-03",
+     "fame": 35
+    },
+    {
+     "name": "Ezechiel Banzuzi",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2005-02-16",
+     "fame": 11
+    },
+    {
+     "name": "Antonio Nusa",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2005-04-17",
+     "fame": 38
+    },
+    {
+     "name": "Assan Ouédraogo",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2006-05-09",
+     "fame": 28
+    },
+    {
+     "name": "Marc Guiu",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2006-01-04",
+     "fame": 34
+    },
+    {
+     "name": "Brajan Gruda",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2004-05-31",
+     "fame": 22
+    },
+    {
+     "name": "Johan Bakayoko",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2003-04-20",
+     "fame": 28
+    },
+    {
+     "name": "Nicolas Seiwald",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "2001-05-04",
+     "fame": 34
+    },
+    {
+     "name": "Christoph Baumgartner",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1999-08-01",
+     "fame": 40
+    },
+    {
+     "name": "Lukas Klostermann",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "1996-06-03",
+     "fame": 38
+    },
+    {
+     "name": "Ridle Baku",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "LAT",
+     "birthDate": "1998-04-08",
+     "fame": 28
+    },
+    {
+     "name": "Rocco Reitz",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2002-05-29",
+     "fame": 18
+    },
+    {
+     "name": "Neil El Aynaoui",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2001-07-02",
+     "fame": 29
+    },
+    {
+     "name": "David Raum",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "1998-04-22",
+     "fame": 38
+    },
+    {
+     "name": "Castello Lukeba",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "ZAG",
+     "birthDate": "2002-12-17",
+     "fame": 29
+    },
+    {
+     "name": "Leopold Zingerle",
+     "position": "GOL",
+     "number": 25,
+     "birthDate": "1994-04-10",
+     "fame": 12
+    },
+    {
+     "name": "Maarten Vandevoordt",
+     "position": "GOL",
+     "number": 26,
+     "birthDate": "2002-02-26",
+     "fame": 22
+    },
+    {
+     "name": "Tidiam Gomis",
+     "position": "ATA",
+     "number": 27,
+     "birthDate": "2006-08-08",
+     "fame": 12
+    },
+    {
+     "name": "Christopher Nkunku",
+     "position": "ATA",
+     "number": 28,
+     "birthDate": "1997-11-14",
+     "fame": 47
+    },
+    {
+     "name": "Andrija Maksimović",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "2007-06-05",
+     "fame": 13
+    },
+    {
+     "name": "Max Finkgräfe",
+     "position": "DEF",
+     "number": 35,
+     "defRole": "LAT",
+     "birthDate": "2004-03-27",
+     "fame": 9
+    },
+    {
+     "name": "Benno Kaltefleiter",
+     "position": "MEI",
+     "number": 37,
+     "fame": 0
+    },
+    {
+     "name": "Benjamin Henrichs",
+     "position": "DEF",
+     "number": 39,
+     "defRole": "LAT",
+     "birthDate": "1997-02-23",
+     "fame": 40
+    },
+    {
+     "name": "Rômulo",
+     "position": "ATA",
+     "number": 40,
+     "birthDate": "2002-02-08",
+     "fame": 13
+    },
+    {
+     "name": "Samba Konaté",
+     "position": "ATA",
+     "number": 45,
+     "birthDate": "2009-02-27",
+     "fame": 4
+    },
+    {
+     "name": "Viggo Gebel",
+     "position": "MEI",
+     "number": 47,
+     "birthDate": "2007-01-01",
+     "fame": 5
+    }
+   ]
+  },
+  "de-stuttgart": {
+   "source": "https://en.wikipedia.org/wiki/VfB_Stuttgart",
+   "revision": 1387959423,
+   "manager": "Sebastian Hoeneß",
+   "players": [
+    {
+     "name": "Fabian Bredlow",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1995-03-02",
+     "fame": 18
+    },
+    {
+     "name": "Ameen Al-Dakhil",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2002-03-06",
+     "fame": 17
+    },
+    {
+     "name": "Ramon Hendriks",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2001-07-18",
+     "fame": 11
+    },
+    {
+     "name": "Josha Vagnoman",
+     "position": "DEF",
+     "number": 4,
+     "birthDate": "2000-12-11",
+     "fame": 21
+    },
+    {
+     "name": "Angelo Stiller",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2001-04-04",
+     "fame": 32
+    },
+    {
+     "name": "Maximilian Mittelstädt",
+     "position": "DEF",
+     "number": 7,
+     "defRole": "LAT",
+     "birthDate": "1997-03-18",
+     "fame": 37
+    },
+    {
+     "name": "Tiago Tomás",
+     "position": "ATA",
+     "number": 8,
+     "birthDate": "2002-06-16",
+     "fame": 18
+    },
+    {
+     "name": "Ermedin Demirović",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1998-03-25",
+     "fame": 34
+    },
+    {
+     "name": "Chris Führich",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1998-01-09",
+     "fame": 31
+    },
+    {
+     "name": "Bilal El Khannouss",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "2004-05-10",
+     "fame": 32
+    },
+    {
+     "name": "Luca Jaquez",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "ZAG",
+     "birthDate": "2003-06-02",
+     "fame": 24
+    },
+    {
+     "name": "Atakan Karazor",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "1996-10-13",
+     "fame": 22
+    },
+    {
+     "name": "Dženan Pejčinović",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2005-02-15",
+     "fame": 15
+    },
+    {
+     "name": "Jamie Leweling",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2001-02-26",
+     "fame": 31
+    },
+    {
+     "name": "Leonidas Stergiou",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "ZAG",
+     "birthDate": "2002-03-03",
+     "fame": 25
+    },
+    {
+     "name": "Grischa Prömel",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "1995-01-09",
+     "fame": 27
+    },
+    {
+     "name": "Lorenz Assignon",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "2000-06-22",
+     "fame": 11
+    },
+    {
+     "name": "Dan-Axel Zagadou",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "ZAG",
+     "birthDate": "1999-06-03",
+     "fame": 33
+    },
+    {
+     "name": "Jeff Chabot",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "ZAG",
+     "birthDate": "1998-02-12",
+     "fame": 15
+    },
+    {
+     "name": "Deniz Undav",
+     "position": "ATA",
+     "number": 26,
+     "birthDate": "1996-07-19",
+     "fame": 48
+    },
+    {
+     "name": "Nikolas Nartey",
+     "position": "MEI",
+     "number": 28,
+     "birthDate": "2000-02-22",
+     "fame": 17
+    },
+    {
+     "name": "Finn Jeltsch",
+     "position": "DEF",
+     "number": 29,
+     "defRole": "ZAG",
+     "birthDate": "2006-07-17",
+     "fame": 13
+    },
+    {
+     "name": "Justin Diehl",
+     "position": "ATA",
+     "number": 31,
+     "birthDate": "2004-01-01",
+     "fame": 8
+    },
+    {
+     "name": "Marius Funk",
+     "position": "GOL",
+     "number": 33,
+     "birthDate": "1996-01-01",
+     "fame": 9
+    },
+    {
+     "name": "Ertuğrul Yiğit",
+     "position": "MEI",
+     "number": 39,
+     "fame": 0
+    },
+    {
+     "name": "Dennis Seimen",
+     "position": "GOL",
+     "number": 41,
+     "birthDate": "2005-12-01",
+     "fame": 8
+    },
+    {
+     "name": "Jarzinho Malanga",
+     "position": "ATA",
+     "number": 43,
+     "birthDate": "2006-07-10",
+     "fame": 6
+    },
+    {
+     "name": "Leo Sauer",
+     "position": "ATA",
+     "number": 44,
+     "birthDate": "2005-12-16",
+     "fame": 20
+    },
+    {
+     "name": "Stefan Drljača",
+     "position": "GOL",
+     "number": 46,
+     "birthDate": "1999-04-20",
+     "fame": 4
+    },
+    {
+     "name": "Yanik Spalt",
+     "position": "MEI",
+     "number": 47,
+     "birthDate": "2007-09-03",
+     "fame": 4
+    }
+   ]
+  },
+  "de-frankfurt": {
+   "source": "https://en.wikipedia.org/wiki/Eintracht_Frankfurt",
+   "revision": 1387960508,
+   "manager": "Adi Hütter",
+   "players": [
+    {
+     "name": "Noah Atubolu",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-01-01",
+     "fame": 14
+    },
+    {
+     "name": "Elias Baum",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2005-10-26",
+     "fame": 12
+    },
+    {
+     "name": "Lilian Brassier",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1999-11-02",
+     "fame": 11
+    },
+    {
+     "name": "Robin Koch",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1996-07-17",
+     "fame": 37
+    },
+    {
+     "name": "Otávio",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2005-11-25",
+     "fame": 4
+    },
+    {
+     "name": "Oscar Højlund",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2005-01-04",
+     "fame": 15
+    },
+    {
+     "name": "Ansgar Knauff",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2002-01-10",
+     "fame": 22
+    },
+    {
+     "name": "Farès Chaïbi",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2002-11-28",
+     "fame": 30
+    },
+    {
+     "name": "Jonathan Burkardt",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2000-07-11",
+     "fame": 25
+    },
+    {
+     "name": "Younes Ebnoutalib",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2003-09-13",
+     "fame": 15
+    },
+    {
+     "name": "Noël Aséko",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2005-11-22",
+     "fame": 8
+    },
+    {
+     "name": "Ritsu Dōan",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "1998-06-16",
+     "fame": 54
+    },
+    {
+     "name": "Timothy Chandler",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "1990-03-29",
+     "fame": 31
+    },
+    {
+     "name": "Niko Iličević",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2010-01-01",
+     "fame": 5
+    },
+    {
+     "name": "Raphael Onyedika",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "2001-04-19",
+     "fame": 21
+    },
+    {
+     "name": "Keita Kosugi",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "LAT",
+     "birthDate": "2006-03-18",
+     "fame": 18
+    },
+    {
+     "name": "Mario Götze",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "1992-06-03",
+     "fame": 75
+    },
+    {
+     "name": "Ayoube Amaimouni",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "2004-11-30",
+     "fame": 23
+    },
+    {
+     "name": "Love Arrhov",
+     "position": "MEI",
+     "number": 31,
+     "birthDate": "2008-05-17",
+     "fame": 9
+    },
+    {
+     "name": "Jens Grahl",
+     "position": "GOL",
+     "number": 33,
+     "birthDate": "1988-09-22",
+     "fame": 18
+    },
+    {
+     "name": "Nnamdi Collins",
+     "position": "DEF",
+     "number": 34,
+     "defRole": "LAT",
+     "birthDate": "2004-01-10",
+     "fame": 20
+    },
+    {
+     "name": "Malik Pimpong",
+     "position": "ATA",
+     "number": 35,
+     "birthDate": "2008-01-01",
+     "fame": 4
+    },
+    {
+     "name": "Jeremiaha Maluze",
+     "position": "DEF",
+     "number": 37,
+     "defRole": "ZAG",
+     "birthDate": "2004-11-11",
+     "fame": 2
+    },
+    {
+     "name": "Amil Šiljević",
+     "position": "GOL",
+     "number": 39,
+     "fame": 0
+    },
+    {
+     "name": "Kauã Santos",
+     "position": "GOL",
+     "number": 40,
+     "birthDate": "2003-04-11",
+     "fame": 13
+    },
+    {
+     "name": "Can Uzun",
+     "position": "ATA",
+     "number": 42,
+     "birthDate": "2005-11-11",
+     "fame": 25
+    },
+    {
+     "name": "Jessic Ngankam",
+     "position": "ATA",
+     "number": 44,
+     "birthDate": "2000-07-20",
+     "fame": 13
+    }
+   ]
+  },
+  "de-freiburg": {
+   "source": "https://en.wikipedia.org/wiki/SC_Freiburg",
+   "revision": 1387964105,
+   "manager": "Julian Schuster",
+   "stadium": "Europa-Park Stadion",
+   "players": [
+    {
+     "name": "Mio Backhaus",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2004-04-16",
+     "fame": 14
+    },
+    {
+     "name": "Philipp Lienhart",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1996-07-11",
+     "fame": 33
+    },
+    {
+     "name": "Anthony Jung",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "1991-11-03",
+     "fame": 15
+    },
+    {
+     "name": "Patrick Osterhage",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2000-02-01",
+     "fame": 8
+    },
+    {
+     "name": "Derry Scherhant",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2002-11-10",
+     "fame": 13
+    },
+    {
+     "name": "Maximilian Eggestein",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1996-12-08",
+     "fame": 30
+    },
+    {
+     "name": "Lucas Höler",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1994-07-10",
+     "fame": 16
+    },
+    {
+     "name": "Yuito Suzuki",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2001-10-25",
+     "fame": 31
+    },
+    {
+     "name": "Yannik Engelhardt",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2001-02-07",
+     "fame": 10
+    },
+    {
+     "name": "Lukas Kübler",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "LAT",
+     "birthDate": "1992-08-30",
+     "fame": 12
+    },
+    {
+     "name": "Niklas Beste",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "1999-01-04",
+     "fame": 20
+    },
+    {
+     "name": "Rihito Yamamoto",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2001-12-12",
+     "fame": 27
+    },
+    {
+     "name": "Florian Müller",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "1997-11-13",
+     "fame": 20
+    },
+    {
+     "name": "Cyriaque Irié",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2005-06-20",
+     "fame": 10
+    },
+    {
+     "name": "Florent Muslija",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "1998-07-06",
+     "fame": 13
+    },
+    {
+     "name": "Jannik Huth",
+     "position": "GOL",
+     "number": 24,
+     "birthDate": "1994-04-15",
+     "fame": 21
+    },
+    {
+     "name": "Berkay Yılmaz",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "LAT",
+     "birthDate": "2005-02-25",
+     "fame": 6
+    },
+    {
+     "name": "Matthias Ginter",
+     "position": "DEF",
+     "number": 28,
+     "defRole": "ZAG",
+     "birthDate": "1994-01-19",
+     "fame": 53
+    },
+    {
+     "name": "Philipp Treu",
+     "position": "DEF",
+     "number": 29,
+     "defRole": "LAT",
+     "birthDate": "2000-12-03",
+     "fame": 12
+    },
+    {
+     "name": "Christian Günter",
+     "position": "DEF",
+     "number": 30,
+     "defRole": "LAT",
+     "birthDate": "1993-02-28",
+     "fame": 34
+    },
+    {
+     "name": "Igor Matanović",
+     "position": "ATA",
+     "number": 31,
+     "birthDate": "2003-03-31",
+     "fame": 28
+    },
+    {
+     "name": "Vincenzo Grifo",
+     "position": "MEI",
+     "number": 32,
+     "birthDate": "1993-04-07",
+     "fame": 27
+    },
+    {
+     "name": "Jordy Makengo",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "2001-08-03",
+     "fame": 8
+    },
+    {
+     "name": "Max Rosenfelder",
+     "position": "DEF",
+     "number": 37,
+     "defRole": "ZAG",
+     "birthDate": "2003-02-10",
+     "fame": 12
+    },
+    {
+     "name": "Rouven Tarnutzer",
+     "position": "MEI",
+     "number": 39,
+     "fame": 0
+    },
+    {
+     "name": "Keisuke Gotō",
+     "position": "ATA",
+     "number": 42,
+     "birthDate": "2005-06-03",
+     "fame": 26
+    },
+    {
+     "name": "Bruno Ogbus",
+     "position": "DEF",
+     "number": 43,
+     "defRole": "LAT",
+     "birthDate": "2005-12-17",
+     "fame": 7
+    }
+   ]
+  },
+  "de-gladbach": {
+   "source": "https://en.wikipedia.org/wiki/Borussia_M%C3%B6nchengladbach",
+   "revision": 1387956988,
+   "manager": "Alexander Blessin",
+   "players": [
+    {
+     "name": "Moritz Nicolas",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1997-10-21",
+     "fame": 12
+    },
+    {
+     "name": "Fabio Chiarodia",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2005-06-05",
+     "fame": 11
+    },
+    {
+     "name": "Isac Lidberg",
+     "position": "ATA",
+     "number": 3,
+     "birthDate": "1998-09-08",
+     "fame": 12
+    },
+    {
+     "name": "Kevin Diks",
+     "position": "DEF",
+     "number": 4,
+     "birthDate": "1996-10-06",
+     "fame": 28
+    },
+    {
+     "name": "Jan Leszczyński",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2007-04-12",
+     "fame": 3
+    },
+    {
+     "name": "Kō Itakura",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1997-01-27",
+     "fame": 48
+    },
+    {
+     "name": "Kevin Stöger",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1993-08-27",
+     "fame": 18
+    },
+    {
+     "name": "Enzo Leopold",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2000-07-23",
+     "fame": 5
+    },
+    {
+     "name": "Franck Honorat",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1996-08-11",
+     "fame": 16
+    },
+    {
+     "name": "Florian Neuhaus",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1997-03-16",
+     "fame": 35
+    },
+    {
+     "name": "Tim Kleindienst",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1995-08-31",
+     "fame": 25
+    },
+    {
+     "name": "Daiki Hashioka",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "LAT",
+     "birthDate": "1999-05-17",
+     "fame": 41
+    },
+    {
+     "name": "Philipp Sander",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "1998-02-21",
+     "fame": 8
+    },
+    {
+     "name": "Jens Castrop",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2003-07-29",
+     "fame": 24
+    },
+    {
+     "name": "Shūto Machino",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "1999-09-30",
+     "fame": 34
+    },
+    {
+     "name": "Nicolas Kühn",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2000-01-01",
+     "fame": 18
+    },
+    {
+     "name": "David Herold",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "LAT",
+     "birthDate": "2003-02-20",
+     "fame": 5
+    },
+    {
+     "name": "Tobias Sippel",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "1988-03-22",
+     "fame": 20
+    },
+    {
+     "name": "Yukhym Konoplya",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "1999-08-26",
+     "fame": 17
+    },
+    {
+     "name": "Jan Olschowsky",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "2001-11-18",
+     "fame": 5
+    },
+    {
+     "name": "Robin Hack",
+     "position": "ATA",
+     "number": 25,
+     "birthDate": "1998-08-27",
+     "fame": 19
+    },
+    {
+     "name": "Lukas Ullrich",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "LAT",
+     "birthDate": "2004-03-16",
+     "fame": 11
+    },
+    {
+     "name": "Fritz Fleck",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "2007-05-30",
+     "fame": 3
+    },
+    {
+     "name": "Joe Scally",
+     "position": "DEF",
+     "number": 29,
+     "defRole": "LAT",
+     "birthDate": "2002-12-31",
+     "fame": 30
+    },
+    {
+     "name": "Daniel Batz",
+     "position": "GOL",
+     "number": 33,
+     "birthDate": "1991-01-12",
+     "fame": 12
+    },
+    {
+     "name": "Mathieu Nguefack",
+     "position": "MEI",
+     "number": 34,
+     "birthDate": "2008-05-14",
+     "fame": 3
+    },
+    {
+     "name": "Josiah Uwakhonye",
+     "position": "ATA",
+     "number": 35,
+     "fame": 0
+    },
+    {
+     "name": "Wael Mohya",
+     "position": "MEI",
+     "number": 36,
+     "birthDate": "2008-12-31",
+     "fame": 8
+    },
+    {
+     "name": "Hugo Bolin",
+     "position": "ATA",
+     "number": 38,
+     "birthDate": "2003-07-24",
+     "fame": 11
+    },
+    {
+     "name": "Iaia Manco Danfa",
+     "position": "ATA",
+     "number": 39,
+     "birthDate": "2007-04-06",
+     "fame": 2
+    },
+    {
+     "name": "Zento Uno",
+     "position": "MEI",
+     "number": 47,
+     "birthDate": "2003-11-20",
+     "fame": 14
+    },
+    {
+     "name": "Lion Schweers",
+     "position": "DEF",
+     "number": 48,
+     "defRole": "ZAG",
+     "birthDate": "1996-04-01",
+     "fame": 3
+    }
+   ]
+  },
+  "de-hoffenheim": {
+   "source": "https://en.wikipedia.org/wiki/TSG_1899_Hoffenheim",
+   "revision": 1387985068,
+   "manager": "Christian Ilzer",
+   "players": [
+    {
+     "name": "Oliver Baumann",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1990-06-02",
+     "fame": 38
+    },
+    {
+     "name": "Robin Hranáč",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2000-01-29",
+     "fame": 28
+    },
+    {
+     "name": "Sean Dulic",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2005-06-05",
+     "fame": 3
+    },
+    {
+     "name": "Ozan Kabak",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2000-03-25",
+     "fame": 35
+    },
+    {
+     "name": "Leon Avdullahu",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2004-02-23",
+     "fame": 9
+    },
+    {
+     "name": "Patrick Wimmer",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2001-05-30",
+     "fame": 31
+    },
+    {
+     "name": "Max Moerstedt",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2006-01-15",
+     "fame": 10
+    },
+    {
+     "name": "Adam Hložek",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2002-07-25",
+     "fame": 37
+    },
+    {
+     "name": "Fisnik Asllani",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2002-08-08",
+     "fame": 16
+    },
+    {
+     "name": "Bernardo",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "1995-05-14",
+     "fame": 22
+    },
+    {
+     "name": "Adam Daghim",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "2005-09-28",
+     "fame": 14
+    },
+    {
+     "name": "Valentin Gendrey",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2000-06-21",
+     "fame": 9
+    },
+    {
+     "name": "Luis Engelns",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2007-03-11",
+     "fame": 5
+    },
+    {
+     "name": "Nathan De Cat",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2008-07-19",
+     "fame": 14
+    },
+    {
+     "name": "Wouter Burger",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2001-02-16",
+     "fame": 13
+    },
+    {
+     "name": "Tim Lemperle",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2002-02-05",
+     "fame": 9
+    },
+    {
+     "name": "Bambasé Conté",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2003-07-07",
+     "fame": 9
+    },
+    {
+     "name": "Albian Hajdari",
+     "position": "DEF",
+     "number": 21,
+     "birthDate": "2003-05-18",
+     "fame": 10
+    },
+    {
+     "name": "Alexander Prass",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2001-05-26",
+     "fame": 28
+    },
+    {
+     "name": "Andrej Kramarić",
+     "position": "ATA",
+     "number": 27,
+     "birthDate": "1991-06-19",
+     "fame": 53
+    },
+    {
+     "name": "Kōki Machida",
+     "position": "DEF",
+     "number": 28,
+     "defRole": "ZAG",
+     "birthDate": "1997-08-25",
+     "fame": 32
+    },
+    {
+     "name": "Natnael Abraha",
+     "position": "DEF",
+     "number": 29,
+     "fame": 0
+    },
+    {
+     "name": "Cajetan Lenz",
+     "position": "MEI",
+     "number": 32,
+     "birthDate": "2006-06-16",
+     "fame": 5
+    },
+    {
+     "name": "Vladimír Coufal",
+     "position": "DEF",
+     "number": 34,
+     "defRole": "LAT",
+     "birthDate": "1992-08-22",
+     "fame": 36
+    },
+    {
+     "name": "Lúkas Petersson",
+     "position": "GOL",
+     "number": 36,
+     "birthDate": "2004-02-09",
+     "fame": 3
+    },
+    {
+     "name": "Luca Philipp",
+     "position": "GOL",
+     "number": 37,
+     "fame": 0
+    },
+    {
+     "name": "Mats Rots",
+     "position": "DEF",
+     "number": 39,
+     "defRole": "LAT",
+     "birthDate": "2006-03-11",
+     "fame": 9
+    }
+   ]
+  },
+  "de-werder": {
+   "source": "https://en.wikipedia.org/wiki/SV_Werder_Bremen",
+   "revision": 1388015840,
+   "manager": "Daniel Thioune",
+   "stadium": "Weserstadion",
+   "players": [
+    {
+     "name": "Karl Hein",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-04-13",
+     "fame": 32
+    },
+    {
+     "name": "Olivier Deman",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2000-04-06",
+     "fame": 14
+    },
+    {
+     "name": "Oskar Wójcik",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2003-07-21",
+     "fame": 6
+    },
+    {
+     "name": "Niklas Stark",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1995-04-14",
+     "fame": 28
+    },
+    {
+     "name": "Amos Pieper",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1998-01-17",
+     "fame": 19
+    },
+    {
+     "name": "Jens Stage",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1996-11-08",
+     "fame": 17
+    },
+    {
+     "name": "Mitchell Weiser",
+     "position": "DEF",
+     "number": 8,
+     "defRole": "LAT",
+     "birthDate": "1994-04-21",
+     "fame": 33
+    },
+    {
+     "name": "Keke Topp",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2004-01-01",
+     "fame": 9
+    },
+    {
+     "name": "Niclas Füllkrug",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1993-02-09",
+     "fame": 51
+    },
+    {
+     "name": "Justin Njinmah",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2000-11-15",
+     "fame": 10
+    },
+    {
+     "name": "Arthur",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "2003-03-17",
+     "fame": 18
+    },
+    {
+     "name": "Senne Lynen",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1999-02-19",
+     "fame": 12
+    },
+    {
+     "name": "Ludovit Reis",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2000-06-01",
+     "fame": 20
+    },
+    {
+     "name": "Moussa N'Diaye",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "2002-06-18",
+     "fame": 21
+    },
+    {
+     "name": "Marco Grüll",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "1998-07-06",
+     "fame": 18
+    },
+    {
+     "name": "Eren Dinkçi",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2001-12-13",
+     "fame": 14
+    },
+    {
+     "name": "Kenny Quetant",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2006-07-17",
+     "fame": 6
+    },
+    {
+     "name": "Chuki",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2004-04-29",
+     "fame": 8
+    },
+    {
+     "name": "Dariusz Stalmach",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2005-12-08",
+     "fame": 9
+    },
+    {
+     "name": "Markus Kolke",
+     "position": "GOL",
+     "number": 25,
+     "birthDate": "1990-08-18",
+     "fame": 5
+    },
+    {
+     "name": "Cedric Itten",
+     "position": "ATA",
+     "number": 26,
+     "birthDate": "1996-12-27",
+     "fame": 27
+    },
+    {
+     "name": "Felix Agu",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "LAT",
+     "birthDate": "1999-09-27",
+     "fame": 17
+    },
+    {
+     "name": "Skelly Alvero",
+     "position": "MEI",
+     "number": 28,
+     "birthDate": "2002-05-04",
+     "fame": 9
+    },
+    {
+     "name": "Salim Musah",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "2006-02-22",
+     "fame": 4
+    },
+    {
+     "name": "Alexander Schlager",
+     "position": "GOL",
+     "number": 30,
+     "birthDate": "1996-02-01",
+     "fame": 32
+    },
+    {
+     "name": "Marco Friedl",
+     "position": "DEF",
+     "number": 32,
+     "defRole": "LAT",
+     "birthDate": "1998-03-16",
+     "fame": 35
+    },
+    {
+     "name": "Mick Schmetgens",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "ZAG",
+     "birthDate": "2007-09-09",
+     "fame": 7
+    },
+    {
+     "name": "Darwin Soylu",
+     "position": "MEI",
+     "number": 34,
+     "fame": 0
+    },
+    {
+     "name": "Luca Höcker",
+     "position": "DEF",
+     "number": 35,
+     "fame": 0
+    },
+    {
+     "name": "Mats Heitmann",
+     "position": "DEF",
+     "number": 36,
+     "fame": 0
+    },
+    {
+     "name": "Stefan Smarkalev",
+     "position": "GOL",
+     "number": 37,
+     "birthDate": "2007-05-14",
+     "fame": 1
+    },
+    {
+     "name": "Paul Erevbenagie",
+     "position": "ATA",
+     "number": 38,
+     "birthDate": "2007-08-19",
+     "fame": 4
+    },
+    {
+     "name": "Youri Regeer",
+     "position": "MEI",
+     "number": 44,
+     "birthDate": "2003-08-18",
+     "fame": 11
+    }
+   ]
+  },
+  "de-mainz": {
+   "source": "https://en.wikipedia.org/wiki/1._FSV_Mainz_05",
+   "revision": 1387964129,
+   "manager": "Urs Fischer",
+   "players": [
+    {
+     "name": "Alexander Schwolow",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1992-06-02",
+     "fame": 24
+    },
+    {
+     "name": "Phillipp Mwene",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1994-01-29",
+     "fame": 29
+    },
+    {
+     "name": "Fabio Gruber",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2002-09-03",
+     "fame": 5
+    },
+    {
+     "name": "Stefan Posch",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "1997-05-14",
+     "fame": 33
+    },
+    {
+     "name": "Eric Martel",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2002-04-29",
+     "fame": 16
+    },
+    {
+     "name": "Kaishū Sano",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2000-12-30",
+     "fame": 35
+    },
+    {
+     "name": "Lee Jae-sung",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1992-08-10",
+     "fame": 32
+    },
+    {
+     "name": "Paul Nebel",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2002-10-10",
+     "fame": 15
+    },
+    {
+     "name": "Phillip Tietz",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1997-07-09",
+     "fame": 7
+    },
+    {
+     "name": "Nadiem Amiri",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1996-10-27",
+     "fame": 39
+    },
+    {
+     "name": "Ransford-Yeboah Königsdörffer",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-09-13",
+     "fame": 13
+    },
+    {
+     "name": "Lennard Maloney",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "1999-10-08",
+     "fame": 16
+    },
+    {
+     "name": "Stefan Bell",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "1991-08-24",
+     "fame": 23
+    },
+    {
+     "name": "Benedict Hollerbach",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2001-05-17",
+     "fame": 11
+    },
+    {
+     "name": "Anthony Caci",
+     "position": "DEF",
+     "number": 19,
+     "defRole": "LAT",
+     "birthDate": "1997-07-01",
+     "fame": 15
+    },
+    {
+     "name": "Otto Ruoppi",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2006-01-31",
+     "fame": 6
+    },
+    {
+     "name": "Danny da Costa",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "1993-07-13",
+     "fame": 20
+    },
+    {
+     "name": "Sheraldo Becker",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "1995-02-09",
+     "fame": 21
+    },
+    {
+     "name": "Sōta Kawasaki",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2001-07-30",
+     "fame": 24
+    },
+    {
+     "name": "Silas",
+     "position": "ATA",
+     "number": 26,
+     "birthDate": "1998-10-06",
+     "fame": 25
+    },
+    {
+     "name": "Robin Zentner",
+     "position": "GOL",
+     "number": 27,
+     "birthDate": "1994-10-28",
+     "fame": 17
+    },
+    {
+     "name": "Silvan Widmer",
+     "position": "DEF",
+     "number": 30,
+     "defRole": "LAT",
+     "birthDate": "1993-03-05",
+     "fame": 38
+    },
+    {
+     "name": "Dominik Kohr",
+     "position": "DEF",
+     "number": 31,
+     "defRole": "ZAG",
+     "birthDate": "1994-01-31",
+     "fame": 22
+    },
+    {
+     "name": "Alynho Haïdara",
+     "position": "ATA",
+     "number": 39,
+     "birthDate": "2008-07-26",
+     "fame": 2
+    },
+    {
+     "name": "Maximilian Kinzig",
+     "position": "GOL",
+     "number": 40,
+     "fame": 0
+    },
+    {
+     "name": "Kacper Potulski",
+     "position": "DEF",
+     "number": 48,
+     "defRole": "ZAG",
+     "birthDate": "2007-10-19",
+     "fame": 9
+    }
+   ]
+  },
+  "de-union-berlin": {
+   "source": "https://en.wikipedia.org/wiki/1._FC_Union_Berlin",
+   "revision": 1388015491,
+   "manager": "Mauro Lustrinelli",
+   "stadium": "Stadion An der Alten Försterei",
+   "players": [
+    {
+     "name": "Frederik Rønnow",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1992-08-04",
+     "fame": 34
+    },
+    {
+     "name": "Felix Uduokhai",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1997-09-09",
+     "fame": 21
+    },
+    {
+     "name": "Andrik Markgraf",
+     "position": "DEF",
+     "number": 3,
+     "fame": 0
+    },
+    {
+     "name": "Zeno Van Den Bosch",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2003-07-06",
+     "fame": 10
+    },
+    {
+     "name": "Marvin Friedrich",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1995-12-13",
+     "fame": 20
+    },
+    {
+     "name": "Aljoscha Kemlein",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2004-08-02",
+     "fame": 10
+    },
+    {
+     "name": "Oliver Burke",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1997-04-07",
+     "fame": 29
+    },
+    {
+     "name": "Rani Khedira",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1994-01-27",
+     "fame": 33
+    },
+    {
+     "name": "Livan Burcu",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2004-09-28",
+     "fame": 9
+    },
+    {
+     "name": "Jeong Woo-yeong",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "1999-09-20",
+     "fame": 25
+    },
+    {
+     "name": "András Schäfer",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "1999-04-13",
+     "fame": 33
+    },
+    {
+     "name": "Leopold Querfeld",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "ZAG",
+     "birthDate": "2003-12-20",
+     "fame": 25
+    },
+    {
+     "name": "Tom Rothe",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2004-10-29",
+     "fame": 14
+    },
+    {
+     "name": "Derrick Köhn",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "LAT",
+     "birthDate": "1999-02-04",
+     "fame": 11
+    },
+    {
+     "name": "Josip Juranović",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "LAT",
+     "birthDate": "1995-08-16",
+     "fame": 35
+    },
+    {
+     "name": "Janik Haberer",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "1994-04-02",
+     "fame": 20
+    },
+    {
+     "name": "Michel Aebischer",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "1997-01-06",
+     "fame": 37
+    },
+    {
+     "name": "Tim Skarke",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "1996-09-07",
+     "fame": 11
+    },
+    {
+     "name": "Andrej Ilić",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "2000-04-03",
+     "fame": 12
+    },
+    {
+     "name": "Robert Skov",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "1996-05-20",
+     "fame": 34
+    },
+    {
+     "name": "Carl Klaus",
+     "position": "GOL",
+     "number": 25,
+     "birthDate": "1994-01-16",
+     "fame": 6
+    },
+    {
+     "name": "Marin Ljubičić",
+     "position": "ATA",
+     "number": 27,
+     "birthDate": "2002-02-28",
+     "fame": 12
+    },
+    {
+     "name": "Christopher Trimmel",
+     "position": "DEF",
+     "number": 28,
+     "defRole": "LAT",
+     "birthDate": "1987-02-24",
+     "fame": 30
+    },
+    {
+     "name": "Emmanuel Latte Lath",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "1999-01-01",
+     "fame": 11
+    },
+    {
+     "name": "Kastriot Imeri",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "2000-06-27",
+     "fame": 15
+    },
+    {
+     "name": "Matheo Raab",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "1998-12-18",
+     "fame": 5
+    },
+    {
+     "name": "Mekhi Gray",
+     "position": "ATA",
+     "number": 32,
+     "birthDate": "2007-02-19",
+     "fame": 3
+    },
+    {
+     "name": "Stanley Nsoki",
+     "position": "DEF",
+     "number": 34,
+     "birthDate": "1999-04-09",
+     "fame": 21
+    },
+    {
+     "name": "Julien Friedrich",
+     "position": "ATA",
+     "number": 38,
+     "fame": 0
+    },
+    {
+     "name": "Linus Güther",
+     "position": "MEI",
+     "number": 49,
+     "birthDate": "2010-04-08",
+     "fame": 5
+    }
+   ]
+  },
+  "de-augsburg": {
+   "source": "https://en.wikipedia.org/wiki/FC_Augsburg",
+   "revision": 1387973804,
+   "manager": "Manuel Baum",
+   "players": [
+    {
+     "name": "Finn Dahmen",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1998-03-27",
+     "fame": 16
+    },
+    {
+     "name": "Calvin Brackelmann",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1999-08-22",
+     "fame": 4
+    },
+    {
+     "name": "Han-Noah Massengo",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "2001-07-07",
+     "fame": 17
+    },
+    {
+     "name": "Chrislain Matsima",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2002-05-15",
+     "fame": 22
+    },
+    {
+     "name": "Jeffrey Gouweleeuw",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1991-07-10",
+     "fame": 20
+    },
+    {
+     "name": "Seol Young-woo",
+     "position": "DEF",
+     "number": 7,
+     "defRole": "LAT",
+     "birthDate": "1998-12-05",
+     "fame": 23
+    },
+    {
+     "name": "Sima Suso",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2005-05-28",
+     "fame": 3
+    },
+    {
+     "name": "Rodrigo Ribeiro",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2005-04-28",
+     "fame": 11
+    },
+    {
+     "name": "Mert Kömür",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2005-07-17",
+     "fame": 11
+    },
+    {
+     "name": "Michael Gregoritsch",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1994-04-18",
+     "fame": 39
+    },
+    {
+     "name": "Yannik Keitel",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2000-02-15",
+     "fame": 11
+    },
+    {
+     "name": "Steve Mounié",
+     "position": "ATA",
+     "number": 15,
+     "birthDate": "1994-09-29",
+     "fame": 21
+    },
+    {
+     "name": "Hennes Behrens",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "2005-01-19",
+     "fame": 9
+    },
+    {
+     "name": "Tim Breithaupt",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2002-02-07",
+     "fame": 8
+    },
+    {
+     "name": "Robin Fellhauer",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "1998-01-21",
+     "fame": 6
+    },
+    {
+     "name": "Alexis Claude-Maurice",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "1998-06-06",
+     "fame": 18
+    },
+    {
+     "name": "Arijon Ibrahimović",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2005-12-11",
+     "fame": 18
+    },
+    {
+     "name": "Nediljko Labrović",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "1999-10-10",
+     "fame": 23
+    },
+    {
+     "name": "Faik Sakar",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "2008-01-14",
+     "fame": 4
+    },
+    {
+     "name": "Marius Wolf",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "LAT",
+     "birthDate": "1995-05-27",
+     "fame": 33
+    },
+    {
+     "name": "Anton Kade",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "2004-01-17",
+     "fame": 8
+    },
+    {
+     "name": "Fabian Rieder",
+     "position": "MEI",
+     "number": 32,
+     "birthDate": "2002-02-16",
+     "fame": 30
+    },
+    {
+     "name": "Juma Bah",
+     "position": "DEF",
+     "number": 35,
+     "defRole": "ZAG",
+     "birthDate": "2006-04-11",
+     "fame": 15
+    },
+    {
+     "name": "Tim Schnitzer",
+     "position": "MEI",
+     "number": 37,
+     "birthDate": "2008-02-07",
+     "fame": 3
+    },
+    {
+     "name": "Uchenna Ogundu",
+     "position": "ATA",
+     "number": 39,
+     "birthDate": "2006-05-12",
+     "fame": 5
+    },
+    {
+     "name": "Noahkai Banks",
+     "position": "DEF",
+     "number": 40,
+     "birthDate": "2006-12-01",
+     "fame": 10
+    },
+    {
+     "name": "Mahmut Küçükşahin",
+     "position": "MEI",
+     "number": 42,
+     "birthDate": "2004-04-07",
+     "fame": 2
+    },
+    {
+     "name": "Tom Wisbereit",
+     "position": "GOL",
+     "number": 48,
+     "fame": 0
+    }
+   ]
+  },
+  "de-koln": {
+   "source": "https://en.wikipedia.org/wiki/1._FC_K%C3%B6ln",
+   "revision": 1387958503,
+   "manager": "René Wagner",
+   "players": [
+    {
+     "name": "Marvin Schwäbe",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1995-04-25",
+     "fame": 19
+    },
+    {
+     "name": "Joël Schmied",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1998-09-23",
+     "fame": 10
+    },
+    {
+     "name": "Borna Sosa",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1998-01-21",
+     "fame": 34
+    },
+    {
+     "name": "Timo Hübers",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1996-07-20",
+     "fame": 15
+    },
+    {
+     "name": "Tom Krauß",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2001-06-22",
+     "fame": 18
+    },
+    {
+     "name": "Ellyes Skhiri",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1995-05-10",
+     "fame": 35
+    },
+    {
+     "name": "Luca Waldschmidt",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1996-05-19",
+     "fame": 24
+    },
+    {
+     "name": "Ísak Jóhannesson",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2003-03-23",
+     "fame": 17
+    },
+    {
+     "name": "Ragnar Ache",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1998-07-28",
+     "fame": 20
+    },
+    {
+     "name": "Said El Mala",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2006-08-26",
+     "fame": 17
+    },
+    {
+     "name": "Reigan Heskey",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2008-01-18",
+     "fame": 8
+    },
+    {
+     "name": "Gideon Mensah",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "LAT",
+     "birthDate": "1998-07-18",
+     "fame": 29
+    },
+    {
+     "name": "Imad Rondić",
+     "position": "ATA",
+     "number": 15,
+     "birthDate": "1999-02-16",
+     "fame": 9
+    },
+    {
+     "name": "Alessio Castro-Montes",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "1999-05-17",
+     "fame": 12
+    },
+    {
+     "name": "Malek El Mala",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2005-04-02",
+     "fame": 3
+    },
+    {
+     "name": "Ron-Robert Zieler",
+     "position": "GOL",
+     "number": 20,
+     "birthDate": "1989-02-12",
+     "fame": 46
+    },
+    {
+     "name": "Martin James",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "2008-02-14",
+     "fame": 2
+    },
+    {
+     "name": "Jahmai Simpson-Pusey",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "ZAG",
+     "birthDate": "2005-11-04",
+     "fame": 12
+    },
+    {
+     "name": "Paul Okon-Engstler",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2005-01-24",
+     "fame": 22
+    },
+    {
+     "name": "Luka Lochoshvili",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "ZAG",
+     "birthDate": "1998-05-29",
+     "fame": 22
+    },
+    {
+     "name": "Thijs Dallinga",
+     "position": "ATA",
+     "number": 27,
+     "birthDate": "2000-08-03",
+     "fame": 19
+    },
+    {
+     "name": "Sebastian Sebulonsen",
+     "position": "DEF",
+     "number": 28,
+     "defRole": "LAT",
+     "birthDate": "2000-01-27",
+     "fame": 9
+    },
+    {
+     "name": "Jan Thielmann",
+     "position": "MEI",
+     "number": 29,
+     "birthDate": "2002-05-26",
+     "fame": 13
+    },
+    {
+     "name": "Marius Bülter",
+     "position": "ATA",
+     "number": 30,
+     "birthDate": "1993-03-29",
+     "fame": 11
+    },
+    {
+     "name": "Gil Neves",
+     "position": "MEI",
+     "number": 31,
+     "birthDate": "2008-02-09",
+     "fame": 3
+    },
+    {
+     "name": "Rav van den Berg",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "2004-07-07",
+     "fame": 11
+    },
+    {
+     "name": "Fayssal Harchaoui",
+     "position": "MEI",
+     "number": 34,
+     "fame": 0
+    },
+    {
+     "name": "Linton Maina",
+     "position": "MEI",
+     "number": 37,
+     "birthDate": "1999-06-23",
+     "fame": 11
+    },
+    {
+     "name": "Matthias Köbbing",
+     "position": "GOL",
+     "number": 44,
+     "fame": 0
+    },
+    {
+     "name": "Mikey Moore",
+     "position": "ATA",
+     "number": 47,
+     "birthDate": "2007-08-11",
+     "fame": 13
+    },
+    {
+     "name": "David Fürst",
+     "position": "MEI",
+     "number": 49,
+     "fame": 0
+    }
+   ]
+  },
+  "de-hamburg": {
+   "source": "https://en.wikipedia.org/wiki/Hamburger_SV",
+   "revision": 1387958560,
+   "manager": "Merlin Polzin",
+   "players": [
+    {
+     "name": "Daniel Heuer Fernandes",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1992-11-13",
+     "fame": 17
+    },
+    {
+     "name": "David Møller Wolfe",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2002-04-23",
+     "fame": 30
+    },
+    {
+     "name": "Bilal Nadir",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "2003-11-28",
+     "fame": 12
+    },
+    {
+     "name": "Martin Adeline",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2003-12-02",
+     "fame": 10
+    },
+    {
+     "name": "Albert Sambi Lokonga",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1999-10-22",
+     "fame": 28
+    },
+    {
+     "name": "Zakaria El Ouahdi",
+     "position": "DEF",
+     "number": 7,
+     "defRole": "LAT",
+     "birthDate": "2001-12-31",
+     "fame": 27
+    },
+    {
+     "name": "Terem Moffi",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1999-05-25",
+     "fame": 22
+    },
+    {
+     "name": "Immanuel Pherai",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2001-04-25",
+     "fame": 11
+    },
+    {
+     "name": "Albert Grønbæk",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "2001-05-23",
+     "fame": 14
+    },
+    {
+     "name": "Sander Tangvik",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2002-11-29",
+     "fame": 23
+    },
+    {
+     "name": "Yussuf Poulsen",
+     "position": "ATA",
+     "number": 15,
+     "birthDate": "1994-06-15",
+     "fame": 46
+    },
+    {
+     "name": "Warmed Omari",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "ZAG",
+     "birthDate": "2000-04-23",
+     "fame": 13
+    },
+    {
+     "name": "Bakery Jatta",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "1998-06-06",
+     "fame": 12
+    },
+    {
+     "name": "Otto Stange",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2007-02-09",
+     "fame": 9
+    },
+    {
+     "name": "Fábio Vieira",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2000-05-30",
+     "fame": 29
+    },
+    {
+     "name": "Nicolai Remberg",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2000-06-19",
+     "fame": 8
+    },
+    {
+     "name": "Kofi Amoako",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2005-05-06",
+     "fame": 4
+    },
+    {
+     "name": "Jordan Torunarigha",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "ZAG",
+     "birthDate": "1997-08-07",
+     "fame": 23
+    },
+    {
+     "name": "Nicolás Capaldo",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "1997-09-14",
+     "fame": 17
+    },
+    {
+     "name": "Patson Daka",
+     "position": "ATA",
+     "number": 27,
+     "birthDate": "1998-10-09",
+     "fame": 35
+    },
+    {
+     "name": "Miro Muheim",
+     "position": "DEF",
+     "number": 28,
+     "birthDate": "1998-03-24",
+     "fame": 31
+    },
+    {
+     "name": "Sebastiaan Bornauw",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "ZAG",
+     "birthDate": "1999-03-22",
+     "fame": 26
+    },
+    {
+     "name": "Louis Lemke",
+     "position": "DEF",
+     "number": 37,
+     "birthDate": "2009-10-08",
+     "fame": 7
+    },
+    {
+     "name": "Alexander Røssing-Lelesiit",
+     "position": "ATA",
+     "number": 38,
+     "birthDate": "2007-01-20",
+     "fame": 9
+    },
+    {
+     "name": "Joel Agyekum",
+     "position": "DEF",
+     "number": 39,
+     "fame": 0
+    },
+    {
+     "name": "Elias Lahti",
+     "position": "GOL",
+     "number": 40,
+     "fame": 0
+    },
+    {
+     "name": "Fernando Dickes",
+     "position": "GOL",
+     "number": 41,
+     "fame": 0
+    },
+    {
+     "name": "Shafiq Nandja",
+     "position": "DEF",
+     "number": 43,
+     "fame": 0
+    }
+   ]
+  },
+  "de-schalke": {
+   "source": "https://en.wikipedia.org/wiki/FC_Schalke_04",
+   "revision": 1387957737,
+   "manager": "Miron Muslić",
+   "players": [
+    {
+     "name": "Loris Karius",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1993-06-22",
+     "fame": 49
+    },
+    {
+     "name": "Hasan Kuruçay",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1997-08-31",
+     "fame": 5
+    },
+    {
+     "name": "Timo Becker",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1997-03-25",
+     "fame": 11
+    },
+    {
+     "name": "Ron Schallenberg",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1998-10-06",
+     "fame": 7
+    },
+    {
+     "name": "Hwang Hee-chan",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1996-01-26",
+     "fame": 43
+    },
+    {
+     "name": "Robin Gosens",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1994-07-05",
+     "fame": 47
+    },
+    {
+     "name": "Moussa Sylla",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1999-11-25",
+     "fame": 16
+    },
+    {
+     "name": "Edin Džeko",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1986-03-17",
+     "fame": 66
+    },
+    {
+     "name": "Bryan Lasme",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1998-11-14",
+     "fame": 13
+    },
+    {
+     "name": "Satoshi Tanaka",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "2002-08-13",
+     "fame": 21
+    },
+    {
+     "name": "Janik Bachmann",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1996-05-06",
+     "fame": 6
+    },
+    {
+     "name": "Emil Højlund",
+     "position": "ATA",
+     "number": 15,
+     "birthDate": "2005-01-04",
+     "fame": 9
+    },
+    {
+     "name": "Adrian Gantenbein",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "LAT",
+     "birthDate": "2001-04-18",
+     "fame": 5
+    },
+    {
+     "name": "Kenan Karaman",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1994-03-05",
+     "fame": 27
+    },
+    {
+     "name": "Junior Adamu",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2001-06-06",
+     "fame": 23
+    },
+    {
+     "name": "Dejan Ljubičić",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "1997-10-08",
+     "fame": 26
+    },
+    {
+     "name": "Kevin Müller",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "1991-03-15",
+     "fame": 13
+    },
+    {
+     "name": "Soufiane El-Faouzi",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2002-07-13",
+     "fame": 12
+    },
+    {
+     "name": "Adil Aouchiche",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2002-07-15",
+     "fame": 22
+    },
+    {
+     "name": "Nikola Katić",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "1996-10-10",
+     "fame": 31
+    },
+    {
+     "name": "Finn Porath",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "1997-02-23",
+     "fame": 10
+    },
+    {
+     "name": "Junior Dina Ebimbe",
+     "position": "MEI",
+     "number": 29,
+     "birthDate": "2000-11-21",
+     "fame": 18
+    },
+    {
+     "name": "Vitalie Becker",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "2005-03-03",
+     "fame": 5
+    },
+    {
+     "name": "Johannes Siebeking",
+     "position": "GOL",
+     "number": 36,
+     "fame": 0
+    },
+    {
+     "name": "Luca Vozar",
+     "position": "MEI",
+     "number": 38,
+     "fame": 0
+    },
+    {
+     "name": "Maximilian Wöber",
+     "position": "DEF",
+     "number": 39,
+     "defRole": "ZAG",
+     "birthDate": "1998-02-04",
+     "fame": 31
+    },
+    {
+     "name": "Mertcan Ayhan",
+     "position": "DEF",
+     "number": 43,
+     "defRole": "ZAG",
+     "birthDate": "2006-09-08",
+     "fame": 6
+    }
+   ]
+  },
+  "de-paderborn": {
+   "source": "https://en.wikipedia.org/wiki/SC_Paderborn_07",
+   "revision": 1387964400,
+   "manager": "Ralf Kettemann",
+   "stadium": "Home Deluxe Arena",
+   "players": [
+    {
+     "name": "Markus Schubert",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1998-06-12",
+     "fame": 19
+    },
+    {
+     "name": "Ruben Müller",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2005-08-24",
+     "fame": 3
+    },
+    {
+     "name": "Jonah Sticker",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2004-05-08",
+     "fame": 2
+    },
+    {
+     "name": "Nyamekye Awortwie-Grant",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2000-08-07",
+     "fame": 2
+    },
+    {
+     "name": "Santiago Castañeda",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2004-11-13",
+     "fame": 6
+    },
+    {
+     "name": "Tom Baack",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1999-03-13",
+     "fame": 7
+    },
+    {
+     "name": "Oliver Batista Meier",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2001-02-16",
+     "fame": 17
+    },
+    {
+     "name": "Luka Đurić",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2003-06-18",
+     "fame": 2
+    },
+    {
+     "name": "Rayan Philippe",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2000-10-23",
+     "fame": 10
+    },
+    {
+     "name": "Sven Michel",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1990-07-15",
+     "fame": 11
+    },
+    {
+     "name": "Nahuel Noll",
+     "position": "GOL",
+     "number": 15,
+     "birthDate": "2003-03-17",
+     "fame": 8
+    },
+    {
+     "name": "Laurin Curda",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "ZAG",
+     "birthDate": "2001-10-30",
+     "fame": 5
+    },
+    {
+     "name": "Marvin Pieringer",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "1999-10-04",
+     "fame": 12
+    },
+    {
+     "name": "Albert Millgramm",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2004-11-12",
+     "fame": 1
+    },
+    {
+     "name": "Felix Götze",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "ZAG",
+     "birthDate": "1998-02-11",
+     "fame": 16
+    },
+    {
+     "name": "Jano ter Horst",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "2002-06-19",
+     "fame": 4
+    },
+    {
+     "name": "Mattes Hansen",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2004-05-15",
+     "fame": 4
+    },
+    {
+     "name": "Raphael Obermair",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "1996-04-01",
+     "fame": 7
+    },
+    {
+     "name": "Niklas Mohr",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "2004-07-23",
+     "fame": 1
+    },
+    {
+     "name": "Tjark Scheller",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "2002-01-12",
+     "fame": 4
+    },
+    {
+     "name": "Sebastian Klaas",
+     "position": "MEI",
+     "number": 26,
+     "birthDate": "1998-06-30",
+     "fame": 6
+    },
+    {
+     "name": "Steffen Tigges",
+     "position": "ATA",
+     "number": 27,
+     "birthDate": "1998-07-31",
+     "fame": 16
+    },
+    {
+     "name": "Laurin Ulrich",
+     "position": "MEI",
+     "number": 28,
+     "birthDate": "2005-01-31",
+     "fame": 10
+    },
+    {
+     "name": "Clemens Lippmann",
+     "position": "DEF",
+     "number": 29,
+     "fame": 0
+    },
+    {
+     "name": "Stefano Marino",
+     "position": "ATA",
+     "number": 30,
+     "birthDate": "2004-03-12",
+     "fame": 2
+    },
+    {
+     "name": "Florian Pruhs",
+     "position": "GOL",
+     "number": 31,
+     "fame": 0
+    },
+    {
+     "name": "Lasse Eickel",
+     "position": "ATA",
+     "number": 32,
+     "fame": 0
+    },
+    {
+     "name": "Marcel Hoffmeier",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "ZAG",
+     "birthDate": "1999-07-15",
+     "fame": 4
+    },
+    {
+     "name": "Deniz Zeitler",
+     "position": "ATA",
+     "number": 38,
+     "birthDate": "2006-12-13",
+     "fame": 4
+    },
+    {
+     "name": "Gabriel Vidović",
+     "position": "ATA",
+     "number": 40,
+     "birthDate": "2003-12-01",
+     "fame": 17
+    },
+    {
+     "name": "Timur Gayret",
+     "position": "MEI",
+     "number": 44,
+     "fame": 0
+    },
+    {
+     "name": "Tristan Zobel",
+     "position": "DEF",
+     "number": 46,
+     "fame": 0
+    }
+   ]
+  },
+  "de-elversberg": {
+   "source": "https://en.wikipedia.org/wiki/SV_Elversberg",
+   "revision": 1387985023,
+   "manager": "Vincent Wagner",
+   "players": [
+    {
+     "name": "Frank Lehmann",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1989-04-29",
+     "fame": 8
+    },
+    {
+     "name": "Nicholas Mickelson",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1999-07-24",
+     "fame": 19
+    },
+    {
+     "name": "Florian Le Joncour",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1995-02-03",
+     "fame": 8
+    },
+    {
+     "name": "Luis Seifert",
+     "position": "DEF",
+     "number": 4,
+     "fame": 0
+    },
+    {
+     "name": "Amara Condé",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1997-01-06",
+     "fame": 7
+    },
+    {
+     "name": "Maurice Krattenmacher",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2005-08-11",
+     "fame": 11
+    },
+    {
+     "name": "Łukasz Poręba",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2000-03-13",
+     "fame": 9
+    },
+    {
+     "name": "Noel Futkeu",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2002-12-06",
+     "fame": 7
+    },
+    {
+     "name": "Noah Darvich",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2006-09-25",
+     "fame": 16
+    },
+    {
+     "name": "Elias Etringer",
+     "position": "GOL",
+     "number": 12,
+     "fame": 0
+    },
+    {
+     "name": "Raif Adam",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2005-09-07",
+     "fame": 3
+    },
+    {
+     "name": "Luca Pfeiffer",
+     "position": "ATA",
+     "number": 16,
+     "birthDate": "1996-08-20",
+     "fame": 7
+    },
+    {
+     "name": "Frederik Schmahl",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2002-12-21",
+     "fame": 4
+    },
+    {
+     "name": "Lukas Pinckert",
+     "position": "DEF",
+     "number": 19,
+     "defRole": "LAT",
+     "birthDate": "2000-01-22",
+     "fame": 4
+    },
+    {
+     "name": "Nicolas Kristof",
+     "position": "GOL",
+     "number": 20,
+     "birthDate": "1999-12-20",
+     "fame": 4
+    },
+    {
+     "name": "Lasse Günther",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "2003-03-21",
+     "fame": 9
+    },
+    {
+     "name": "Luca Schnellbacher",
+     "position": "ATA",
+     "number": 24,
+     "birthDate": "1994-05-06",
+     "fame": 5
+    },
+    {
+     "name": "Lukas Petkov",
+     "position": "ATA",
+     "number": 25,
+     "birthDate": "2000-11-01",
+     "fame": 11
+    },
+    {
+     "name": "Luca Sirch",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "ZAG",
+     "birthDate": "1999-06-14",
+     "fame": 3
+    },
+    {
+     "name": "Tim Boss",
+     "position": "GOL",
+     "number": 28,
+     "birthDate": "1993-06-28",
+     "fame": 4
+    },
+    {
+     "name": "Tom Zimmerschied",
+     "position": "MEI",
+     "number": 29,
+     "birthDate": "1998-09-22",
+     "fame": 3
+    },
+    {
+     "name": "Jan Gyamerah",
+     "position": "DEF",
+     "number": 30,
+     "defRole": "LAT",
+     "birthDate": "1995-06-18",
+     "fame": 8
+    },
+    {
+     "name": "Maximilian Rohr",
+     "position": "DEF",
+     "number": 31,
+     "defRole": "ZAG",
+     "birthDate": "1995-06-27",
+     "fame": 4
+    },
+    {
+     "name": "Cole Campbell",
+     "position": "MEI",
+     "number": 39,
+     "birthDate": "2006-02-20",
+     "fame": 12
+    },
+    {
+     "name": "Francis Onyeka",
+     "position": "MEI",
+     "number": 40,
+     "birthDate": "2007-04-29",
+     "fame": 10
+    },
+    {
+     "name": "David Mokwa",
+     "position": "ATA",
+     "number": 42,
+     "birthDate": "2004-05-03",
+     "fame": 6
+    },
+    {
+     "name": "Felix Keidel",
+     "position": "DEF",
+     "number": 43,
+     "defRole": "LAT",
+     "birthDate": "2003-06-14",
+     "fame": 7
+    }
+   ]
+  }
+ }
+}

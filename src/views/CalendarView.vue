@@ -57,7 +57,8 @@ function leagueRow(index: number, date: string): Row {
     home,
     score,
     outcome,
-    note: played && !result ? 'resultado não registrado' : null,
+    // Sem jogo do seu time na rodada: folga (a Bundesliga tem 34 rodadas nas 38 da temporada).
+    note: !fixture && !result ? 'rodada de folga' : played && !result ? 'resultado não registrado' : null,
     played,
     next: game.nextEvent === 'league' && index === game.round,
   }

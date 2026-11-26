@@ -39,12 +39,16 @@ const myMatch = computed(() => match.matches.find((m) => isMine(m)) ?? null)
 /** Painel com todos os jogos ao mesmo tempo: uma coluna por série (na Copa, todos juntos). */
 const columns = computed(() => {
   if (isCup.value) return [{ key: 'copa', label: null as string | null, division: null as DivisionId | null, matches: match.matches }]
-  return LEAGUE_DIVISIONS.map((d) => ({
-    key: d,
-    label: DIVISION_LABELS[d] as string | null,
-    division: d as DivisionId | null,
-    matches: match.matches.filter((m) => matchDivision(m) === d),
-  }))
+  return (
+    LEAGUE_DIVISIONS.map((d) => ({
+      key: d,
+      label: DIVISION_LABELS[d] as string | null,
+      division: d as DivisionId | null,
+      matches: match.matches.filter((m) => matchDivision(m) === d),
+    }))
+      // Liga sem jogos na rodada (folga da Bundesliga) não aparece.
+      .filter((col) => col.matches.length > 0)
+  )
 })
 
 /** Cartões abertos para ver todos os lances (os demais mostram só o resumo). */

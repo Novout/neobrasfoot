@@ -61,7 +61,8 @@ const problems = computed(() => {
 })
 
 /** Fase da Copa em que o clube já foi eliminado: só acompanha os outros jogos. */
-const spectating = computed(() => game.nextEvent === 'cup' && !game.nextFixture)
+/** Sem jogo do seu time: fora da Copa, ou rodada de folga da liga (Bundesliga). A rodada é só acompanhada. */
+const spectating = computed(() => (game.nextEvent === 'cup' || game.nextEvent === 'league') && !game.nextFixture)
 const canPlay = computed(() => spectating.value || (problems.value.length === 0 && !!game.nextFixture))
 
 function play() {
@@ -155,7 +156,10 @@ function play() {
       </div>
       <div v-else-if="spectating" class="card">
         <h3>{{ game.nextEventLabel }}</h3>
-        <p class="muted">Seu time está fora da Copa. Inicie a rodada para acompanhar os outros jogos.</p>
+        <p class="muted">
+          {{ game.nextEvent === 'league' ? 'Rodada de folga: seu time não joga.' : 'Seu time está fora da Copa.' }}
+          Inicie a rodada para acompanhar os outros jogos.
+        </p>
       </div>
       <div v-else class="card">
         <p>Não há jogos pendentes nesta temporada.</p>

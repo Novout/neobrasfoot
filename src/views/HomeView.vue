@@ -45,6 +45,8 @@ const DIVISION_HINTS: Record<DivisionId, string> = {
   C: 'Orçamento apertado: será preciso garimpar no mercado.',
   D: 'O desafio máximo: levar um time pequeno da última divisão até a Série A.',
   ESP: 'Clubes reais da 1ª divisão espanhola, disputada ao mesmo tempo que as séries. Sem acesso nem rebaixamento, e fora da Copa do Brasil e da Libertadores.',
+  ENG: 'Clubes reais da 1ª divisão inglesa, disputada ao mesmo tempo que as séries. Sem acesso nem rebaixamento, e fora da Copa do Brasil e da Libertadores.',
+  GER: 'Os 18 clubes reais da 1ª divisão alemã: 34 rodadas, com 4 folgas na temporada. Sem acesso nem rebaixamento, e fora da Copa do Brasil e da Libertadores.',
 }
 
 const divisionTeams = computed(() => teams.value.filter((t) => t.division === division.value))

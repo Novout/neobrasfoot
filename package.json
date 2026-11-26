@@ -14,6 +14,8 @@
     "update-brasileirao": "node scripts/fetch-brasileirao-squads.mjs",
     "update-laliga": "node scripts/fetch-brasileirao-squads.mjs --liga=espanha",
     "update-selecoes": "node scripts/fetch-brasileirao-squads.mjs --liga=selecoes",
+    "update-premier": "node scripts/fetch-brasileirao-squads.mjs --liga=inglaterra",
+    "update-bundesliga": "node scripts/fetch-brasileirao-squads.mjs --liga=alemanha",
     "update-escudos": "node scripts/fetch-brasileirao-crests.mjs",
     "patch": "generi log patch",
     "minor": "generi log minor",

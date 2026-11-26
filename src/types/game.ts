@@ -55,8 +55,8 @@ export interface PlayerLoan {
   fee: number
 }
 
-/** Séries brasileiras (A a D) e ligas estrangeiras disputadas em paralelo ("ESP" = La Liga). */
-export type DivisionId = 'A' | 'B' | 'C' | 'D' | 'ESP'
+/** Séries brasileiras (A a D) e ligas estrangeiras disputadas em paralelo (La Liga, Premier League, Bundesliga). */
+export type DivisionId = 'A' | 'B' | 'C' | 'D' | 'ESP' | 'ENG' | 'GER'
 
 export interface Team {
   id: string

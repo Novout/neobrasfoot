@@ -1,6 +1,6 @@
 import type { Team } from '../../types/game'
-import { LEAGUE_FORMAT, LEAGUE_FORMAT_VERSION, teamsFromLeagueFile, type LeagueFileTeam } from '../leagueFile'
-import { realSquadFrom, type RawPlayer } from './brasileirao'
+import type { LeagueFileTeam } from '../leagueFile'
+import { foreignLeagueTeams, type ForeignSquads } from './foreignLeague'
 import squads from './laliga-squads.json'
 
 /**
@@ -41,19 +41,8 @@ const TEAMS: LaLigaTeam[] = [
 export const LALIGA_NAME = 'La Liga'
 /** Data dos elencos (as idades são calculadas nela). */
 export const LALIGA_SQUADS_DATE: string = squads.fetchedAt
-const RAW: Record<string, { manager?: string; players: RawPlayer[] }> = squads.clubs
 
 /** Clubes da La Liga com elenco e técnico reais (nova cópia a cada chamada). */
 export function laLigaTeams(): Team[] {
-  return teamsFromLeagueFile({
-    format: LEAGUE_FORMAT,
-    version: LEAGUE_FORMAT_VERSION,
-    name: LALIGA_NAME,
-    teams: TEAMS.map((t) => ({
-      ...t,
-      division: 'ESP',
-      ...(RAW[t.id]?.manager ? { manager: RAW[t.id]!.manager } : {}),
-      players: realSquadFrom(RAW[t.id]?.players, t.id, t.reputation, LALIGA_SQUADS_DATE),
-    })),
-  })
+  return foreignLeagueTeams(LALIGA_NAME, 'ESP', TEAMS, squads as ForeignSquads)
 }

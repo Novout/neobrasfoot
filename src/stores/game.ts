@@ -6,7 +6,7 @@ import {
 import {
   leagueMatchDelta, NEW_JOB_CONFIDENCE, seasonEndDelta, START_CONFIDENCE, tableDriftDelta, WARNING_CONFIDENCE,
 } from '../data/confidence'
-import { generateFixtures } from '../data/fixtures'
+import { generateFixtures, withByeRounds } from '../data/fixtures'
 import {
   BRAZIL_SPOTS, createContinentalTeams, createLibertadores, currentTies as libertadoresTies, drawRoundOf16, GROUP_ROUNDS,
   groupOf, groupTable, isGroupStage, LIBERTADORES_NAME, LIBERTADORES_PRIZES, nextKnockoutRound, quickScore,
@@ -617,10 +617,12 @@ export const useGameStore = defineStore('game', () => {
     leagueResults.value = {}
     seasonStats.value = {}
     // Cada divisão tem seu turno e returno; todas jogam a mesma rodada ao mesmo tempo.
-    // Inclui a liga estrangeira (La Liga), com o mesmo número de rodadas das séries no 2×20.
+    // Inclui as ligas estrangeiras disputadas em paralelo. Uma liga com menos rodadas (Bundesliga: 34 de 38)
+    // ganha rodadas de folga espalhadas pela temporada, em vez de acabar antes das outras.
     const perDivision = LEAGUE_DIVISIONS.map((d) => generateFixtures(teamsByDivision(teams.value, d).map((t) => t.id)))
     const totalRounds = Math.max(...perDivision.map((r) => r.length))
-    fixtures.value = Array.from({ length: totalRounds }, (_, i) => perDivision.flatMap((rounds) => rounds[i] ?? []))
+    const spread = perDivision.map((rounds) => withByeRounds(rounds, totalRounds))
+    fixtures.value = Array.from({ length: totalRounds }, (_, i) => spread.flatMap((rounds) => rounds[i] ?? []))
     standings.value = teams.value.map((t) => ({
       teamId: t.id, played: 0, wins: 0, draws: 0, losses: 0, goalsFor: 0, goalsAgainst: 0,
     }))

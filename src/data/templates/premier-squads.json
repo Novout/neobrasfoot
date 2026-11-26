@@ -1,0 +1,4356 @@
+{
+ "fetchedAt": "2026-11-26",
+ "clubs": {
+  "en-arsenal": {
+   "source": "https://en.wikipedia.org/wiki/Arsenal_F.C.",
+   "revision": 1388142418,
+   "manager": "Mikel Arteta",
+   "stadium": "Emirates Stadium",
+   "players": [
+    {
+     "name": "David Raya",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1995-09-15",
+     "fame": 52
+    },
+    {
+     "name": "William Saliba",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2001-03-24",
+     "fame": 50
+    },
+    {
+     "name": "Cristhian Mosquera",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2004-06-27",
+     "fame": 31
+    },
+    {
+     "name": "Ben White",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1997-10-08",
+     "fame": 34
+    },
+    {
+     "name": "Piero Hincapié",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "2002-01-09",
+     "fame": 44
+    },
+    {
+     "name": "Gabriel Magalhães",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1997-12-19",
+     "fame": 45
+    },
+    {
+     "name": "Bukayo Saka",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2001-09-05",
+     "fame": 70
+    },
+    {
+     "name": "Martin Ødegaard",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1998-12-17",
+     "fame": 63
+    },
+    {
+     "name": "Eberechi Eze",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1998-06-29",
+     "fame": 49
+    },
+    {
+     "name": "Jurriën Timber",
+     "position": "DEF",
+     "number": 12,
+     "birthDate": "2001-06-17",
+     "fame": 44
+    },
+    {
+     "name": "Kepa Arrizabalaga",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "1994-10-03",
+     "fame": 59
+    },
+    {
+     "name": "Viktor Gyökeres",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1998-06-04",
+     "fame": 57
+    },
+    {
+     "name": "Ezri Konsa",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "1997-10-23",
+     "fame": 43
+    },
+    {
+     "name": "Christos Tzolis",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2002-01-30",
+     "fame": 31
+    },
+    {
+     "name": "Noni Madueke",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2002-03-10",
+     "fame": 49
+    },
+    {
+     "name": "Mikel Merino",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "1996-06-22",
+     "fame": 56
+    },
+    {
+     "name": "Kai Havertz",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "1999-06-11",
+     "fame": 64
+    },
+    {
+     "name": "Illan Meslier",
+     "position": "GOL",
+     "number": 30,
+     "birthDate": "2000-03-02",
+     "fame": 28
+    },
+    {
+     "name": "Riccardo Calafiori",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "2002-05-19",
+     "fame": 44
+    },
+    {
+     "name": "Martín Zubimendi",
+     "position": "MEI",
+     "number": 36,
+     "birthDate": "1999-02-02",
+     "fame": 47
+    },
+    {
+     "name": "Bruno Guimarães",
+     "position": "MEI",
+     "number": 39,
+     "birthDate": "1997-11-16",
+     "fame": 48
+    },
+    {
+     "name": "Declan Rice",
+     "position": "MEI",
+     "number": 41,
+     "birthDate": "1999-01-14",
+     "fame": 63
+    },
+    {
+     "name": "Myles Lewis-Skelly",
+     "position": "DEF",
+     "number": 49,
+     "defRole": "LAT",
+     "birthDate": "2006-09-26",
+     "fame": 31
+    },
+    {
+     "name": "Ethan Nwaneri",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2007-03-21",
+     "fame": 37
+    },
+    {
+     "name": "Tommy Setford",
+     "position": "GOL",
+     "number": 35,
+     "birthDate": "2006-03-13",
+     "fame": 8
+    }
+   ]
+  },
+  "en-aston-villa": {
+   "source": "https://en.wikipedia.org/wiki/Aston_Villa_F.C.",
+   "revision": 1387955630,
+   "manager": "Unai Emery",
+   "stadium": "Villa Park",
+   "players": [
+    {
+     "name": "Zion Suzuki",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-08-21",
+     "fame": 39
+    },
+    {
+     "name": "Matty Cash",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1997-08-07",
+     "fame": 35
+    },
+    {
+     "name": "Victor Lindelöf",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1994-07-17",
+     "fame": 50
+    },
+    {
+     "name": "Taylor Harwood-Bellis",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2002-01-30",
+     "fame": 22
+    },
+    {
+     "name": "Tyrone Mings",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1993-03-13",
+     "fame": 40
+    },
+    {
+     "name": "Ross Barkley",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1993-12-05",
+     "fame": 54
+    },
+    {
+     "name": "John McGinn",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1994-10-18",
+     "fame": 42
+    },
+    {
+     "name": "Boubacar Kamara",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1999-11-23",
+     "fame": 31
+    },
+    {
+     "name": "Emiliano Buendía",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1996-12-25",
+     "fame": 35
+    },
+    {
+     "name": "Nicolas Jackson",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-06-20",
+     "fame": 44
+    },
+    {
+     "name": "Matteo Ruggeri",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "2002-07-11",
+     "fame": 25
+    },
+    {
+     "name": "Pau Torres",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "ZAG",
+     "birthDate": "1997-01-16",
+     "fame": 41
+    },
+    {
+     "name": "Alejandro Garnacho",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2004-07-01",
+     "fame": 45
+    },
+    {
+     "name": "Tammy Abraham",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "1997-10-02",
+     "fame": 42
+    },
+    {
+     "name": "Ibrahim Mbaye",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2008-01-24",
+     "fame": 36
+    },
+    {
+     "name": "Ian Maatsen",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "2002-03-10",
+     "fame": 36
+    },
+    {
+     "name": "Amadou Onana",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2001-08-16",
+     "fame": 34
+    },
+    {
+     "name": "Lamare Bogarde",
+     "position": "MEI",
+     "number": 26,
+     "birthDate": "2004-01-05",
+     "fame": 16
+    },
+    {
+     "name": "Leon Goretzka",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "1995-02-06",
+     "fame": 56
+    },
+    {
+     "name": "Aaron Wan-Bissaka",
+     "position": "DEF",
+     "number": 29,
+     "defRole": "LAT",
+     "birthDate": "1997-11-26",
+     "fame": 42
+    },
+    {
+     "name": "João Gomes",
+     "position": "MEI",
+     "number": 35,
+     "birthDate": "2001-02-12",
+     "fame": 25
+    },
+    {
+     "name": "Brian Madjo",
+     "position": "ATA",
+     "number": 39,
+     "birthDate": "2009-01-12",
+     "fame": 18
+    },
+    {
+     "name": "Marco Bizot",
+     "position": "GOL",
+     "number": 40,
+     "birthDate": "1991-03-10",
+     "fame": 34
+    },
+    {
+     "name": "James Wright",
+     "position": "GOL",
+     "number": 42,
+     "birthDate": "2004-12-02",
+     "fame": 2
+    },
+    {
+     "name": "Johan Manzambi",
+     "position": "MEI",
+     "number": 44,
+     "birthDate": "2005-10-14",
+     "fame": 33
+    },
+    {
+     "name": "Alysson",
+     "position": "ATA",
+     "number": 47,
+     "birthDate": "2006-05-05",
+     "fame": 10
+    },
+    {
+     "name": "Modou Kéba Cissé",
+     "position": "DEF",
+     "number": 48,
+     "birthDate": "2005-08-04",
+     "fame": 9
+    },
+    {
+     "name": "George Hemmings",
+     "position": "MEI",
+     "number": 53,
+     "birthDate": "2007-03-04",
+     "fame": 8
+    }
+   ]
+  },
+  "en-bournemouth": {
+   "source": "https://en.wikipedia.org/wiki/AFC_Bournemouth",
+   "revision": 1388144908,
+   "manager": "Marco Rose",
+   "stadium": "Dean Court",
+   "players": [
+    {
+     "name": "Đorđe Petrović",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1999-10-08",
+     "fame": 28
+    },
+    {
+     "name": "Julián Araujo",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2001-08-13",
+     "fame": 27
+    },
+    {
+     "name": "Adrien Truffert",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2001-11-20",
+     "fame": 27
+    },
+    {
+     "name": "Lewis Cook",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "1997-02-03",
+     "fame": 31
+    },
+    {
+     "name": "James Hill",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2002-01-10",
+     "fame": 12
+    },
+    {
+     "name": "Julio Soler",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "LAT",
+     "birthDate": "2005-02-16",
+     "fame": 19
+    },
+    {
+     "name": "David Brooks",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1997-07-08",
+     "fame": 30
+    },
+    {
+     "name": "Alex Scott",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2003-08-21",
+     "fame": 25
+    },
+    {
+     "name": "Evanilson",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1999-10-06",
+     "fame": 24
+    },
+    {
+     "name": "Ryan Christie",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1995-02-22",
+     "fame": 32
+    },
+    {
+     "name": "Ben Gannon-Doak",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2005-11-11",
+     "fame": 32
+    },
+    {
+     "name": "Tyler Adams",
+     "position": "MEI",
+     "number": 12,
+     "birthDate": "1999-02-14",
+     "fame": 39
+    },
+    {
+     "name": "António Silva",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "ZAG",
+     "birthDate": "2003-10-30",
+     "fame": 29
+    },
+    {
+     "name": "Adam Smith",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "1991-04-29",
+     "fame": 31
+    },
+    {
+     "name": "Marcus Tavernier",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "1999-03-22",
+     "fame": 22
+    },
+    {
+     "name": "Fraser Forster",
+     "position": "GOL",
+     "number": 17,
+     "birthDate": "1988-03-17",
+     "fame": 41
+    },
+    {
+     "name": "Bafodé Diakité",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "ZAG",
+     "birthDate": "2001-01-06",
+     "fame": 20
+    },
+    {
+     "name": "Justin Kluivert",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1999-05-05",
+     "fame": 47
+    },
+    {
+     "name": "Michele Di Gregorio",
+     "position": "GOL",
+     "number": 20,
+     "birthDate": "1997-07-27",
+     "fame": 22
+    },
+    {
+     "name": "Amine Adli",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2000-05-10",
+     "fame": 31
+    },
+    {
+     "name": "Eli Junior Kroupi",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2006-06-23",
+     "fame": 22
+    },
+    {
+     "name": "Juanlu Sánchez",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "2003-08-15",
+     "fame": 22
+    },
+    {
+     "name": "Alex Tóth",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "2005-10-23",
+     "fame": 13
+    },
+    {
+     "name": "Max Aarons",
+     "position": "DEF",
+     "number": 28,
+     "defRole": "LAT",
+     "birthDate": "2000-01-04",
+     "fame": 35
+    },
+    {
+     "name": "Daniel Jebbison",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "2003-08-13",
+     "fame": 15
+    },
+    {
+     "name": "Álvaro Rodríguez",
+     "position": "ATA",
+     "number": 30,
+     "birthDate": "2004-07-14",
+     "fame": 22
+    },
+    {
+     "name": "Rayan",
+     "position": "ATA",
+     "number": 37,
+     "birthDate": "2006-08-03",
+     "fame": 32
+    },
+    {
+     "name": "Veljko Milosavljević",
+     "position": "DEF",
+     "number": 44,
+     "defRole": "ZAG",
+     "birthDate": "2007-06-28",
+     "fame": 14
+    }
+   ]
+  },
+  "en-brentford": {
+   "source": "https://en.wikipedia.org/wiki/Brentford_F.C.",
+   "revision": 1387957933,
+   "manager": "Keith Andrews",
+   "stadium": "Brentford Community Stadium",
+   "players": [
+    {
+     "name": "Caoimhín Kelleher",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1998-11-23",
+     "fame": 35
+    },
+    {
+     "name": "Aaron Hickey",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2002-06-10",
+     "fame": 30
+    },
+    {
+     "name": "Rico Henry",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1997-07-08",
+     "fame": 23
+    },
+    {
+     "name": "Sepp van den Berg",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "2001-12-20",
+     "fame": 28
+    },
+    {
+     "name": "Yehor Yarmolyuk",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2004-03-01",
+     "fame": 17
+    },
+    {
+     "name": "Kevin Schade",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2001-11-27",
+     "fame": 23
+    },
+    {
+     "name": "Mathias Jensen",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1996-01-01",
+     "fame": 34
+    },
+    {
+     "name": "Igor Thiago",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2001-06-26",
+     "fame": 36
+    },
+    {
+     "name": "Josh Dasilva",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1998-10-23",
+     "fame": 20
+    },
+    {
+     "name": "Dango Ouattara",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2002-02-11",
+     "fame": 30
+    },
+    {
+     "name": "Hákon Valdimarsson",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2001-10-13",
+     "fame": 15
+    },
+    {
+     "name": "Callum Wilson",
+     "position": "ATA",
+     "number": 13,
+     "birthDate": "1992-02-27",
+     "fame": 38
+    },
+    {
+     "name": "Fábio Carvalho",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2002-08-30",
+     "fame": 34
+    },
+    {
+     "name": "Antoni Milambo",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2005-04-03",
+     "fame": 15
+    },
+    {
+     "name": "Mamadou Sangaré",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2002-06-26",
+     "fame": 17
+    },
+    {
+     "name": "Jaidon Anthony",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1999-12-01",
+     "fame": 13
+    },
+    {
+     "name": "Kristoffer Ajer",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "LAT",
+     "birthDate": "1998-04-17",
+     "fame": 34
+    },
+    {
+     "name": "Nathan Collins",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "ZAG",
+     "birthDate": "2001-04-30",
+     "fame": 27
+    },
+    {
+     "name": "Keane Lewis-Potter",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2001-02-22",
+     "fame": 21
+    },
+    {
+     "name": "Mikkel Damsgaard",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2000-07-03",
+     "fame": 38
+    },
+    {
+     "name": "El Hadji Malick Diouf",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "LAT",
+     "birthDate": "2004-12-28",
+     "fame": 30
+    },
+    {
+     "name": "Vitaly Janelt",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "1998-05-10",
+     "fame": 24
+    },
+    {
+     "name": "Ellery Balcombe",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "1999-10-15",
+     "fame": 7
+    },
+    {
+     "name": "Michael Kayode",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "2004-07-10",
+     "fame": 22
+    },
+    {
+     "name": "Kim Ji-soo",
+     "position": "DEF",
+     "number": 36,
+     "defRole": "ZAG",
+     "birthDate": "2004-12-24",
+     "fame": 12
+    },
+    {
+     "name": "Gustavo Nunes",
+     "position": "ATA",
+     "number": 39,
+     "birthDate": "2005-11-20",
+     "fame": 9
+    },
+    {
+     "name": "Jannik Schuster",
+     "position": "DEF",
+     "number": 44,
+     "defRole": "ZAG",
+     "birthDate": "2006-05-16",
+     "fame": 8
+    },
+    {
+     "name": "Kaye Furo",
+     "position": "ATA",
+     "number": 47,
+     "birthDate": "2007-02-06",
+     "fame": 7
+    },
+    {
+     "name": "Benjamin Fredrick",
+     "position": "DEF",
+     "number": 48,
+     "defRole": "LAT",
+     "birthDate": "2005-05-28",
+     "fame": 8
+    }
+   ]
+  },
+  "en-brighton": {
+   "source": "https://en.wikipedia.org/wiki/Brighton_%26_Hove_Albion_F.C.",
+   "revision": 1387955774,
+   "manager": "Fabian Hürzeler",
+   "stadium": "Falmer Stadium",
+   "players": [
+    {
+     "name": "Bart Verbruggen",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-08-18",
+     "fame": 40
+    },
+    {
+     "name": "Jaouen Hadjam",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2003-03-26",
+     "fame": 20
+    },
+    {
+     "name": "Pascal Struijk",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1999-08-11",
+     "fame": 20
+    },
+    {
+     "name": "Lewis Dunk",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1991-11-21",
+     "fame": 36
+    },
+    {
+     "name": "Kaoru Mitoma",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1997-05-20",
+     "fame": 43
+    },
+    {
+     "name": "Jack Hinshelwood",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2005-04-11",
+     "fame": 20
+    },
+    {
+     "name": "Stefanos Tzimas",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2006-01-06",
+     "fame": 15
+    },
+    {
+     "name": "Georginio Rutter",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2002-04-20",
+     "fame": 21
+    },
+    {
+     "name": "Yankuba Minteh",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "2004-07-22",
+     "fame": 26
+    },
+    {
+     "name": "Promise David",
+     "position": "ATA",
+     "number": 12,
+     "birthDate": "2001-07-03",
+     "fame": 27
+    },
+    {
+     "name": "Pascal Groß",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "1991-06-15",
+     "fame": 41
+    },
+    {
+     "name": "Chema Andrés",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2005-01-01",
+     "fame": 21
+    },
+    {
+     "name": "Ibrahim Osman",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2004-11-29",
+     "fame": 16
+    },
+    {
+     "name": "Charalampos Kostoulas",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2007-05-30",
+     "fame": 20
+    },
+    {
+     "name": "Costinha",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "LAT",
+     "birthDate": "2000-03-26",
+     "fame": 12
+    },
+    {
+     "name": "Olivier Boscagli",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "1997-11-18",
+     "fame": 21
+    },
+    {
+     "name": "Jason Steele",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1990-08-18",
+     "fame": 25
+    },
+    {
+     "name": "Ferdi Kadıoğlu",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "1999-10-07",
+     "fame": 33
+    },
+    {
+     "name": "Diego Gómez",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "2003-03-27",
+     "fame": 33
+    },
+    {
+     "name": "Yasin Ayari",
+     "position": "MEI",
+     "number": 26,
+     "birthDate": "2003-10-06",
+     "fame": 35
+    },
+    {
+     "name": "Mats Wieffer",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "LAT",
+     "birthDate": "1999-11-16",
+     "fame": 32
+    },
+    {
+     "name": "Evan Ferguson",
+     "position": "ATA",
+     "number": 28,
+     "birthDate": "2004-10-19",
+     "fame": 30
+    },
+    {
+     "name": "Maxim De Cuyper",
+     "position": "DEF",
+     "number": 29,
+     "defRole": "LAT",
+     "birthDate": "2000-12-22",
+     "fame": 32
+    },
+    {
+     "name": "Michael Svoboda",
+     "position": "DEF",
+     "number": 30,
+     "defRole": "ZAG",
+     "birthDate": "1998-10-15",
+     "fame": 25
+    },
+    {
+     "name": "Matt O'Riley",
+     "position": "MEI",
+     "number": 33,
+     "birthDate": "2000-11-21",
+     "fame": 22
+    },
+    {
+     "name": "Malick Yalcouyé",
+     "position": "MEI",
+     "number": 35,
+     "birthDate": "2005-11-18",
+     "fame": 13
+    },
+    {
+     "name": "Zadok Yohanna",
+     "position": "MEI",
+     "number": 36,
+     "birthDate": "2007-06-29",
+     "fame": 9
+    },
+    {
+     "name": "Tom McGill",
+     "position": "GOL",
+     "number": 38,
+     "birthDate": "2000-03-25",
+     "fame": 15
+    },
+    {
+     "name": "Femi Azeez",
+     "position": "MEI",
+     "number": 39,
+     "birthDate": "2001-06-05",
+     "fame": 9
+    },
+    {
+     "name": "Luka Vušković",
+     "position": "DEF",
+     "number": 44,
+     "defRole": "ZAG",
+     "birthDate": "2007-02-24",
+     "fame": 35
+    }
+   ]
+  },
+  "en-chelsea": {
+   "source": "https://en.wikipedia.org/wiki/Chelsea_F.C.",
+   "revision": 1387955411,
+   "manager": "Xabi Alonso",
+   "stadium": "Stamford Bridge",
+   "players": [
+    {
+     "name": "Emiliano Martínez",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1992-09-01",
+     "fame": 62
+    },
+    {
+     "name": "Marco Palestra",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2005-03-03",
+     "fame": 23
+    },
+    {
+     "name": "Wesley Fofana",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2000-12-17",
+     "fame": 38
+    },
+    {
+     "name": "Valentín Barco",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "2004-07-23",
+     "fame": 34
+    },
+    {
+     "name": "Maxence Lacroix",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2000-04-06",
+     "fame": 36
+    },
+    {
+     "name": "Levi Colwill",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "2003-02-26",
+     "fame": 35
+    },
+    {
+     "name": "Pedro Neto",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2000-03-09",
+     "fame": 44
+    },
+    {
+     "name": "João Pedro",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2001-09-26",
+     "fame": 38
+    },
+    {
+     "name": "Cole Palmer",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2002-05-06",
+     "fame": 63
+    },
+    {
+     "name": "Jamie Gittens",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2004-08-08",
+     "fame": 32
+    },
+    {
+     "name": "Jordan Henderson",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1990-06-17",
+     "fame": 75
+    },
+    {
+     "name": "Morgan Rogers",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2002-07-26",
+     "fame": 42
+    },
+    {
+     "name": "Danny Welbeck",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "1990-11-26",
+     "fame": 63
+    },
+    {
+     "name": "Jorrel Hato",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "2006-03-07",
+     "fame": 35
+    },
+    {
+     "name": "Emmanuel Emegha",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2003-02-03",
+     "fame": 19
+    },
+    {
+     "name": "Geovany Quenda",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "2007-04-30",
+     "fame": 23
+    },
+    {
+     "name": "Reece James",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "1999-12-08",
+     "fame": 54
+    },
+    {
+     "name": "Moisés Caicedo",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "2001-11-02",
+     "fame": 47
+    },
+    {
+     "name": "Malo Gusto",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "LAT",
+     "birthDate": "2003-05-19",
+     "fame": 46
+    },
+    {
+     "name": "Teddy Sharman-Lowe",
+     "position": "GOL",
+     "number": 28,
+     "birthDate": "2003-03-30",
+     "fame": 9
+    },
+    {
+     "name": "Pep Chavarría",
+     "position": "DEF",
+     "number": 29,
+     "defRole": "LAT",
+     "birthDate": "1998-04-10",
+     "fame": 20
+    },
+    {
+     "name": "Aarón Anselmino",
+     "position": "DEF",
+     "number": 30,
+     "defRole": "ZAG",
+     "birthDate": "2005-04-29",
+     "fame": 21
+    },
+    {
+     "name": "Reggie Watson",
+     "position": "MEI",
+     "number": 31,
+     "birthDate": "2010-01-26",
+     "fame": 5
+    },
+    {
+     "name": "Mahdi Nicoll-Jazuli",
+     "position": "MEI",
+     "number": 32,
+     "birthDate": "2010-01-06",
+     "fame": 5
+    },
+    {
+     "name": "Josh Acheampong",
+     "position": "DEF",
+     "number": 34,
+     "birthDate": "2006-05-05",
+     "fame": 26
+    },
+    {
+     "name": "Olutayo Subuloye",
+     "position": "DEF",
+     "number": 37,
+     "birthDate": "2007-12-18",
+     "fame": 1
+    },
+    {
+     "name": "Mike Penders",
+     "position": "GOL",
+     "number": 39,
+     "birthDate": "2005-07-31",
+     "fame": 31
+    },
+    {
+     "name": "Estêvão",
+     "position": "ATA",
+     "number": 41,
+     "birthDate": "2007-04-24",
+     "fame": 32
+    },
+    {
+     "name": "Gabriel Slonina",
+     "position": "GOL",
+     "number": 44,
+     "birthDate": "2004-05-15",
+     "fame": 26
+    },
+    {
+     "name": "Roméo Lavia",
+     "position": "MEI",
+     "number": 45,
+     "birthDate": "2004-01-06",
+     "fame": 35
+    }
+   ]
+  },
+  "en-coventry": {
+   "source": "https://en.wikipedia.org/wiki/Coventry_City_F.C.",
+   "revision": 1387957815,
+   "manager": "Frank Lampard",
+   "stadium": "Coventry Building Society Arena",
+   "players": [
+    {
+     "name": "Oliver Dovin",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-07-11",
+     "fame": 14
+    },
+    {
+     "name": "Ethan Pinnock",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1993-05-29",
+     "fame": 22
+    },
+    {
+     "name": "Jay Dasilva",
+     "position": "DEF",
+     "number": 3,
+     "birthDate": "1998-04-22",
+     "fame": 19
+    },
+    {
+     "name": "Bobby Thomas",
+     "position": "DEF",
+     "number": 4,
+     "birthDate": "2001-01-30",
+     "fame": 6
+    },
+    {
+     "name": "Jack Rudoni",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2001-06-14",
+     "fame": 7
+    },
+    {
+     "name": "Matt Grimes",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1995-07-15",
+     "fame": 21
+    },
+    {
+     "name": "Tatsuhiro Sakamoto",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1996-10-22",
+     "fame": 24
+    },
+    {
+     "name": "Caleb Yirenkyi",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2006-01-15",
+     "fame": 26
+    },
+    {
+     "name": "Ellis Simms",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2001-01-05",
+     "fame": 12
+    },
+    {
+     "name": "Ephron Mason-Clark",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1999-08-25",
+     "fame": 8
+    },
+    {
+     "name": "Haji Wright",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1998-03-27",
+     "fame": 34
+    },
+    {
+     "name": "Stephen Mfuni",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "LAT",
+     "birthDate": "2008-02-12",
+     "fame": 6
+    },
+    {
+     "name": "Ben Wilson",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "1992-08-09",
+     "fame": 9
+    },
+    {
+     "name": "Taiwo Awoniyi",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1997-08-12",
+     "fame": 34
+    },
+    {
+     "name": "Frank Onyeka",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "1998-01-01",
+     "fame": 27
+    },
+    {
+     "name": "Loum Tchaouna",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2003-09-08",
+     "fame": 13
+    },
+    {
+     "name": "Carl Rushworth",
+     "position": "GOL",
+     "number": 19,
+     "birthDate": "2001-07-02",
+     "fame": 11
+    },
+    {
+     "name": "Kaine Kesler-Hayden",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "LAT",
+     "birthDate": "2002-10-23",
+     "fame": 6
+    },
+    {
+     "name": "Jake Bidwell",
+     "position": "DEF",
+     "number": 21,
+     "birthDate": "1993-03-21",
+     "fame": 13
+    },
+    {
+     "name": "Joel Latibeaudiere",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "2000-01-06",
+     "fame": 15
+    },
+    {
+     "name": "Brandon Thomas-Asante",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "1998-12-29",
+     "fame": 20
+    },
+    {
+     "name": "Aurèle Amenda",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "ZAG",
+     "birthDate": "2003-07-31",
+     "fame": 25
+    },
+    {
+     "name": "Dan Bentley",
+     "position": "GOL",
+     "number": 25,
+     "birthDate": "1993-07-13",
+     "fame": 17
+    },
+    {
+     "name": "Luke Woolfenden",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "LAT",
+     "birthDate": "1998-10-21",
+     "fame": 8
+    },
+    {
+     "name": "Milan van Ewijk",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "LAT",
+     "birthDate": "2000-09-08",
+     "fame": 11
+    },
+    {
+     "name": "Josh Eccles",
+     "position": "MEI",
+     "number": 28,
+     "birthDate": "2000-04-06",
+     "fame": 9
+    },
+    {
+     "name": "Victor Torp",
+     "position": "MEI",
+     "number": 29,
+     "birthDate": "1999-07-30",
+     "fame": 12
+    },
+    {
+     "name": "Yann Gboho",
+     "position": "ATA",
+     "number": 34,
+     "birthDate": "2001-01-14",
+     "fame": 14
+    },
+    {
+     "name": "Gustavo Hamer",
+     "position": "MEI",
+     "number": 38,
+     "birthDate": "1997-06-24",
+     "fame": 13
+    },
+    {
+     "name": "Sidiki Cherif",
+     "position": "ATA",
+     "number": 49,
+     "birthDate": "2006-12-15",
+     "fame": 11
+    }
+   ]
+  },
+  "en-crystal-palace": {
+   "source": "https://en.wikipedia.org/wiki/Crystal_Palace_F.C.",
+   "revision": 1387957648,
+   "manager": "Thomas Frank",
+   "players": [
+    {
+     "name": "Dean Henderson",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1997-03-12",
+     "fame": 43
+    },
+    {
+     "name": "Tyrick Mitchell",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1999-09-01",
+     "fame": 24
+    },
+    {
+     "name": "Chadi Riad",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2003-06-17",
+     "fame": 34
+    },
+    {
+     "name": "Axel Disasi",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1998-03-11",
+     "fame": 39
+    },
+    {
+     "name": "Jaydee Canvot",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "2006-07-29",
+     "fame": 10
+    },
+    {
+     "name": "Ismaïla Sarr",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1998-02-25",
+     "fame": 45
+    },
+    {
+     "name": "Jefferson Lerma",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1994-10-25",
+     "fame": 36
+    },
+    {
+     "name": "Eddie Nketiah",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1999-05-30",
+     "fame": 36
+    },
+    {
+     "name": "Yeremy Pino",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2002-10-20",
+     "fame": 40
+    },
+    {
+     "name": "Dwight McNeil",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1999-11-22",
+     "fame": 29
+    },
+    {
+     "name": "Zavier Gozo",
+     "position": "ATA",
+     "number": 12,
+     "birthDate": "2007-03-22",
+     "fame": 6
+    },
+    {
+     "name": "Jean-Philippe Mateta",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1997-06-28",
+     "fame": 40
+    },
+    {
+     "name": "Takehiro Tomiyasu",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "LAT",
+     "birthDate": "1998-11-05",
+     "fame": 52
+    },
+    {
+     "name": "Daichi Kamada",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "1996-08-05",
+     "fame": 52
+    },
+    {
+     "name": "Will Hughes",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "1995-04-17",
+     "fame": 26
+    },
+    {
+     "name": "Adam Wharton",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2004-02-06",
+     "fame": 31
+    },
+    {
+     "name": "Honest Ahanor",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "2008-02-23",
+     "fame": 16
+    },
+    {
+     "name": "Jørgen Strand Larsen",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2000-02-06",
+     "fame": 34
+    },
+    {
+     "name": "Quinten Timber",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2001-06-17",
+     "fame": 35
+    },
+    {
+     "name": "Darío Osorio",
+     "position": "ATA",
+     "number": 24,
+     "birthDate": "2004-01-24",
+     "fame": 16
+    },
+    {
+     "name": "Anan Khalaili",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "LAT",
+     "birthDate": "2004-09-03",
+     "fame": 16
+    },
+    {
+     "name": "Chris Richards",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "ZAG",
+     "birthDate": "2000-03-28",
+     "fame": 33
+    },
+    {
+     "name": "Cheick Doucouré",
+     "position": "MEI",
+     "number": 28,
+     "birthDate": "2000-01-08",
+     "fame": 26
+    },
+    {
+     "name": "Evann Guessand",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "2001-07-01",
+     "fame": 25
+    },
+    {
+     "name": "Óscar Mingueza",
+     "position": "DEF",
+     "number": 30,
+     "defRole": "LAT",
+     "birthDate": "1999-05-13",
+     "fame": 38
+    },
+    {
+     "name": "Remi Matthews",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "1994-02-10",
+     "fame": 10
+    },
+    {
+     "name": "Ben Chilwell",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "1996-12-21",
+     "fame": 51
+    },
+    {
+     "name": "Walter Benítez",
+     "position": "GOL",
+     "number": 44,
+     "birthDate": "1993-01-19",
+     "fame": 22
+    }
+   ]
+  },
+  "en-everton": {
+   "source": "https://en.wikipedia.org/wiki/Everton_F.C.",
+   "revision": 1387956075,
+   "manager": "David Moyes",
+   "stadium": "Hill Dickinson Stadium",
+   "players": [
+    {
+     "name": "Jordan Pickford",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1994-03-07",
+     "fame": 64
+    },
+    {
+     "name": "Ainsley Maitland-Niles",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1997-08-29",
+     "fame": 39
+    },
+    {
+     "name": "Jarrad Branthwaite",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2002-06-27",
+     "fame": 26
+    },
+    {
+     "name": "Michael Keane",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1993-01-11",
+     "fame": 44
+    },
+    {
+     "name": "James Tarkowski",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1992-11-19",
+     "fame": 35
+    },
+    {
+     "name": "Kiernan Dewsbury-Hall",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1998-09-06",
+     "fame": 27
+    },
+    {
+     "name": "Jack Grealish",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1995-09-10",
+     "fame": 57
+    },
+    {
+     "name": "Thierno Barry",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2002-10-21",
+     "fame": 19
+    },
+    {
+     "name": "Mark Travers",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1999-05-18",
+     "fame": 21
+    },
+    {
+     "name": "Jake O'Brien",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "2001-05-15",
+     "fame": 20
+    },
+    {
+     "name": "Vitalii Mykolenko",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "1999-05-29",
+     "fame": 34
+    },
+    {
+     "name": "Tyrique George",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2006-02-04",
+     "fame": 24
+    },
+    {
+     "name": "Tyler Dibling",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2006-03-12",
+     "fame": 17
+    },
+    {
+     "name": "Brennan Johnson",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2001-05-23",
+     "fame": 34
+    },
+    {
+     "name": "Christian Nørgaard",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "1994-03-10",
+     "fame": 35
+    },
+    {
+     "name": "Charly Alcaraz",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2002-11-30",
+     "fame": 25
+    },
+    {
+     "name": "Hayden Hackney",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "2002-06-26",
+     "fame": 10
+    },
+    {
+     "name": "Tom King",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "1995-03-09",
+     "fame": 10
+    },
+    {
+     "name": "Merlin Röhl",
+     "position": "MEI",
+     "number": 34,
+     "birthDate": "2002-01-01",
+     "fame": 11
+    },
+    {
+     "name": "James Garner",
+     "position": "MEI",
+     "number": 37,
+     "birthDate": "2001-03-13",
+     "fame": 29
+    },
+    {
+     "name": "Harrison Armstrong",
+     "position": "MEI",
+     "number": 45,
+     "birthDate": "2007-01-19",
+     "fame": 8
+    }
+   ]
+  },
+  "en-fulham": {
+   "source": "https://en.wikipedia.org/wiki/Fulham_F.C.",
+   "revision": 1387955418,
+   "manager": "Álvaro Arbeloa",
+   "stadium": "Craven Cottage",
+   "players": [
+    {
+     "name": "Bernd Leno",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1992-03-04",
+     "fame": 53
+    },
+    {
+     "name": "Kenny Tete",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1995-10-09",
+     "fame": 31
+    },
+    {
+     "name": "Calvin Bassey",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1999-12-31",
+     "fame": 24
+    },
+    {
+     "name": "Jorge Cuenca",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "1999-11-17",
+     "fame": 20
+    },
+    {
+     "name": "Joachim Andersen",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1996-05-31",
+     "fame": 34
+    },
+    {
+     "name": "Harrison Reed",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1995-01-27",
+     "fame": 26
+    },
+    {
+     "name": "Gonzalo García",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2004-03-24",
+     "fame": 30
+    },
+    {
+     "name": "César Palacios",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2004-11-11",
+     "fame": 15
+    },
+    {
+     "name": "Rodrigo Muniz",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2001-05-04",
+     "fame": 17
+    },
+    {
+     "name": "Tom Cairney",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1991-01-20",
+     "fame": 27
+    },
+    {
+     "name": "Kevin",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2003-01-04",
+     "fame": 15
+    },
+    {
+     "name": "Oscar Bobb",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "2003-07-12",
+     "fame": 35
+    },
+    {
+     "name": "Hugo Larsson",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2004-06-27",
+     "fame": 24
+    },
+    {
+     "name": "Sander Berge",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "1998-02-14",
+     "fame": 35
+    },
+    {
+     "name": "Alex Iwobi",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "1996-05-03",
+     "fame": 48
+    },
+    {
+     "name": "Jonah Kusi-Asare",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2007-07-04",
+     "fame": 14
+    },
+    {
+     "name": "Shea Charles",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2003-11-05",
+     "fame": 16
+    },
+    {
+     "name": "Manuel Ángel",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2004-03-15",
+     "fame": 13
+    },
+    {
+     "name": "Timothy Castagne",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "1995-12-05",
+     "fame": 42
+    },
+    {
+     "name": "David Affengruber",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "ZAG",
+     "birthDate": "2001-03-19",
+     "fame": 29
+    },
+    {
+     "name": "Benjamin Lecomte",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1991-04-26",
+     "fame": 25
+    },
+    {
+     "name": "Josh King",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2007-01-03",
+     "fame": 13
+    },
+    {
+     "name": "Ryan Sessegnon",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "2000-05-18",
+     "fame": 38
+    },
+    {
+     "name": "Emile Smith Rowe",
+     "position": "MEI",
+     "number": 32,
+     "birthDate": "2000-07-28",
+     "fame": 39
+    },
+    {
+     "name": "Antonee Robinson",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "1997-08-08",
+     "fame": 32
+    },
+    {
+     "name": "Alex Borto",
+     "position": "GOL",
+     "number": 36,
+     "fame": 0
+    }
+   ]
+  },
+  "en-hull": {
+   "source": "https://en.wikipedia.org/wiki/Hull_City_A.F.C.",
+   "revision": 1387958414,
+   "manager": "Sergej Jakirović",
+   "stadium": "MKM Stadium",
+   "players": [
+    {
+     "name": "Jack Butland",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1993-03-10",
+     "fame": 44
+    },
+    {
+     "name": "Lewie Coyle",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1995-10-15",
+     "fame": 12
+    },
+    {
+     "name": "Ryan Giles",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2000-01-26",
+     "fame": 12
+    },
+    {
+     "name": "Charlie Hughes",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2003-10-16",
+     "fame": 4
+    },
+    {
+     "name": "Hidemasa Morita",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "1995-05-10",
+     "fame": 49
+    },
+    {
+     "name": "Semi Ajayi",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1993-11-09",
+     "fame": 21
+    },
+    {
+     "name": "Sorba Thomas",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1999-01-25",
+     "fame": 24
+    },
+    {
+     "name": "Eliot Matazo",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2002-02-15",
+     "fame": 17
+    },
+    {
+     "name": "Oli McBurnie",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1996-06-04",
+     "fame": 27
+    },
+    {
+     "name": "Mohamed Belloumi",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2002-06-01",
+     "fame": 10
+    },
+    {
+     "name": "Joe Gelhardt",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "2002-05-04",
+     "fame": 17
+    },
+    {
+     "name": "Dillon Phillips",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1995-06-11",
+     "fame": 8
+    },
+    {
+     "name": "Jens Hjertø-Dahl",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2005-10-31",
+     "fame": 9
+    },
+    {
+     "name": "John Egan",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "1992-10-20",
+     "fame": 24
+    },
+    {
+     "name": "Paddy McNair",
+     "position": "DEF",
+     "number": 17,
+     "birthDate": "1995-04-27",
+     "fame": 36
+    },
+    {
+     "name": "Brooke Norton-Cuffy",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "LAT",
+     "birthDate": "2004-01-01",
+     "fame": 12
+    },
+    {
+     "name": "Konstantinos Tzolakis",
+     "position": "GOL",
+     "number": 19,
+     "birthDate": "2002-11-08",
+     "fame": 19
+    },
+    {
+     "name": "Óscar Zambrano",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2004-04-20",
+     "fame": 9
+    },
+    {
+     "name": "Elliot Stroud",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2002-06-22",
+     "fame": 23
+    },
+    {
+     "name": "Lucas Herrington",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "ZAG",
+     "birthDate": "2007-09-05",
+     "fame": 22
+    },
+    {
+     "name": "Matt Targett",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "LAT",
+     "birthDate": "1995-09-18",
+     "fame": 31
+    },
+    {
+     "name": "Darko Gyabi",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2004-02-18",
+     "fame": 8
+    },
+    {
+     "name": "Matt Crooks",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "1994-01-20",
+     "fame": 9
+    },
+    {
+     "name": "Kieran Dowell",
+     "position": "MEI",
+     "number": 26,
+     "birthDate": "1997-10-10",
+     "fame": 20
+    },
+    {
+     "name": "Regan Slater",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "1999-09-11",
+     "fame": 8
+    },
+    {
+     "name": "Ilyas Ansah",
+     "position": "ATA",
+     "number": 28,
+     "birthDate": "2004-11-08",
+     "fame": 9
+    },
+    {
+     "name": "Lucas Gourna-Douath",
+     "position": "MEI",
+     "number": 29,
+     "birthDate": "2003-08-05",
+     "fame": 18
+    },
+    {
+     "name": "Nobel Mendy",
+     "position": "DEF",
+     "number": 32,
+     "defRole": "LAT",
+     "birthDate": "2004-09-03",
+     "fame": 12
+    },
+    {
+     "name": "Abdülkadir Ömür",
+     "position": "MEI",
+     "number": 33,
+     "birthDate": "1999-06-25",
+     "fame": 21
+    },
+    {
+     "name": "Christos Mouzakitis",
+     "position": "MEI",
+     "number": 36,
+     "birthDate": "2006-12-25",
+     "fame": 11
+    },
+    {
+     "name": "Tim Iroegbunam",
+     "position": "MEI",
+     "number": 42,
+     "birthDate": "2003-06-30",
+     "fame": 11
+    },
+    {
+     "name": "Robinio Vaz",
+     "position": "ATA",
+     "number": 47,
+     "birthDate": "2007-02-17",
+     "fame": 14
+    },
+    {
+     "name": "Mohamed-Ali Cho",
+     "position": "ATA",
+     "number": 50,
+     "birthDate": "2004-01-19",
+     "fame": 22
+    }
+   ]
+  },
+  "en-ipswich": {
+   "source": "https://en.wikipedia.org/wiki/Ipswich_Town_F.C.",
+   "revision": 1387957500,
+   "manager": "Gary O'Neil",
+   "stadium": "Portman Road",
+   "players": [
+    {
+     "name": "Alex Palmer",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1996-08-10",
+     "fame": 9
+    },
+    {
+     "name": "Darnell Furlong",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1995-10-31",
+     "fame": 13
+    },
+    {
+     "name": "Leif Davis",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1999-12-31",
+     "fame": 16
+    },
+    {
+     "name": "Cédric Kipré",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1996-12-09",
+     "fame": 10
+    },
+    {
+     "name": "Azor Matusiwa",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "1998-04-28",
+     "fame": 12
+    },
+    {
+     "name": "Issa Diop",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1997-01-09",
+     "fame": 38
+    },
+    {
+     "name": "Abdul Fatawu",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2004-03-08",
+     "fame": 31
+    },
+    {
+     "name": "Sindre Walle Egeli",
+     "position": "ATA",
+     "number": 8,
+     "birthDate": "2006-06-21",
+     "fame": 11
+    },
+    {
+     "name": "Zian Flemming",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1998-08-01",
+     "fame": 14
+    },
+    {
+     "name": "Julio Enciso",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2004-01-23",
+     "fame": 38
+    },
+    {
+     "name": "Jaden Philogene",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2002-02-08",
+     "fame": 21
+    },
+    {
+     "name": "Florentino Luís",
+     "position": "MEI",
+     "number": 12,
+     "birthDate": "1999-08-19",
+     "fame": 23
+    },
+    {
+     "name": "Jack Taylor",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1998-06-23",
+     "fame": 10
+    },
+    {
+     "name": "Emersonn",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2004-07-16",
+     "fame": 12
+    },
+    {
+     "name": "Kasey McAteer",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2001-11-22",
+     "fame": 12
+    },
+    {
+     "name": "Saša Lukić",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "1996-08-13",
+     "fame": 30
+    },
+    {
+     "name": "Jacob Greaves",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "ZAG",
+     "birthDate": "2000-09-12",
+     "fame": 12
+    },
+    {
+     "name": "Exequiel Palacios",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "1998-10-05",
+     "fame": 47
+    },
+    {
+     "name": "Dara O'Shea",
+     "position": "DEF",
+     "number": 26,
+     "birthDate": "1999-03-04",
+     "fame": 19
+    },
+    {
+     "name": "David Button",
+     "position": "GOL",
+     "number": 27,
+     "birthDate": "1989-02-27",
+     "fame": 15
+    },
+    {
+     "name": "Christian Walton",
+     "position": "GOL",
+     "number": 28,
+     "birthDate": "1995-11-09",
+     "fame": 13
+    },
+    {
+     "name": "Chuba Akpom",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "1995-10-09",
+     "fame": 33
+    },
+    {
+     "name": "Marcelino Núñez",
+     "position": "MEI",
+     "number": 32,
+     "birthDate": "2000-03-01",
+     "fame": 14
+    },
+    {
+     "name": "Anis Mehmeti",
+     "position": "ATA",
+     "number": 33,
+     "birthDate": "2001-01-09",
+     "fame": 12
+    },
+    {
+     "name": "Kjell Scherpen",
+     "position": "GOL",
+     "number": 37,
+     "birthDate": "2000-01-23",
+     "fame": 23
+    },
+    {
+     "name": "Daizen Maeda",
+     "position": "ATA",
+     "number": 38,
+     "birthDate": "1997-10-20",
+     "fame": 50
+    },
+    {
+     "name": "Abdoul Ouattara",
+     "position": "DEF",
+     "number": 42,
+     "defRole": "LAT",
+     "birthDate": "2005-10-22",
+     "fame": 7
+    },
+    {
+     "name": "Jack Clarke",
+     "position": "ATA",
+     "number": 47,
+     "birthDate": "2000-11-23",
+     "fame": 21
+    }
+   ]
+  },
+  "en-leeds": {
+   "source": "https://en.wikipedia.org/wiki/Leeds_United_F.C.",
+   "revision": 1388015922,
+   "manager": "Daniel Farke",
+   "stadium": "Elland Road",
+   "players": [
+    {
+     "name": "James Trafford",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-10-10",
+     "fame": 37
+    },
+    {
+     "name": "Jayden Bogle",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2000-07-27",
+     "fame": 15
+    },
+    {
+     "name": "Gabriel Gudmundsson",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1999-04-29",
+     "fame": 29
+    },
+    {
+     "name": "Ethan Ampadu",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "2000-09-14",
+     "fame": 39
+    },
+    {
+     "name": "Tarik Muharemović",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2003-02-28",
+     "fame": 29
+    },
+    {
+     "name": "Joe Rodon",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1997-10-22",
+     "fame": 33
+    },
+    {
+     "name": "Daniel James",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1997-11-10",
+     "fame": 37
+    },
+    {
+     "name": "Sean Longstaff",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1997-10-30",
+     "fame": 28
+    },
+    {
+     "name": "Dominic Calvert-Lewin",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1997-03-16",
+     "fame": 47
+    },
+    {
+     "name": "Harry Wilson",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1997-03-22",
+     "fame": 36
+    },
+    {
+     "name": "Brenden Aaronson",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "2000-10-22",
+     "fame": 41
+    },
+    {
+     "name": "Lukas Nmecha",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1998-12-14",
+     "fame": 28
+    },
+    {
+     "name": "Jaka Bijol",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "1999-02-05",
+     "fame": 31
+    },
+    {
+     "name": "Michael Zetterer",
+     "position": "GOL",
+     "number": 16,
+     "birthDate": "1995-07-12",
+     "fame": 16
+    },
+    {
+     "name": "Anton Stach",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "1998-11-15",
+     "fame": 20
+    },
+    {
+     "name": "Noah Okafor",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2000-05-24",
+     "fame": 40
+    },
+    {
+     "name": "Alex Cairns",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "1993-01-04",
+     "fame": 9
+    },
+    {
+     "name": "Ao Tanaka",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "1998-09-10",
+     "fame": 52
+    },
+    {
+     "name": "Jean-Mattéo Bahoya",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "2005-05-07",
+     "fame": 12
+    },
+    {
+     "name": "James Justin",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "1998-02-23",
+     "fame": 30
+    },
+    {
+     "name": "Melvin Bard",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "LAT",
+     "birthDate": "2000-11-06",
+     "fame": 18
+    },
+    {
+     "name": "Nico Elvedi",
+     "position": "DEF",
+     "number": 30,
+     "defRole": "ZAG",
+     "birthDate": "1996-09-30",
+     "fame": 43
+    },
+    {
+     "name": "Ilia Gruev",
+     "position": "MEI",
+     "number": 44,
+     "birthDate": "2000-05-06",
+     "fame": 19
+    },
+    {
+     "name": "Jayden Lienou",
+     "position": "DEF",
+     "number": 65,
+     "birthDate": "2008-04-08",
+     "fame": 2
+    }
+   ]
+  },
+  "en-liverpool": {
+   "source": "https://en.wikipedia.org/wiki/Liverpool_F.C.",
+   "revision": 1387955512,
+   "manager": "Andoni Iraola",
+   "stadium": "Anfield",
+   "players": [
+    {
+     "name": "Alisson Becker",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1992-10-02",
+     "fame": 70
+    },
+    {
+     "name": "Joe Gomez",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1997-05-23",
+     "fame": 49
+    },
+    {
+     "name": "Wataru Endo",
+     "position": "MEI",
+     "number": 3,
+     "birthDate": "1993-02-09",
+     "fame": 65
+    },
+    {
+     "name": "Virgil van Dijk",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1991-07-08",
+     "fame": 72
+    },
+    {
+     "name": "Jérémy Jacquet",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2005-07-13",
+     "fame": 25
+    },
+    {
+     "name": "Milos Kerkez",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "LAT",
+     "birthDate": "2003-11-07",
+     "fame": 37
+    },
+    {
+     "name": "Florian Wirtz",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2003-05-03",
+     "fame": 55
+    },
+    {
+     "name": "Dominik Szoboszlai",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2000-10-25",
+     "fame": 53
+    },
+    {
+     "name": "Alexander Isak",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1999-09-21",
+     "fame": 59
+    },
+    {
+     "name": "Alexis Mac Allister",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1998-12-24",
+     "fame": 56
+    },
+    {
+     "name": "Conor Bradley",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "LAT",
+     "birthDate": "2003-07-09",
+     "fame": 32
+    },
+    {
+     "name": "Federico Chiesa",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1997-10-25",
+     "fame": 57
+    },
+    {
+     "name": "Giovanni Leoni",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "2006-12-21",
+     "fame": 23
+    },
+    {
+     "name": "Cody Gakpo",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "1999-05-07",
+     "fame": 61
+    },
+    {
+     "name": "Kostas Tsimikas",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "1996-05-12",
+     "fame": 40
+    },
+    {
+     "name": "Hugo Ekitike",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2002-06-20",
+     "fame": 41
+    },
+    {
+     "name": "Víctor Muñoz",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "2003-07-13",
+     "fame": 37
+    },
+    {
+     "name": "Giorgi Mamardashvili",
+     "position": "GOL",
+     "number": 25,
+     "birthDate": "2000-09-29",
+     "fame": 41
+    },
+    {
+     "name": "Freddie Woodman",
+     "position": "GOL",
+     "number": 28,
+     "birthDate": "1997-03-04",
+     "fame": 20
+    },
+    {
+     "name": "Bradley Barcola",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "2002-09-02",
+     "fame": 51
+    },
+    {
+     "name": "Jeremie Frimpong",
+     "position": "DEF",
+     "number": 30,
+     "defRole": "LAT",
+     "birthDate": "2000-12-10",
+     "fame": 43
+    },
+    {
+     "name": "Ronald Araújo",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "1999-03-07",
+     "fame": 50
+    },
+    {
+     "name": "Ryan Gravenberch",
+     "position": "MEI",
+     "number": 38,
+     "birthDate": "2002-05-16",
+     "fame": 51
+    },
+    {
+     "name": "Trey Nyoni",
+     "position": "MEI",
+     "number": 42,
+     "birthDate": "2007-06-30",
+     "fame": 19
+    },
+    {
+     "name": "Luke Chambers",
+     "position": "DEF",
+     "number": 44,
+     "defRole": "LAT",
+     "birthDate": "2004-06-24",
+     "fame": 6
+    },
+    {
+     "name": "James McConnell",
+     "position": "MEI",
+     "number": 53,
+     "birthDate": "2004-09-13",
+     "fame": 13
+    },
+    {
+     "name": "Vítězslav Jaroš",
+     "position": "GOL",
+     "number": 56,
+     "birthDate": "2001-07-23",
+     "fame": 26
+    },
+    {
+     "name": "Lewis Koumas",
+     "position": "ATA",
+     "number": 67,
+     "birthDate": "2005-09-19",
+     "fame": 15
+    },
+    {
+     "name": "Rio Ngumoha",
+     "position": "ATA",
+     "number": 73,
+     "birthDate": "2008-08-29",
+     "fame": 31
+    },
+    {
+     "name": "Jayden Danns",
+     "position": "ATA",
+     "number": 76,
+     "birthDate": "2006-01-16",
+     "fame": 16
+    },
+    {
+     "name": "Harvey Davies",
+     "position": "GOL",
+     "number": 95,
+     "birthDate": "2003-09-23",
+     "fame": 8
+    },
+    {
+     "name": "Harvey Elliott",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2003-04-04",
+     "fame": 42
+    },
+    {
+     "name": "Ármin Pécsi",
+     "position": "GOL",
+     "number": 41,
+     "birthDate": "2005-02-24",
+     "fame": 19
+    },
+    {
+     "name": "Calvin Ramsay",
+     "position": "DEF",
+     "number": 47,
+     "defRole": "LAT",
+     "birthDate": "2003-07-31",
+     "fame": 28
+    },
+    {
+     "name": "Ifeanyi Ndukwe",
+     "position": "DEF",
+     "number": 83,
+     "defRole": "ZAG",
+     "birthDate": "2008-03-03",
+     "fame": 8
+    }
+   ]
+  },
+  "en-man-city": {
+   "source": "https://en.wikipedia.org/wiki/Manchester_City_F.C.",
+   "revision": 1387956184,
+   "manager": "Enzo Maresca",
+   "stadium": "Etihad Stadium",
+   "players": [
+    {
+     "name": "Gianluigi Donnarumma",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1999-02-25",
+     "fame": 61
+    },
+    {
+     "name": "Rúben Dias",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1997-05-14",
+     "fame": 52
+    },
+    {
+     "name": "Elliot Anderson",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2002-11-06",
+     "fame": 42
+    },
+    {
+     "name": "Marc Guéhi",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "2000-07-13",
+     "fame": 47
+    },
+    {
+     "name": "Iliman Ndiaye",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2000-03-06",
+     "fame": 34
+    },
+    {
+     "name": "Mateo Kovačić",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1994-05-06",
+     "fame": 61
+    },
+    {
+     "name": "Erling Haaland",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2000-07-21",
+     "fame": 94
+    },
+    {
+     "name": "Rayan Cherki",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2003-08-17",
+     "fame": 49
+    },
+    {
+     "name": "Jérémy Doku",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2002-05-27",
+     "fame": 49
+    },
+    {
+     "name": "Marcus Bettinelli",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "1992-05-24",
+     "fame": 28
+    },
+    {
+     "name": "Enzo Fernández",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2001-01-17",
+     "fame": 58
+    },
+    {
+     "name": "Rayan Aït-Nouri",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "2001-06-06",
+     "fame": 33
+    },
+    {
+     "name": "Vitor Reis",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "ZAG",
+     "birthDate": "2006-01-12",
+     "fame": 23
+    },
+    {
+     "name": "Joško Gvardiol",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "2002-01-23",
+     "fame": 49
+    },
+    {
+     "name": "Matheus Nunes",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "LAT",
+     "birthDate": "1998-08-27",
+     "fame": 38
+    },
+    {
+     "name": "Gerónimo Rulli",
+     "position": "GOL",
+     "number": 28,
+     "birthDate": "1992-05-20",
+     "fame": 47
+    },
+    {
+     "name": "Ayyoub Bouaddi",
+     "position": "MEI",
+     "number": 32,
+     "birthDate": "2007-10-02",
+     "fame": 36
+    },
+    {
+     "name": "Nico O'Reilly",
+     "position": "MEI",
+     "number": 33,
+     "birthDate": "2005-03-21",
+     "fame": 41
+    },
+    {
+     "name": "Allan",
+     "position": "ATA",
+     "number": 37,
+     "birthDate": "2004-04-19",
+     "fame": 13
+    },
+    {
+     "name": "Antoine Semenyo",
+     "position": "ATA",
+     "number": 42,
+     "birthDate": "2000-01-07",
+     "fame": 43
+    },
+    {
+     "name": "Abdukodir Khusanov",
+     "position": "DEF",
+     "number": 45,
+     "defRole": "LAT",
+     "birthDate": "2004-02-29",
+     "fame": 43
+    },
+    {
+     "name": "Phil Foden",
+     "position": "MEI",
+     "number": 47,
+     "birthDate": "2000-05-28",
+     "fame": 62
+    },
+    {
+     "name": "Ryan McAidoo",
+     "position": "ATA",
+     "number": 56,
+     "birthDate": "2008-06-24",
+     "fame": 10
+    },
+    {
+     "name": "Kaden Braithwaite",
+     "position": "DEF",
+     "number": 61,
+     "birthDate": "2008-02-08",
+     "fame": 8
+    },
+    {
+     "name": "Floyd Samba",
+     "position": "MEI",
+     "number": 75,
+     "birthDate": "2009-01-15",
+     "fame": 8
+    },
+    {
+     "name": "Rico Lewis",
+     "position": "DEF",
+     "number": 82,
+     "defRole": "LAT",
+     "birthDate": "2004-11-21",
+     "fame": 33
+    },
+    {
+     "name": "Jack Grealish",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "1995-09-10",
+     "fame": 57
+    },
+    {
+     "name": "Claudio Echeverri",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "2006-01-02",
+     "fame": 29
+    },
+    {
+     "name": "Jeremy Monga",
+     "position": "MEI",
+     "number": 40,
+     "birthDate": "2009-07-10",
+     "fame": 12
+    },
+    {
+     "name": "Sverre Nypan",
+     "position": "MEI",
+     "number": 41,
+     "birthDate": "2006-12-19",
+     "fame": 21
+    },
+    {
+     "name": "Kalvin Phillips",
+     "position": "MEI",
+     "number": 44,
+     "birthDate": "1995-12-02",
+     "fame": 45
+    },
+    {
+     "name": "Max Alleyne",
+     "position": "DEF",
+     "number": 68,
+     "defRole": "ZAG",
+     "birthDate": "2005-07-21",
+     "fame": 15
+    },
+    {
+     "name": "Pierce Charles",
+     "position": "GOL",
+     "birthDate": "2005-07-21",
+     "fame": 11
+    },
+    {
+     "name": "Omar Marmoush",
+     "position": "ATA",
+     "birthDate": "1999-02-07",
+     "fame": 45
+    }
+   ]
+  },
+  "en-man-united": {
+   "source": "https://en.wikipedia.org/wiki/Manchester_United_F.C.",
+   "revision": 1387955540,
+   "manager": "Mauricio Pochettino",
+   "stadium": "Old Trafford",
+   "players": [
+    {
+     "name": "Senne Lammens",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-07-07",
+     "fame": 42
+    },
+    {
+     "name": "Diogo Dalot",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1999-03-18",
+     "fame": 48
+    },
+    {
+     "name": "Noussair Mazraoui",
+     "position": "DEF",
+     "number": 3,
+     "birthDate": "1997-11-14",
+     "fame": 48
+    },
+    {
+     "name": "Matthijs de Ligt",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1999-08-12",
+     "fame": 56
+    },
+    {
+     "name": "Harry Maguire",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1993-03-05",
+     "fame": 68
+    },
+    {
+     "name": "Lisandro Martínez",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1998-01-18",
+     "fame": 52
+    },
+    {
+     "name": "Mason Mount",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1999-01-10",
+     "fame": 55
+    },
+    {
+     "name": "Bruno Fernandes",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1994-09-08",
+     "fame": 65
+    },
+    {
+     "name": "Marcus Rashford",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1997-10-31",
+     "fame": 81
+    },
+    {
+     "name": "Matheus Cunha",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1999-05-27",
+     "fame": 50
+    },
+    {
+     "name": "Joshua Zirkzee",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-05-22",
+     "fame": 40
+    },
+    {
+     "name": "Karl Darlow",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1990-10-08",
+     "fame": 24
+    },
+    {
+     "name": "Patrick Dorgu",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "2004-10-26",
+     "fame": 33
+    },
+    {
+     "name": "Leny Yoro",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "2005-11-13",
+     "fame": 33
+    },
+    {
+     "name": "Amad Diallo",
+     "position": "ATA",
+     "number": 16,
+     "birthDate": "2002-07-11",
+     "fame": 45
+    },
+    {
+     "name": "Andrey Santos",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2004-05-03",
+     "fame": 33
+    },
+    {
+     "name": "Youri Tielemans",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "1997-05-07",
+     "fame": 54
+    },
+    {
+     "name": "Bryan Mbeumo",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1999-08-07",
+     "fame": 40
+    },
+    {
+     "name": "Carlos Baleba",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2004-01-03",
+     "fame": 31
+    },
+    {
+     "name": "Tom Heaton",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "1986-04-15",
+     "fame": 44
+    },
+    {
+     "name": "Luke Shaw",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "LAT",
+     "birthDate": "1995-07-12",
+     "fame": 64
+    },
+    {
+     "name": "Manuel Ugarte",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "2001-04-11",
+     "fame": 38
+    },
+    {
+     "name": "Ayden Heaven",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "ZAG",
+     "birthDate": "2006-09-22",
+     "fame": 27
+    },
+    {
+     "name": "Benjamin Šeško",
+     "position": "ATA",
+     "number": 30,
+     "birthDate": "2003-05-31",
+     "fame": 47
+    },
+    {
+     "name": "Shea Lacey",
+     "position": "ATA",
+     "number": 31,
+     "birthDate": "2007-04-14",
+     "fame": 15
+    },
+    {
+     "name": "Kobbie Mainoo",
+     "position": "MEI",
+     "number": 37,
+     "birthDate": "2005-04-19",
+     "fame": 50
+    },
+    {
+     "name": "Jack Fletcher",
+     "position": "MEI",
+     "number": 38,
+     "birthDate": "2007-03-19",
+     "fame": 9
+    },
+    {
+     "name": "Tyler Fletcher",
+     "position": "MEI",
+     "number": 39,
+     "birthDate": "2007-03-19",
+     "fame": 26
+    },
+    {
+     "name": "Harry Amass",
+     "position": "DEF",
+     "number": 41,
+     "defRole": "LAT",
+     "birthDate": "2007-03-16",
+     "fame": 20
+    },
+    {
+     "name": "Dermot Mee",
+     "position": "GOL",
+     "number": 45,
+     "birthDate": "2002-11-20",
+     "fame": 7
+    }
+   ]
+  },
+  "en-newcastle": {
+   "source": "https://en.wikipedia.org/wiki/Newcastle_United_F.C.",
+   "revision": 1387955674,
+   "manager": "Matthias Jaissle",
+   "stadium": "St James' Park",
+   "players": [
+    {
+     "name": "Nick Pope",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1992-04-19",
+     "fame": 44
+    },
+    {
+     "name": "Tino Livramento",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2002-11-12",
+     "fame": 30
+    },
+    {
+     "name": "Lewis Hall",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2004-09-08",
+     "fame": 26
+    },
+    {
+     "name": "Sven Botman",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2000-01-12",
+     "fame": 34
+    },
+    {
+     "name": "Fabian Schär",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1991-12-20",
+     "fame": 51
+    },
+    {
+     "name": "Nico González",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2002-01-03",
+     "fame": 38
+    },
+    {
+     "name": "Joelinton",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1996-08-14",
+     "fame": 36
+    },
+    {
+     "name": "Aladji Bamba",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2006-07-14",
+     "fame": 13
+    },
+    {
+     "name": "Yoane Wissa",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1996-09-03",
+     "fame": 39
+    },
+    {
+     "name": "William Osula",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2003-08-04",
+     "fame": 25
+    },
+    {
+     "name": "Harvey Barnes",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1997-12-09",
+     "fame": 32
+    },
+    {
+     "name": "Malick Thiaw",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "ZAG",
+     "birthDate": "2001-08-08",
+     "fame": 35
+    },
+    {
+     "name": "Sean Steur",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2008-01-11",
+     "fame": 14
+    },
+    {
+     "name": "Bazoumana Touré",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2006-03-02",
+     "fame": 24
+    },
+    {
+     "name": "Anthony Elanga",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2002-04-27",
+     "fame": 38
+    },
+    {
+     "name": "Matias Fernandez-Pardo",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2005-02-03",
+     "fame": 33
+    },
+    {
+     "name": "Lukáš Horníček",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "2002-07-13",
+     "fame": 22
+    },
+    {
+     "name": "Jacob Murphy",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "1995-02-24",
+     "fame": 24
+    },
+    {
+     "name": "Ewen Jaouen",
+     "position": "GOL",
+     "number": 24,
+     "birthDate": "2005-12-29",
+     "fame": 7
+    },
+    {
+     "name": "Joe Willock",
+     "position": "MEI",
+     "number": 28,
+     "birthDate": "1999-08-20",
+     "fame": 35
+    },
+    {
+     "name": "Mark Gillespie",
+     "position": "GOL",
+     "number": 29,
+     "birthDate": "1992-03-27",
+     "fame": 15
+    },
+    {
+     "name": "Aidan Harris",
+     "position": "GOL",
+     "number": 31,
+     "fame": 0
+    },
+    {
+     "name": "Dan Burn",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "1992-05-09",
+     "fame": 41
+    },
+    {
+     "name": "Amar Dedić",
+     "position": "DEF",
+     "number": 37,
+     "defRole": "LAT",
+     "birthDate": "2002-08-18",
+     "fame": 34
+    },
+    {
+     "name": "Jacob Ramsey",
+     "position": "MEI",
+     "number": 41,
+     "birthDate": "2001-05-28",
+     "fame": 27
+    },
+    {
+     "name": "Lewis Miley",
+     "position": "MEI",
+     "number": 67,
+     "birthDate": "2006-05-01",
+     "fame": 19
+    }
+   ]
+  },
+  "en-nottingham-forest": {
+   "source": "https://en.wikipedia.org/wiki/Nottingham_Forest_F.C.",
+   "revision": 1387956123,
+   "manager": "Oliver Glasner",
+   "stadium": "City Ground",
+   "players": [
+    {
+     "name": "Ousmane Diomande",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2003-12-04",
+     "fame": 30
+    },
+    {
+     "name": "Neco Williams",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2001-04-13",
+     "fame": 37
+    },
+    {
+     "name": "Murillo",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2002-07-04",
+     "fame": 17
+    },
+    {
+     "name": "Ibrahim Sangaré",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1997-12-02",
+     "fame": 30
+    },
+    {
+     "name": "Callum Hudson-Odoi",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2000-11-07",
+     "fame": 43
+    },
+    {
+     "name": "Nicolás Domínguez",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1998-06-28",
+     "fame": 25
+    },
+    {
+     "name": "Chris Wood",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1991-12-07",
+     "fame": 46
+    },
+    {
+     "name": "Morgan Gibbs-White",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2000-01-27",
+     "fame": 33
+    },
+    {
+     "name": "Igor Jesus",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-02-25",
+     "fame": 26
+    },
+    {
+     "name": "John Victor",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1996-02-13",
+     "fame": 13
+    },
+    {
+     "name": "Dan Ndoye",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "2000-10-25",
+     "fame": 37
+    },
+    {
+     "name": "Arnaud Kalimuendo",
+     "position": "ATA",
+     "number": 15,
+     "birthDate": "2002-01-20",
+     "fame": 26
+    },
+    {
+     "name": "Liam Delap",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2003-02-08",
+     "fame": 36
+    },
+    {
+     "name": "Xaver Schlager",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "1997-09-28",
+     "fame": 36
+    },
+    {
+     "name": "Ryan Yates",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "1997-11-21",
+     "fame": 22
+    },
+    {
+     "name": "Jair Cunha",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "ZAG",
+     "birthDate": "2005-03-07",
+     "fame": 15
+    },
+    {
+     "name": "James McAtee",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2002-10-18",
+     "fame": 27
+    },
+    {
+     "name": "Luca Netz",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "LAT",
+     "birthDate": "2003-05-15",
+     "fame": 17
+    },
+    {
+     "name": "Matz Sels",
+     "position": "GOL",
+     "number": 26,
+     "birthDate": "1992-02-26",
+     "fame": 33
+    },
+    {
+     "name": "Daniel Muñoz",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "LAT",
+     "birthDate": "1996-05-25",
+     "fame": 34
+    },
+    {
+     "name": "Nikola Milenković",
+     "position": "DEF",
+     "number": 31,
+     "defRole": "ZAG",
+     "birthDate": "1997-10-12",
+     "fame": 39
+    },
+    {
+     "name": "Steven Benda",
+     "position": "GOL",
+     "number": 33,
+     "birthDate": "1998-10-01",
+     "fame": 7
+    },
+    {
+     "name": "Ola Aina",
+     "position": "DEF",
+     "number": 34,
+     "defRole": "LAT",
+     "birthDate": "1996-10-08",
+     "fame": 39
+    },
+    {
+     "name": "Nicolò Savona",
+     "position": "DEF",
+     "number": 37,
+     "defRole": "LAT",
+     "birthDate": "2003-03-19",
+     "fame": 15
+    }
+   ]
+  },
+  "en-sunderland": {
+   "source": "https://en.wikipedia.org/wiki/Sunderland_A.F.C.",
+   "revision": 1387956304,
+   "manager": "Régis Le Bris",
+   "stadium": "Stadium of Light",
+   "players": [
+    {
+     "name": "Kevin Danso",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1998-09-19",
+     "fame": 36
+    },
+    {
+     "name": "Dan Ballard",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1999-09-22",
+     "fame": 23
+    },
+    {
+     "name": "Dayann Methalie",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "LAT",
+     "birthDate": "2006-02-15",
+     "fame": 10
+    },
+    {
+     "name": "Chemsdine Talbi",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2005-05-09",
+     "fame": 29
+    },
+    {
+     "name": "Alan Browne",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1995-04-15",
+     "fame": 14
+    },
+    {
+     "name": "Brian Brobbey",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2002-02-01",
+     "fame": 37
+    },
+    {
+     "name": "Nilson Angulo",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2003-06-19",
+     "fame": 28
+    },
+    {
+     "name": "Chris Rigg",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "2007-06-18",
+     "fame": 15
+    },
+    {
+     "name": "Thomas Meunier",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "LAT",
+     "birthDate": "1991-09-12",
+     "fame": 53
+    },
+    {
+     "name": "Luke O'Nien",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "1994-11-21",
+     "fame": 11
+    },
+    {
+     "name": "Romaine Mundle",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "2003-04-24",
+     "fame": 9
+    },
+    {
+     "name": "Omar Alderete",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "1996-12-26",
+     "fame": 31
+    },
+    {
+     "name": "Reinildo",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "LAT",
+     "birthDate": "1994-01-21",
+     "fame": 33
+    },
+    {
+     "name": "Wilson Isidor",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2000-08-27",
+     "fame": 29
+    },
+    {
+     "name": "Habib Diarra",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2004-01-03",
+     "fame": 33
+    },
+    {
+     "name": "Nordi Mukiele",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "LAT",
+     "birthDate": "1997-11-01",
+     "fame": 34
+    },
+    {
+     "name": "Simon Moore",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "1990-05-19",
+     "fame": 10
+    },
+    {
+     "name": "Robin Roefs",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "2003-01-17",
+     "fame": 30
+    },
+    {
+     "name": "Noah Sadiki",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "2004-12-17",
+     "fame": 29
+    },
+    {
+     "name": "Enzo Le Fée",
+     "position": "MEI",
+     "number": 28,
+     "birthDate": "2000-02-03",
+     "fame": 22
+    },
+    {
+     "name": "Jules Ahoka",
+     "position": "MEI",
+     "number": 29,
+     "birthDate": "2006-00-00",
+     "fame": 8
+    },
+    {
+     "name": "Melker Ellborg",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "2003-05-22",
+     "fame": 7
+    },
+    {
+     "name": "Trai Hume",
+     "position": "DEF",
+     "number": 32,
+     "defRole": "LAT",
+     "birthDate": "2002-03-18",
+     "fame": 17
+    },
+    {
+     "name": "Granit Xhaka",
+     "position": "MEI",
+     "number": 34,
+     "birthDate": "1992-09-27",
+     "fame": 60
+    },
+    {
+     "name": "Jocelin Ta Bi",
+     "position": "ATA",
+     "number": 37,
+     "birthDate": "2005-02-09",
+     "fame": 3
+    },
+    {
+     "name": "Malick Fofana",
+     "position": "ATA",
+     "number": 39,
+     "birthDate": "2005-03-31",
+     "fame": 20
+    },
+    {
+     "name": "Abdoullah Ba",
+     "position": "MEI",
+     "number": 46,
+     "birthDate": "2003-07-31",
+     "fame": 9
+    },
+    {
+     "name": "Juan Riquelme Angulo",
+     "position": "ATA",
+     "number": 50,
+     "birthDate": "2008-01-12",
+     "fame": 4
+    },
+    {
+     "name": "Timur Tutyerov",
+     "position": "ATA",
+     "number": 57,
+     "birthDate": "2005-06-11",
+     "fame": 3
+    }
+   ]
+  },
+  "en-tottenham": {
+   "source": "https://en.wikipedia.org/wiki/Tottenham_Hotspur_F.C.",
+   "revision": 1387955737,
+   "manager": "Roberto De Zerbi",
+   "stadium": "Tottenham Hotspur Stadium",
+   "players": [
+    {
+     "name": "Andy Robertson",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1994-03-11",
+     "fame": 53
+    },
+    {
+     "name": "Tosin Adarabioyo",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1997-09-24",
+     "fame": 34
+    },
+    {
+     "name": "Marcos Senesi",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1997-05-10",
+     "fame": 36
+    },
+    {
+     "name": "Jan Paul van Hecke",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "2000-06-08",
+     "fame": 32
+    },
+    {
+     "name": "Xavi Simons",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2003-04-21",
+     "fame": 48
+    },
+    {
+     "name": "Conor Gallagher",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2000-02-06",
+     "fame": 43
+    },
+    {
+     "name": "Richarlison",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1997-05-10",
+     "fame": 58
+    },
+    {
+     "name": "James Maddison",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1996-11-23",
+     "fame": 41
+    },
+    {
+     "name": "Mathys Tel",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2005-04-27",
+     "fame": 31
+    },
+    {
+     "name": "Destiny Udogie",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "2002-11-28",
+     "fame": 26
+    },
+    {
+     "name": "Archie Gray",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2006-03-12",
+     "fame": 27
+    },
+    {
+     "name": "Lucas Bergvall",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2006-02-02",
+     "fame": 38
+    },
+    {
+     "name": "Sandro Tonali",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2000-05-08",
+     "fame": 41
+    },
+    {
+     "name": "Sávio",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2004-04-10",
+     "fame": 31
+    },
+    {
+     "name": "Mateus Fernandes",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2004-07-10",
+     "fame": 26
+    },
+    {
+     "name": "Dominic Solanke",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1997-09-14",
+     "fame": 40
+    },
+    {
+     "name": "Mohammed Kudus",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2000-08-02",
+     "fame": 42
+    },
+    {
+     "name": "Dejan Kulusevski",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2000-04-25",
+     "fame": 40
+    },
+    {
+     "name": "Omar Marmoush",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "1999-02-07",
+     "fame": 45
+    },
+    {
+     "name": "Pedro Porro",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "LAT",
+     "birthDate": "1999-09-13",
+     "fame": 44
+    },
+    {
+     "name": "Mykhailo Mudryk",
+     "position": "ATA",
+     "number": 27,
+     "birthDate": "2001-01-05",
+     "fame": 45
+    },
+    {
+     "name": "Wilson Odobert",
+     "position": "ATA",
+     "number": 28,
+     "birthDate": "2004-11-28",
+     "fame": 18
+    },
+    {
+     "name": "Rodrigo Bentancur",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "1997-06-25",
+     "fame": 51
+    },
+    {
+     "name": "Antonín Kinský",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "2003-03-13",
+     "fame": 22
+    },
+    {
+     "name": "Ben Davies",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "1993-04-24",
+     "fame": 44
+    },
+    {
+     "name": "Micky van de Ven",
+     "position": "DEF",
+     "number": 37,
+     "defRole": "LAT",
+     "birthDate": "2001-04-19",
+     "fame": 38
+    },
+    {
+     "name": "Martin Dúbravka",
+     "position": "GOL",
+     "number": 39,
+     "birthDate": "1989-01-15",
+     "fame": 43
+    },
+    {
+     "name": "Brandon Austin",
+     "position": "GOL",
+     "number": 40,
+     "birthDate": "1999-01-08",
+     "fame": 12
+    },
+    {
+     "name": "Luca Williams-Barnett",
+     "position": "MEI",
+     "number": 68,
+     "birthDate": "2008-10-01",
+     "fame": 10
+    },
+    {
+     "name": "Guglielmo Vicario",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1996-10-07",
+     "fame": 32
+    },
+    {
+     "name": "Kōta Takai",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "2004-09-04",
+     "fame": 24
+    },
+    {
+     "name": "Pape Matar Sarr",
+     "position": "MEI",
+     "number": 29,
+     "birthDate": "2002-09-14",
+     "fame": 35
+    },
+    {
+     "name": "Souza",
+     "position": "DEF",
+     "number": 38,
+     "defRole": "LAT",
+     "birthDate": "2006-06-16",
+     "fame": 13
+    },
+    {
+     "name": "Mikey Moore",
+     "position": "MEI",
+     "number": 47,
+     "birthDate": "2007-08-11",
+     "fame": 13
+    },
+    {
+     "name": "Kevin Danso",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1998-09-19",
+     "fame": 36
+    },
+    {
+     "name": "Radu Drăgușin",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2002-02-03",
+     "fame": 36
+    },
+    {
+     "name": "Yang Min-hyeok",
+     "position": "ATA",
+     "birthDate": "2006-04-16",
+     "fame": 16
+    }
+   ]
+  }
+ }
+}

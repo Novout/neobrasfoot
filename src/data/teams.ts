@@ -263,7 +263,7 @@ export function createTeams(format: LeagueFormat = '4x8'): Team[] {
 export const CUSTOM_TEAM_ID = 'meu-clube'
 
 /** Reputação típica de cada série, usada pelo clube criado pelo jogador. */
-export const DIVISION_REPUTATION: Record<DivisionId, number> = { A: 75, B: 64, C: 54, D: 44, ESP: 80 }
+export const DIVISION_REPUTATION: Record<DivisionId, number> = { A: 75, B: 64, C: 54, D: 44, ESP: 80, ENG: 81, GER: 79 }
 
 export interface CustomTeamDraft {
   name: string

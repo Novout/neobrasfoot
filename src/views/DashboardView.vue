@@ -242,6 +242,12 @@ function standingPoints(row: { wins: number; draws: number }) {
           <p class="muted">Seu time está fora da Copa, mas a fase precisa ser disputada para o calendário seguir.</p>
           <button class="btn" @click="watchCupRound">Acompanhar a rodada da Copa</button>
         </template>
+        <!-- Rodada de folga (Bundesliga: 34 rodadas nas 38 da temporada): as outras ligas jogam. -->
+        <template v-else-if="game.nextEvent === 'league' && !game.nextOpponent">
+          <h3>{{ game.nextEventLabel }}</h3>
+          <p class="muted">Rodada de folga: seu time não joga, mas as outras ligas jogam para o calendário seguir.</p>
+          <button class="btn" @click="watchCupRound">Acompanhar a rodada</button>
+        </template>
         <template v-else-if="game.nextOpponent">
           <h3 :class="{ 'cup-title': game.nextEvent === 'cup', 'libertadores-title': game.nextEvent === 'libertadores' || game.nextEvent === 'worldcup' }">
             {{ game.nextEventLabel }}

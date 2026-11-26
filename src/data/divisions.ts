@@ -42,7 +42,7 @@ export let RELEGATION_SPOTS = LEAGUE_FORMATS[DEFAULT_FORMAT].relegationSpots
  * Ligas estrangeiras disputadas em paralelo às séries (só no 2×20, que também tem 38 rodadas): ficam fora da
  * pirâmide (ninguém sobe nem cai), fora da Copa do Brasil e da Libertadores.
  */
-export const FOREIGN_DIVISIONS: DivisionId[] = ['ESP']
+export const FOREIGN_DIVISIONS: DivisionId[] = ['ESP', 'ENG', 'GER']
 
 export function isForeignDivision(division: DivisionId) {
   return FOREIGN_DIVISIONS.includes(division)
@@ -100,6 +100,8 @@ export const DIVISION_LABELS: Record<DivisionId, string> = {
   C: 'Série C',
   D: 'Série D',
   ESP: 'La Liga',
+  ENG: 'Premier League',
+  GER: 'Bundesliga',
 }
 
 /** Ajuste de reputação ao subir ou cair de divisão. */

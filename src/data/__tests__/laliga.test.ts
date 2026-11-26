@@ -94,7 +94,7 @@ describe('La Liga na carreira', () => {
     const game = useGameStore()
     game.startCareer('es-real-madrid', 'Técnico')
     expect(game.managedTeam?.division).toBe('ESP')
-    expect(LEAGUE_DIVISIONS).toEqual([...DIVISIONS, 'ESP'])
+    expect(LEAGUE_DIVISIONS).toEqual([...DIVISIONS, 'ESP', 'ENG', 'GER'])
     expect(game.fixtures).toHaveLength(38)
     // Cada rodada tem 10 jogos da La Liga, todos entre clubes espanhóis.
     const spanish = new Set(game.teams.filter((t) => t.division === 'ESP').map((t) => t.id))

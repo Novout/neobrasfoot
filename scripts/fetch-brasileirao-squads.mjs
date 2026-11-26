@@ -9,6 +9,7 @@
  *      npm run update-brasileirao -- --clubes=mirassol,criciuma  (só esses clubes; os outros ficam como estão)
  *      npm run update-laliga                    (mesmo processo para os clubes da La Liga espanhola)
  *      npm run update-selecoes                  (convocados das seleções da Copa do Mundo, com o número da camisa)
+ *      npm run update-premier / update-bundesliga  (clubes das ligas inglesa e alemã, com o estádio da ficha do clube)
  * Saída: src/data/templates/brasileirao-squads.json ou laliga-squads.json (dados brutos; idade e OVR são
  * calculados no template).
  */
@@ -16,12 +17,21 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { CLUBS as BRAZIL_CLUBS, selectedClubs } from './brasileirao-clubs.mjs'
 import { LALIGA_CLUBS } from './laliga-clubs.mjs'
 import { NATIONS } from './selecoes-clubs.mjs'
+import { PREMIER_CLUBS } from './premier-clubs.mjs'
+import { BUNDESLIGA_CLUBS } from './bundesliga-clubs.mjs'
 
-/** --liga=espanha: clubes da La Liga; --liga=selecoes: seleções da Copa. Cada um no seu arquivo. */
-const SPAIN = process.argv.includes('--liga=espanha')
-const NATIONAL = process.argv.includes('--liga=selecoes')
-const CLUBS = SPAIN ? LALIGA_CLUBS : NATIONAL ? NATIONS : BRAZIL_CLUBS
-const OUT = new URL(`../src/data/templates/${SPAIN ? 'laliga' : NATIONAL ? 'selecoes' : 'brasileirao'}-squads.json`, import.meta.url)
+/** --liga=X: qual conjunto de clubes baixar; cada um vai para o seu arquivo (padrão: Brasileirão). */
+const LEAGUES = {
+  espanha: { clubs: LALIGA_CLUBS, file: 'laliga' },
+  selecoes: { clubs: NATIONS, file: 'selecoes' },
+  inglaterra: { clubs: PREMIER_CLUBS, file: 'premier' },
+  alemanha: { clubs: BUNDESLIGA_CLUBS, file: 'bundesliga' },
+}
+const leagueArg = process.argv.find((a) => a.startsWith('--liga='))?.slice('--liga='.length)
+const LEAGUE = leagueArg ? LEAGUES[leagueArg] : { clubs: BRAZIL_CLUBS, file: 'brasileirao' }
+if (!LEAGUE) throw new Error(`Liga desconhecida: ${leagueArg} (use ${Object.keys(LEAGUES).join(', ')})`)
+const CLUBS = LEAGUE.clubs
+const OUT = new URL(`../src/data/templates/${LEAGUE.file}-squads.json`, import.meta.url)
 const HEADERS = { 'User-Agent': 'NeobrasfootTemplateBuilder/1.0 (squad template generator)' }
 
 
@@ -50,7 +60,8 @@ const wikidata = (params) => getJson(`https://www.wikidata.org/w/api.php?format=
  */
 function fsTemplates(text) {
   const out = []
-  const re = /\{\{\s*(?:[Nn]at )?[Ff]s (?:g )?player/g
+  // Também {{football squad player ...}}, usado em alguns clubes (ex.: Nottingham Forest).
+  const re = /\{\{\s*(?:(?:[Nn]at )?[Ff]s (?:g )?player|[Ff]ootball squad player)/g
   let m
   while ((m = re.exec(text))) {
     let depth = 0
@@ -102,13 +113,32 @@ function parseManager(text) {
   return name.length >= 2 && name.length <= 40 ? name : undefined
 }
 
+/** Estádio do clube: campo "ground" da ficha, sem links, referências e observações. */
+function parseGround(text) {
+  const m = text.match(/\n\s*\|\s*ground\s*=\s*([^\n]*)/i)
+  if (!m) return undefined
+  const name = m[1]
+    .replace(/<ref[^>]*\/>|<ref[^>]*>.*?<\/ref>/g, '')
+    .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, '$2')
+    .replace(/\[\[([^\]]+)\]\]/g, '$1')
+    .replace(/\{\{[^}]*\}\}/g, '')
+    .replace(/<br\s*\/?>.*$/i, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/'''?/g, '')
+    .trim()
+  return name.length >= 2 && name.length <= 50 ? name : undefined
+}
+
 /** Só a seção do elenco principal (sem base, emprestados ou números aposentados). */
 function mainSquadSection(text) {
   // A quebra de linha do fim fica fora do match: títulos seguidos ("==Players==" e "===Current squad===") são achados os dois.
   const heads = [...text.matchAll(/\n(=+)\s*([^=\n]+?)\s*=+[ \t]*(?=\n)/g)].map((m) => ({ i: m.index, end: m.index + m[0].length, title: m[2] }))
-  let head = heads.find((h) => /(current|first[- ]team|main)\s*(squad|roster)|^squad$|^first team$/i.test(h.title))
+  // Em ordem de preferência: "Current squad" vem antes de títulos genéricos como "First team" (que pode ser só
+  // o título de cima, com o elenco num subtítulo, ex.: Nottingham Forest).
+  const patterns = [/current\s*(squad|roster)/i, /(first[- ]team|main)\s*(squad|roster)/i, /^squad$|^first team$/i]
+  let head = patterns.map((re) => heads.find((h) => re.test(h.title))).find(Boolean)
   if (!head) {
-    const firstPlayer = text.search(/\{\{\s*(?:nat )?fs (?:g )?player/i)
+    const firstPlayer = text.search(/\{\{\s*(?:(?:nat )?fs (?:g )?player|football squad player)/i)
     head = [...heads].reverse().find((h) => h.i < firstPlayer)
   }
   if (!head) return ''
@@ -171,6 +201,7 @@ async function main() {
       source: `https://en.wikipedia.org/wiki/${encodeURIComponent(r.parse?.title ?? title).replace(/%20/g, '_')}`,
       revision: r.parse?.revid,
       manager: parseManager(text),
+      stadium: parseGround(text),
       players: parsePlayers(mainSquadSection(text)),
     }
     console.log(`${id.padEnd(14)} ${squads[id].players.length} jogadores`)
@@ -253,6 +284,7 @@ async function main() {
           source: s.source,
           revision: s.revision,
           ...(s.manager ? { manager: s.manager } : {}),
+          ...(s.stadium ? { stadium: s.stadium } : {}),
           players: s.players.map(({ name, position, link, number }) => {
             const q = link && qid[link]
             const role = position === 'DEF' ? (infoboxRole[link] ?? (q ? defRole(info[q]?.roles ?? []) : undefined)) : undefined

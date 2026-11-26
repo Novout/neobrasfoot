@@ -102,11 +102,16 @@ describe('carreira no formato 2×20', () => {
   it('séries A e B, 38 rodadas com 20 jogos cada, 4 sobem e 4 descem', () => {
     expect(DIVISIONS).toEqual(['A', 'B'])
     expect(PROMOTION_SPOTS).toBe(4)
-    expect(game.teams.filter((t) => t.division !== 'ESP')).toHaveLength(40)
+    expect(game.teams.filter((t) => t.division === 'A' || t.division === 'B')).toHaveLength(40)
     expect(game.teams.filter((t) => t.division === 'ESP')).toHaveLength(20)
+    expect(game.teams.filter((t) => t.division === 'ENG')).toHaveLength(20)
+    expect(game.teams.filter((t) => t.division === 'GER')).toHaveLength(18)
     expect(game.fixtures).toHaveLength(38)
-    // 20 jogos das Séries A e B e 10 da La Liga em cada rodada.
-    expect(game.fixtures.every((r) => r.length === 30)).toBe(true)
+    // Em cada rodada: 20 jogos das Séries A e B, 10 da La Liga, 10 da Premier League e 9 da Bundesliga
+    // (menos nas 4 folgas dela).
+    const lengths = game.fixtures.map((r) => r.length)
+    expect(lengths.filter((n) => n === 49)).toHaveLength(34)
+    expect(lengths.filter((n) => n === 40)).toHaveLength(4)
     expect(game.cup!.rounds[0]!.ties).toHaveLength(8)
     expect(game.cup!.byes).toHaveLength(24)
     expect(tableZone('A', 17, 20)).toBe('relegation')
@@ -163,7 +168,7 @@ describe('carreira no formato 2×20', () => {
     }
     // Não jogam: fora da tabela, do calendário e da Copa.
     expect(game.teams.some((t) => t.division === 'C')).toBe(false)
-    expect(game.standings).toHaveLength(60)
+    expect(game.standings).toHaveLength(98)
     expect(tableZone('B', 17, 20)).toBe('relegation')
   })
 

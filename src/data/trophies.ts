@@ -5,7 +5,7 @@ import { DIVISION_LABELS } from './divisions'
 export const PLAYER_MANAGER_ID = 'tecnico-jogador'
 
 /** Pontos de cada conquista no ranking de técnicos. */
-export const TROPHY_POINTS = { worldcup: 20, libertadores: 14, A: 10, ESP: 10, B: 6, C: 4, D: 3, cup: 8 } as const
+export const TROPHY_POINTS = { worldcup: 20, libertadores: 14, A: 10, ESP: 10, ENG: 10, GER: 10, B: 6, C: 4, D: 3, cup: 8 } as const
 
 export function trophyKey(t: Trophy): keyof typeof TROPHY_POINTS {
   if (t.kind === 'cup' || t.kind === 'libertadores' || t.kind === 'worldcup') return t.kind
@@ -29,6 +29,8 @@ export const TROPHY_STYLE: Record<keyof typeof TROPHY_POINTS, { icon: string; co
   libertadores: { icon: '🏆', color: '#f97316', name: 'Libertadores' },
   A: { icon: '🏆', color: '#fbbf24', name: 'Série A' },
   ESP: { icon: '🏆', color: '#e11d48', name: 'La Liga' },
+  ENG: { icon: '🏆', color: '#a855f7', name: 'Premier League' },
+  GER: { icon: '🏆', color: '#ef4444', name: 'Bundesliga' },
   cup: { icon: '🏆', color: '#60a5fa', name: 'Copa do Brasil' },
   B: { icon: '🥈', color: '#cbd5e1', name: 'Série B' },
   C: { icon: '🥉', color: '#d97706', name: 'Série C' },
@@ -71,7 +73,7 @@ export interface RankingRow {
 export function managerRanking(managers: Manager[]): RankingRow[] {
   return managers
     .map((manager) => {
-      const counts = { worldcup: 0, libertadores: 0, A: 0, ESP: 0, B: 0, C: 0, D: 0, cup: 0 }
+      const counts = { worldcup: 0, libertadores: 0, A: 0, ESP: 0, ENG: 0, GER: 0, B: 0, C: 0, D: 0, cup: 0 }
       for (const t of manager.trophies) counts[trophyKey(t)]++
       return {
         manager,
