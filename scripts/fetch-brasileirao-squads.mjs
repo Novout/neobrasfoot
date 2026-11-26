@@ -11,6 +11,7 @@
  *      npm run update-selecoes                  (convocados das seleções da Copa do Mundo, com o número da camisa)
  *      npm run update-premier / update-bundesliga  (clubes das ligas inglesa e alemã, com o estádio da ficha do clube)
  *      npm run update-champions                 (clubes europeus da Liga dos Campeões de fora das ligas do jogo)
+ *      npm run update-mundial                   (clubes árabes e africanos do Mundial de Clubes)
  * Saída: src/data/templates/brasileirao-squads.json ou laliga-squads.json (dados brutos; idade e OVR são
  * calculados no template).
  */
@@ -21,6 +22,7 @@ import { NATIONS } from './selecoes-clubs.mjs'
 import { PREMIER_CLUBS } from './premier-clubs.mjs'
 import { BUNDESLIGA_CLUBS } from './bundesliga-clubs.mjs'
 import { CHAMPIONS_CLUBS } from './champions-clubs.mjs'
+import { WORLD_CLUBS } from './mundial-clubs.mjs'
 
 /** --liga=X: qual conjunto de clubes baixar; cada um vai para o seu arquivo (padrão: Brasileirão). */
 const LEAGUES = {
@@ -29,6 +31,7 @@ const LEAGUES = {
   inglaterra: { clubs: PREMIER_CLUBS, file: 'premier' },
   alemanha: { clubs: BUNDESLIGA_CLUBS, file: 'bundesliga' },
   europa: { clubs: CHAMPIONS_CLUBS, file: 'champions' },
+  mundial: { clubs: WORLD_CLUBS, file: 'mundial' },
 }
 const leagueArg = process.argv.find((a) => a.startsWith('--liga='))?.slice('--liga='.length)
 const LEAGUE = leagueArg ? LEAGUES[leagueArg] : { clubs: BRAZIL_CLUBS, file: 'brasileirao' }

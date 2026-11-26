@@ -7,6 +7,7 @@ import { DIVISION_LABELS } from '../data/divisions'
 import { groupOf, groupRoundCount, LIBERTADORES_NAME, stageName } from '../data/libertadores'
 import { WORLD_CUP_NAME } from '../data/worldCup'
 import { CHAMPIONS_NAME } from '../data/champions'
+import { CLUB_WORLD_CUP_NAME } from '../data/clubWorldCup'
 import type { LibertadoresState } from '../types/game'
 import type { CalendarKind } from '../data/calendar'
 import { useGameStore } from '../stores/game'
@@ -157,6 +158,41 @@ function worldCupRow(index: number, date: string): Row {
 /** O clube gerenciado disputa a Libertadores desta temporada. */
 const inLibertadores = computed(() => !!game.libertadores && !!myId.value && !!groupOf(game.libertadores, myId.value))
 
+/** Etapa do Mundial de Clubes (só aparece se o clube gerenciado foi sorteado para ele). */
+function clubWorldRow(index: number, date: string): Row {
+  const w = game.clubWorldCup!
+  const drawn = w.rounds[index]
+  const tie = drawn?.ties.find((t) => t.homeId === myId.value || t.awayId === myId.value)
+  const home = tie ? tie.homeId === myId.value : null
+  let score: string | null = null
+  let outcome: Outcome | null = null
+  if (tie && tie.homeGoals !== null && tie.awayGoals !== null) {
+    const mine = home ? tie.homeGoals : tie.awayGoals
+    const theirs = home ? tie.awayGoals : tie.homeGoals
+    const pens = tie.penalties ? ` (pên. ${home ? tie.penalties.home : tie.penalties.away}-${home ? tie.penalties.away : tie.penalties.home})` : ''
+    score = `${mine} x ${theirs}${pens}`
+    outcome = tie.winnerId === myId.value ? 'win' : 'loss'
+  }
+  return {
+    key: `W${index}`,
+    date,
+    kind: 'clubworld',
+    label: `${CLUB_WORLD_CUP_NAME} · ${drawn?.name ?? (index === 0 ? 'Semifinal' : 'Final')}`,
+    opponent: tie ? game.getTeam(home ? tie.awayId : tie.homeId) : null,
+    home,
+    score,
+    outcome,
+    note: tie ? null : drawn ? 'seu time não está nesta fase' : 'adversário a definir',
+    played: index < w.currentRound || (w.championId !== null && index <= w.currentRound),
+    next: game.nextEvent === 'clubworld' && index === w.currentRound,
+  }
+}
+
+/** O clube gerenciado está no Mundial desta temporada (depois do sorteio). */
+const inClubWorld = computed(
+  () => !!game.clubWorldCup?.rounds[0]?.ties.some((t) => t.homeId === myId.value || t.awayId === myId.value),
+)
+
 /** Compromissos da temporada agrupados por mês. */
 const months = computed(() => {
   const rows = game.calendar
@@ -164,6 +200,7 @@ const months = computed(() => {
     // Copa do Mundo: só para quem treina uma seleção nela.
     .filter((e) => e.kind !== 'worldcup' || (!!game.worldCup && !!game.nationalJob))
     .filter((e) => e.kind !== 'champions' || inChampions.value)
+    .filter((e) => e.kind !== 'clubworld' || inClubWorld.value)
     .map((e) =>
       e.kind === 'league'
         ? leagueRow(e.index, e.date)
@@ -173,7 +210,9 @@ const months = computed(() => {
             ? libertadoresRow(e.index, e.date)
             : e.kind === 'champions'
               ? championsRow(e.index, e.date)
-              : worldCupRow(e.index, e.date),
+              : e.kind === 'clubworld'
+                ? clubWorldRow(e.index, e.date)
+                : worldCupRow(e.index, e.date),
     )
   const groups: { month: number; rows: Row[] }[] = []
   for (const row of rows) {
@@ -229,8 +268,8 @@ const OUTCOME_LABEL: Record<Outcome, string> = { win: 'V', draw: 'E', loss: 'D' 
           :class="[`row--${row.kind}`, { 'row--played': row.played, 'row--next': row.next }]"
         >
           <span class="row__date">{{ formatDate(row.date) }}</span>
-          <span class="row__comp" :class="{ 'row__comp--cup': row.kind === 'cup', 'row__comp--lib': row.kind === 'libertadores' || row.kind === 'worldcup' || row.kind === 'champions' }">
-            {{ { cup: '🏆 ', libertadores: '🌎 ', champions: '⭐ ', worldcup: '🌍 ', league: '' }[row.kind] }}{{ row.label }}
+          <span class="row__comp" :class="{ 'row__comp--cup': row.kind === 'cup', 'row__comp--lib': row.kind === 'libertadores' || row.kind === 'worldcup' || row.kind === 'champions' || row.kind === 'clubworld' }">
+            {{ { cup: '🏆 ', libertadores: '🌎 ', champions: '⭐ ', worldcup: '🌍 ', clubworld: '🌐 ', league: '' }[row.kind] }}{{ row.label }}
           </span>
           <span class="row__match">
             <template v-if="row.opponent">

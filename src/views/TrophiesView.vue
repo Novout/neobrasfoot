@@ -44,9 +44,9 @@ function divisionLabel(id: string) {
   return game.reserveTeams.some((t) => t.id === id) ? 'Série C (fora da liga)' : DIVISION_LABELS[team.division]
 }
 
-const KEYS = ['worldcup', 'champions', 'libertadores', 'A', 'ESP', 'ENG', 'GER', 'cup', 'B', 'C', 'D'] as const
+const KEYS = ['worldcup', 'clubworld', 'champions', 'libertadores', 'A', 'ESP', 'ENG', 'GER', 'cup', 'B', 'C', 'D'] as const
 const KEY_LABELS: Record<(typeof KEYS)[number], string> = {
-  worldcup: 'Mundo', champions: 'UCL', libertadores: 'Lib', A: 'A', ESP: 'Liga', ENG: 'PL', GER: 'BL', cup: 'Copa', B: 'B', C: 'C', D: 'D',
+  worldcup: 'Mundo', clubworld: 'Mundial', champions: 'UCL', libertadores: 'Lib', A: 'A', ESP: 'Liga', ENG: 'PL', GER: 'BL', cup: 'Copa', B: 'B', C: 'C', D: 'D',
 }
 </script>
 

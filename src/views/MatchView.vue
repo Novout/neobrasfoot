@@ -30,7 +30,7 @@ const EVENT_ICONS: Record<MatchEventType, string> = { gol: '⚽', amarelo: '🟨
 
 /** Rodada de copa (Copa do Brasil ou Libertadores) reúne clubes de todas as séries: sem abas de divisão. */
 const isCup = computed(() => !!match.matches[0] && match.matches[0].competition !== 'league')
-const CUP_ICONS: Record<string, string> = { cup: '🏆 ', libertadores: '🌎 ', champions: '⭐ ', worldcup: '🌍 ' }
+const CUP_ICONS: Record<string, string> = { cup: '🏆 ', libertadores: '🌎 ', champions: '⭐ ', worldcup: '🌍 ', clubworld: '🌐 ' }
 const cupIcon = computed(() => CUP_ICONS[match.matches[0]?.competition ?? 'cup'] ?? '🏆 ')
 
 /** Jogo do seu clube, em destaque no topo com todos os lances. */

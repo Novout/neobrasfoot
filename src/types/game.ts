@@ -129,7 +129,7 @@ export interface PenaltyKick {
   scored: boolean
 }
 
-export type Competition = 'league' | 'cup' | 'libertadores' | 'champions' | 'worldcup'
+export type Competition = 'league' | 'cup' | 'libertadores' | 'champions' | 'worldcup' | 'clubworld'
 
 export interface PenaltyScore {
   home: number
@@ -155,6 +155,22 @@ export interface Academy {
   teamId: string
   season: number
   players: Player[]
+}
+
+/**
+ * Mundial de Clubes: semifinais e final entre os campeões da Libertadores e da Liga dos Campeões e dois convidados
+ * (um clube árabe e um africano). As semifinais são sorteadas quando os dois campeões são conhecidos.
+ */
+export interface ClubWorldCupState {
+  season: number
+  /** Convidados da temporada: [clube árabe, clube africano]. */
+  guests: string[]
+  /** Semifinais e final (vazio até o sorteio). */
+  rounds: CupRound[]
+  currentRound: number
+  /** Rodadas do campeonato jogadas antes de cada etapa (depois da última: dezembro). */
+  schedule: number[]
+  championId: string | null
 }
 
 export interface CupState {
@@ -259,7 +275,7 @@ export interface Dismissal {
   reason: string
 }
 
-export type TrophyKind = 'league' | 'cup' | 'libertadores' | 'champions' | 'worldcup'
+export type TrophyKind = 'league' | 'cup' | 'libertadores' | 'champions' | 'worldcup' | 'clubworld'
 
 export interface Trophy {
   kind: TrophyKind

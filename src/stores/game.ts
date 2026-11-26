@@ -20,6 +20,9 @@ import { baseReserveTeams, leagueReserveTeams, leagueTeams } from '../data/leagu
 import { balanceDefRoles, defenseFits, defenseSplit, defRoleOf, DEF_ROLE_MISFIT } from '../data/defense'
 import { assignShirtNumbers, changeShirtNumber } from '../data/shirtNumbers'
 import {
+  CLUB_WORLD_CUP_NAME, CLUB_WORLD_CUP_PRIZES, clubWorldCupTeams, createClubWorldCup, createGuestTeams, drawFinal, drawSemifinals, pickGuests,
+} from '../data/clubWorldCup'
+import {
   CHAMPIONS_NAME, CHAMPIONS_PRIZES, CHAMPIONS_SPOTS_PER_LEAGUE, createChampions, createEuropeanTeams,
 } from '../data/champions'
 import {
@@ -51,7 +54,7 @@ import {
   assignStarsToLegacyTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
 } from '../data/teams'
 import type {
-  Academy, Competition, LibertadoresState, Marking, NationalJob, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
+  Academy, ClubWorldCupState, Competition, LibertadoresState, Marking, NationalJob, Confidence, ConfidenceChange, CupState, CupTie, Dismissal, DivisionId, JobOffer, Manager, MatchVenue, Trophy, Fixture, Formation, LiveMatch, Player, PlayStyle, Stadium, StadiumUpgradeKey, StandingRow, Tactic, Team, TransferOffer,
   TransferRecord, Position,
 } from '../types/game'
 import { clamp, createRng, formatMoney, hashString } from '../utils/random'
@@ -225,6 +228,10 @@ export const useGameStore = defineStore('game', () => {
   const europeanTeams = ref<Team[]>([])
   /** Classificados das ligas estrangeiras para a próxima Liga dos Campeões (definidos na virada da temporada). */
   const championsQualified = ref<string[]>([])
+  /** Mundial de Clubes da temporada (com Libertadores e Liga dos Campeões). */
+  const clubWorldCup = ref<ClubWorldCupState | null>(null)
+  /** Clubes árabes e africanos do Mundial (não disputam a liga). */
+  const guestTeams = ref<Team[]>([])
   /** Copa do Mundo da temporada (só nos anos de Copa: 2030, 2034...). */
   const worldCup = ref<LibertadoresState | null>(null)
   /** Seleções da Copa do Mundo (não disputam a liga). */
@@ -254,6 +261,7 @@ export const useGameStore = defineStore('game', () => {
     confidence, confidenceLog, dismissal, headlines, academy, calendarStartYear, leagueResults, reserveTeams,
     seasonStats, bestXIHistory, libertadores, continentalTeams, libertadoresQualified,
     worldCup, nationalTeams, nationalJob, nationalOffers, nationalTactic, champions, europeanTeams, championsQualified,
+    clubWorldCup, guestTeams,
   }, 2)
 
   // O formato da liga (4×8 ou 2×20) vem dos próprios clubes da carreira salva.
@@ -317,6 +325,11 @@ export const useGameStore = defineStore('game', () => {
   const libertadoresFinished = computed(() => !libertadores.value || libertadores.value.championId !== null)
   const worldCupFinished = computed(() => !worldCup.value || worldCup.value.championId !== null)
   const championsFinished = computed(() => !champions.value || champions.value.championId !== null)
+  const clubWorldFinished = computed(() => !clubWorldCup.value || clubWorldCup.value.championId !== null)
+  /** Etapa do Mundial em disputa (null antes do sorteio ou depois da final). */
+  const currentClubWorldRound = computed(() =>
+    clubWorldFinished.value ? null : (clubWorldCup.value!.rounds[clubWorldCup.value!.currentRound] ?? null),
+  )
   /** A etapa atual da Liga dos Campeões é de mata-mata. */
   const championsKnockout = computed(() => !!champions.value && !isGroupStage(champions.value))
   /** A etapa atual da Copa do Mundo é de mata-mata. */
@@ -330,7 +343,8 @@ export const useGameStore = defineStore('game', () => {
       cupFinished.value &&
       libertadoresFinished.value &&
       championsFinished.value &&
-      worldCupFinished.value,
+      worldCupFinished.value &&
+      clubWorldFinished.value,
   )
 
   /**
@@ -349,6 +363,8 @@ export const useGameStore = defineStore('game', () => {
     if (l && !libertadoresFinished.value) pending.push(['libertadores', l.schedule[l.stage]!])
     if (ucl && !championsFinished.value) pending.push(['champions', ucl.schedule[ucl.stage]!])
     if (w && !worldCupFinished.value) pending.push(['worldcup', w.schedule[w.stage]!])
+    const cwc = clubWorldCup.value
+    if (cwc && currentClubWorldRound.value) pending.push(['clubworld', cwc.schedule[cwc.currentRound]!])
     const due = pending.filter(([, at]) => round.value >= at || leagueFinished.value)
     if (due.length) return due.reduce((best, cur) => (cur[1] < best[1] ? cur : best))[0]
     return leagueFinished.value ? null : 'league'
@@ -365,6 +381,7 @@ export const useGameStore = defineStore('game', () => {
     if (nextEvent.value === 'champions') {
       return champions.value ? libertadoresTies(champions.value).map((t) => ({ homeId: t.homeId, awayId: t.awayId })) : []
     }
+    if (nextEvent.value === 'clubworld') return currentClubWorldRound.value?.ties.map((t) => ({ homeId: t.homeId, awayId: t.awayId })) ?? []
     return fixtures.value[round.value] ?? []
   })
 
@@ -374,6 +391,7 @@ export const useGameStore = defineStore('game', () => {
     if (nextEvent.value === 'libertadores') return `${LIBERTADORES_NAME} · ${stageName(libertadores.value?.stage ?? 0)}`
     if (nextEvent.value === 'worldcup') return `${WORLD_CUP_NAME} · ${stageName(worldCup.value?.stage ?? 0, WORLD_CUP_GROUP_ROUNDS)}`
     if (nextEvent.value === 'champions') return `${CHAMPIONS_NAME} · ${stageName(champions.value?.stage ?? 0)}`
+    if (nextEvent.value === 'clubworld') return `${CLUB_WORLD_CUP_NAME} · ${currentClubWorldRound.value?.name ?? ''}`
     if (nextEvent.value === 'league') return `${DIVISION_LABELS[managedTeam.value?.division ?? 'A']} · Rodada ${round.value + 1}`
     return 'Temporada encerrada'
   })
@@ -437,6 +455,7 @@ export const useGameStore = defineStore('game', () => {
       libertadores.value?.schedule ?? [],
       worldCup.value?.schedule ?? [],
       champions.value?.schedule ?? [],
+      clubWorldCup.value?.schedule ?? [],
     ),
   )
   /** Data do próximo compromisso (rodada do campeonato ou fase da Copa). */
@@ -452,7 +471,9 @@ export const useGameStore = defineStore('game', () => {
             ? (libertadores.value?.stage ?? 0)
             : event === 'champions'
               ? (champions.value?.stage ?? 0)
-              : (worldCup.value?.stage ?? 0)
+              : event === 'clubworld'
+                ? (clubWorldCup.value?.currentRound ?? 0)
+                : (worldCup.value?.stage ?? 0)
     return calendar.value.find((e) => e.kind === event && e.index === index)?.date ?? null
   })
 
@@ -553,6 +574,7 @@ export const useGameStore = defineStore('game', () => {
       continentalTeams.value.find((t) => t.id === id) ??
       nationalTeams.value.find((t) => t.id === id) ??
       europeanTeams.value.find((t) => t.id === id) ??
+      guestTeams.value.find((t) => t.id === id) ??
       null
     )
   }
@@ -661,6 +683,7 @@ export const useGameStore = defineStore('game', () => {
     cup.value = createCup(cupTeams(), season.value, 0, totalRounds)
     startLibertadores(0)
     startChampions(0)
+    startClubWorldCup()
     // A Copa do Mundo só existe nos anos de Copa (2030, 2034...).
     if (isWorldCupYear(currentYear.value)) startWorldCup(0)
     else clearWorldCup()
@@ -1401,6 +1424,7 @@ export const useGameStore = defineStore('game', () => {
     if (matches[0]?.competition === 'libertadores') return applyLibertadoresResults(matches)
     if (matches[0]?.competition === 'worldcup') return applyWorldCupResults(matches)
     if (matches[0]?.competition === 'champions') return applyClubTournamentResults('champions', matches)
+    if (matches[0]?.competition === 'clubworld') return applyClubWorldCupResults(matches)
     // Público calculado com a posição na tabela antes da rodada.
     const gateCtx = gateContext.value
     for (const m of matches) {
@@ -1888,6 +1912,178 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
+  // --- Mundial de Clubes ---
+
+  /**
+   * Mundial de Clubes da temporada: só existe com Libertadores e Liga dos Campeões (formato 2×20 com as ligas
+   * europeias). Os convidados (um clube árabe e um africano) são sorteados agora; as semifinais, quando os dois
+   * campeões continentais forem conhecidos.
+   */
+  function startClubWorldCup() {
+    if (!libertadores.value || !champions.value) {
+      clubWorldCup.value = null
+      guestTeams.value = []
+      return
+    }
+    guestTeams.value = createGuestTeams()
+    guestTeams.value.forEach((t) => {
+      applyLineup(t, AI_TACTIC.formation)
+      assignShirtNumbers(t.players)
+    })
+    const rng = createRng(hashString(`mundial-${season.value}`) ^ Date.now())
+    clubWorldCup.value = createClubWorldCup(season.value, pickGuests(rng.next), fixtures.value.length)
+  }
+
+  /** Sorteia as semifinais do Mundial assim que os campeões da Libertadores e da Liga dos Campeões saem. */
+  function maybeDrawClubWorldCup() {
+    const w = clubWorldCup.value
+    const lib = libertadores.value?.championId
+    const ucl = champions.value?.championId
+    if (!w || w.rounds.length || !lib || !ucl) return
+    const rng = createRng(hashString(`mundial-sorteio-${season.value}`) ^ Date.now())
+    w.rounds.push(drawSemifinals(w, lib, ucl, rng.next))
+    const names = clubWorldCupTeams(w).map((id) => getTeam(id)?.name).join(', ')
+    addNews(`🌐 ${CLUB_WORLD_CUP_NAME} em dezembro: ${names}.`)
+    const id = managedTeamId.value
+    if (id && (lib === id || ucl === id)) addNews(`🌐 Seu time está no ${CLUB_WORLD_CUP_NAME}!`)
+  }
+
+  /** Situação do clube gerenciado no Mundial. */
+  const managedClubWorldStatus = computed(() => {
+    const w = clubWorldCup.value
+    const id = managedTeamId.value
+    if (!w || !id || !w.rounds.some((r) => r.ties.some((t) => t.homeId === id || t.awayId === id))) return null
+    if (w.championId === id) return { state: 'champion' as const, roundName: 'Final' }
+    const lost = w.rounds.find((r) => r.ties.some((t) => (t.homeId === id || t.awayId === id) && t.winnerId && t.winnerId !== id))
+    if (lost) return { state: 'eliminated' as const, roundName: lost.name }
+    return { state: 'alive' as const, roundName: w.rounds[w.currentRound]?.name ?? '' }
+  })
+
+  /** Resultados de uma etapa do Mundial (semifinais ou final). `quick` = simulada na hora, sem o seu clube. */
+  function applyClubWorldCupResults(matches: LiveMatch[], quick = false) {
+    const w = clubWorldCup.value
+    const current = w?.rounds[w.currentRound]
+    if (!w || !current || w.championId) return
+    const isFinal = current.ties.length === 1
+    const gateCtx = gateContext.value
+    const id = managedTeamId.value
+    const prizes = CLUB_WORLD_CUP_PRIZES
+
+    for (const m of matches) {
+      const t = current.ties.find((x) => x.homeId === m.homeId && x.awayId === m.awayId)
+      if (!t) continue
+      t.homeGoals = m.homeGoals
+      t.awayGoals = m.awayGoals
+      t.penalties = m.penalties
+      if (m.homeGoals === m.awayGoals && !t.penalties) {
+        const home = getTeam(t.homeId)?.players.filter((p) => p.starter) ?? []
+        const away = getTeam(t.awayId)?.players.filter((p) => p.starter) ?? []
+        t.penalties = shootoutScore(simulateShootout(t.homeId, t.awayId, home, away))
+      }
+      t.winnerId = tieWinner(t.homeId, t.awayId, m.homeGoals, m.awayGoals, t.penalties)
+
+      if (!quick) {
+        const homeResult = t.winnerId === t.homeId ? 1 : -1
+        updateTeamAfterMatch(t.homeId, homeResult, m.playedEnergy)
+        updateTeamAfterMatch(t.awayId, -homeResult, m.playedEnergy)
+        if (!m.playedEnergy) applySubstitutionFatigue(m)
+      }
+
+      if (id && (t.homeId === id || t.awayId === id)) {
+        const isHome = t.homeId === id
+        const opp = getTeam(isHome ? t.awayId : t.homeId)!
+        const pens = t.penalties ? ` (pênaltis ${t.penalties.home} x ${t.penalties.away})` : ''
+        const score = `${m.homeGoals} x ${m.awayGoals}${pens}`
+        collectMatchIncome(isHome, opp.id, gateCtx, 'clubworld', m.venue)
+        if (!isFinal) {
+          budget.value += prizes.entry
+          addNews(`🌐 Estreia no ${CLUB_WORLD_CUP_NAME}: cota de participação de ${formatMoney(prizes.entry)}.`)
+        }
+        if (t.winnerId === id) {
+          const prize = isFinal ? prizes.title : prizes.semifinal
+          budget.value += prize
+          changeConfidence(isFinal ? 12 : 3, isFinal ? 15 : 4, isFinal ? `Campeão do ${CLUB_WORLD_CUP_NAME}!` : `Final do ${CLUB_WORLD_CUP_NAME}`)
+          addNews(
+            isFinal
+              ? `🏆 CAMPEÃO DO MUNDO DE CLUBES! Vitória sobre o ${opp.name}: ${score}. Prêmio de ${formatMoney(prize)}.`
+              : `🌐 ${CLUB_WORLD_CUP_NAME}: na final depois de vencer o ${opp.name} (${score}). Prêmio de ${formatMoney(prize)}.`,
+          )
+        } else {
+          if (isFinal) budget.value += prizes.runnerUp
+          changeConfidence(-2, -3, `Derrota no ${CLUB_WORLD_CUP_NAME} para o ${opp.name}`)
+          addNews(
+            isFinal
+              ? `🌐 ${CLUB_WORLD_CUP_NAME}: vice-campeão após perder para o ${opp.name} (${score}). Prêmio de ${formatMoney(prizes.runnerUp)}.`
+              : `🌐 ${CLUB_WORLD_CUP_NAME}: eliminado na semifinal pelo ${opp.name} (${score}).`,
+          )
+        }
+      }
+    }
+
+    addHeadlines(
+      matchHeadlines(matches, {
+        season: season.value,
+        round: round.value + 1,
+        context: () => `${CLUB_WORLD_CUP_NAME} · ${current.name}`,
+        teamName: (teamId) => getTeam(teamId)?.name ?? '?',
+        division: () => undefined,
+        winnerId: (m) => current.ties.find((x) => x.homeId === m.homeId && x.awayId === m.awayId)?.winnerId ?? null,
+      }),
+    )
+    if (!quick) applyDiscipline(matches)
+
+    if (isFinal) {
+      w.championId = current.ties[0]!.winnerId
+      if (w.championId !== id) addNews(`🌐 ${getTeam(w.championId!)?.name} é campeão do ${CLUB_WORLD_CUP_NAME}!`)
+    } else {
+      const rng = createRng(hashString(`mundial-final-${season.value}`) ^ Date.now())
+      w.rounds.push(drawFinal(current, rng.next))
+      w.currentRound++
+    }
+
+    if (quick) return
+    relineupAiTeams()
+    guestTeams.value.forEach((t) => applyLineup(t, AI_TACTIC.formation))
+    simulateTournamentsWithoutUser()
+    announceSeasonEnd()
+  }
+
+  /** Etapas do Mundial sem o clube gerenciado são simuladas na hora. */
+  function simulateClubWorldCupWithoutManaged() {
+    let changed = false
+    for (let guard = 0; guard < 4; guard++) {
+      const w = clubWorldCup.value
+      const current = w?.rounds[w.currentRound]
+      if (!w || !current || nextEvent.value !== 'clubworld') return changed
+      const id = managedTeamId.value
+      if (current.ties.some((t) => t.homeId === id || t.awayId === id)) return changed
+      const matches: LiveMatch[] = current.ties.map((t, i) => {
+        const home = teamStrength(t.homeId)
+        const away = teamStrength(t.awayId)
+        const homeSide = { attack: home.attack * homeAdvantage(t.homeId), defense: home.defense }
+        const score = quickScore(homeSide, away)
+        return {
+          id: `clubworld-${season.value}-${w.currentRound}-${i}-sim`,
+          competition: 'clubworld',
+          knockout: true,
+          penalties: null,
+          homeId: t.homeId,
+          awayId: t.awayId,
+          homeGoals: score.home,
+          awayGoals: score.away,
+          homeAttack: homeSide.attack,
+          homeDefense: home.defense,
+          awayAttack: away.attack,
+          awayDefense: away.defense,
+          events: [],
+        }
+      })
+      applyClubWorldCupResults(matches, true)
+      changed = true
+    }
+    return changed
+  }
+
   // --- Copa do Mundo ---
 
   /**
@@ -2129,7 +2325,9 @@ export const useGameStore = defineStore('game', () => {
       const lib = simulateClubTournamentWithoutManaged('libertadores')
       const ucl = simulateClubTournamentWithoutManaged('champions')
       const wc = simulateWorldCupWithoutUser()
-      if (!lib && !ucl && !wc) return
+      maybeDrawClubWorldCup()
+      const cwc = simulateClubWorldCupWithoutManaged()
+      if (!lib && !ucl && !wc && !cwc) return
     }
   }
 
@@ -2152,6 +2350,7 @@ export const useGameStore = defineStore('game', () => {
     give(cup.value?.championId, { kind: 'cup' })
     give(libertadores.value?.championId, { kind: 'libertadores' })
     give(champions.value?.championId, { kind: 'champions' })
+    give(clubWorldCup.value?.championId, { kind: 'clubworld' })
     // Seleções não têm técnico na prateleira: a taça só vai para você, se for campeão com a sua seleção.
     const wcChampion = worldCup.value?.championId
     if (wcChampion && wcChampion === nationalJob.value?.teamId) {
@@ -2272,6 +2471,8 @@ export const useGameStore = defineStore('game', () => {
   if (hasCareer.value && !champions.value && fixtures.value.length && teams.value.some((t) => isForeignDivision(t.division))) {
     startChampions(round.value)
   }
+  // Saves anteriores ao Mundial de Clubes (com Libertadores e Liga dos Campeões): cria o desta temporada.
+  if (hasCareer.value && !clubWorldCup.value && libertadores.value && champions.value) startClubWorldCup()
   // Saves anteriores à Copa do Mundo, num ano de Copa: cria a desta temporada, encaixada nas rodadas restantes.
   if (hasCareer.value && !worldCup.value && fixtures.value.length && isWorldCupYear(currentYear.value)) startWorldCup(round.value)
   // Saves com a Libertadores em andamento sem o seu clube: põe em dia as etapas que já passaram.
@@ -2284,6 +2485,7 @@ export const useGameStore = defineStore('game', () => {
     nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
     libertadores, continentalTeams, libertadoresQualified, libertadoresFinished, libertadoresKnockout, managedLibertadoresStatus,
     champions, europeanTeams, championsQualified, championsFinished, championsKnockout, managedChampionsStatus,
+    clubWorldCup, guestTeams, clubWorldFinished, currentClubWorldRound, managedClubWorldStatus, maybeDrawClubWorldCup,
     worldCup, nationalTeams, nationalJob, nationalOffers, nationalTactic, worldCupFinished, worldCupKnockout, nationalJobStatus,
     canAcceptNationalJob, acceptNationalJob, declineNationalOffers, managerPrestige, startWorldCup,
     lineupTeamId, lineupTeam, lineupTactic, coachingNational,

@@ -227,6 +227,10 @@ function standingPoints(row: { wins: number; draws: number }) {
             Campeão da Copa do Brasil: <strong>{{ game.getTeam(game.cup.championId)?.name }}</strong>
             <span v-if="game.cup.championId === game.managedTeamId" class="good"> 🏆</span>
           </p>
+          <p v-if="game.clubWorldCup?.championId">
+            Campeão do Mundial de Clubes: <strong>{{ game.getTeam(game.clubWorldCup.championId)?.name }}</strong>
+            <span v-if="game.clubWorldCup.championId === game.managedTeamId" class="good"> 🏆</span>
+          </p>
           <p v-if="game.champions?.championId">
             Campeão da Liga dos Campeões: <strong>{{ game.getTeam(game.champions.championId)?.name }}</strong>
             <span v-if="game.champions.championId === game.managedTeamId" class="good"> 🏆</span>
@@ -253,7 +257,7 @@ function standingPoints(row: { wins: number; draws: number }) {
           <button class="btn" @click="watchCupRound">Acompanhar a rodada</button>
         </template>
         <template v-else-if="game.nextOpponent">
-          <h3 :class="{ 'cup-title': game.nextEvent === 'cup', 'libertadores-title': game.nextEvent === 'libertadores' || game.nextEvent === 'worldcup', 'champions-title': game.nextEvent === 'champions' }">
+          <h3 :class="{ 'cup-title': game.nextEvent === 'cup', 'libertadores-title': game.nextEvent === 'libertadores' || game.nextEvent === 'worldcup', 'champions-title': game.nextEvent === 'champions' || game.nextEvent === 'clubworld' }">
             {{ game.nextEventLabel }}
           </h3>
           <p v-if="game.coachingNational" class="national-note">🌍 Jogo da sua seleção: {{ game.lineupTeam?.name }}</p>

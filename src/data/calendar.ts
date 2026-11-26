@@ -78,7 +78,8 @@ function midweekDate(league: IsoDate[], afterRounds: number, slot = 0): IsoDate 
   const prev = league[afterRounds - 1]
   const next = league[afterRounds]
   if (!prev) return next ? toIso(fromIso(next) - (4 - Math.min(slot, 3)) * DAY) : league[0] ?? ''
-  if (!next) return toIso(fromIso(prev) + (3 + slot) * DAY)
+  // Depois da última rodada não há limite: jogos seguidos (ex.: semifinal e final do Mundial) ficam 3 dias entre si.
+  if (!next) return toIso(fromIso(prev) + (3 + slot * 3) * DAY)
   const gap = Math.round((fromIso(next) - fromIso(prev)) / DAY)
   const base = Math.max(1, Math.min(3, Math.floor(gap / 2)))
   return toIso(fromIso(prev) + Math.max(1, Math.min(gap - 1, base + slot)) * DAY)
@@ -89,7 +90,7 @@ export function cupDates(league: IsoDate[], schedule: number[]): IsoDate[] {
   return schedule.map((afterRounds) => midweekDate(league, afterRounds))
 }
 
-export type CalendarKind = 'league' | 'cup' | 'libertadores' | 'champions' | 'worldcup'
+export type CalendarKind = 'league' | 'cup' | 'libertadores' | 'champions' | 'worldcup' | 'clubworld'
 
 export interface CalendarEntry {
   kind: CalendarKind
@@ -109,6 +110,7 @@ export function seasonCalendar(
   libertadoresSchedule: number[] = [],
   worldCupSchedule: number[] = [],
   championsSchedule: number[] = [],
+  clubWorldSchedule: number[] = [],
 ): CalendarEntry[] {
   const league = leagueDates(year, leagueRounds)
   const slots = new Map<number, number>()
@@ -118,13 +120,14 @@ export function seasonCalendar(
       slots.set(afterRounds, slot + 1)
       return { kind, index, date: midweekDate(league, afterRounds, slot) }
     })
-  const order: Record<CalendarKind, number> = { cup: 0, libertadores: 1, champions: 2, worldcup: 3, league: 4 }
+  const order: Record<CalendarKind, number> = { cup: 0, libertadores: 1, champions: 2, worldcup: 3, clubworld: 4, league: 5 }
   return [
     ...league.map((date, index) => ({ kind: 'league' as const, index, date })),
     ...midweek('cup', cupSchedule),
     ...midweek('libertadores', libertadoresSchedule),
     ...midweek('champions', championsSchedule),
     ...midweek('worldcup', worldCupSchedule),
+    ...midweek('clubworld', clubWorldSchedule),
   ].sort((a, b) => a.date.localeCompare(b.date) || order[a.kind] - order[b.kind] || a.index - b.index)
 }
 

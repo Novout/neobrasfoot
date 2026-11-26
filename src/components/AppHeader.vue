@@ -69,6 +69,10 @@ function goToMenu() {
         Liga dos Campeões
         <span v-if="game.nextEvent === 'champions' && game.nextFixture" class="nav-badge nav-badge--build" title="Próximo jogo é da Liga dos Campeões">⭐</span>
       </RouterLink>
+      <RouterLink v-if="game.clubWorldCup" :to="{ name: 'club-world-cup' }">
+        Mundial
+        <span v-if="game.nextEvent === 'clubworld' && game.nextFixture" class="nav-badge nav-badge--build" title="Próximo jogo é do Mundial de Clubes">🌐</span>
+      </RouterLink>
       <RouterLink :to="{ name: 'world-cup' }">
         Copa do Mundo
         <span v-if="game.nextEvent === 'worldcup' && game.coachingNational" class="nav-badge nav-badge--build" title="Próximo jogo é da sua seleção">🌍</span>

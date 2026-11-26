@@ -68,6 +68,7 @@ describe('La Liga na janela de técnicos', () => {
     game.cup!.championId = game.cup!.rounds[0]!.ties[0]!.homeId
     game.libertadores!.championId = game.libertadores!.groups[0]!.teamIds[0]!
     if (game.champions) game.champions.championId = game.champions.groups[0]!.teamIds[0]!
+    if (game.clubWorldCup) game.clubWorldCup.championId = game.clubWorldCup.guests[0]!
     expect(game.isSeasonOver).toBe(true)
     game.ensureJobOffers()
     game.jobOffers.push({ teamId: 'es-sevilla', division: 'ESP', reason: 'teste' })

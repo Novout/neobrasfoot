@@ -1,0 +1,1905 @@
+{
+ "fetchedAt": "2026-11-26",
+ "clubs": {
+  "sa-al-hilal": {
+   "source": "https://en.wikipedia.org/wiki/Al_Hilal_SFC",
+   "revision": 1387961750,
+   "manager": "Simone Inzaghi",
+   "stadium": "Kingdom Arena",
+   "players": [
+    {
+     "name": "Mohammed Mahzari",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2002-01-01",
+     "fame": 2
+    },
+    {
+     "name": "Kalidou Koulibaly",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1991-06-20",
+     "fame": 51
+    },
+    {
+     "name": "Yusuf Akçiçek",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2006-01-25",
+     "fame": 13
+    },
+    {
+     "name": "Nasser Al-Dawsari",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1998-12-19",
+     "fame": 25
+    },
+    {
+     "name": "Gabriel Martinelli",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2001-06-18",
+     "fame": 53
+    },
+    {
+     "name": "Rúben Neves",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1997-03-13",
+     "fame": 41
+    },
+    {
+     "name": "Ollie Watkins",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1995-12-30",
+     "fame": 49
+    },
+    {
+     "name": "Mohammed Al-Rubaie",
+     "position": "GOL",
+     "number": 17,
+     "birthDate": "1997-08-14",
+     "fame": 21
+    },
+    {
+     "name": "Murad Hawsawi",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2001-06-03",
+     "fame": 4
+    },
+    {
+     "name": "Théo Hernandez",
+     "position": "DEF",
+     "number": 19,
+     "defRole": "LAT",
+     "birthDate": "1997-10-06",
+     "fame": 51
+    },
+    {
+     "name": "Sergej Milinković-Savić",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "1995-02-27",
+     "fame": 46
+    },
+    {
+     "name": "Moteb Al-Harbi",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "2000-02-19",
+     "fame": 17
+    },
+    {
+     "name": "Sultan Mandash",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "1994-10-17",
+     "fame": 15
+    },
+    {
+     "name": "Mohamed Kanno",
+     "position": "MEI",
+     "number": 28,
+     "birthDate": "1994-09-22",
+     "fame": 31
+    },
+    {
+     "name": "Salem Al-Dawsari",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "1991-08-19",
+     "fame": 45
+    },
+    {
+     "name": "Mohammed Al-Owais",
+     "position": "GOL",
+     "number": 33,
+     "birthDate": "1991-10-10",
+     "fame": 32
+    },
+    {
+     "name": "Rayan Al-Dossary",
+     "position": "GOL",
+     "number": 35,
+     "fame": 0
+    },
+    {
+     "name": "Saud Haroun",
+     "position": "DEF",
+     "number": 36,
+     "fame": 0
+    },
+    {
+     "name": "Yassine Bounou",
+     "position": "GOL",
+     "number": 37,
+     "birthDate": "1991-04-05",
+     "fame": 53
+    },
+    {
+     "name": "Crysencio Summerville",
+     "position": "ATA",
+     "number": 38,
+     "birthDate": "2001-10-30",
+     "fame": 33
+    },
+    {
+     "name": "Saad Al-Mutairi",
+     "position": "DEF",
+     "number": 44,
+     "fame": 0
+    },
+    {
+     "name": "Mishal Al-Dawood",
+     "position": "DEF",
+     "number": 55,
+     "fame": 0
+    },
+    {
+     "name": "Saïmon Bouabré",
+     "position": "MEI",
+     "number": 70,
+     "birthDate": "2006-06-01",
+     "fame": 9
+    },
+    {
+     "name": "Sabri Dahal",
+     "position": "MEI",
+     "number": 72,
+     "fame": 0
+    },
+    {
+     "name": "Mohammed Al-Sarnoukh",
+     "position": "DEF",
+     "number": 73,
+     "fame": 0
+    },
+    {
+     "name": "Mohamed Kader Meïté",
+     "position": "ATA",
+     "number": 75,
+     "birthDate": "2007-10-11",
+     "fame": 14
+    },
+    {
+     "name": "Nawaf Al-Habashi",
+     "position": "ATA",
+     "number": 77,
+     "fame": 0
+    },
+    {
+     "name": "Ali Lajami",
+     "position": "DEF",
+     "number": 78,
+     "birthDate": "1996-04-25",
+     "fame": 23
+    },
+    {
+     "name": "Hassan Al-Tambakti",
+     "position": "DEF",
+     "number": 87,
+     "defRole": "ZAG",
+     "birthDate": "1999-02-09",
+     "fame": 26
+    },
+    {
+     "name": "Hamad Al-Yami",
+     "position": "DEF",
+     "number": 88,
+     "defRole": "LAT",
+     "birthDate": "1999-05-17",
+     "fame": 10
+    },
+    {
+     "name": "Abdullah Al-Anazi",
+     "position": "MEI",
+     "number": 93,
+     "fame": 0
+    },
+    {
+     "name": "Suhayb Al-Zaid",
+     "position": "MEI",
+     "number": 96,
+     "fame": 0
+    }
+   ]
+  },
+  "sa-al-nassr": {
+   "source": "https://en.wikipedia.org/wiki/Al-Nassr_FC",
+   "revision": 1387970349,
+   "manager": "Ange Postecoglou",
+   "players": [
+    {
+     "name": "Nawaf Al-Aqidi",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2000-05-10",
+     "fame": 25
+    },
+    {
+     "name": "Sultan Al-Ghannam",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1994-05-06",
+     "fame": 25
+    },
+    {
+     "name": "Mohamed Simakan",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2000-05-03",
+     "fame": 29
+    },
+    {
+     "name": "Nader Al-Sharari",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1996-05-08",
+     "fame": 4
+    },
+    {
+     "name": "Abdulelah Al-Amri",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1997-01-15",
+     "fame": 29
+    },
+    {
+     "name": "Saad Al-Nasser",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "LAT",
+     "birthDate": "2001-01-08",
+     "fame": 5
+    },
+    {
+     "name": "Cristiano Ronaldo",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1985-02-05",
+     "fame": 186
+    },
+    {
+     "name": "Hayder Abdulkareem",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2004-07-08",
+     "fame": 2
+    },
+    {
+     "name": "Abdullah Al-Hamdan",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1999-09-12",
+     "fame": 21
+    },
+    {
+     "name": "Sadio Mané",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1992-04-10",
+     "fame": 87
+    },
+    {
+     "name": "Samú Costa",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "2000-11-27",
+     "fame": 31
+    },
+    {
+     "name": "Nawaf Boushal",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "LAT",
+     "birthDate": "1999-09-16",
+     "fame": 20
+    },
+    {
+     "name": "Sami Al-Najei",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1997-02-07",
+     "fame": 22
+    },
+    {
+     "name": "Mohammed Maran",
+     "position": "ATA",
+     "number": 16,
+     "birthDate": "2001-02-15",
+     "fame": 11
+    },
+    {
+     "name": "Abdullah Al-Khaibari",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "1996-08-16",
+     "fame": 24
+    },
+    {
+     "name": "Ângelo Gabriel",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2004-12-21",
+     "fame": 24
+    },
+    {
+     "name": "Kingsley Coman",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "1996-06-13",
+     "fame": 56
+    },
+    {
+     "name": "Abdulhadi Al-Alwan",
+     "position": "GOL",
+     "number": 22,
+     "fame": 0
+    },
+    {
+     "name": "Ayman Yahya",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2001-05-14",
+     "fame": 21
+    },
+    {
+     "name": "Bento",
+     "position": "GOL",
+     "number": 24,
+     "birthDate": "1999-06-10",
+     "fame": 21
+    },
+    {
+     "name": "Iñigo Martínez",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "ZAG",
+     "birthDate": "1991-05-17",
+     "fame": 43
+    },
+    {
+     "name": "Abdulrahman Ghareeb",
+     "position": "MEI",
+     "number": 29,
+     "birthDate": "1997-03-31",
+     "fame": 22
+    },
+    {
+     "name": "Raghed Al-Najjar",
+     "position": "GOL",
+     "number": 36,
+     "birthDate": "1996-09-20",
+     "fame": 7
+    },
+    {
+     "name": "Youssef Al-Tahan",
+     "position": "DEF",
+     "number": 40,
+     "fame": 0
+    },
+    {
+     "name": "Yassine Sallem",
+     "position": "MEI",
+     "number": 46,
+     "fame": 0
+    },
+    {
+     "name": "Majed Qasheesh",
+     "position": "DEF",
+     "number": 50,
+     "defRole": "LAT",
+     "birthDate": "2001-12-04",
+     "fame": 4
+    },
+    {
+     "name": "Abdulrahman Al-Otaibi",
+     "position": "GOL",
+     "number": 53,
+     "fame": 0
+    },
+    {
+     "name": "Rakan Al-Ghamdi",
+     "position": "DEF",
+     "number": 56,
+     "fame": 0
+    },
+    {
+     "name": "Saad Haqawi",
+     "position": "ATA",
+     "number": 60,
+     "fame": 0
+    },
+    {
+     "name": "Mubarak Al-Buainain",
+     "position": "GOL",
+     "number": 61,
+     "fame": 0
+    },
+    {
+     "name": "Sultan Almas",
+     "position": "GOL",
+     "number": 66,
+     "fame": 0
+    },
+    {
+     "name": "Awad Aman",
+     "position": "DEF",
+     "number": 70,
+     "fame": 0
+    },
+    {
+     "name": "João Félix",
+     "position": "ATA",
+     "number": 79,
+     "birthDate": "1999-11-10",
+     "fame": 60
+    },
+    {
+     "name": "Salem Al-Najdi",
+     "position": "DEF",
+     "number": 83,
+     "defRole": "LAT",
+     "birthDate": "2003-01-27",
+     "fame": 4
+    },
+    {
+     "name": "Bassam Hazazi",
+     "position": "MEI",
+     "number": 88,
+     "fame": 0
+    },
+    {
+     "name": "Abdulrahaman Sufyani",
+     "position": "MEI",
+     "number": 94,
+     "fame": 0
+    }
+   ]
+  },
+  "sa-al-ittihad": {
+   "source": "https://en.wikipedia.org/wiki/Al-Ittihad_Club_(Jeddah)",
+   "revision": 1387963000,
+   "manager": "Jens Wissing",
+   "stadium": "King Abdullah Sports City Stadium",
+   "players": [
+    {
+     "name": "Predrag Rajković",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1995-10-31",
+     "fame": 34
+    },
+    {
+     "name": "Danilo Pereira",
+     "position": "MEI",
+     "number": 2,
+     "birthDate": "1991-09-09",
+     "fame": 43
+    },
+    {
+     "name": "Jan-Carlo Simić",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2005-05-02",
+     "fame": 17
+    },
+    {
+     "name": "Richard Ríos",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2000-06-02",
+     "fame": 28
+    },
+    {
+     "name": "Saad Al-Mousa",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "2002-12-10",
+     "fame": 5
+    },
+    {
+     "name": "Roger Fernandes",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2005-11-21",
+     "fame": 13
+    },
+    {
+     "name": "Mukhtar Ali",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1997-10-30",
+     "fame": 19
+    },
+    {
+     "name": "George Ilenikhena",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2006-08-16",
+     "fame": 18
+    },
+    {
+     "name": "Houssem Aouar",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1998-06-30",
+     "fame": 37
+    },
+    {
+     "name": "Saleh Al-Shehri",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1993-11-01",
+     "fame": 33
+    },
+    {
+     "name": "Muhannad Al-Shanqeeti",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "1999-03-12",
+     "fame": 9
+    },
+    {
+     "name": "Hassan Kadesh",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "1992-09-26",
+     "fame": 20
+    },
+    {
+     "name": "Mahamadou Doumbia",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2004-00-00",
+     "fame": 10
+    },
+    {
+     "name": "Ahmed Sharahili",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "ZAG",
+     "birthDate": "1994-07-06",
+     "fame": 10
+    },
+    {
+     "name": "Youssef En-Nesyri",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "1997-06-01",
+     "fame": 44
+    },
+    {
+     "name": "Marwan Al-Sahafi",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2004-02-17",
+     "fame": 15
+    },
+    {
+     "name": "Georginio Wijnaldum",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "1990-11-11",
+     "fame": 55
+    },
+    {
+     "name": "Faris Abdi",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "LAT",
+     "birthDate": "1999-05-19",
+     "fame": 9
+    },
+    {
+     "name": "Ahmed Al-Ghamdi",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "2001-09-20",
+     "fame": 7
+    },
+    {
+     "name": "Farhah Al-Shamrani",
+     "position": "MEI",
+     "number": 29,
+     "birthDate": "2006-02-27",
+     "fame": 3
+    },
+    {
+     "name": "Dion Lopy",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "2002-02-02",
+     "fame": 15
+    },
+    {
+     "name": "Ahmed Al-Julaydan",
+     "position": "DEF",
+     "number": 32,
+     "defRole": "LAT",
+     "birthDate": "2004-03-08",
+     "fame": 2
+    },
+    {
+     "name": "Steven Bergwijn",
+     "position": "ATA",
+     "number": 34,
+     "birthDate": "1997-10-08",
+     "fame": 36
+    },
+    {
+     "name": "Suhaib Hawsawi",
+     "position": "ATA",
+     "number": 38,
+     "fame": 0
+    },
+    {
+     "name": "Mohammed Fallatah",
+     "position": "MEI",
+     "number": 41,
+     "fame": 0
+    },
+    {
+     "name": "Muath Faqeehi",
+     "position": "DEF",
+     "number": 42,
+     "defRole": "LAT",
+     "birthDate": "2002-05-30",
+     "fame": 8
+    },
+    {
+     "name": "Mohammed Al-Absi",
+     "position": "GOL",
+     "number": 50,
+     "fame": 0
+    },
+    {
+     "name": "Rakan Kaabi",
+     "position": "MEI",
+     "number": 60,
+     "birthDate": "2002-12-02",
+     "fame": 2
+    },
+    {
+     "name": "Mohammed Barnawi",
+     "position": "DEF",
+     "number": 66,
+     "birthDate": "2005-08-07",
+     "fame": 2
+    },
+    {
+     "name": "Hamed Al-Ghamdi",
+     "position": "MEI",
+     "number": 80,
+     "birthDate": "1999-04-02",
+     "fame": 9
+    },
+    {
+     "name": "Yaseen Al-Jaber",
+     "position": "DEF",
+     "number": 87,
+     "fame": 0
+    },
+    {
+     "name": "Osama Al-Mermesh",
+     "position": "GOL",
+     "number": 88,
+     "fame": 0
+    }
+   ]
+  },
+  "sa-al-ahli": {
+   "source": "https://en.wikipedia.org/wiki/Al-Ahli_Saudi_FC",
+   "revision": 1387971838,
+   "manager": "Marino Pušić",
+   "stadium": "King Abdullah Sports City",
+   "players": [
+    {
+     "name": "Abdulrahman Al-Sanbi",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2001-02-02",
+     "fame": 5
+    },
+    {
+     "name": "Zakaria Hawsawi",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2001-01-12",
+     "fame": 7
+    },
+    {
+     "name": "Roger Ibañez",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1998-11-23",
+     "fame": 31
+    },
+    {
+     "name": "Ibrahima Diaby",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "2007-03-17",
+     "fame": 2
+    },
+    {
+     "name": "Mohammed Sulaiman",
+     "position": "DEF",
+     "number": 5,
+     "birthDate": "2004-04-08",
+     "fame": 3
+    },
+    {
+     "name": "Valentin Atangana",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2005-08-25",
+     "fame": 12
+    },
+    {
+     "name": "Francisco Trincão",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1999-12-29",
+     "fame": 41
+    },
+    {
+     "name": "Eduard Spertsyan",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2000-06-07",
+     "fame": 15
+    },
+    {
+     "name": "Firas Al-Buraikan",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2000-05-14",
+     "fame": 26
+    },
+    {
+     "name": "Meshal Al-Mutairi",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "1999-03-25",
+     "fame": 2
+    },
+    {
+     "name": "Galeno",
+     "position": "ATA",
+     "number": 13,
+     "birthDate": "1997-10-22",
+     "fame": 20
+    },
+    {
+     "name": "Saeed Baattiah",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2000-01-01",
+     "fame": 2
+    },
+    {
+     "name": "Édouard Mendy",
+     "position": "GOL",
+     "number": 16,
+     "birthDate": "1992-03-01",
+     "fame": 45
+    },
+    {
+     "name": "Ivan Toney",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "1996-03-16",
+     "fame": 39
+    },
+    {
+     "name": "Artem Bondarenko",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2000-08-21",
+     "fame": 13
+    },
+    {
+     "name": "Matheus Gonçalves",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2005-08-18",
+     "fame": 11
+    },
+    {
+     "name": "Abdullah Radif",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2003-01-20",
+     "fame": 17
+    },
+    {
+     "name": "Ibrahim Azzam",
+     "position": "MEI",
+     "number": 23,
+     "fame": 0
+    },
+    {
+     "name": "Abubacarr Sedi Kinteh",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "ZAG",
+     "birthDate": "2006-11-30",
+     "fame": 8
+    },
+    {
+     "name": "Faisal Fallatah",
+     "position": "MEI",
+     "number": 25,
+     "fame": 0
+    },
+    {
+     "name": "Ali Majrashi",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "LAT",
+     "birthDate": "1999-10-01",
+     "fame": 16
+    },
+    {
+     "name": "Merih Demiral",
+     "position": "DEF",
+     "number": 28,
+     "defRole": "ZAG",
+     "birthDate": "1998-03-05",
+     "fame": 44
+    },
+    {
+     "name": "Mohammed Abdulrahman",
+     "position": "DEF",
+     "number": 29,
+     "defRole": "LAT",
+     "birthDate": "2003-01-14",
+     "fame": 2
+    },
+    {
+     "name": "Ziyad Al-Johani",
+     "position": "MEI",
+     "number": 30,
+     "birthDate": "2001-11-11",
+     "fame": 21
+    },
+    {
+     "name": "Saad Balobaid",
+     "position": "DEF",
+     "number": 31,
+     "defRole": "LAT",
+     "birthDate": "2000-01-27",
+     "fame": 4
+    },
+    {
+     "name": "Ziyad Mallah",
+     "position": "MEI",
+     "number": 40,
+     "fame": 0
+    },
+    {
+     "name": "Rayan Hamed",
+     "position": "DEF",
+     "number": 46,
+     "birthDate": "2002-04-13",
+     "fame": 5
+    },
+    {
+     "name": "Saleh Abu Al-Shamat",
+     "position": "MEI",
+     "number": 47,
+     "birthDate": "2002-08-11",
+     "fame": 6
+    },
+    {
+     "name": "Salem Abdullah",
+     "position": "ATA",
+     "number": 49,
+     "fame": 0
+    },
+    {
+     "name": "Abdullah Abdoh",
+     "position": "GOL",
+     "number": 62,
+     "fame": 0
+    },
+    {
+     "name": "Naif Masoud",
+     "position": "MEI",
+     "number": 66,
+     "birthDate": "2001-01-08",
+     "fame": 3
+    },
+    {
+     "name": "Salman Al-Jadani",
+     "position": "GOL",
+     "number": 72,
+     "fame": 0
+    },
+    {
+     "name": "Ramez Al-Attar",
+     "position": "MEI",
+     "number": 87,
+     "fame": 0
+    }
+   ]
+  },
+  "af-al-ahly": {
+   "source": "https://en.wikipedia.org/wiki/Al_Ahly_SC",
+   "revision": 1387964057,
+   "stadium": "Cairo International Stadium",
+   "players": [
+    {
+     "name": "Mohamed El Shenawy",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1988-12-18",
+     "fame": 32
+    },
+    {
+     "name": "Yassin Marei",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2001-11-07",
+     "fame": 2
+    },
+    {
+     "name": "Achraf Dari",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1999-05-06",
+     "fame": 29
+    },
+    {
+     "name": "Ahmed Eid",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "2001-01-01",
+     "fame": 12
+    },
+    {
+     "name": "Hady Reyad",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1998-06-10",
+     "fame": 1
+    },
+    {
+     "name": "Yasser Ibrahim",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1989-05-08",
+     "fame": 26
+    },
+    {
+     "name": "Taher Mohamed",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1997-12-31",
+     "fame": 12
+    },
+    {
+     "name": "Ahmed Reda",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2000-02-19",
+     "fame": 3
+    },
+    {
+     "name": "Soufiane Benjdida",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2001-09-05",
+     "fame": 9
+    },
+    {
+     "name": "Monsef Bakrar",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2001-01-13",
+     "fame": 10
+    },
+    {
+     "name": "Karim El Debes",
+     "position": "DEF",
+     "number": 11,
+     "defRole": "LAT",
+     "birthDate": "2003-06-03",
+     "fame": 8
+    },
+    {
+     "name": "Akram Tawfik",
+     "position": "MEI",
+     "number": 12,
+     "birthDate": "1997-11-08",
+     "fame": 12
+    },
+    {
+     "name": "Marwan Attia",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "1998-08-12",
+     "fame": 20
+    },
+    {
+     "name": "Hussein El Shahat",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1992-06-21",
+     "fame": 16
+    },
+    {
+     "name": "Omar El Saaiy",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2003-01-01",
+     "fame": 3
+    },
+    {
+     "name": "Achraf Bencharki",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "1994-09-24",
+     "fame": 18
+    },
+    {
+     "name": "Omar Moawad",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2006-10-14",
+     "fame": 4
+    },
+    {
+     "name": "Afsha",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1996-03-06",
+     "fame": 11
+    },
+    {
+     "name": "Youssef Belammari",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "LAT",
+     "birthDate": "1998-09-20",
+     "fame": 21
+    },
+    {
+     "name": "Ali Mahmoud",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2002-12-04",
+     "fame": 1
+    },
+    {
+     "name": "Emam Ashour",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "1998-02-20",
+     "fame": 29
+    },
+    {
+     "name": "Tawfik Mohamed",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "2000-01-01",
+     "fame": 1
+    },
+    {
+     "name": "Zizo",
+     "position": "ATA",
+     "number": 25,
+     "birthDate": "1996-01-10",
+     "fame": 22
+    },
+    {
+     "name": "Amr El Gazar",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "ZAG",
+     "birthDate": "1999-09-22",
+     "fame": 1
+    },
+    {
+     "name": "Aqtay Abdallah",
+     "position": "ATA",
+     "number": 27,
+     "birthDate": "2003-06-01",
+     "fame": 1
+    },
+    {
+     "name": "Karim Fouad",
+     "position": "ATA",
+     "number": 28,
+     "birthDate": "1999-10-01",
+     "fame": 10
+    },
+    {
+     "name": "Reda Slim",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "1999-10-25",
+     "fame": 9
+    },
+    {
+     "name": "Mohamed Hany",
+     "position": "DEF",
+     "number": 30,
+     "defRole": "LAT",
+     "birthDate": "1996-01-25",
+     "fame": 25
+    },
+    {
+     "name": "Mostafa Shobeir",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "2000-05-15",
+     "fame": 23
+    },
+    {
+     "name": "Mohamed Raafat",
+     "position": "ATA",
+     "number": 32,
+     "fame": 0
+    },
+    {
+     "name": "Hamza Alaa",
+     "position": "GOL",
+     "number": 33,
+     "birthDate": "2001-03-01",
+     "fame": 9
+    },
+    {
+     "name": "Kabaka",
+     "position": "MEI",
+     "number": 34,
+     "birthDate": "2005-04-22",
+     "fame": 4
+    },
+    {
+     "name": "Ahmed Nabil Koka",
+     "position": "MEI",
+     "number": 36,
+     "birthDate": "2001-07-04",
+     "fame": 12
+    },
+    {
+     "name": "Mohamed Abdallah",
+     "position": "ATA",
+     "number": 38,
+     "birthDate": "2005-10-18",
+     "fame": 3
+    },
+    {
+     "name": "Mahmoud Salah",
+     "position": "ATA",
+     "number": 39,
+     "birthDate": "2007-09-22",
+     "fame": 1
+    },
+    {
+     "name": "Ibrahim El Asyuti",
+     "position": "DEF",
+     "number": 49,
+     "fame": 0
+    }
+   ]
+  },
+  "af-wydad": {
+   "source": "https://en.wikipedia.org/wiki/Wydad_AC",
+   "revision": 1387981176,
+   "manager": "Nasreddine Nabi",
+   "players": [
+    {
+     "name": "Mohamed Moufid",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2000-01-12",
+     "fame": 5
+    },
+    {
+     "name": "Hamza Jananallah",
+     "position": "DEF",
+     "number": 3,
+     "fame": 0
+    },
+    {
+     "name": "Yahya Jabrane",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "1991-06-18",
+     "fame": 24
+    },
+    {
+     "name": "Naïm Byar",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2005-02-23",
+     "fame": 7
+    },
+    {
+     "name": "Haitam Hamani",
+     "position": "ATA",
+     "number": 7,
+     "fame": 0
+    },
+    {
+     "name": "Ayman El Hassouni",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1995-02-22",
+     "fame": 9
+    },
+    {
+     "name": "Abderrazak El Wadi",
+     "position": "GOL",
+     "number": 12,
+     "fame": 0
+    },
+    {
+     "name": "Sallah Moussaddaq",
+     "position": "DEF",
+     "number": 13,
+     "fame": 0
+    },
+    {
+     "name": "Yahya Attiyat Allah",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "LAT",
+     "birthDate": "1995-03-02",
+     "fame": 27
+    },
+    {
+     "name": "Silvère Ganvoula",
+     "position": "ATA",
+     "number": 15,
+     "birthDate": "1996-06-29",
+     "fame": 15
+    },
+    {
+     "name": "Mehdi Benabid",
+     "position": "GOL",
+     "number": 16,
+     "birthDate": "1998-01-24",
+     "fame": 11
+    },
+    {
+     "name": "Rayane Mahtou",
+     "position": "MEI",
+     "number": 17,
+     "fame": 0
+    },
+    {
+     "name": "Nizar Al-Rashdan",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "1999-03-23",
+     "fame": 21
+    },
+    {
+     "name": "Hamza Hannouri",
+     "position": "ATA",
+     "number": 19,
+     "fame": 0
+    },
+    {
+     "name": "Moises Paniagua",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2007-08-16",
+     "fame": 13
+    },
+    {
+     "name": "Mouad Enzo",
+     "position": "ATA",
+     "number": 22,
+     "fame": 0
+    },
+    {
+     "name": "Oussama Zemraoui",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2002-01-01",
+     "fame": 5
+    },
+    {
+     "name": "Issoufou Dayo",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "1991-08-06",
+     "fame": 14
+    },
+    {
+     "name": "Joseph Bakasu",
+     "position": "MEI",
+     "number": 27,
+     "fame": 0
+    },
+    {
+     "name": "Walid Nassi",
+     "position": "ATA",
+     "number": 28,
+     "birthDate": "2000-07-15",
+     "fame": 2
+    },
+    {
+     "name": "Salaheddine Cofi",
+     "position": "DEF",
+     "number": 32,
+     "fame": 0
+    },
+    {
+     "name": "Adil Khalloufi",
+     "position": "MEI",
+     "number": 33,
+     "fame": 0
+    },
+    {
+     "name": "Omar Aqzdaou",
+     "position": "GOL",
+     "number": 40,
+     "fame": 0
+    },
+    {
+     "name": "Yassine Jabrane",
+     "position": "ATA",
+     "number": 91,
+     "fame": 0
+    },
+    {
+     "name": "Rachid Ghanimi",
+     "position": "GOL",
+     "birthDate": "2001-04-25",
+     "fame": 13
+    },
+    {
+     "name": "Soufiane Hetli",
+     "position": "ATA",
+     "birthDate": "2001-05-30",
+     "fame": 7
+    }
+   ]
+  },
+  "af-esperance": {
+   "source": "https://en.wikipedia.org/wiki/Esp%C3%A9rance_Sportive_de_Tunis",
+   "revision": 1387966965,
+   "manager": "Pablo Franco",
+   "stadium": "Hammadi Agrebi Stadium",
+   "players": [
+    {
+     "name": "Amenallah Memmiche",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2004-04-20",
+     "fame": 6
+    },
+    {
+     "name": "Mohamed Ben Ali",
+     "position": "DEF",
+     "number": 2,
+     "birthDate": "1995-02-16",
+     "fame": 4
+    },
+    {
+     "name": "Elies Araar",
+     "position": "DEF",
+     "number": 3,
+     "fame": 0
+    },
+    {
+     "name": "Marouane Sahraoui",
+     "position": "DEF",
+     "number": 4,
+     "birthDate": "1996-01-09",
+     "fame": 6
+    },
+    {
+     "name": "Hamza Jelassi",
+     "position": "DEF",
+     "number": 6,
+     "birthDate": "1991-09-29",
+     "fame": 7
+    },
+    {
+     "name": "Imad Faraj",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1999-02-11",
+     "fame": 11
+    },
+    {
+     "name": "Hamza Rafia",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1999-04-02",
+     "fame": 18
+    },
+    {
+     "name": "Florian Danho",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2000-00-00",
+     "fame": 3
+    },
+    {
+     "name": "Lucas Ribeiro",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1998-10-09",
+     "fame": 9
+    },
+    {
+     "name": "Youcef Belaïli",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1992-03-14",
+     "fame": 18
+    },
+    {
+     "name": "Nidhal Laifi",
+     "position": "DEF",
+     "number": 12,
+     "fame": 0
+    },
+    {
+     "name": "Mohamed Dräger",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "1996-06-25",
+     "fame": 22
+    },
+    {
+     "name": "Khairi Meddaoui",
+     "position": "MEI",
+     "number": 14,
+     "fame": 0
+    },
+    {
+     "name": "Khalil Guenichi",
+     "position": "MEI",
+     "number": 15,
+     "fame": 0
+    },
+    {
+     "name": "Jesús Castillo",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2001-06-11",
+     "fame": 47
+    },
+    {
+     "name": "Haytham Dhaou",
+     "position": "MEI",
+     "number": 17,
+     "fame": 0
+    },
+    {
+     "name": "Moez Hadj Ali",
+     "position": "MEI",
+     "number": 18,
+     "fame": 0
+    },
+    {
+     "name": "Achref Jabri",
+     "position": "ATA",
+     "number": 19,
+     "fame": 0
+    },
+    {
+     "name": "Mohamed Belhadj Mahmoud",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2000-04-24",
+     "fame": 18
+    },
+    {
+     "name": "Abdramane Konaté",
+     "position": "MEI",
+     "number": 21,
+     "fame": 0
+    },
+    {
+     "name": "Montasser Essid",
+     "position": "GOL",
+     "number": 22,
+     "fame": 0
+    },
+    {
+     "name": "Namory Keita",
+     "position": "ATA",
+     "number": 23,
+     "fame": 0
+    },
+    {
+     "name": "Youssef Becha",
+     "position": "ATA",
+     "number": 24,
+     "fame": 0
+    },
+    {
+     "name": "Raed Chikhaoui",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "2004-06-09",
+     "fame": 15
+    },
+    {
+     "name": "Hazem Mastouri",
+     "position": "ATA",
+     "number": 27,
+     "birthDate": "1997-06-18",
+     "fame": 15
+    },
+    {
+     "name": "Adem Alilet",
+     "position": "DEF",
+     "number": 28,
+     "defRole": "ZAG",
+     "birthDate": "1999-01-17",
+     "fame": 4
+    },
+    {
+     "name": "Maël Fernandez",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "2007-01-05",
+     "fame": 2
+    },
+    {
+     "name": "Chiheb Jebali",
+     "position": "MEI",
+     "number": 31,
+     "fame": 0
+    },
+    {
+     "name": "Bechir Ben Saïd",
+     "position": "GOL",
+     "number": 32,
+     "birthDate": "1992-11-29",
+     "fame": 17
+    },
+    {
+     "name": "Arkem Taboubi",
+     "position": "MEI",
+     "number": 36,
+     "fame": 0
+    }
+   ]
+  },
+  "af-sundowns": {
+   "source": "https://en.wikipedia.org/wiki/Mamelodi_Sundowns_F.C.",
+   "revision": 1387989627,
+   "manager": "Miguel Cardoso",
+   "stadium": "Loftus Versfeld Stadium",
+   "players": [
+    {
+     "name": "Denis Onyango",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1985-05-15",
+     "fame": 18
+    },
+    {
+     "name": "Malibongwe Khoza",
+     "position": "DEF",
+     "number": 2,
+     "birthDate": "2004-03-16",
+     "fame": 1
+    },
+    {
+     "name": "Khulumani Ndamane",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2004-02-05",
+     "fame": 17
+    },
+    {
+     "name": "Teboho Mokoena",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "1997-01-24",
+     "fame": 27
+    },
+    {
+     "name": "Divine Lunga",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "1995-05-28",
+     "fame": 9
+    },
+    {
+     "name": "Aubrey Modiba",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "LAT",
+     "birthDate": "1995-07-22",
+     "fame": 24
+    },
+    {
+     "name": "Arthur Sales",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2002-07-03",
+     "fame": 8
+    },
+    {
+     "name": "Nuno Santos",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1999-03-02",
+     "fame": 10
+    },
+    {
+     "name": "Marcelo Allende",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "1999-04-07",
+     "fame": 13
+    },
+    {
+     "name": "Brayan León",
+     "position": "ATA",
+     "number": 12,
+     "birthDate": "2000-10-19",
+     "fame": 3
+    },
+    {
+     "name": "Iqraam Rayners",
+     "position": "ATA",
+     "number": 13,
+     "birthDate": "1995-12-19",
+     "fame": 19
+    },
+    {
+     "name": "Monnapule Saleng",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1998-03-13",
+     "fame": 3
+    },
+    {
+     "name": "Bathusi Aubaas",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "1995-05-14",
+     "fame": 5
+    },
+    {
+     "name": "Tashreeq Matthews",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2000-09-12",
+     "fame": 9
+    },
+    {
+     "name": "Themba Zwane",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "1989-08-03",
+     "fame": 28
+    },
+    {
+     "name": "Thabo Cele",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "1997-01-15",
+     "fame": 9
+    },
+    {
+     "name": "Grant Kekana",
+     "position": "DEF",
+     "number": 20,
+     "birthDate": "1992-10-31",
+     "fame": 10
+    },
+    {
+     "name": "Sphelele Mkhulise",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "1996-02-19",
+     "fame": 2
+    },
+    {
+     "name": "Thabang Matuludi",
+     "position": "DEF",
+     "number": 22,
+     "birthDate": "1999-01-14",
+     "fame": 19
+    },
+    {
+     "name": "Fawaaz Basadien",
+     "position": "DEF",
+     "number": 23,
+     "birthDate": "1996-12-23",
+     "fame": 3
+    },
+    {
+     "name": "Keanu Cupido",
+     "position": "DEF",
+     "number": 24,
+     "birthDate": "1998-01-15",
+     "fame": 5
+    },
+    {
+     "name": "Khuliso Mudau",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "LAT",
+     "birthDate": "1995-04-26",
+     "fame": 24
+    },
+    {
+     "name": "Reyaad Pieterse",
+     "position": "GOL",
+     "number": 26,
+     "birthDate": "1992-02-17",
+     "fame": 5
+    },
+    {
+     "name": "Thapelo Morena",
+     "position": "DEF",
+     "number": 27,
+     "birthDate": "1993-08-06",
+     "fame": 11
+    },
+    {
+     "name": "Zuko Mdunyelwa",
+     "position": "DEF",
+     "number": 28,
+     "birthDate": "1999-01-01",
+     "fame": 4
+    },
+    {
+     "name": "Antonio van Wyk",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "2002-03-30",
+     "fame": 3
+    },
+    {
+     "name": "Ronwen Williams",
+     "position": "GOL",
+     "number": 30,
+     "birthDate": "1992-01-21",
+     "fame": 29
+    },
+    {
+     "name": "Ricardo Goss",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "1994-04-02",
+     "fame": 18
+    },
+    {
+     "name": "Cassius Mailula",
+     "position": "ATA",
+     "number": 33,
+     "birthDate": "2001-06-12",
+     "fame": 9
+    },
+    {
+     "name": "Tsiki Ntsabeleng",
+     "position": "MEI",
+     "number": 34,
+     "birthDate": "1998-02-09",
+     "fame": 3
+    },
+    {
+     "name": "Lebo Mothiba",
+     "position": "ATA",
+     "number": 35,
+     "birthDate": "1996-01-28",
+     "fame": 21
+    },
+    {
+     "name": "Kegan Johannes",
+     "position": "DEF",
+     "number": 37,
+     "birthDate": "2001-03-31",
+     "fame": 6
+    },
+    {
+     "name": "Siyanda Ndlovu",
+     "position": "ATA",
+     "number": 38,
+     "birthDate": "2002-09-19",
+     "fame": 1
+    },
+    {
+     "name": "Mothobi Mvala",
+     "position": "DEF",
+     "number": 40,
+     "defRole": "ZAG",
+     "birthDate": "1994-06-14",
+     "fame": 13
+    },
+    {
+     "name": "Kutlwano Letlhaku",
+     "position": "ATA",
+     "number": 43,
+     "birthDate": "2006-03-25",
+     "fame": 1
+    },
+    {
+     "name": "Gomolemo Kekana",
+     "position": "MEI",
+     "number": 44,
+     "birthDate": "2006-07-07",
+     "fame": 1
+    },
+    {
+     "name": "Wandile Dube",
+     "position": "DEF",
+     "number": 45,
+     "fame": 0
+    },
+    {
+     "name": "Bennett Mokoena",
+     "position": "ATA",
+     "number": 46,
+     "fame": 0
+    },
+    {
+     "name": "Deano van Rooyen",
+     "position": "DEF",
+     "number": 47,
+     "defRole": "LAT",
+     "birthDate": "1996-11-24",
+     "fame": 1
+    }
+   ]
+  }
+ }
+}

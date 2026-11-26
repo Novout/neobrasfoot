@@ -343,6 +343,7 @@ export const useMatchStore = defineStore('match', () => {
       competition === 'cup' ||
       (competition === 'libertadores' && game.libertadoresKnockout) ||
       (competition === 'champions' && game.championsKnockout) ||
+      competition === 'clubworld' ||
       (competition === 'worldcup' && game.worldCupKnockout)
     // Duas etapas da Libertadores podem cair no mesmo intervalo entre rodadas: a etapa entra no id.
     const stage =
@@ -352,7 +353,9 @@ export const useMatchStore = defineStore('match', () => {
           ? `-${game.worldCup?.stage ?? 0}`
           : competition === 'champions'
             ? `-${game.champions?.stage ?? 0}`
-            : ''
+            : competition === 'clubworld'
+              ? `-${game.clubWorldCup?.currentRound ?? 0}`
+              : ''
     matches.value = game.currentFixtures.map((f, index) => {
       const home = game.teamStrength(f.homeId)
       const away = game.teamStrength(f.awayId)

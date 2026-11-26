@@ -127,6 +127,7 @@ function play() {
         <p v-if="game.nextEvent === 'cup' ||
             (game.nextEvent === 'libertadores' && game.libertadoresKnockout) ||
             (game.nextEvent === 'champions' && game.championsKnockout) ||
+            game.nextEvent === 'clubworld' ||
             (game.nextEvent === 'worldcup' && game.worldCupKnockout)" class="muted small">
           Jogo único: se empatar, decide nos pênaltis.
         </p>

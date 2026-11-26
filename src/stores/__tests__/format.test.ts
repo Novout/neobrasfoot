@@ -184,6 +184,7 @@ describe('carreira no formato 2×20', () => {
     if (game.cup) game.cup.championId = game.cup.rounds[0]!.ties[0]!.homeId
     if (game.libertadores) game.libertadores.championId = game.libertadores.groups[0]!.teamIds[0]!
     if (game.champions) game.champions.championId = game.champions.groups[0]!.teamIds[0]!
+    if (game.clubWorldCup) game.clubWorldCup.championId = game.clubWorldCup.guests[0]!
     expect(game.managedFallsOut).toBe(true)
     game.nextSeason()
     expect(game.managedTeamId).not.toBe('amazonas')

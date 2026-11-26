@@ -5,10 +5,10 @@ import { DIVISION_LABELS } from './divisions'
 export const PLAYER_MANAGER_ID = 'tecnico-jogador'
 
 /** Pontos de cada conquista no ranking de técnicos. */
-export const TROPHY_POINTS = { worldcup: 20, champions: 16, libertadores: 14, A: 10, ESP: 10, ENG: 10, GER: 10, B: 6, C: 4, D: 3, cup: 8 } as const
+export const TROPHY_POINTS = { worldcup: 20, clubworld: 18, champions: 16, libertadores: 14, A: 10, ESP: 10, ENG: 10, GER: 10, B: 6, C: 4, D: 3, cup: 8 } as const
 
 export function trophyKey(t: Trophy): keyof typeof TROPHY_POINTS {
-  if (t.kind === 'cup' || t.kind === 'libertadores' || t.kind === 'champions' || t.kind === 'worldcup') return t.kind
+  if (t.kind !== 'league') return t.kind
   return t.division ?? 'D'
 }
 
@@ -21,6 +21,7 @@ export function trophyLabel(t: Trophy) {
   if (t.kind === 'libertadores') return 'Libertadores'
   if (t.kind === 'worldcup') return 'Copa do Mundo'
   if (t.kind === 'champions') return 'Liga dos Campeões'
+  if (t.kind === 'clubworld') return 'Mundial de Clubes'
   return `Campeão da ${DIVISION_LABELS[t.division ?? 'D']}`
 }
 
@@ -28,6 +29,7 @@ export function trophyLabel(t: Trophy) {
 export const TROPHY_STYLE: Record<keyof typeof TROPHY_POINTS, { icon: string; color: string; name: string }> = {
   worldcup: { icon: '🏆', color: '#facc15', name: 'Copa do Mundo' },
   champions: { icon: '🏆', color: '#38bdf8', name: 'Liga dos Campeões' },
+  clubworld: { icon: '🏆', color: '#e2e8f0', name: 'Mundial de Clubes' },
   libertadores: { icon: '🏆', color: '#f97316', name: 'Libertadores' },
   A: { icon: '🏆', color: '#fbbf24', name: 'Série A' },
   ESP: { icon: '🏆', color: '#e11d48', name: 'La Liga' },
@@ -75,7 +77,7 @@ export interface RankingRow {
 export function managerRanking(managers: Manager[]): RankingRow[] {
   return managers
     .map((manager) => {
-      const counts = { worldcup: 0, champions: 0, libertadores: 0, A: 0, ESP: 0, ENG: 0, GER: 0, B: 0, C: 0, D: 0, cup: 0 }
+      const counts = { worldcup: 0, clubworld: 0, champions: 0, libertadores: 0, A: 0, ESP: 0, ENG: 0, GER: 0, B: 0, C: 0, D: 0, cup: 0 }
       for (const t of manager.trophies) counts[trophyKey(t)]++
       return {
         manager,
