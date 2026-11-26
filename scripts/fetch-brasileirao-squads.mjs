@@ -8,17 +8,20 @@
  *      npm run update-brasileirao -- --tecnicos  (só os técnicos, sem mexer nos elencos)
  *      npm run update-brasileirao -- --clubes=mirassol,criciuma  (só esses clubes; os outros ficam como estão)
  *      npm run update-laliga                    (mesmo processo para os clubes da La Liga espanhola)
+ *      npm run update-selecoes                  (convocados das seleções da Copa do Mundo, com o número da camisa)
  * Saída: src/data/templates/brasileirao-squads.json ou laliga-squads.json (dados brutos; idade e OVR são
  * calculados no template).
  */
 import { readFile, writeFile } from 'node:fs/promises'
 import { CLUBS as BRAZIL_CLUBS, selectedClubs } from './brasileirao-clubs.mjs'
 import { LALIGA_CLUBS } from './laliga-clubs.mjs'
+import { NATIONS } from './selecoes-clubs.mjs'
 
-/** --liga=espanha: clubes da La Liga, salvos no arquivo deles. */
+/** --liga=espanha: clubes da La Liga; --liga=selecoes: seleções da Copa. Cada um no seu arquivo. */
 const SPAIN = process.argv.includes('--liga=espanha')
-const CLUBS = SPAIN ? LALIGA_CLUBS : BRAZIL_CLUBS
-const OUT = new URL(`../src/data/templates/${SPAIN ? 'laliga' : 'brasileirao'}-squads.json`, import.meta.url)
+const NATIONAL = process.argv.includes('--liga=selecoes')
+const CLUBS = SPAIN ? LALIGA_CLUBS : NATIONAL ? NATIONS : BRAZIL_CLUBS
+const OUT = new URL(`../src/data/templates/${SPAIN ? 'laliga' : NATIONAL ? 'selecoes' : 'brasileirao'}-squads.json`, import.meta.url)
 const HEADERS = { 'User-Agent': 'NeobrasfootTemplateBuilder/1.0 (squad template generator)' }
 
 
@@ -41,10 +44,13 @@ async function getJson(url) {
 const wiki = (params) => getJson(`https://en.wikipedia.org/w/api.php?format=json&formatversion=2&${params}`)
 const wikidata = (params) => getJson(`https://www.wikidata.org/w/api.php?format=json&${params}`)
 
-/** Conteúdo de cada {{Fs player ...}} com chaves balanceadas (há templates aninhados como {{flagicon}}). */
+/**
+ * Conteúdo de cada {{Fs player ...}} (clubes) ou {{nat fs g player ...}} (seleções), com chaves balanceadas
+ * (há templates aninhados como {{flagicon}}).
+ */
 function fsTemplates(text) {
   const out = []
-  const re = /\{\{\s*[Ff]s player/g
+  const re = /\{\{\s*(?:[Nn]at )?[Ff]s (?:g )?player/g
   let m
   while ((m = re.exec(text))) {
     let depth = 0
@@ -98,10 +104,11 @@ function parseManager(text) {
 
 /** Só a seção do elenco principal (sem base, emprestados ou números aposentados). */
 function mainSquadSection(text) {
-  const heads = [...text.matchAll(/\n(=+)\s*([^=\n]+?)\s*=+\s*\n/g)].map((m) => ({ i: m.index, end: m.index + m[0].length, title: m[2] }))
+  // A quebra de linha do fim fica fora do match: títulos seguidos ("==Players==" e "===Current squad===") são achados os dois.
+  const heads = [...text.matchAll(/\n(=+)\s*([^=\n]+?)\s*=+[ \t]*(?=\n)/g)].map((m) => ({ i: m.index, end: m.index + m[0].length, title: m[2] }))
   let head = heads.find((h) => /(current|first[- ]team|main)\s*(squad|roster)|^squad$|^first team$/i.test(h.title))
   if (!head) {
-    const firstPlayer = text.search(/\{\{\s*fs player/i)
+    const firstPlayer = text.search(/\{\{\s*(?:nat )?fs (?:g )?player/i)
     head = [...heads].reverse().find((h) => h.i < firstPlayer)
   }
   if (!head) return ''
@@ -115,11 +122,23 @@ function parsePlayers(section) {
       const f = fields(body)
       let name = f.name ?? ''
       let link = null
+      // {{sortname|Nome|Sobrenome|link opcional|dab=desambiguação}} (usado em algumas seleções, ex.: EUA).
+      const sort = name.match(/\{\{\s*sortname\s*\|([^|}]*)\|([^|}]*)((?:\|[^}]*)?)\}\}/i)
+      if (sort) {
+        const full = `${sort[1].trim()} ${sort[2].trim()}`.trim()
+        const extra = sort[3].split('|').map((s) => s.trim()).filter(Boolean)
+        const dab = extra.find((s) => s.startsWith('dab='))?.slice(4)
+        const custom = extra.find((s) => !s.includes('='))
+        link = custom || (dab ? `${full} (${dab})` : full)
+        name = full
+      }
       const lm = name.match(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/)
       if (lm) { link = lm[1]; name = lm[2] ?? lm[1] }
       name = name.replace(/<[^>]+>/g, '').replace(/\{\{[^}]*\}\}/g, '').replace(/'''?/g, '').replace(/\s*\(.*?\)\s*/g, ' ').trim()
       const position = POSITIONS[(f.pos ?? '').toUpperCase()]
-      return name && position ? { name, position, link } : null
+      // Número da camisa (campo "no"), quando a fonte informa.
+      const number = Number.parseInt(f.no ?? '', 10)
+      return name && position ? { name, position, link, ...(number >= 1 && number <= 99 ? { number } : {}) } : null
     })
     .filter(Boolean)
 }
@@ -234,12 +253,13 @@ async function main() {
           source: s.source,
           revision: s.revision,
           ...(s.manager ? { manager: s.manager } : {}),
-          players: s.players.map(({ name, position, link }) => {
+          players: s.players.map(({ name, position, link, number }) => {
             const q = link && qid[link]
             const role = position === 'DEF' ? (infoboxRole[link] ?? (q ? defRole(info[q]?.roles ?? []) : undefined)) : undefined
             return {
               name,
               position,
+              ...(number ? { number } : {}),
               ...(role ? { defRole: role } : {}),
               ...(q && info[q]?.birthDate ? { birthDate: info[q].birthDate } : {}),
               fame: q ? info[q]?.fame ?? 0 : 0,

@@ -122,7 +122,7 @@ export const useMatchStore = defineStore('match', () => {
   // Aos 45' todos os times sentem o 1º tempo; a IA troca sozinha e o seu time para para você decidir.
 
   const managedMatch = computed(() => {
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     return matches.value.find((m) => m.homeId === id || m.awayId === id) ?? null
   })
 
@@ -251,7 +251,7 @@ export const useMatchStore = defineStore('match', () => {
 
   /** Aos 45': a IA resolve o intervalo de todos os outros times; o seu jogo (se houver) para. */
   function startHalftime() {
-    const myId = useGameStore().managedTeamId
+    const myId = useGameStore().lineupTeamId
     // Acabaram os acréscimos do 1º tempo: o relógio volta a 45' (trocas do intervalo ficam em 45').
     extra.value = 0
     for (const m of matches.value) {
@@ -268,17 +268,17 @@ export const useMatchStore = defineStore('match', () => {
   // Atalhos do clube gerenciado, usados pelo painel do intervalo.
   const subsUsed = computed(() => {
     const m = managedMatch.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     return m && id ? teamEvents(m, id, 'sub').length : 0
   })
   const vacancies = computed(() => {
     const m = managedMatch.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     return m && id ? vacanciesFor(m, id) : 0
   })
   const bench = computed(() => {
     const m = managedMatch.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     return m && id ? benchFor(m, id) : []
   })
 
@@ -289,7 +289,7 @@ export const useMatchStore = defineStore('match', () => {
 
   function substitute(outId: string | null, inId: string) {
     const m = managedMatch.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     return !!m && !!id && paused.value && substituteFor(m, id, outId, inId)
   }
 
@@ -299,7 +299,7 @@ export const useMatchStore = defineStore('match', () => {
    */
   function resumeSecondHalf(autoStart = true) {
     const m = managedMatch.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     if (!paused.value || !m || !id) return
     recomputeStrength(m, id)
     if (halftime.value) halftimeDone.value = true
@@ -312,7 +312,7 @@ export const useMatchStore = defineStore('match', () => {
 
   /** Lesão no meio do jogo: a IA repõe na hora (se ainda tiver trocas); o seu time para para você decidir. */
   function handleInjury(m: LiveMatch, teamId: string, playerName: string) {
-    if (teamId !== useGameStore().managedTeamId) {
+    if (teamId !== useGameStore().lineupTeamId) {
       fillVacancies(m, teamId)
       recomputeStrength(m, teamId)
       return
@@ -339,9 +339,17 @@ export const useMatchStore = defineStore('match', () => {
     extra.value = 0
     const competition = game.nextEvent ?? 'league'
     // Copa e mata-mata da Libertadores: empate vai para os pênaltis. Na fase de grupos, empate vale 1 ponto.
-    const knockout = competition === 'cup' || (competition === 'libertadores' && game.libertadoresKnockout)
+    const knockout =
+      competition === 'cup' ||
+      (competition === 'libertadores' && game.libertadoresKnockout) ||
+      (competition === 'worldcup' && game.worldCupKnockout)
     // Duas etapas da Libertadores podem cair no mesmo intervalo entre rodadas: a etapa entra no id.
-    const stage = competition === 'libertadores' ? `-${game.libertadores?.stage ?? 0}` : ''
+    const stage =
+      competition === 'libertadores'
+        ? `-${game.libertadores?.stage ?? 0}`
+        : competition === 'worldcup'
+          ? `-${game.worldCup?.stage ?? 0}`
+          : ''
     matches.value = game.currentFixtures.map((f, index) => {
       const home = game.teamStrength(f.homeId)
       const away = game.teamStrength(f.awayId)
@@ -421,7 +429,7 @@ export const useMatchStore = defineStore('match', () => {
   function awardPenalty(m: LiveMatch, teamId: string) {
     const lineup = lineups.value[teamId] ?? []
     if (!lineup.length) return
-    if (teamId === useGameStore().managedTeamId && !injuryBreak.value && !penaltyBreak.value) {
+    if (teamId === useGameStore().lineupTeamId && !injuryBreak.value && !penaltyBreak.value) {
       penaltyBreak.value = stamp()
       return
     }
@@ -445,7 +453,7 @@ export const useMatchStore = defineStore('match', () => {
   /** Batedores do seu time para o pênalti, do melhor para o pior, com a chance de cada um. */
   const penaltyTakers = computed(() => {
     const m = managedMatch.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     if (!m || !id) return []
     const keeper = goalkeeperOf(lineups.value[opponentOf(m, id)] ?? [])
     return bestTakers(lineups.value[id] ?? [], keeper).map((p) => ({ player: p, chance: kickConversion(p, keeper) }))
@@ -454,7 +462,7 @@ export const useMatchStore = defineStore('match', () => {
   /** Você escolheu o batedor: cobra e o jogo continua. */
   function takePenalty(playerId: string, autoStart = true) {
     const m = managedMatch.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     const taker = (id && lineups.value[id]?.find((p) => p.id === playerId)) || null
     if (!penaltyBreak.value || !m || !id || !taker) return false
     resolvePenalty(m, id, taker)
@@ -469,7 +477,7 @@ export const useMatchStore = defineStore('match', () => {
   /** Opções de batedor do seu time na disputa: quem ainda não bateu nesta volta, com a chance contra o goleiro. */
   const shootoutTakers = computed(() => {
     const s = shootout.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     if (!s || !id) return []
     const keeper = goalkeeperOf(lineups.value[s.homeId === id ? s.awayId : s.homeId] ?? [])
     return bestTakers(eligibleKickers(s, id, lineups.value[id] ?? []), keeper).map((p) => ({ player: p, chance: kickConversion(p, keeper) }))
@@ -478,7 +486,7 @@ export const useMatchStore = defineStore('match', () => {
   /** Cobranças da IA até chegar a vez do seu time (ou a disputa acabar). */
   function aiKicks() {
     const s = shootout.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     if (!s) return
     while (!shootoutDecided(s) && nextKickingTeam(s) !== id) {
       const teamId = nextKickingTeam(s)
@@ -504,7 +512,7 @@ export const useMatchStore = defineStore('match', () => {
   /** Sua cobrança na disputa: o jogador escolhido bate, e a IA responde. */
   function shootoutKick(playerId: string) {
     const s = shootout.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     if (!s || s.done || !id || nextKickingTeam(s) !== id) return null
     const taker = eligibleKickers(s, id, lineups.value[id] ?? []).find((p) => p.id === playerId)
     if (!taker) return null
@@ -518,7 +526,7 @@ export const useMatchStore = defineStore('match', () => {
   /** Decide a disputa automaticamente (sempre o melhor batedor disponível). */
   function autoShootout() {
     const s = shootout.value
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     // Limite de segurança: uma morte súbita sem fim é praticamente impossível, mas não pode travar o jogo.
     for (let guard = 0; s && !s.done && guard < 200; guard++) {
       if (nextKickingTeam(s) === id) {
@@ -541,7 +549,7 @@ export const useMatchStore = defineStore('match', () => {
   function finalWhistle() {
     if (finalWhistleDone.value) return
     finalWhistleDone.value = true
-    const id = useGameStore().managedTeamId
+    const id = useGameStore().lineupTeamId
     for (const m of matches.value) {
       for (const teamId of [m.homeId, m.awayId]) for (const p of lineups.value[teamId] ?? []) recordEnergy(m, p)
       if (!isKnockout(m) || m.homeGoals !== m.awayGoals || m.penalties) continue
@@ -703,7 +711,7 @@ export const useMatchStore = defineStore('match', () => {
           continue
         }
         const m = managedMatch.value
-        const id = useGameStore().managedTeamId
+        const id = useGameStore().lineupTeamId
         if (m && id) fillVacancies(m, id)
         resumeSecondHalf(false)
         continue

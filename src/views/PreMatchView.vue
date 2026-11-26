@@ -33,9 +33,9 @@ function changeFormation(formation: Formation) {
 const lineupView = ref<'campo' | 'lista'>('campo')
 const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
 const markings = Object.keys(MARKINGS) as Marking[]
-const marking = computed(() => markingOf(game.tactic))
+const marking = computed(() => markingOf(game.lineupTactic))
 
-const required = computed(() => FORMATIONS[game.tactic.formation])
+const required = computed(() => FORMATIONS[game.lineupTactic.formation])
 const startersByPos = computed(() =>
   Object.fromEntries(POSITION_ORDER.map((pos) => [pos, game.starters.filter((p) => playingPosition(p) === pos).length])),
 )
@@ -43,13 +43,13 @@ const startersByPos = computed(() =>
 const groups = computed(() =>
   POSITION_ORDER.map((pos) => ({
     pos,
-    players: (game.managedTeam?.players ?? [])
+    players: (game.lineupTeam?.players ?? [])
       .filter((p) => p.position === pos)
       .sort((a, b) => effectiveRating(b) - effectiveRating(a)),
   })),
 )
 
-const myStrength = computed(() => game.managedTeamId && game.teamStrength(game.managedTeamId))
+const myStrength = computed(() => game.lineupTeamId && game.teamStrength(game.lineupTeamId))
 const oppStrength = computed(() => game.nextOpponent && game.teamStrength(game.nextOpponent.id))
 
 const problems = computed(() => {
@@ -72,7 +72,7 @@ function play() {
 </script>
 
 <template>
-  <div v-if="game.managedTeam" class="prematch">
+  <div v-if="game.lineupTeam" class="prematch">
     <section class="card prematch__lineup">
       <div class="lineup-header">
         <h2>Escalação</h2>
@@ -129,8 +129,8 @@ function play() {
         <p v-else-if="game.nextEvent === 'libertadores'" class="muted small">Fase de grupos: passam os 2 primeiros de cada grupo.</p>
         <div class="versus__teams">
           <div>
-            <TeamBadge :team="game.managedTeam" :size="56" />
-            <strong>{{ game.managedTeam.name }}</strong>
+            <TeamBadge :team="game.lineupTeam" :size="56" />
+            <strong>{{ game.lineupTeam.name }}</strong>
           </div>
           <span class="muted">x</span>
           <div>
@@ -166,7 +166,7 @@ function play() {
         <h3>Táticas</h3>
         <label class="field">
           Formação
-          <select :value="game.tactic.formation" @change="changeFormation(($event.target as HTMLSelectElement).value as Formation)">
+          <select :value="game.lineupTactic.formation" @change="changeFormation(($event.target as HTMLSelectElement).value as Formation)">
             <option v-for="f in formations" :key="f" :value="f">{{ f }}</option>
           </select>
         </label>
@@ -177,7 +177,7 @@ function play() {
               v-for="s in styles"
               :key="s"
               class="btn btn--sm"
-              :class="{ 'btn--ghost': game.tactic.style !== s }"
+              :class="{ 'btn--ghost': game.lineupTactic.style !== s }"
               @click="game.setStyle(s)"
             >
               {{ PLAY_STYLES[s].label }}
@@ -208,7 +208,7 @@ function play() {
         </div>
         <p v-else-if="lineupChanges" class="muted small">Os titulares já cabiam no {{ lineupChanges.formation }}: nada mudou.</p>
         <p v-if="myStrength && !myStrength.matchesFormation" class="warn small">
-          Os titulares não batem com a formação {{ game.tactic.formation }} — o time perde rendimento.
+          Os titulares não batem com a formação {{ game.lineupTactic.formation }} — o time perde rendimento.
         </p>
       </div>
 

@@ -50,7 +50,7 @@ const shirt = computed(() => Math.max(28, Math.min(44, width.value / 14)))
 const pitchH = computed(() => Math.round(Math.min(width.value * (width.value < 500 ? 1.1 : 0.72), 560)))
 
 const benchPlayers = computed(() =>
-  (game.managedTeam?.players ?? [])
+  (game.lineupTeam?.players ?? [])
     .filter((p) => !p.starter)
     .sort(
       (a, b) =>
@@ -66,7 +66,7 @@ const height = computed(
 
 const spots = computed<Spot[]>(() => {
   const list: Spot[] = []
-  const required = FORMATIONS[game.tactic.formation]
+  const required = FORMATIONS[game.lineupTactic.formation]
   const sides = lineupSides(game.starters)
   for (const pos of POSITION_ORDER) {
     // Ordem da linha = esquerda para a direita (lado de cada um).
@@ -291,7 +291,7 @@ const theme = { orange: '#f97316', border: '#2a4536', muted: '#8fa89a', text: '#
 
 function drawShirt(ctx: CanvasRenderingContext2D, spot: Spot, x: number, y: number, opts: { ghost?: boolean; target?: boolean } = {}) {
   const s = shirt.value
-  const team = game.managedTeam!
+  const team = game.lineupTeam!
   ctx.save()
   if (opts.ghost) ctx.globalAlpha = 0.25
 
@@ -435,7 +435,7 @@ function drawPitch(ctx: CanvasRenderingContext2D, w: number, h: number) {
 
 function draw() {
   const el = canvas.value
-  const team = game.managedTeam
+  const team = game.lineupTeam
   if (!el || !team) return
   const w = width.value
   const h = height.value

@@ -129,7 +129,7 @@ export interface PenaltyKick {
   scored: boolean
 }
 
-export type Competition = 'league' | 'cup' | 'libertadores'
+export type Competition = 'league' | 'cup' | 'libertadores' | 'worldcup'
 
 export interface PenaltyScore {
   home: number
@@ -190,6 +190,12 @@ export interface LibertadoresState {
   /** Para cada etapa: quantas rodadas do campeonato precisam ter sido jogadas antes dela. */
   schedule: number[]
   championId: string | null
+}
+
+/** Trabalho do técnico numa seleção, ao mesmo tempo que no clube (vale para a Copa do Mundo da temporada). */
+export interface NationalJob {
+  teamId: string
+  season: number
 }
 
 export interface LiveMatch {
@@ -253,7 +259,7 @@ export interface Dismissal {
   reason: string
 }
 
-export type TrophyKind = 'league' | 'cup' | 'libertadores'
+export type TrophyKind = 'league' | 'cup' | 'libertadores' | 'worldcup'
 
 export interface Trophy {
   kind: TrophyKind

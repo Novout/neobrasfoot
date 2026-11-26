@@ -4,7 +4,9 @@ import TeamBadge from '../components/TeamBadge.vue'
 import { formatDate, leagueEnd, leagueStart, MONTH_NAMES, monthOf, weekdayOf } from '../data/calendar'
 import { CUP_NAME, cupPhases } from '../data/cup'
 import { DIVISION_LABELS } from '../data/divisions'
-import { GROUP_ROUNDS, groupOf, LIBERTADORES_NAME, stageName } from '../data/libertadores'
+import { groupOf, groupRoundCount, LIBERTADORES_NAME, stageName } from '../data/libertadores'
+import { WORLD_CUP_NAME } from '../data/worldCup'
+import type { LibertadoresState } from '../types/game'
 import type { CalendarKind } from '../data/calendar'
 import { useGameStore } from '../stores/game'
 import type { Team } from '../types/game'
@@ -98,13 +100,16 @@ function cupRow(index: number, date: string): Row {
   }
 }
 
-/** Etapa da Libertadores (só aparece no calendário de quem disputa o torneio). */
-function libertadoresRow(index: number, date: string): Row {
-  const l = game.libertadores!
-  const ties = index < GROUP_ROUNDS ? l.groupRounds[index] : l.knockout[index - GROUP_ROUNDS]?.ties
-  const tie = ties?.find((t) => t.homeId === myId.value || t.awayId === myId.value)
+/**
+ * Etapa de um torneio com grupos e mata-mata (Libertadores ou Copa do Mundo), do ponto de vista do time do técnico
+ * nele (o clube na Libertadores, a seleção na Copa). Só aparece no calendário de quem disputa o torneio.
+ */
+function tournamentRow(kind: 'libertadores' | 'worldcup', l: LibertadoresState, teamId: string | null, name: string, index: number, date: string): Row {
+  const rounds = groupRoundCount(l)
+  const ties = index < rounds ? l.groupRounds[index] : l.knockout[index - rounds]?.ties
+  const tie = ties?.find((t) => t.homeId === teamId || t.awayId === teamId)
   const played = index < l.stage || (l.championId !== null && index <= l.stage)
-  const home = tie ? tie.homeId === myId.value : null
+  const home = tie ? tie.homeId === teamId : null
   let score: string | null = null
   let outcome: Outcome | null = null
   if (tie && tie.homeGoals !== null && tie.awayGoals !== null) {
@@ -112,23 +117,32 @@ function libertadoresRow(index: number, date: string): Row {
     const theirs = home ? tie.awayGoals : tie.homeGoals
     const pens = tie.penalties ? ` (pên. ${home ? tie.penalties.home : tie.penalties.away}-${home ? tie.penalties.away : tie.penalties.home})` : ''
     score = `${mine} x ${theirs}${pens}`
-    outcome = tie.winnerId === myId.value ? 'win' : tie.winnerId ? 'loss' : 'draw'
+    outcome = tie.winnerId === teamId ? 'win' : tie.winnerId ? 'loss' : 'draw'
   }
   let note: string | null = null
   if (!tie) note = ties ? 'seu time não está nesta fase' : 'adversário a definir'
   return {
-    key: `L${index}-lib`,
+    key: `L${index}-${kind}`,
     date,
-    kind: 'libertadores',
-    label: `${LIBERTADORES_NAME} · ${stageName(index)}`,
+    kind,
+    label: `${name} · ${stageName(index, rounds)}`,
     opponent: tie ? game.getTeam(home ? tie.awayId : tie.homeId) : null,
     home,
     score,
     outcome,
     note,
     played,
-    next: game.nextEvent === 'libertadores' && index === l.stage,
+    next: game.nextEvent === kind && index === l.stage,
   }
+}
+
+function libertadoresRow(index: number, date: string): Row {
+  return tournamentRow('libertadores', game.libertadores!, myId.value, LIBERTADORES_NAME, index, date)
+}
+
+/** Jogos da Copa do Mundo da seleção que o técnico treina. */
+function worldCupRow(index: number, date: string): Row {
+  return tournamentRow('worldcup', game.worldCup!, game.nationalJob?.teamId ?? null, WORLD_CUP_NAME, index, date)
 }
 
 /** O clube gerenciado disputa a Libertadores desta temporada. */
@@ -138,8 +152,16 @@ const inLibertadores = computed(() => !!game.libertadores && !!myId.value && !!g
 const months = computed(() => {
   const rows = game.calendar
     .filter((e) => e.kind !== 'libertadores' || inLibertadores.value)
+    // Copa do Mundo: só para quem treina uma seleção nela.
+    .filter((e) => e.kind !== 'worldcup' || (!!game.worldCup && !!game.nationalJob))
     .map((e) =>
-      e.kind === 'league' ? leagueRow(e.index, e.date) : e.kind === 'cup' ? cupRow(e.index, e.date) : libertadoresRow(e.index, e.date),
+      e.kind === 'league'
+        ? leagueRow(e.index, e.date)
+        : e.kind === 'cup'
+          ? cupRow(e.index, e.date)
+          : e.kind === 'libertadores'
+            ? libertadoresRow(e.index, e.date)
+            : worldCupRow(e.index, e.date),
     )
   const groups: { month: number; rows: Row[] }[] = []
   for (const row of rows) {
@@ -195,8 +217,8 @@ const OUTCOME_LABEL: Record<Outcome, string> = { win: 'V', draw: 'E', loss: 'D' 
           :class="[`row--${row.kind}`, { 'row--played': row.played, 'row--next': row.next }]"
         >
           <span class="row__date">{{ formatDate(row.date) }}</span>
-          <span class="row__comp" :class="{ 'row__comp--cup': row.kind === 'cup', 'row__comp--lib': row.kind === 'libertadores' }">
-            {{ row.kind === 'cup' ? '🏆 ' : row.kind === 'libertadores' ? '🌎 ' : '' }}{{ row.label }}
+          <span class="row__comp" :class="{ 'row__comp--cup': row.kind === 'cup', 'row__comp--lib': row.kind === 'libertadores' || row.kind === 'worldcup' }">
+            {{ { cup: '🏆 ', libertadores: '🌎 ', worldcup: '🌍 ', league: '' }[row.kind] }}{{ row.label }}
           </span>
           <span class="row__match">
             <template v-if="row.opponent">

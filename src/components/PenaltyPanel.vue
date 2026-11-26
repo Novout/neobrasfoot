@@ -16,7 +16,7 @@ import TeamBadge from './TeamBadge.vue'
 const game = useGameStore()
 const match = useMatchStore()
 
-const myId = computed(() => game.managedTeamId ?? '')
+const myId = computed(() => game.lineupTeamId ?? '')
 const m = computed(() => match.managedMatch)
 const opponent = computed(() => (m.value ? game.getTeam(m.value.homeId === myId.value ? m.value.awayId : m.value.homeId) : null))
 const percent = (chance: number) => `${Math.round(chance * 100)}%`
@@ -79,8 +79,8 @@ function takePenalty(playerId: string) {
 
       <div class="board">
         <div class="board__row">
-          <TeamBadge :team="game.managedTeam!" :size="26" />
-          <span class="board__team">{{ game.managedTeam?.shortName }}</span>
+          <TeamBadge :team="game.lineupTeam!" :size="26" />
+          <span class="board__team">{{ game.lineupTeam?.shortName }}</span>
           <span class="kicks">
             <span
               v-for="i in slots(myKicks)"

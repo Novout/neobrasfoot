@@ -82,6 +82,8 @@ export interface RawPlayer {
   birthDate?: string
   /** Em quantas Wikipédias o jogador tem artigo: indica o quanto ele é conhecido. */
   fame: number
+  /** Número da camisa na fonte (quando informado). */
+  number?: number
 }
 
 /** Data dos elencos (as idades são calculadas nela, para o template não mudar sozinho com o tempo). */
@@ -153,7 +155,8 @@ export function realSquadFrom(
       const age = Math.max(16, Math.min(45, ageOn(p.birthDate, referenceDate)))
       const { overall, star } = estimateOverall(reputation, p.fame, age)
       const defRole = p.position === 'DEF' && (p.defRole === 'LAT' || p.defRole === 'ZAG') ? { defRole: p.defRole as DefRole } : {}
-      return { name: p.name.slice(0, 30), position: p.position as Position, age, overall, ...(star ? { star: true } : {}), ...defRole }
+      const number = p.number && p.number >= 1 && p.number <= 99 ? { number: p.number } : {}
+      return { name: p.name.slice(0, 30), position: p.position as Position, age, overall, ...(star ? { star: true } : {}), ...defRole, ...number }
     })
     .sort((a, b) => b.overall - a.overall)
 

@@ -1,0 +1,6054 @@
+{
+ "fetchedAt": "2026-11-26",
+ "clubs": {
+  "nt-argentina": {
+   "source": "https://en.wikipedia.org/wiki/Argentina_national_football_team",
+   "revision": 1386838231,
+   "manager": "Lionel Scaloni",
+   "players": [
+    {
+     "name": "Juan Musso",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1994-05-06",
+     "fame": 42
+    },
+    {
+     "name": "Gerónimo Rulli",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1992-05-20",
+     "fame": 47
+    },
+    {
+     "name": "Emiliano Martínez",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1992-09-01",
+     "fame": 62
+    },
+    {
+     "name": "Santiago Beltrán",
+     "position": "GOL",
+     "number": 27,
+     "birthDate": "2004-10-04",
+     "fame": 4
+    },
+    {
+     "name": "Leonardo Balerdi",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1999-01-26",
+     "fame": 28
+    },
+    {
+     "name": "Nicolás Tagliafico",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1992-08-31",
+     "fame": 48
+    },
+    {
+     "name": "Gonzalo Montiel",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "1997-01-01",
+     "fame": 43
+    },
+    {
+     "name": "Lisandro Martínez",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1998-01-18",
+     "fame": 52
+    },
+    {
+     "name": "Agustín Giay",
+     "position": "DEF",
+     "number": 19,
+     "defRole": "LAT",
+     "birthDate": "2004-01-16",
+     "fame": 14
+    },
+    {
+     "name": "Facundo Medina",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "LAT",
+     "birthDate": "1999-05-28",
+     "fame": 34
+    },
+    {
+     "name": "Mariano Troilo",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "ZAG",
+     "birthDate": "2003-06-22",
+     "fame": 7
+    },
+    {
+     "name": "Román Vega",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "LAT",
+     "birthDate": "2004-01-01",
+     "fame": 10
+    },
+    {
+     "name": "Aarón Anselmino",
+     "position": "DEF",
+     "number": 34,
+     "defRole": "ZAG",
+     "birthDate": "2005-04-29",
+     "fame": 21
+    },
+    {
+     "name": "Equi Fernández",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2002-07-25",
+     "fame": 22
+    },
+    {
+     "name": "Enzo Fernández",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2001-01-17",
+     "fame": 58
+    },
+    {
+     "name": "Exequiel Palacios",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1998-10-05",
+     "fame": 47
+    },
+    {
+     "name": "Máximo Perrone",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2003-01-07",
+     "fame": 27
+    },
+    {
+     "name": "Nico Paz",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2004-09-08",
+     "fame": 47
+    },
+    {
+     "name": "Alexis Mac Allister",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "1998-12-24",
+     "fame": 56
+    },
+    {
+     "name": "Valentín Barco",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2004-07-23",
+     "fame": 34
+    },
+    {
+     "name": "Giuliano Simeone",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2002-12-18",
+     "fame": 39
+    },
+    {
+     "name": "Julián Alvarez",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2000-01-31",
+     "fame": 62
+    },
+    {
+     "name": "Thiago Almada",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-04-26",
+     "fame": 39
+    },
+    {
+     "name": "Gianluca Prestianni",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2006-01-31",
+     "fame": 21
+    },
+    {
+     "name": "José Manuel López",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2000-12-06",
+     "fame": 31
+    },
+    {
+     "name": "Matías Soulé",
+     "position": "ATA",
+     "number": 28,
+     "birthDate": "2003-04-15",
+     "fame": 20
+    },
+    {
+     "name": "Santiago Castro",
+     "position": "ATA",
+     "number": 29,
+     "birthDate": "2004-09-18",
+     "fame": 18
+    },
+    {
+     "name": "Franco Mastantuono",
+     "position": "ATA",
+     "number": 30,
+     "birthDate": "2007-08-14",
+     "fame": 37
+    }
+   ]
+  },
+  "nt-france": {
+   "source": "https://en.wikipedia.org/wiki/France_national_football_team",
+   "revision": 1388016159,
+   "manager": "Zinedine Zidane",
+   "players": [
+    {
+     "name": "Guillaume Restes",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2005-03-11",
+     "fame": 22
+    },
+    {
+     "name": "Mike Maignan",
+     "position": "GOL",
+     "number": 16,
+     "birthDate": "1995-07-03",
+     "fame": 50
+    },
+    {
+     "name": "Robin Risser",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "2004-12-02",
+     "fame": 32
+    },
+    {
+     "name": "Malo Gusto",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2003-05-19",
+     "fame": 46
+    },
+    {
+     "name": "Adrien Truffert",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2001-11-20",
+     "fame": 27
+    },
+    {
+     "name": "Dayot Upamecano",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1998-10-27",
+     "fame": 50
+    },
+    {
+     "name": "Saël Kumbedi",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "2005-03-26",
+     "fame": 16
+    },
+    {
+     "name": "Andy Diouf",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "2003-05-17",
+     "fame": 23
+    },
+    {
+     "name": "Ibrahima Konaté",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "1999-05-25",
+     "fame": 54
+    },
+    {
+     "name": "Leny Yoro",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "ZAG",
+     "birthDate": "2005-11-13",
+     "fame": 33
+    },
+    {
+     "name": "Jérémy Jacquet",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "ZAG",
+     "birthDate": "2005-07-13",
+     "fame": 25
+    },
+    {
+     "name": "Eduardo Camavinga",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2002-11-10",
+     "fame": 57
+    },
+    {
+     "name": "Rayan Cherki",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2003-08-17",
+     "fame": 49
+    },
+    {
+     "name": "Adrien Rabiot",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1995-04-03",
+     "fame": 57
+    },
+    {
+     "name": "Warren Zaïre-Emery",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2006-03-08",
+     "fame": 43
+    },
+    {
+     "name": "Lucas Da Cunha",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2001-06-09",
+     "fame": 18
+    },
+    {
+     "name": "Senny Mayulu",
+     "position": "ATA",
+     "number": 8,
+     "birthDate": "2006-05-17",
+     "fame": 28
+    },
+    {
+     "name": "Eli Junior Kroupi",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2006-06-23",
+     "fame": 22
+    },
+    {
+     "name": "Kylian Mbappé",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1998-12-20",
+     "fame": 119
+    },
+    {
+     "name": "Michael Olise",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-12-12",
+     "fame": 64
+    },
+    {
+     "name": "Bradley Barcola",
+     "position": "ATA",
+     "number": 12,
+     "birthDate": "2002-09-02",
+     "fame": 51
+    },
+    {
+     "name": "Pablo Pagis",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2002-12-29",
+     "fame": 11
+    },
+    {
+     "name": "Désiré Doué",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2005-06-03",
+     "fame": 54
+    }
+   ]
+  },
+  "nt-spain": {
+   "source": "https://en.wikipedia.org/wiki/Spain_national_football_team",
+   "revision": 1387834268,
+   "manager": "Luis de la Fuente",
+   "players": [
+    {
+     "name": "David Raya",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1995-09-15",
+     "fame": 52
+    },
+    {
+     "name": "Joan Garcia",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "2001-05-04",
+     "fame": 43
+    },
+    {
+     "name": "Unai Simón",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1997-06-11",
+     "fame": 54
+    },
+    {
+     "name": "Álvaro Valles",
+     "position": "GOL",
+     "birthDate": "1997-07-25",
+     "fame": 15
+    },
+    {
+     "name": "Marc Pubill",
+     "position": "DEF",
+     "number": 2,
+     "birthDate": "2003-06-20",
+     "fame": 38
+    },
+    {
+     "name": "Dean Huijsen",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2005-04-14",
+     "fame": 42
+    },
+    {
+     "name": "Pau Cubarsí",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2007-01-22",
+     "fame": 54
+    },
+    {
+     "name": "Pedro Porro",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "LAT",
+     "birthDate": "1999-09-13",
+     "fame": 44
+    },
+    {
+     "name": "Aymeric Laporte",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "ZAG",
+     "birthDate": "1994-05-27",
+     "fame": 52
+    },
+    {
+     "name": "Marc Cucurella",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "1998-07-22",
+     "fame": 58
+    },
+    {
+     "name": "Álex Grimaldo",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1995-09-20",
+     "fame": 44
+    },
+    {
+     "name": "Jacobo Ramón",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2005-01-06",
+     "fame": 22
+    },
+    {
+     "name": "Marc Roca",
+     "position": "MEI",
+     "number": 3,
+     "birthDate": "1996-11-26",
+     "fame": 29
+    },
+    {
+     "name": "Mikel Merino",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1996-06-22",
+     "fame": 56
+    },
+    {
+     "name": "Fabián Ruiz",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1996-04-03",
+     "fame": 54
+    },
+    {
+     "name": "Fermín López",
+     "position": "MEI",
+     "number": 9,
+     "birthDate": "2003-05-11",
+     "fame": 46
+    },
+    {
+     "name": "Yeremy Pino",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "2002-10-20",
+     "fame": 40
+    },
+    {
+     "name": "Álex Baena",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2001-07-20",
+     "fame": 44
+    },
+    {
+     "name": "Pablo Barrios",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2003-06-15",
+     "fame": 33
+    },
+    {
+     "name": "Martín Zubimendi",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "1999-02-02",
+     "fame": 47
+    },
+    {
+     "name": "Víctor Muñoz",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2003-07-13",
+     "fame": 37
+    },
+    {
+     "name": "Pedri",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2002-11-25",
+     "fame": 68
+    },
+    {
+     "name": "Jorge de Frutos",
+     "position": "MEI",
+     "birthDate": "1997-02-20",
+     "fame": 18
+    },
+    {
+     "name": "Ferran Torres",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2000-02-29",
+     "fame": 65
+    },
+    {
+     "name": "Lamine Yamal",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2007-07-13",
+     "fame": 96
+    },
+    {
+     "name": "Nico Williams",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2002-07-12",
+     "fame": 58
+    },
+    {
+     "name": "Mikel Oyarzabal",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "1997-04-21",
+     "fame": 56
+    },
+    {
+     "name": "Roberto Fernández",
+     "position": "ATA",
+     "birthDate": "2002-07-03",
+     "fame": 17
+    }
+   ]
+  },
+  "nt-england": {
+   "source": "https://en.wikipedia.org/wiki/England_national_football_team",
+   "revision": 1387834860,
+   "manager": "Thomas Tuchel",
+   "players": [
+    {
+     "name": "Jordan Pickford",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1994-03-07",
+     "fame": 64
+    },
+    {
+     "name": "James Trafford",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "2002-10-10",
+     "fame": 37
+    },
+    {
+     "name": "Jason Steele",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1990-08-18",
+     "fame": 25
+    },
+    {
+     "name": "Trent Alexander-Arnold",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1998-10-07",
+     "fame": 62
+    },
+    {
+     "name": "Lewis Hall",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2004-09-08",
+     "fame": 26
+    },
+    {
+     "name": "Ezri Konsa",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "1997-10-23",
+     "fame": 43
+    },
+    {
+     "name": "Jarell Quansah",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "2003-01-29",
+     "fame": 37
+    },
+    {
+     "name": "Ben White",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "ZAG",
+     "birthDate": "1997-10-08",
+     "fame": 34
+    },
+    {
+     "name": "Djed Spence",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "LAT",
+     "birthDate": "2000-08-09",
+     "fame": 35
+    },
+    {
+     "name": "Dan Burn",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "1992-05-09",
+     "fame": 41
+    },
+    {
+     "name": "James Hill",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "ZAG",
+     "birthDate": "2002-01-10",
+     "fame": 12
+    },
+    {
+     "name": "Jarrad Branthwaite",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2002-06-27",
+     "fame": 26
+    },
+    {
+     "name": "Declan Rice",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "1999-01-14",
+     "fame": 63
+    },
+    {
+     "name": "Morgan Gibbs-White",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2000-01-27",
+     "fame": 33
+    },
+    {
+     "name": "Elliot Anderson",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2002-11-06",
+     "fame": 42
+    },
+    {
+     "name": "Jude Bellingham",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2003-06-29",
+     "fame": 76
+    },
+    {
+     "name": "Jobe Bellingham",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2005-09-23",
+     "fame": 36
+    },
+    {
+     "name": "Myles Lewis-Skelly",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2006-09-26",
+     "fame": 31
+    },
+    {
+     "name": "James Garner",
+     "position": "MEI",
+     "birthDate": "2001-03-13",
+     "fame": 29
+    },
+    {
+     "name": "Josh King",
+     "position": "MEI",
+     "birthDate": "2007-01-03",
+     "fame": 13
+    },
+    {
+     "name": "Harry Kane",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1993-07-28",
+     "fame": 92
+    },
+    {
+     "name": "Anthony Gordon",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-02-24",
+     "fame": 52
+    },
+    {
+     "name": "Morgan Rogers",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2002-07-26",
+     "fame": 42
+    },
+    {
+     "name": "Dominic Calvert-Lewin",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1997-03-16",
+     "fame": 47
+    },
+    {
+     "name": "Rio Ngumoha",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2008-08-29",
+     "fame": 31
+    },
+    {
+     "name": "Eberechi Eze",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "1998-06-29",
+     "fame": 49
+    }
+   ]
+  },
+  "nt-brazil": {
+   "source": "https://en.wikipedia.org/wiki/Brazil_national_football_team",
+   "revision": 1386445743,
+   "manager": "Carlo Ancelotti",
+   "players": [
+    {
+     "name": "Bento",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1999-06-10",
+     "fame": 21
+    },
+    {
+     "name": "Lucas Perri",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1997-12-10",
+     "fame": 20
+    },
+    {
+     "name": "Pedro Morisco",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "2004-01-10",
+     "fame": 5
+    },
+    {
+     "name": "Wesley",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2003-09-06",
+     "fame": 22
+    },
+    {
+     "name": "Gabriel Magalhães",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1997-12-19",
+     "fame": 45
+    },
+    {
+     "name": "Jair Cunha",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2005-03-07",
+     "fame": 15
+    },
+    {
+     "name": "Douglas Santos",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "LAT",
+     "birthDate": "1994-03-22",
+     "fame": 33
+    },
+    {
+     "name": "Vanderson",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "2001-06-21",
+     "fame": 21
+    },
+    {
+     "name": "Vitor Reis",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "ZAG",
+     "birthDate": "2006-01-12",
+     "fame": 23
+    },
+    {
+     "name": "Arthur Dias",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "2007-04-10",
+     "fame": 7
+    },
+    {
+     "name": "Carlos Augusto",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "1999-01-07",
+     "fame": 25
+    },
+    {
+     "name": "Jonathan Jesus",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "ZAG",
+     "birthDate": "2004-05-27",
+     "fame": 6
+    },
+    {
+     "name": "Bruno Guimarães",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1997-11-16",
+     "fame": 48
+    },
+    {
+     "name": "André",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2006-06-20",
+     "fame": 7
+    },
+    {
+     "name": "João Gomes",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2001-02-12",
+     "fame": 25
+    },
+    {
+     "name": "Andrey Santos",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2004-05-03",
+     "fame": 33
+    },
+    {
+     "name": "Marlon Gomes",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2003-12-14",
+     "fame": 9
+    },
+    {
+     "name": "Gabriel Bontempo",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "2005-01-16",
+     "fame": 7
+    },
+    {
+     "name": "Vinícius Júnior",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2000-07-12",
+     "fame": 75
+    },
+    {
+     "name": "Endrick",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2006-07-21",
+     "fame": 47
+    },
+    {
+     "name": "Raphinha",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1996-12-14",
+     "fame": 59
+    },
+    {
+     "name": "Estêvão",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2007-04-24",
+     "fame": 32
+    },
+    {
+     "name": "Alisson Santana",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2005-09-21",
+     "fame": 10
+    },
+    {
+     "name": "Allan",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2004-04-19",
+     "fame": 13
+    },
+    {
+     "name": "Rayan",
+     "position": "ATA",
+     "number": 26,
+     "birthDate": "2006-08-03",
+     "fame": 32
+    }
+   ]
+  },
+  "nt-portugal": {
+   "source": "https://en.wikipedia.org/wiki/Portugal_national_football_team",
+   "revision": 1387346393,
+   "manager": "Jorge Jesus",
+   "players": [
+    {
+     "name": "Diogo Costa",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1999-09-19",
+     "fame": 42
+    },
+    {
+     "name": "Rui Silva",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1994-02-07",
+     "fame": 32
+    },
+    {
+     "name": "Samuel Soares",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "2002-06-15",
+     "fame": 10
+    },
+    {
+     "name": "Diogo Dalot",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1999-03-18",
+     "fame": 48
+    },
+    {
+     "name": "Gonçalo Inácio",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2001-08-25",
+     "fame": 35
+    },
+    {
+     "name": "António Silva",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2003-10-30",
+     "fame": 29
+    },
+    {
+     "name": "Flávio Nazinho",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "2003-07-20",
+     "fame": 10
+    },
+    {
+     "name": "Renato Veiga",
+     "position": "DEF",
+     "number": 13,
+     "birthDate": "2003-07-29",
+     "fame": 36
+    },
+    {
+     "name": "Alberto Costa",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "LAT",
+     "birthDate": "2003-01-01",
+     "fame": 13
+    },
+    {
+     "name": "João Cancelo",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "LAT",
+     "birthDate": "1994-05-27",
+     "fame": 56
+    },
+    {
+     "name": "Mateus Fernandes",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2004-07-10",
+     "fame": 26
+    },
+    {
+     "name": "Bruno Fernandes",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1994-09-08",
+     "fame": 65
+    },
+    {
+     "name": "João Neves",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2004-09-27",
+     "fame": 47
+    },
+    {
+     "name": "Rúben Neves",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "1997-03-13",
+     "fame": 41
+    },
+    {
+     "name": "Vitinha",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2000-02-13",
+     "fame": 51
+    },
+    {
+     "name": "Carlos Forbs",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2004-03-19",
+     "fame": 19
+    },
+    {
+     "name": "Gonçalo Ramos",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2001-06-20",
+     "fame": 45
+    },
+    {
+     "name": "João Félix",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1999-11-10",
+     "fame": 60
+    },
+    {
+     "name": "Geovany Quenda",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2007-04-30",
+     "fame": 23
+    },
+    {
+     "name": "Francisco Trincão",
+     "position": "ATA",
+     "number": 16,
+     "birthDate": "1999-12-29",
+     "fame": 41
+    },
+    {
+     "name": "Pedro Neto",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2000-03-09",
+     "fame": 44
+    },
+    {
+     "name": "Fábio Silva",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2002-07-19",
+     "fame": 30
+    },
+    {
+     "name": "Rodrigo Mora",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2007-05-05",
+     "fame": 26
+    },
+    {
+     "name": "Gustavo Varela",
+     "position": "ATA",
+     "birthDate": "2005-01-30",
+     "fame": 10
+    }
+   ]
+  },
+  "nt-netherlands": {
+   "source": "https://en.wikipedia.org/wiki/Netherlands_national_football_team",
+   "revision": 1387346188,
+   "manager": "Xavi Hernández",
+   "players": [
+    {
+     "name": "Bart Verbruggen",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-08-18",
+     "fame": 40
+    },
+    {
+     "name": "Robin Roefs",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "2003-01-17",
+     "fame": 30
+    },
+    {
+     "name": "Mark Flekken",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1993-06-13",
+     "fame": 33
+    },
+    {
+     "name": "Lutsharel Geertruida",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2000-07-18",
+     "fame": 38
+    },
+    {
+     "name": "Ian Maatsen",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2002-03-10",
+     "fame": 36
+    },
+    {
+     "name": "Sepp van den Berg",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "2001-12-20",
+     "fame": 28
+    },
+    {
+     "name": "Jan Paul van Hecke",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "2000-06-08",
+     "fame": 32
+    },
+    {
+     "name": "Jurriën Timber",
+     "position": "DEF",
+     "number": 12,
+     "birthDate": "2001-06-17",
+     "fame": 44
+    },
+    {
+     "name": "Micky van de Ven",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2001-04-19",
+     "fame": 38
+    },
+    {
+     "name": "Denzel Dumfries",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "1996-04-18",
+     "fame": 51
+    },
+    {
+     "name": "Quinten Timber",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2001-06-17",
+     "fame": 35
+    },
+    {
+     "name": "Justin Kluivert",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1999-05-05",
+     "fame": 47
+    },
+    {
+     "name": "Joey Veerman",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1998-11-19",
+     "fame": 32
+    },
+    {
+     "name": "Tijjani Reijnders",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1998-07-29",
+     "fame": 41
+    },
+    {
+     "name": "Guus Til",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "1997-12-22",
+     "fame": 31
+    },
+    {
+     "name": "Teun Koopmeiners",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "1998-02-28",
+     "fame": 43
+    },
+    {
+     "name": "Gjivai Zechiël",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2004-06-01",
+     "fame": 10
+    },
+    {
+     "name": "Mexx Meerdink",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2003-07-24",
+     "fame": 12
+    },
+    {
+     "name": "Crysencio Summerville",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2001-10-30",
+     "fame": 33
+    },
+    {
+     "name": "Cody Gakpo",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1999-05-07",
+     "fame": 61
+    },
+    {
+     "name": "Noa Lang",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "1999-06-17",
+     "fame": 35
+    },
+    {
+     "name": "Donyell Malen",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "1999-01-19",
+     "fame": 44
+    },
+    {
+     "name": "Ruben van Bommel",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2004-08-03",
+     "fame": 19
+    }
+   ]
+  },
+  "nt-germany": {
+   "source": "https://en.wikipedia.org/wiki/Germany_national_football_team",
+   "revision": 1387838103,
+   "manager": "Jürgen Klopp",
+   "players": [
+    {
+     "name": "Marc-André ter Stegen",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1992-04-30",
+     "fame": 66
+    },
+    {
+     "name": "Jonas Urbig",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2003-08-08",
+     "fame": 24
+    },
+    {
+     "name": "Alexander Nübel",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "1996-09-30",
+     "fame": 39
+    },
+    {
+     "name": "Malick Thiaw",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2001-08-08",
+     "fame": 35
+    },
+    {
+     "name": "Ridle Baku",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1998-04-08",
+     "fame": 28
+    },
+    {
+     "name": "Jonathan Tah",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1996-02-11",
+     "fame": 53
+    },
+    {
+     "name": "Nathaniel Brown",
+     "position": "DEF",
+     "number": 11,
+     "defRole": "LAT",
+     "birthDate": "2003-06-16",
+     "fame": 32
+    },
+    {
+     "name": "Philipp Treu",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "2000-12-03",
+     "fame": 12
+    },
+    {
+     "name": "Nico Schlotterbeck",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "1999-12-01",
+     "fame": 44
+    },
+    {
+     "name": "Finn Jeltsch",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "ZAG",
+     "birthDate": "2006-07-17",
+     "fame": 13
+    },
+    {
+     "name": "Maximilian Mittelstädt",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "LAT",
+     "birthDate": "1997-03-18",
+     "fame": 37
+    },
+    {
+     "name": "Aleksandar Pavlović",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2004-05-03",
+     "fame": 38
+    },
+    {
+     "name": "Joshua Kimmich",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1995-02-08",
+     "fame": 70
+    },
+    {
+     "name": "Felix Nmecha",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2000-10-10",
+     "fame": 40
+    },
+    {
+     "name": "Brajan Gruda",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2004-05-31",
+     "fame": 22
+    },
+    {
+     "name": "Tom Bischof",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2005-06-28",
+     "fame": 24
+    },
+    {
+     "name": "Florian Wirtz",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2003-05-03",
+     "fame": 55
+    },
+    {
+     "name": "Derry Scherhant",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2002-11-10",
+     "fame": 13
+    },
+    {
+     "name": "Said El Mala",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2006-08-26",
+     "fame": 17
+    },
+    {
+     "name": "Lennart Karl",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2008-02-22",
+     "fame": 30
+    },
+    {
+     "name": "Wael Mohya",
+     "position": "MEI",
+     "birthDate": "2008-12-31",
+     "fame": 8
+    },
+    {
+     "name": "Kai Havertz",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1999-06-11",
+     "fame": 64
+    },
+    {
+     "name": "Niclas Füllkrug",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1993-02-09",
+     "fame": 51
+    },
+    {
+     "name": "Younes Ebnoutalib",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "2003-09-13",
+     "fame": 15
+    }
+   ]
+  },
+  "nt-belgium": {
+   "source": "https://en.wikipedia.org/wiki/Belgium_national_football_team",
+   "revision": 1387366866,
+   "manager": "Mark van Bommel",
+   "players": [
+    {
+     "name": "Senne Lammens",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-07-07",
+     "fame": 42
+    },
+    {
+     "name": "Maarten Vandevoordt",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2002-02-26",
+     "fame": 22
+    },
+    {
+     "name": "Mike Penders",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "2005-07-31",
+     "fame": 31
+    },
+    {
+     "name": "Jari De Busser",
+     "position": "GOL",
+     "birthDate": "1999-10-21",
+     "fame": 6
+    },
+    {
+     "name": "Kyriani Sabbe",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2005-01-26",
+     "fame": 12
+    },
+    {
+     "name": "Arthur Theate",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2000-05-25",
+     "fame": 34
+    },
+    {
+     "name": "Brandon Mechele",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1993-01-28",
+     "fame": 33
+    },
+    {
+     "name": "Maxim De Cuyper",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "2000-12-22",
+     "fame": 32
+    },
+    {
+     "name": "Nathan Ngoy",
+     "position": "DEF",
+     "number": 15,
+     "birthDate": "2003-06-10",
+     "fame": 30
+    },
+    {
+     "name": "Joaquin Seys",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "LAT",
+     "birthDate": "2005-03-28",
+     "fame": 27
+    },
+    {
+     "name": "Timothy Castagne",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "1995-12-05",
+     "fame": 42
+    },
+    {
+     "name": "Josue Kongolo",
+     "position": "DEF",
+     "birthDate": "2006-04-13",
+     "fame": 6
+    },
+    {
+     "name": "Roméo Lavia",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2004-01-06",
+     "fame": 35
+    },
+    {
+     "name": "Kevin De Bruyne",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1991-06-28",
+     "fame": 90
+    },
+    {
+     "name": "Youri Tielemans",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1997-05-07",
+     "fame": 54
+    },
+    {
+     "name": "Hans Vanaken",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "1992-08-24",
+     "fame": 42
+    },
+    {
+     "name": "Nicolas Raskin",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2001-02-23",
+     "fame": 28
+    },
+    {
+     "name": "Mandela Keita",
+     "position": "MEI",
+     "birthDate": "2002-05-10",
+     "fame": 15
+    },
+    {
+     "name": "Romelu Lukaku",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1993-05-13",
+     "fame": 84
+    },
+    {
+     "name": "Leandro Trossard",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1994-12-04",
+     "fame": 49
+    },
+    {
+     "name": "Jérémy Doku",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2002-05-27",
+     "fame": 49
+    },
+    {
+     "name": "Dodi Lukébakio",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1997-09-24",
+     "fame": 35
+    },
+    {
+     "name": "Hugo Cuypers",
+     "position": "ATA",
+     "number": 16,
+     "birthDate": "1997-02-07",
+     "fame": 16
+    },
+    {
+     "name": "Charles De Ketelaere",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2001-03-10",
+     "fame": 49
+    },
+    {
+     "name": "Diego Moreira",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2004-08-06",
+     "fame": 32
+    },
+    {
+     "name": "Mika Godts",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2005-06-07",
+     "fame": 26
+    }
+   ]
+  },
+  "nt-italy": {
+   "source": "https://en.wikipedia.org/wiki/Italy_national_football_team",
+   "revision": 1387172733,
+   "manager": "Roberto Mancini",
+   "players": [
+    {
+     "name": "Gianluigi Donnarumma",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1999-02-25",
+     "fame": 61
+    },
+    {
+     "name": "Marco Carnesecchi",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2000-07-01",
+     "fame": 23
+    },
+    {
+     "name": "Guglielmo Vicario",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "1996-10-07",
+     "fame": 32
+    },
+    {
+     "name": "Michael Kayode",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2004-07-10",
+     "fame": 22
+    },
+    {
+     "name": "Giorgio Scalvini",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2003-12-11",
+     "fame": 22
+    },
+    {
+     "name": "Honest Ahanor",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "2008-02-23",
+     "fame": 16
+    },
+    {
+     "name": "Riccardo Calafiori",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "2002-05-19",
+     "fame": 44
+    },
+    {
+     "name": "Alessandro Bastoni",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1999-04-13",
+     "fame": 44
+    },
+    {
+     "name": "Federico Dimarco",
+     "position": "DEF",
+     "number": 11,
+     "defRole": "LAT",
+     "birthDate": "1997-11-10",
+     "fame": 41
+    },
+    {
+     "name": "Marco Palestra",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "LAT",
+     "birthDate": "2005-03-03",
+     "fame": 23
+    },
+    {
+     "name": "Daniele Ghilardi",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "ZAG",
+     "birthDate": "2003-01-06",
+     "fame": 13
+    },
+    {
+     "name": "Federico Gatti",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1998-06-24",
+     "fame": 32
+    },
+    {
+     "name": "Matteo Palma",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2008-03-13",
+     "fame": 7
+    },
+    {
+     "name": "Sandro Tonali",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2000-05-08",
+     "fame": 41
+    },
+    {
+     "name": "Nicolò Fagioli",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2001-02-12",
+     "fame": 28
+    },
+    {
+     "name": "Issa Doumbia",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2003-10-16",
+     "fame": 13
+    },
+    {
+     "name": "Niccolò Pisilli",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2004-09-23",
+     "fame": 16
+    },
+    {
+     "name": "Alessandro Romano",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2006-06-17",
+     "fame": 13
+    },
+    {
+     "name": "Nicolò Barella",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "1997-02-07",
+     "fame": 51
+    },
+    {
+     "name": "Samuele Ricci",
+     "position": "MEI",
+     "birthDate": "2001-08-21",
+     "fame": 19
+    },
+    {
+     "name": "Alphadjo Cisse",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2006-10-22",
+     "fame": 12
+    },
+    {
+     "name": "Pio Esposito",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2005-06-28",
+     "fame": 25
+    },
+    {
+     "name": "Mattia Liberali",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2007-04-06",
+     "fame": 13
+    },
+    {
+     "name": "Gianluca Scamacca",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "1999-01-01",
+     "fame": 38
+    },
+    {
+     "name": "Antonio Vergara",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2003-01-16",
+     "fame": 12
+    },
+    {
+     "name": "Luca Koleosho",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "2004-09-15",
+     "fame": 20
+    },
+    {
+     "name": "Sebastiano Esposito",
+     "position": "ATA",
+     "birthDate": "2002-07-02",
+     "fame": 26
+    }
+   ]
+  },
+  "nt-croatia": {
+   "source": "https://en.wikipedia.org/wiki/Croatia_national_football_team",
+   "revision": 1387836903,
+   "manager": "Slaven Bilić",
+   "players": [
+    {
+     "name": "Dominik Livaković",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1995-01-09",
+     "fame": 46
+    },
+    {
+     "name": "Ivor Pandur",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2000-03-25",
+     "fame": 24
+    },
+    {
+     "name": "Dominik Kotarski",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "2000-02-10",
+     "fame": 32
+    },
+    {
+     "name": "Josip Stanišić",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2000-04-02",
+     "fame": 36
+    },
+    {
+     "name": "Luka Vušković",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2007-02-24",
+     "fame": 35
+    },
+    {
+     "name": "Joško Gvardiol",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "2002-01-23",
+     "fame": 49
+    },
+    {
+     "name": "Duje Ćaleta-Car",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1996-09-17",
+     "fame": 40
+    },
+    {
+     "name": "Niko Galešić",
+     "position": "DEF",
+     "number": 6,
+     "birthDate": "2001-03-26",
+     "fame": 10
+    },
+    {
+     "name": "Ivan Smolčić",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "2000-08-17",
+     "fame": 12
+    },
+    {
+     "name": "Šimun Hrgović",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "LAT",
+     "birthDate": "2004-03-20",
+     "fame": 7
+    },
+    {
+     "name": "Lovro Majer",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1998-01-17",
+     "fame": 38
+    },
+    {
+     "name": "Mateo Kovačić",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1994-05-06",
+     "fame": 61
+    },
+    {
+     "name": "Luka Modrić",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1985-09-09",
+     "fame": 102
+    },
+    {
+     "name": "Mario Pašalić",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "1995-02-09",
+     "fame": 51
+    },
+    {
+     "name": "Martin Baturina",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2003-02-16",
+     "fame": 34
+    },
+    {
+     "name": "Petar Sučić",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2003-10-25",
+     "fame": 34
+    },
+    {
+     "name": "Josip Mišić",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "1994-06-28",
+     "fame": 17
+    },
+    {
+     "name": "Dion Drena Beljo",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2002-03-01",
+     "fame": 14
+    },
+    {
+     "name": "Ante Budimir",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1991-07-22",
+     "fame": 44
+    },
+    {
+     "name": "Ivan Perišić",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1989-02-02",
+     "fame": 69
+    },
+    {
+     "name": "Marco Pašalić",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2000-09-14",
+     "fame": 29
+    },
+    {
+     "name": "Igor Matanović",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2003-03-31",
+     "fame": 28
+    },
+    {
+     "name": "Marin Šotiček",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2004-01-01",
+     "fame": 7
+    }
+   ]
+  },
+  "nt-uruguay": {
+   "source": "https://en.wikipedia.org/wiki/Uruguay_national_football_team",
+   "revision": 1387876272,
+   "manager": "Diego Forlán",
+   "players": [
+    {
+     "name": "Santiago Mele",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1997-09-06",
+     "fame": 25
+    },
+    {
+     "name": "Ignacio de Arruabarrena",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1997-01-16",
+     "fame": 9
+    },
+    {
+     "name": "Cristopher Fiermarin",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1998-01-01",
+     "fame": 6
+    },
+    {
+     "name": "Sebastián Jaume",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "José María Giménez",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1995-01-20",
+     "fame": 51
+    },
+    {
+     "name": "Sebastián Cáceres",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1999-08-18",
+     "fame": 25
+    },
+    {
+     "name": "Ronald Araújo",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "1999-03-07",
+     "fame": 50
+    },
+    {
+     "name": "Guillermo Varela",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "1993-03-24",
+     "fame": 39
+    },
+    {
+     "name": "Santiago Mouriño",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2002-02-13",
+     "fame": 13
+    },
+    {
+     "name": "Mathías Olivera",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "1997-10-31",
+     "fame": 34
+    },
+    {
+     "name": "Juan Rodríguez",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "2003-00-00",
+     "fame": 8
+    },
+    {
+     "name": "Juan Manuel Sanabria",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "LAT",
+     "birthDate": "2000-03-29",
+     "fame": 21
+    },
+    {
+     "name": "Joaquín Piquerez",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1998-08-24",
+     "fame": 26
+    },
+    {
+     "name": "Facundo Bernal",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "2003-08-21",
+     "fame": 10
+    },
+    {
+     "name": "Rodrigo Bentancur",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1997-06-25",
+     "fame": 51
+    },
+    {
+     "name": "Nicolás de la Cruz",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1997-06-01",
+     "fame": 34
+    },
+    {
+     "name": "Federico Valverde",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1998-07-22",
+     "fame": 65
+    },
+    {
+     "name": "Giorgian de Arrascaeta",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1994-06-01",
+     "fame": 43
+    },
+    {
+     "name": "Lucas Torreira",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1996-02-11",
+     "fame": 50
+    },
+    {
+     "name": "Rodrigo Zalazar",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "1999-08-12",
+     "fame": 27
+    },
+    {
+     "name": "Maximiliano Araújo",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2000-02-15",
+     "fame": 31
+    },
+    {
+     "name": "Darwin Núñez",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1999-06-24",
+     "fame": 52
+    },
+    {
+     "name": "Facundo Pellistri",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-12-20",
+     "fame": 35
+    },
+    {
+     "name": "Rodrigo Aguirre",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "1994-10-01",
+     "fame": 24
+    },
+    {
+     "name": "Agustín Canobbio",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1998-10-01",
+     "fame": 34
+    },
+    {
+     "name": "Federico Viñas",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "1998-06-30",
+     "fame": 24
+    },
+    {
+     "name": "Bruno Damiani",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2002-04-18",
+     "fame": 6
+    },
+    {
+     "name": "Martín Satriano",
+     "position": "ATA",
+     "number": 26,
+     "birthDate": "2001-02-20",
+     "fame": 15
+    }
+   ]
+  },
+  "nt-colombia": {
+   "source": "https://en.wikipedia.org/wiki/Colombia_national_football_team",
+   "revision": 1387006445,
+   "manager": "Néstor Lorenzo",
+   "players": [
+    {
+     "name": "Aldair Quintana",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1994-07-11",
+     "fame": 11
+    },
+    {
+     "name": "Camilo Vargas",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1989-03-09",
+     "fame": 34
+    },
+    {
+     "name": "Devis Vasquez",
+     "position": "GOL",
+     "number": 24,
+     "birthDate": "1998-05-12",
+     "fame": 12
+    },
+    {
+     "name": "Daniel Muñoz",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1996-05-25",
+     "fame": 34
+    },
+    {
+     "name": "Jhon Lucumí",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1998-06-26",
+     "fame": 29
+    },
+    {
+     "name": "Juan Cabal",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "2001-01-08",
+     "fame": 14
+    },
+    {
+     "name": "Juan David Arizala",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "2005-10-10",
+     "fame": 7
+    },
+    {
+     "name": "Samuel Velásquez",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "LAT",
+     "birthDate": "2003-05-29",
+     "fame": 4
+    },
+    {
+     "name": "Édier Ocampo",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "LAT",
+     "birthDate": "2003-10-03",
+     "fame": 8
+    },
+    {
+     "name": "Davinson Sánchez",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "ZAG",
+     "birthDate": "1996-06-12",
+     "fame": 47
+    },
+    {
+     "name": "Kevin Andrade",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "1999-06-16",
+     "fame": 7
+    },
+    {
+     "name": "Matías Orozco",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2007-12-01",
+     "fame": 4
+    },
+    {
+     "name": "Gustavo Puerta",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2003-07-23",
+     "fame": 27
+    },
+    {
+     "name": "Jhon Arias",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1997-09-21",
+     "fame": 27
+    },
+    {
+     "name": "Daniel Arcila",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "2002-03-16",
+     "fame": 2
+    },
+    {
+     "name": "Jhon Solís",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2004-10-03",
+     "fame": 13
+    },
+    {
+     "name": "Nelson Deossa",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2000-02-06",
+     "fame": 12
+    },
+    {
+     "name": "Jefferson Lerma",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "1994-10-25",
+     "fame": 36
+    },
+    {
+     "name": "Yáser Asprilla",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2003-11-19",
+     "fame": 18
+    },
+    {
+     "name": "Óscar Perea",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2005-09-27",
+     "fame": 9
+    },
+    {
+     "name": "Luis Suárez",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1997-12-02",
+     "fame": 32
+    },
+    {
+     "name": "Camilo Durán",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2002-02-10",
+     "fame": 9
+    },
+    {
+     "name": "Daniel Mosquera",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "1999-10-20",
+     "fame": 5
+    },
+    {
+     "name": "Óscar Cortés",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2003-12-03",
+     "fame": 14
+    },
+    {
+     "name": "Camilo Mena",
+     "position": "ATA",
+     "number": 26,
+     "birthDate": "2002-10-01",
+     "fame": 7
+    }
+   ]
+  },
+  "nt-morocco": {
+   "source": "https://en.wikipedia.org/wiki/Morocco_national_football_team",
+   "revision": 1388006979,
+   "manager": "Mohamed Ouahbi",
+   "players": [
+    {
+     "name": "Yassine Bounou",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1991-04-05",
+     "fame": 53
+    },
+    {
+     "name": "Munir Mohamedi",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1989-05-10",
+     "fame": 37
+    },
+    {
+     "name": "Ahmed Reda Tagnaouti",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "1996-04-05",
+     "fame": 30
+    },
+    {
+     "name": "Alaa Bellaarouch",
+     "position": "GOL",
+     "number": 31,
+     "birthDate": "2002-02-01",
+     "fame": 8
+    },
+    {
+     "name": "Achraf Hakimi",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1998-11-04",
+     "fame": 71
+    },
+    {
+     "name": "Noussair Mazraoui",
+     "position": "DEF",
+     "number": 3,
+     "birthDate": "1997-11-14",
+     "fame": 48
+    },
+    {
+     "name": "Nayef Aguerd",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1996-03-30",
+     "fame": 42
+    },
+    {
+     "name": "Issa Diop",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "ZAG",
+     "birthDate": "1997-01-09",
+     "fame": 38
+    },
+    {
+     "name": "Souffian El Karouani",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2000-10-19",
+     "fame": 16
+    },
+    {
+     "name": "Redouane Halhal",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "2003-03-05",
+     "fame": 23
+    },
+    {
+     "name": "Anass Salah-Eddine",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "LAT",
+     "birthDate": "2002-01-18",
+     "fame": 28
+    },
+    {
+     "name": "Abdelhamid Aït Boudlal",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "ZAG",
+     "birthDate": "2006-04-16",
+     "fame": 13
+    },
+    {
+     "name": "Ali Maamar",
+     "position": "DEF",
+     "number": 28,
+     "defRole": "LAT",
+     "birthDate": "2005-03-23",
+     "fame": 11
+    },
+    {
+     "name": "Ayyoub Bouaddi",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2007-10-02",
+     "fame": 36
+    },
+    {
+     "name": "Oussama Targhalline",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2002-05-20",
+     "fame": 19
+    },
+    {
+     "name": "Abdellah Ouazane",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2009-01-15",
+     "fame": 15
+    },
+    {
+     "name": "Bilal El Khannouss",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2004-05-10",
+     "fame": 32
+    },
+    {
+     "name": "Neil El Aynaoui",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2001-07-02",
+     "fame": 29
+    },
+    {
+     "name": "Amine Sbaï",
+     "position": "MEI",
+     "birthDate": "2000-11-05",
+     "fame": 20
+    },
+    {
+     "name": "Reda Belahyane",
+     "position": "MEI",
+     "birthDate": "2004-06-01",
+     "fame": 11
+    },
+    {
+     "name": "Brahim Díaz",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1999-08-03",
+     "fame": 54
+    },
+    {
+     "name": "Gessime Yassine",
+     "position": "ATA",
+     "number": 16,
+     "birthDate": "2005-11-22",
+     "fame": 29
+    },
+    {
+     "name": "Abde Ezzalzouli",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2001-12-17",
+     "fame": 35
+    },
+    {
+     "name": "Youssef En-Nesyri",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1997-06-01",
+     "fame": 44
+    },
+    {
+     "name": "Yassir Zabiri",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2005-02-23",
+     "fame": 16
+    },
+    {
+     "name": "Ayoub Oufkir",
+     "position": "ATA",
+     "birthDate": "2006-01-04",
+     "fame": 8
+    }
+   ]
+  },
+  "nt-switzerland": {
+   "source": "https://en.wikipedia.org/wiki/Switzerland_national_football_team",
+   "revision": 1386919094,
+   "manager": "Murat Yakin",
+   "players": [
+    {
+     "name": "Gregor Kobel",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1997-12-06",
+     "fame": 41
+    },
+    {
+     "name": "Yvon Mvogo",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1994-06-06",
+     "fame": 34
+    },
+    {
+     "name": "Marvin Keller",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "2002-07-03",
+     "fame": 24
+    },
+    {
+     "name": "Silas Huber",
+     "position": "GOL",
+     "birthDate": "2005-07-10",
+     "fame": 1
+    },
+    {
+     "name": "Ricardo Rodriguez",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "1992-08-25",
+     "fame": 52
+    },
+    {
+     "name": "Manuel Akanji",
+     "position": "DEF",
+     "birthDate": "1995-07-19",
+     "fame": 52
+    },
+    {
+     "name": "Nico Elvedi",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1996-09-30",
+     "fame": 43
+    },
+    {
+     "name": "Eray Cömert",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "ZAG",
+     "birthDate": "1998-02-04",
+     "fame": 34
+    },
+    {
+     "name": "Isaac Schmidt",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "LAT",
+     "birthDate": "1999-12-07",
+     "fame": 12
+    },
+    {
+     "name": "Zachary Athekame",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "2004-12-13",
+     "fame": 14
+    },
+    {
+     "name": "Sascha Britschgi",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2006-08-27",
+     "fame": 9
+    },
+    {
+     "name": "Adrian Bajrami",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2002-04-05",
+     "fame": 16
+    },
+    {
+     "name": "Roggerio Nyakossi",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2004-01-01",
+     "fame": 8
+    },
+    {
+     "name": "Remo Freuler",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1992-04-15",
+     "fame": 45
+    },
+    {
+     "name": "Denis Zakaria",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1996-11-20",
+     "fame": 52
+    },
+    {
+     "name": "Djibril Sow",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "1997-02-06",
+     "fame": 33
+    },
+    {
+     "name": "Michel Aebischer",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "1997-01-06",
+     "fame": 37
+    },
+    {
+     "name": "Fabian Rieder",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2002-02-16",
+     "fame": 30
+    },
+    {
+     "name": "Johan Manzambi",
+     "position": "MEI",
+     "birthDate": "2005-10-14",
+     "fame": 33
+    },
+    {
+     "name": "Ardon Jashari",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2002-07-30",
+     "fame": 33
+    },
+    {
+     "name": "Alvyn Sanches",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2003-02-12",
+     "fame": 14
+    },
+    {
+     "name": "Breel Embolo",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1997-02-14",
+     "fame": 52
+    },
+    {
+     "name": "Rubén Vargas",
+     "position": "ATA",
+     "birthDate": "1998-08-05",
+     "fame": 40
+    },
+    {
+     "name": "Dan Ndoye",
+     "position": "ATA",
+     "birthDate": "2000-10-25",
+     "fame": 37
+    },
+    {
+     "name": "Zeki Amdouni",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2000-12-04",
+     "fame": 33
+    },
+    {
+     "name": "Cedric Itten",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1996-12-27",
+     "fame": 27
+    },
+    {
+     "name": "Winsley Boteli",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2006-07-05",
+     "fame": 10
+    },
+    {
+     "name": "Samuel Ballet",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2001-03-12",
+     "fame": 9
+    }
+   ]
+  },
+  "nt-denmark": {
+   "source": "https://en.wikipedia.org/wiki/Denmark_national_football_team",
+   "revision": 1387367439,
+   "manager": "Brian Riemer",
+   "players": [
+    {
+     "name": "Andreas Jungdal",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-02-22",
+     "fame": 15
+    },
+    {
+     "name": "Mads Hermansen",
+     "position": "GOL",
+     "number": 16,
+     "birthDate": "2000-07-11",
+     "fame": 27
+    },
+    {
+     "name": "Andreas Hansen",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "1995-08-11",
+     "fame": 6
+    },
+    {
+     "name": "Joachim Andersen",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1996-05-31",
+     "fame": 34
+    },
+    {
+     "name": "Oliver Provstgaard",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2003-06-04",
+     "fame": 13
+    },
+    {
+     "name": "Rasmus Nicolaisen",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1997-03-16",
+     "fame": 14
+    },
+    {
+     "name": "Joakim Mæhle",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "1997-05-20",
+     "fame": 40
+    },
+    {
+     "name": "Victor Nelsson",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1998-10-14",
+     "fame": 31
+    },
+    {
+     "name": "Rasmus Kristensen",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "1997-07-11",
+     "fame": 32
+    },
+    {
+     "name": "Victor Bak Jensen",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2003-10-03",
+     "fame": 7
+    },
+    {
+     "name": "Alexander Bah",
+     "position": "DEF",
+     "number": 18,
+     "defRole": "LAT",
+     "birthDate": "1997-12-09",
+     "fame": 30
+    },
+    {
+     "name": "Mathias Jensen",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1996-01-01",
+     "fame": 34
+    },
+    {
+     "name": "Victor Froholdt",
+     "position": "MEI",
+     "number": 12,
+     "birthDate": "2006-02-25",
+     "fame": 21
+    },
+    {
+     "name": "Albert Grønbæk",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2001-05-23",
+     "fame": 14
+    },
+    {
+     "name": "Morten Hjulmand",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "1999-06-25",
+     "fame": 33
+    },
+    {
+     "name": "Pierre-Emile Højbjerg",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "1995-08-05",
+     "fame": 45
+    },
+    {
+     "name": "Mads Bidstrup",
+     "position": "MEI",
+     "birthDate": "2001-02-25",
+     "fame": 20
+    },
+    {
+     "name": "Gustav Isaksen",
+     "position": "ATA",
+     "number": 8,
+     "birthDate": "2001-04-19",
+     "fame": 20
+    },
+    {
+     "name": "Rasmus Højlund",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2003-02-04",
+     "fame": 44
+    },
+    {
+     "name": "William Osula",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2003-08-04",
+     "fame": 25
+    },
+    {
+     "name": "Andreas Skov Olsen",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1999-12-29",
+     "fame": 27
+    },
+    {
+     "name": "Mikkel Damsgaard",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "2000-07-03",
+     "fame": 38
+    },
+    {
+     "name": "Jesper Lindstrøm",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "2000-02-29",
+     "fame": 31
+    },
+    {
+     "name": "Mohamed Daramy",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2002-01-07",
+     "fame": 23
+    }
+   ]
+  },
+  "nt-mexico": {
+   "source": "https://en.wikipedia.org/wiki/Mexico_national_football_team",
+   "revision": 1387583195,
+   "manager": "Rafael Márquez",
+   "players": [
+    {
+     "name": "Raúl Rangel",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2000-02-25",
+     "fame": 31
+    },
+    {
+     "name": "Óscar García",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2003-07-02",
+     "fame": 2
+    },
+    {
+     "name": "Alex Padilla",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "2003-09-01",
+     "fame": 11
+    },
+    {
+     "name": "Kevin Álvarez",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1999-01-15",
+     "fame": 22
+    },
+    {
+     "name": "Rodrigo Huescas",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2003-09-18",
+     "fame": 11
+    },
+    {
+     "name": "Jesús Orozco",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2002-02-19",
+     "fame": 11
+    },
+    {
+     "name": "Johan Vásquez",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1998-10-22",
+     "fame": 34
+    },
+    {
+     "name": "Israel Reyes",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2000-05-23",
+     "fame": 23
+    },
+    {
+     "name": "Mateo Chávez",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "LAT",
+     "birthDate": "2004-05-12",
+     "fame": 28
+    },
+    {
+     "name": "Diego Campillo",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "2001-10-19",
+     "fame": 6
+    },
+    {
+     "name": "Jesús Gallardo",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "LAT",
+     "birthDate": "1994-08-15",
+     "fame": 35
+    },
+    {
+     "name": "César Montes",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1997-02-24",
+     "fame": 36
+    },
+    {
+     "name": "Érik Lira",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2000-05-08",
+     "fame": 25
+    },
+    {
+     "name": "Obed Vargas",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2005-08-05",
+     "fame": 28
+    },
+    {
+     "name": "Álvaro Fidalgo",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1997-04-09",
+     "fame": 25
+    },
+    {
+     "name": "Santiago Sandoval",
+     "position": "MEI",
+     "number": 9,
+     "birthDate": "2007-08-07",
+     "fame": 5
+    },
+    {
+     "name": "Gilberto Mora",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2008-10-14",
+     "fame": 35
+    },
+    {
+     "name": "Andrés Montaño",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "2002-05-22",
+     "fame": 6
+    },
+    {
+     "name": "Luis Romo",
+     "position": "MEI",
+     "birthDate": "1995-06-05",
+     "fame": 35
+    },
+    {
+     "name": "Érick Sánchez",
+     "position": "MEI",
+     "birthDate": "1999-09-27",
+     "fame": 16
+    },
+    {
+     "name": "Santiago Giménez",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-04-18",
+     "fame": 38
+    },
+    {
+     "name": "Armando González",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "2003-04-20",
+     "fame": 23
+    },
+    {
+     "name": "Julián Quiñones",
+     "position": "ATA",
+     "number": 16,
+     "birthDate": "1997-03-24",
+     "fame": 39
+    },
+    {
+     "name": "Jesús Manuel Corona",
+     "position": "ATA",
+     "number": 17,
+     "birthDate": "1993-01-06",
+     "fame": 36
+    },
+    {
+     "name": "Roberto Alvarado",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "1998-09-07",
+     "fame": 33
+    },
+    {
+     "name": "Alexis Vega",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1997-11-25",
+     "fame": 32
+    },
+    {
+     "name": "Isaías Violante",
+     "position": "ATA",
+     "birthDate": "2003-10-20",
+     "fame": 8
+    },
+    {
+     "name": "Armando León",
+     "position": "ATA",
+     "birthDate": "2000-01-18",
+     "fame": 3
+    }
+   ]
+  },
+  "nt-usa": {
+   "source": "https://en.wikipedia.org/wiki/United_States_men's_national_soccer_team",
+   "revision": 1387590238,
+   "players": [
+    {
+     "name": "Matt Freese",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1998-09-02",
+     "fame": 23
+    },
+    {
+     "name": "Diego Kochen",
+     "position": "GOL",
+     "number": 18,
+     "birthDate": "2006-03-19",
+     "fame": 15
+    },
+    {
+     "name": "Brian Schwake",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "2001-08-24",
+     "fame": 6
+    },
+    {
+     "name": "Reed Baker-Whiting",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2005-03-31",
+     "fame": 10
+    },
+    {
+     "name": "Chris Richards",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2000-03-28",
+     "fame": 33
+    },
+    {
+     "name": "Antonee Robinson",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "1997-08-08",
+     "fame": 32
+    },
+    {
+     "name": "Auston Trusty",
+     "position": "DEF",
+     "number": 6,
+     "birthDate": "1998-08-12",
+     "fame": 27
+    },
+    {
+     "name": "Neil Pierre",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "ZAG",
+     "birthDate": "2007-10-19",
+     "fame": 6
+    },
+    {
+     "name": "Bryan Reynolds",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2001-06-28",
+     "fame": 17
+    },
+    {
+     "name": "Alex Freeman",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "2004-08-09",
+     "fame": 29
+    },
+    {
+     "name": "Mark McKenzie",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "ZAG",
+     "birthDate": "1999-02-25",
+     "fame": 29
+    },
+    {
+     "name": "Tyler Adams",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "1999-02-14",
+     "fame": 39
+    },
+    {
+     "name": "Jack McGlynn",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2003-07-07",
+     "fame": 14
+    },
+    {
+     "name": "Weston McKennie",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1998-08-28",
+     "fame": 42
+    },
+    {
+     "name": "Adri Mehmeti",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "2009-04-06",
+     "fame": 8
+    },
+    {
+     "name": "Sebastian Berhalter",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2001-05-10",
+     "fame": 28
+    },
+    {
+     "name": "Malik Tillman",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2002-05-28",
+     "fame": 33
+    },
+    {
+     "name": "Mathis Albert",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2009-05-21",
+     "fame": 12
+    },
+    {
+     "name": "Santiago Castañeda",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2004-11-13",
+     "fame": 6
+    },
+    {
+     "name": "Julian Hall",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2008-03-24",
+     "fame": 14
+    },
+    {
+     "name": "Christian Pulisic",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "1998-09-18",
+     "fame": 56
+    },
+    {
+     "name": "Cavan Sullivan",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2009-09-28",
+     "fame": 19
+    },
+    {
+     "name": "Folarin Balogun",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2001-07-03",
+     "fame": 46
+    },
+    {
+     "name": "Justin Ellis",
+     "position": "ATA",
+     "birthDate": "2007-05-14",
+     "fame": 5
+    }
+   ]
+  },
+  "nt-japan": {
+   "source": "https://en.wikipedia.org/wiki/Japan_national_football_team",
+   "revision": 1388020030,
+   "players": [
+    {
+     "name": "Zion Suzuki",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2002-08-21",
+     "fame": 39
+    },
+    {
+     "name": "Leo Kokubo",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2001-01-23",
+     "fame": 23
+    },
+    {
+     "name": "Tomoki Hayakawa",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1999-03-03",
+     "fame": 25
+    },
+    {
+     "name": "Yukinari Sugawara",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "2000-06-28",
+     "fame": 42
+    },
+    {
+     "name": "Ayumu Seko",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2000-06-07",
+     "fame": 37
+    },
+    {
+     "name": "Kō Itakura",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1997-01-27",
+     "fame": 48
+    },
+    {
+     "name": "Tsuyoshi Watanabe",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1997-02-05",
+     "fame": 44
+    },
+    {
+     "name": "Shuto Nakano",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "LAT",
+     "birthDate": "2000-01-01",
+     "fame": 10
+    },
+    {
+     "name": "Kōki Machida",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "ZAG",
+     "birthDate": "1997-08-25",
+     "fame": 32
+    },
+    {
+     "name": "Hiroki Itō",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "1999-05-12",
+     "fame": 41
+    },
+    {
+     "name": "Junnosuke Suzuki",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "2003-07-12",
+     "fame": 25
+    },
+    {
+     "name": "Yūki Sōma",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "1997-02-25",
+     "fame": 40
+    },
+    {
+     "name": "Takumi Minamino",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1995-01-16",
+     "fame": 66
+    },
+    {
+     "name": "Ritsu Dōan",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1998-06-16",
+     "fame": 54
+    },
+    {
+     "name": "Keito Nakamura",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "2000-07-28",
+     "fame": 44
+    },
+    {
+     "name": "Junya Itō",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1993-03-09",
+     "fame": 51
+    },
+    {
+     "name": "Ao Tanaka",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "1998-09-10",
+     "fame": 52
+    },
+    {
+     "name": "Takefusa Kubo",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2001-06-04",
+     "fame": 57
+    },
+    {
+     "name": "Kodai Sano",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2003-09-25",
+     "fame": 18
+    },
+    {
+     "name": "Kaishū Sano",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2000-12-30",
+     "fame": 35
+    },
+    {
+     "name": "Tatsuhiro Sakamoto",
+     "position": "MEI",
+     "number": 26,
+     "birthDate": "1996-10-22",
+     "fame": 24
+    },
+    {
+     "name": "Kuryu Matsuki",
+     "position": "MEI",
+     "number": 27,
+     "birthDate": "2003-04-30",
+     "fame": 15
+    },
+    {
+     "name": "Keisuke Gotō",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2005-06-03",
+     "fame": 26
+    },
+    {
+     "name": "Daizen Maeda",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1997-10-20",
+     "fame": 50
+    },
+    {
+     "name": "Yuito Suzuki",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2001-10-25",
+     "fame": 31
+    },
+    {
+     "name": "Kōki Ogawa",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1997-08-08",
+     "fame": 42
+    },
+    {
+     "name": "Shiō Fukuda",
+     "position": "ATA",
+     "number": 28,
+     "birthDate": "2004-04-08",
+     "fame": 13
+    }
+   ]
+  },
+  "nt-senegal": {
+   "source": "https://en.wikipedia.org/wiki/Senegal_national_football_team",
+   "revision": 1388135662,
+   "manager": "Patrick Vieira",
+   "players": [
+    {
+     "name": "Yehvann Diouf",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1999-11-16",
+     "fame": 23
+    },
+    {
+     "name": "Mamour Ndiaye",
+     "position": "GOL",
+     "number": 16,
+     "birthDate": "2005-10-22",
+     "fame": 6
+    },
+    {
+     "name": "Mory Diaw",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1993-06-22",
+     "fame": 24
+    },
+    {
+     "name": "Kalidou Koulibaly",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1991-06-20",
+     "fame": 51
+    },
+    {
+     "name": "Sadibou Sané",
+     "position": "DEF",
+     "number": 4,
+     "birthDate": "2004-06-10",
+     "fame": 11
+    },
+    {
+     "name": "Arouna Sangante",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "2002-04-12",
+     "fame": 15
+    },
+    {
+     "name": "Moussa Niakhaté",
+     "position": "DEF",
+     "number": 19,
+     "defRole": "ZAG",
+     "birthDate": "1996-03-08",
+     "fame": 32
+    },
+    {
+     "name": "El Hadji Malick Diouf",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "LAT",
+     "birthDate": "2004-12-28",
+     "fame": 30
+    },
+    {
+     "name": "Malang Sarr",
+     "position": "DEF",
+     "number": 27,
+     "defRole": "ZAG",
+     "birthDate": "1999-01-23",
+     "fame": 33
+    },
+    {
+     "name": "Massiré Sylla",
+     "position": "DEF",
+     "number": 29,
+     "birthDate": "2005-01-07",
+     "fame": 5
+    },
+    {
+     "name": "Lamine Camara",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2004-01-01",
+     "fame": 28
+    },
+    {
+     "name": "Pape Matar Sarr",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2002-09-14",
+     "fame": 35
+    },
+    {
+     "name": "Dion Lopy",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2002-02-02",
+     "fame": 15
+    },
+    {
+     "name": "Pape Demba Diop",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2003-09-04",
+     "fame": 10
+    },
+    {
+     "name": "Pape Gueye",
+     "position": "MEI",
+     "number": 26,
+     "birthDate": "1999-01-24",
+     "fame": 40
+    },
+    {
+     "name": "Pathé Mboup",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2003-00-00",
+     "fame": 8
+    },
+    {
+     "name": "Boulaye Dia",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1996-11-16",
+     "fame": 32
+    },
+    {
+     "name": "Iliman Ndiaye",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2000-03-06",
+     "fame": 34
+    },
+    {
+     "name": "Nicolas Jackson",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2001-06-20",
+     "fame": 44
+    },
+    {
+     "name": "Issa Soumaré",
+     "position": "ATA",
+     "number": 12,
+     "birthDate": "2000-10-10",
+     "fame": 10
+    },
+    {
+     "name": "Paul Mendy",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "2007-01-13",
+     "fame": 4
+    },
+    {
+     "name": "Ibrahim Mbaye",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2008-01-24",
+     "fame": 36
+    },
+    {
+     "name": "Clayton Diandy",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2006-07-29",
+     "fame": 5
+    }
+   ]
+  },
+  "nt-austria": {
+   "source": "https://en.wikipedia.org/wiki/Austria_national_football_team",
+   "revision": 1387255816,
+   "manager": "Ralf Rangnick",
+   "players": [
+    {
+     "name": "Lukas Jungwirth",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2004-04-30",
+     "fame": 5
+    },
+    {
+     "name": "Florian Wiegele",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2001-03-21",
+     "fame": 19
+    },
+    {
+     "name": "Christian Zawieschitzky",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "2007-05-02",
+     "fame": 9
+    },
+    {
+     "name": "Alexander Schlager",
+     "position": "GOL",
+     "number": 17,
+     "birthDate": "1996-02-01",
+     "fame": 32
+    },
+    {
+     "name": "David Affengruber",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2001-03-19",
+     "fame": 29
+    },
+    {
+     "name": "Kevin Danso",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "1998-09-19",
+     "fame": 36
+    },
+    {
+     "name": "Stefan Posch",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "1997-05-14",
+     "fame": 33
+    },
+    {
+     "name": "Felix Bacher",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "ZAG",
+     "birthDate": "2000-10-25",
+     "fame": 10
+    },
+    {
+     "name": "Philipp Lienhart",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "1996-07-11",
+     "fame": 33
+    },
+    {
+     "name": "Phillipp Mwene",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "1994-01-29",
+     "fame": 29
+    },
+    {
+     "name": "Michael Svoboda",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "ZAG",
+     "birthDate": "1998-10-15",
+     "fame": 25
+    },
+    {
+     "name": "Alexander Prass",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2001-05-26",
+     "fame": 28
+    },
+    {
+     "name": "Yanik Spalt",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "2007-09-03",
+     "fame": 4
+    },
+    {
+     "name": "Nicolas Seiwald",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "2001-05-04",
+     "fame": 34
+    },
+    {
+     "name": "Christoph Baumgartner",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1999-08-01",
+     "fame": 40
+    },
+    {
+     "name": "Konrad Laimer",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "1997-05-27",
+     "fame": 40
+    },
+    {
+     "name": "Sascha Horvath",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "1996-08-22",
+     "fame": 10
+    },
+    {
+     "name": "Luca Weinhandl",
+     "position": "MEI",
+     "number": 22,
+     "birthDate": "2009-01-11",
+     "fame": 8
+    },
+    {
+     "name": "Xaver Schlager",
+     "position": "MEI",
+     "birthDate": "1997-09-28",
+     "fame": 36
+    },
+    {
+     "name": "Christoph Lang",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2002-01-07",
+     "fame": 8
+    },
+    {
+     "name": "Junior Adamu",
+     "position": "ATA",
+     "number": 8,
+     "birthDate": "2001-06-06",
+     "fame": 23
+    },
+    {
+     "name": "Saša Kalajdžić",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1997-07-07",
+     "fame": 37
+    },
+    {
+     "name": "Michael Gregoritsch",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "1994-04-18",
+     "fame": 39
+    },
+    {
+     "name": "Raul Florucz",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2001-06-10",
+     "fame": 11
+    }
+   ]
+  },
+  "nt-norway": {
+   "source": "https://en.wikipedia.org/wiki/Norway_national_football_team",
+   "revision": 1387913920,
+   "manager": "Ståle Solbakken",
+   "players": [
+    {
+     "name": "Ørjan Nyland",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1990-09-10",
+     "fame": 41
+    },
+    {
+     "name": "Sander Tangvik",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2002-11-29",
+     "fame": 23
+    },
+    {
+     "name": "Egil Selvik",
+     "position": "GOL",
+     "number": 13,
+     "birthDate": "1997-07-30",
+     "fame": 21
+    },
+    {
+     "name": "Odin Bjørtuft",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1998-12-29",
+     "fame": 7
+    },
+    {
+     "name": "Kristoffer Ajer",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1998-04-17",
+     "fame": 34
+    },
+    {
+     "name": "Leo Østigård",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1999-11-28",
+     "fame": 36
+    },
+    {
+     "name": "David Møller Wolfe",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "2002-04-23",
+     "fame": 30
+    },
+    {
+     "name": "Julian Ryerson",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "LAT",
+     "birthDate": "1997-11-17",
+     "fame": 42
+    },
+    {
+     "name": "Marcus Holmgren Pedersen",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "2000-07-16",
+     "fame": 32
+    },
+    {
+     "name": "Torbjørn Heggem",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "ZAG",
+     "birthDate": "1999-01-12",
+     "fame": 25
+    },
+    {
+     "name": "Eivind Helland",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "ZAG",
+     "birthDate": "2005-04-25",
+     "fame": 10
+    },
+    {
+     "name": "Patrick Berg",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1997-11-24",
+     "fame": 33
+    },
+    {
+     "name": "Sander Berge",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1998-02-14",
+     "fame": 35
+    },
+    {
+     "name": "Martin Ødegaard",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1998-12-17",
+     "fame": 63
+    },
+    {
+     "name": "Hugo Vetlesen",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2000-02-29",
+     "fame": 16
+    },
+    {
+     "name": "Felix Horn Myhre",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "1999-03-04",
+     "fame": 12
+    },
+    {
+     "name": "Thelo Aasgaard",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2002-05-02",
+     "fame": 27
+    },
+    {
+     "name": "Alexander Sørloth",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1995-12-05",
+     "fame": 50
+    },
+    {
+     "name": "Erling Haaland",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2000-07-21",
+     "fame": 94
+    },
+    {
+     "name": "Erik Botheim",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2000-01-10",
+     "fame": 17
+    },
+    {
+     "name": "Antonio Nusa",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2005-04-17",
+     "fame": 38
+    },
+    {
+     "name": "Andreas Schjelderup",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2004-06-01",
+     "fame": 38
+    },
+    {
+     "name": "Oscar Bobb",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2003-07-12",
+     "fame": 35
+    }
+   ]
+  },
+  "nt-ecuador": {
+   "source": "https://en.wikipedia.org/wiki/Ecuador_national_football_team",
+   "revision": 1386468316,
+   "manager": "Marcelo Gallardo",
+   "players": [
+    {
+     "name": "Hernán Galíndez",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1987-03-30",
+     "fame": 31
+    },
+    {
+     "name": "Moisés Ramírez",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2000-09-09",
+     "fame": 24
+    },
+    {
+     "name": "Gonzalo Valle",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "1996-02-28",
+     "fame": 17
+    },
+    {
+     "name": "Félix Torres",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1997-01-11",
+     "fame": 28
+    },
+    {
+     "name": "Piero Hincapié",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "2002-01-09",
+     "fame": 44
+    },
+    {
+     "name": "Willian Pacho",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "2001-10-16",
+     "fame": 38
+    },
+    {
+     "name": "Pervis Estupiñán",
+     "position": "DEF",
+     "number": 7,
+     "defRole": "LAT",
+     "birthDate": "1998-01-21",
+     "fame": 39
+    },
+    {
+     "name": "Bryan Ramírez",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "LAT",
+     "birthDate": "2000-08-11",
+     "fame": 5
+    },
+    {
+     "name": "Ángelo Preciado",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "LAT",
+     "birthDate": "1998-02-18",
+     "fame": 31
+    },
+    {
+     "name": "Jackson Porozo",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "2000-08-04",
+     "fame": 28
+    },
+    {
+     "name": "Óscar Zambrano",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "2004-04-20",
+     "fame": 9
+    },
+    {
+     "name": "Jordy Alcívar",
+     "position": "MEI",
+     "number": 5,
+     "birthDate": "1999-08-05",
+     "fame": 20
+    },
+    {
+     "name": "Anthony Valencia",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2003-07-21",
+     "fame": 20
+    },
+    {
+     "name": "Kendry Páez",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "2007-05-04",
+     "fame": 30
+    },
+    {
+     "name": "Pedro Vite",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2002-03-09",
+     "fame": 20
+    },
+    {
+     "name": "Jeremy Sarmiento",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2002-06-16",
+     "fame": 25
+    },
+    {
+     "name": "Martín Tello",
+     "position": "MEI",
+     "number": 21,
+     "fame": 0
+    },
+    {
+     "name": "Moisés Caicedo",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2001-11-02",
+     "fame": 47
+    },
+    {
+     "name": "Jordy Caicedo",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1997-11-18",
+     "fame": 22
+    },
+    {
+     "name": "John Yeboah",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2000-06-23",
+     "fame": 28
+    },
+    {
+     "name": "Kevin Rodríguez",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2000-03-04",
+     "fame": 29
+    },
+    {
+     "name": "John Mercado",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2002-06-03",
+     "fame": 7
+    },
+    {
+     "name": "Juan Riquelme Angulo",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2008-01-12",
+     "fame": 4
+    },
+    {
+     "name": "Nilson Angulo",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "2003-06-19",
+     "fame": 28
+    },
+    {
+     "name": "Keny Arroyo",
+     "position": "ATA",
+     "number": 24,
+     "birthDate": "2006-02-14",
+     "fame": 12
+    },
+    {
+     "name": "Snayder Porozo",
+     "position": "ATA",
+     "number": 26,
+     "fame": 0
+    }
+   ]
+  },
+  "nt-south-korea": {
+   "source": "https://en.wikipedia.org/wiki/South_Korea_national_football_team",
+   "revision": 1386282475,
+   "manager": "Robert Moreno",
+   "players": [
+    {
+     "name": "Kim Seung-gyu",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1990-09-30",
+     "fame": 33
+    },
+    {
+     "name": "Song Bum-keun",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "1997-10-15",
+     "fame": 23
+    },
+    {
+     "name": "Jo Hyeon-woo",
+     "position": "GOL",
+     "number": 21,
+     "birthDate": "1991-09-25",
+     "fame": 29
+    },
+    {
+     "name": "Lee Myung-jae",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1993-11-04",
+     "fame": 10
+    },
+    {
+     "name": "Lee Han-beom",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2002-06-17",
+     "fame": 22
+    },
+    {
+     "name": "Kim Min-jae",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "1996-11-15",
+     "fame": 42
+    },
+    {
+     "name": "Kim Ji-soo",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2004-12-24",
+     "fame": 12
+    },
+    {
+     "name": "Choi Jun",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "1999-04-17",
+     "fame": 2
+    },
+    {
+     "name": "Shin Min-ha",
+     "position": "DEF",
+     "number": 20,
+     "defRole": "ZAG",
+     "birthDate": "2005-09-15",
+     "fame": 7
+    },
+    {
+     "name": "Seol Young-woo",
+     "position": "DEF",
+     "number": 22,
+     "defRole": "LAT",
+     "birthDate": "1998-12-05",
+     "fame": 23
+    },
+    {
+     "name": "Cho Hyun-taek",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "LAT",
+     "birthDate": "2001-08-02",
+     "fame": 2
+    },
+    {
+     "name": "Hwang In-beom",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1996-09-20",
+     "fame": 39
+    },
+    {
+     "name": "Kim Bong-soo",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1999-12-26",
+     "fame": 2
+    },
+    {
+     "name": "Lee Jae-sung",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1992-08-10",
+     "fame": 32
+    },
+    {
+     "name": "Hwang Hee-chan",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "1996-01-26",
+     "fame": 43
+    },
+    {
+     "name": "Jeong Woo-yeong",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "1999-09-20",
+     "fame": 25
+    },
+    {
+     "name": "Park Jin-seob",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "1995-10-23",
+     "fame": 16
+    },
+    {
+     "name": "Song Min-kyu",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "1999-09-12",
+     "fame": 19
+    },
+    {
+     "name": "Lee Kang-in",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "2001-02-19",
+     "fame": 41
+    },
+    {
+     "name": "Eom Ji-sung",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2002-05-09",
+     "fame": 19
+    },
+    {
+     "name": "Park Tae-jun",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "1999-01-19",
+     "fame": 4
+    },
+    {
+     "name": "Son Jeong-beom",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "2007-09-28",
+     "fame": 2
+    },
+    {
+     "name": "Son Heung-min",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "1992-07-08",
+     "fame": 76
+    },
+    {
+     "name": "Oh Se-hun",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1999-01-15",
+     "fame": 5
+    },
+    {
+     "name": "Lee Dong-gyeong",
+     "position": "ATA",
+     "number": 14,
+     "birthDate": "1997-09-20",
+     "fame": 19
+    },
+    {
+     "name": "Oh Hyeon-gyu",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2001-04-12",
+     "fame": 31
+    }
+   ]
+  },
+  "nt-iran": {
+   "source": "https://en.wikipedia.org/wiki/Iran_national_football_team",
+   "revision": 1387969076,
+   "manager": "Amir Ghalenoei",
+   "players": [
+    {
+     "name": "Payam Niazmand",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1995-04-06",
+     "fame": 24
+    },
+    {
+     "name": "Mohammad Khalifeh",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2004-01-01",
+     "fame": 3
+    },
+    {
+     "name": "Habib Far Abbasi",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "1997-09-04",
+     "fame": 2
+    },
+    {
+     "name": "Adib Zarei",
+     "position": "GOL",
+     "number": 30,
+     "birthDate": "2003-04-16",
+     "fame": 2
+    },
+    {
+     "name": "Saleh Hardani",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1996-09-14",
+     "fame": 15
+    },
+    {
+     "name": "Abolfazl Razzaghpour",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1997-09-17",
+     "fame": 5
+    },
+    {
+     "name": "Saman Fallah",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2001-05-12",
+     "fame": 6
+    },
+    {
+     "name": "Amin Hazbavi",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "2003-05-06",
+     "fame": 6
+    },
+    {
+     "name": "Mohammad Mehdi Zare",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "ZAG",
+     "birthDate": "2003-01-25",
+     "fame": 6
+    },
+    {
+     "name": "Arya Yousefi",
+     "position": "DEF",
+     "number": 14,
+     "defRole": "LAT",
+     "birthDate": "2002-04-22",
+     "fame": 15
+    },
+    {
+     "name": "Ali Nemati",
+     "position": "DEF",
+     "number": 19,
+     "defRole": "LAT",
+     "birthDate": "1996-02-07",
+     "fame": 15
+    },
+    {
+     "name": "Jafar Salmani",
+     "position": "DEF",
+     "number": 23,
+     "defRole": "LAT",
+     "birthDate": "1997-01-12",
+     "fame": 6
+    },
+    {
+     "name": "Hossein Goudarzi",
+     "position": "DEF",
+     "number": 27,
+     "fame": 0
+    },
+    {
+     "name": "Aref Aghasi",
+     "position": "DEF",
+     "number": 33,
+     "defRole": "ZAG",
+     "birthDate": "1997-01-02",
+     "fame": 7
+    },
+    {
+     "name": "Saeid Ezatolahi",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1996-10-01",
+     "fame": 32
+    },
+    {
+     "name": "Mohammad Javad Hosseinnejad",
+     "position": "MEI",
+     "number": 7,
+     "birthDate": "2003-06-26",
+     "fame": 8
+    },
+    {
+     "name": "Mohammad Mohebi",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1998-12-20",
+     "fame": 26
+    },
+    {
+     "name": "Mohammad Mehdi Mohebi",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2000-01-01",
+     "fame": 2
+    },
+    {
+     "name": "Mehdi Limouchi",
+     "position": "MEI",
+     "number": 11,
+     "fame": 0
+    },
+    {
+     "name": "Amirmohammad Razzaghinia",
+     "position": "MEI",
+     "number": 15,
+     "birthDate": "2006-04-11",
+     "fame": 14
+    },
+    {
+     "name": "Mohammad Ghorbani",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2001-10-07",
+     "fame": 15
+    },
+    {
+     "name": "Esmaeil Gholizadeh",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2006-02-18",
+     "fame": 3
+    },
+    {
+     "name": "Amirhossein Hosseinzadeh",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2000-10-30",
+     "fame": 20
+    },
+    {
+     "name": "Omid Noorafkan",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "1997-04-09",
+     "fame": 12
+    },
+    {
+     "name": "Afshin Sadeghi",
+     "position": "MEI",
+     "number": 26,
+     "fame": 0
+    },
+    {
+     "name": "Amirhossein Farsi",
+     "position": "MEI",
+     "fame": 0
+    },
+    {
+     "name": "Sardar Azmoun",
+     "position": "ATA",
+     "number": 20,
+     "birthDate": "1995-01-01",
+     "fame": 48
+    },
+    {
+     "name": "Dennis Eckert",
+     "position": "ATA",
+     "number": 24,
+     "birthDate": "1997-01-09",
+     "fame": 20
+    },
+    {
+     "name": "Kasra Taheri",
+     "position": "ATA",
+     "birthDate": "2006-08-06",
+     "fame": 9
+    }
+   ]
+  },
+  "nt-australia": {
+   "source": "https://en.wikipedia.org/wiki/Australia_men's_national_soccer_team",
+   "revision": 1388142528,
+   "manager": "Tony Popovic",
+   "players": [
+    {
+     "name": "Tom Glover",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1997-12-24",
+     "fame": 15
+    },
+    {
+     "name": "Joe Gauci",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2000-07-04",
+     "fame": 13
+    },
+    {
+     "name": "Patrick Beach",
+     "position": "GOL",
+     "number": 18,
+     "birthDate": "2003-08-06",
+     "fame": 24
+    },
+    {
+     "name": "Gianni Stensness",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "1999-02-07",
+     "fame": 14
+    },
+    {
+     "name": "Alessandro Circati",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "ZAG",
+     "birthDate": "2003-10-10",
+     "fame": 26
+    },
+    {
+     "name": "Jacob Italiano",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "2001-07-30",
+     "fame": 19
+    },
+    {
+     "name": "Kasey Bos",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "2004-05-08",
+     "fame": 7
+    },
+    {
+     "name": "Jason Geria",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "LAT",
+     "birthDate": "1993-05-10",
+     "fame": 36
+    },
+    {
+     "name": "Aziz Behich",
+     "position": "DEF",
+     "number": 16,
+     "defRole": "LAT",
+     "birthDate": "1990-12-16",
+     "fame": 40
+    },
+    {
+     "name": "Diesel Herrington",
+     "position": "DEF",
+     "number": 17,
+     "defRole": "ZAG",
+     "birthDate": "2004-08-04",
+     "fame": 2
+    },
+    {
+     "name": "Harry Souttar",
+     "position": "DEF",
+     "number": 19,
+     "defRole": "ZAG",
+     "birthDate": "1998-10-22",
+     "fame": 33
+    },
+    {
+     "name": "Kealey Adamson",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "2003-03-09",
+     "fame": 3
+    },
+    {
+     "name": "Lucas Herrington",
+     "position": "DEF",
+     "number": 25,
+     "defRole": "ZAG",
+     "birthDate": "2007-09-05",
+     "fame": 22
+    },
+    {
+     "name": "Connor Metcalfe",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1999-11-05",
+     "fame": 31
+    },
+    {
+     "name": "Riley McGree",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "1998-11-02",
+     "fame": 27
+    },
+    {
+     "name": "Sam Klein",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2004-03-15",
+     "fame": 4
+    },
+    {
+     "name": "Paul Okon-Engstler",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2005-01-24",
+     "fame": 22
+    },
+    {
+     "name": "Kusini Yengi",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "1999-01-15",
+     "fame": 16
+    },
+    {
+     "name": "Nestory Irankunda",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2006-02-09",
+     "fame": 33
+    },
+    {
+     "name": "Marcus Younis",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2005-07-03",
+     "fame": 6
+    },
+    {
+     "name": "Daniel Arzani",
+     "position": "ATA",
+     "number": 13,
+     "birthDate": "1999-01-04",
+     "fame": 28
+    },
+    {
+     "name": "Thomas Waddingham",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2005-04-05",
+     "fame": 4
+    },
+    {
+     "name": "Tete Yengi",
+     "position": "ATA",
+     "number": 26,
+     "birthDate": "2000-11-28",
+     "fame": 20
+    }
+   ]
+  },
+  "nt-nigeria": {
+   "source": "https://en.wikipedia.org/wiki/Nigeria_national_football_team",
+   "revision": 1386457036,
+   "manager": "Éric Chelle",
+   "players": [
+    {
+     "name": "Francis Uzoho",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1998-10-28",
+     "fame": 28
+    },
+    {
+     "name": "Arthur Okonkwo",
+     "position": "GOL",
+     "number": 16,
+     "birthDate": "2001-09-09",
+     "fame": 13
+    },
+    {
+     "name": "Stanley Nwabali",
+     "position": "GOL",
+     "number": 23,
+     "birthDate": "1996-06-10",
+     "fame": 18
+    },
+    {
+     "name": "Ola Aina",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1996-10-08",
+     "fame": 39
+    },
+    {
+     "name": "Bruno Onyemaechi",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1999-04-03",
+     "fame": 15
+    },
+    {
+     "name": "Benjamin Fredrick",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "LAT",
+     "birthDate": "2005-05-28",
+     "fame": 8
+    },
+    {
+     "name": "Semi Ajayi",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1993-11-09",
+     "fame": 21
+    },
+    {
+     "name": "Bright Osayi-Samuel",
+     "position": "DEF",
+     "number": 12,
+     "defRole": "LAT",
+     "birthDate": "1997-12-31",
+     "fame": 18
+    },
+    {
+     "name": "Chibuike Nwaiwu",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "ZAG",
+     "birthDate": "2003-07-23",
+     "fame": 11
+    },
+    {
+     "name": "Abdullahi Bewene",
+     "position": "DEF",
+     "number": 20,
+     "fame": 0
+    },
+    {
+     "name": "Calvin Bassey",
+     "position": "DEF",
+     "number": 21,
+     "defRole": "LAT",
+     "birthDate": "1999-12-31",
+     "fame": 24
+    },
+    {
+     "name": "Wilfred Ndidi",
+     "position": "MEI",
+     "number": 4,
+     "birthDate": "1996-12-16",
+     "fame": 37
+    },
+    {
+     "name": "Samson Tijani",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2002-05-17",
+     "fame": 12
+    },
+    {
+     "name": "Fisayo Dele-Bashiru",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "2001-02-06",
+     "fame": 15
+    },
+    {
+     "name": "Alhassan Yusuf",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2000-07-18",
+     "fame": 19
+    },
+    {
+     "name": "Alex Iwobi",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "1996-05-03",
+     "fame": 48
+    },
+    {
+     "name": "Tochukwu Nnadi",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2003-06-30",
+     "fame": 11
+    },
+    {
+     "name": "Mubarak Suleiman",
+     "position": "MEI",
+     "number": 24,
+     "birthDate": "2007-04-13",
+     "fame": 4
+    },
+    {
+     "name": "Tolu Arokodare",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2000-11-23",
+     "fame": 20
+    },
+    {
+     "name": "Moses Usor",
+     "position": "ATA",
+     "number": 11,
+     "birthDate": "2002-02-05",
+     "fame": 8
+    },
+    {
+     "name": "Moses Simon",
+     "position": "ATA",
+     "number": 15,
+     "birthDate": "1995-07-12",
+     "fame": 32
+    },
+    {
+     "name": "Taiwo Awoniyi",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "1997-08-12",
+     "fame": 34
+    },
+    {
+     "name": "Akor Adams",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "2000-01-29",
+     "fame": 22
+    }
+   ]
+  },
+  "nt-canada": {
+   "source": "https://en.wikipedia.org/wiki/Canada_men's_national_soccer_team",
+   "revision": 1387255274,
+   "manager": "Jesse Marsch",
+   "players": [
+    {
+     "name": "Dayne St. Clair",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1997-05-09",
+     "fame": 28
+    },
+    {
+     "name": "Maxime Crépeau",
+     "position": "GOL",
+     "number": 16,
+     "birthDate": "1994-05-11",
+     "fame": 26
+    },
+    {
+     "name": "Owen Goodman",
+     "position": "GOL",
+     "number": 18,
+     "birthDate": "2003-11-27",
+     "fame": 18
+    },
+    {
+     "name": "Jovan Ivanišević",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2005-01-19",
+     "fame": 3
+    },
+    {
+     "name": "Ralph Priso",
+     "position": "DEF",
+     "number": 3,
+     "birthDate": "2002-08-02",
+     "fame": 9
+    },
+    {
+     "name": "Luc de Fougerolles",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2005-10-12",
+     "fame": 24
+    },
+    {
+     "name": "Joel Waterman",
+     "position": "DEF",
+     "number": 5,
+     "birthDate": "1996-01-24",
+     "fame": 24
+    },
+    {
+     "name": "Niko Sigur",
+     "position": "DEF",
+     "number": 8,
+     "defRole": "LAT",
+     "birthDate": "2003-09-09",
+     "fame": 25
+    },
+    {
+     "name": "Richard Chukwu",
+     "position": "DEF",
+     "number": 15,
+     "birthDate": "2008-02-25",
+     "fame": 3
+    },
+    {
+     "name": "Zorhan Bassong",
+     "position": "DEF",
+     "number": 19,
+     "defRole": "LAT",
+     "birthDate": "1999-05-07",
+     "fame": 13
+    },
+    {
+     "name": "Richie Laryea",
+     "position": "DEF",
+     "number": 22,
+     "birthDate": "1995-01-07",
+     "fame": 27
+    },
+    {
+     "name": "Mathieu Choinière",
+     "position": "MEI",
+     "number": 6,
+     "birthDate": "1999-02-07",
+     "fame": 22
+    },
+    {
+     "name": "Liam Millar",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "1999-09-27",
+     "fame": 34
+    },
+    {
+     "name": "Nathan Saliba",
+     "position": "MEI",
+     "number": 13,
+     "birthDate": "2004-08-29",
+     "fame": 27
+    },
+    {
+     "name": "Kevin Khan",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2008-05-30",
+     "fame": 1
+    },
+    {
+     "name": "Tajon Buchanan",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "1999-02-08",
+     "fame": 35
+    },
+    {
+     "name": "Theo Corbeanu",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2002-05-17",
+     "fame": 19
+    },
+    {
+     "name": "Daniel Jebbison",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2003-08-13",
+     "fame": 15
+    },
+    {
+     "name": "Promise David",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2001-07-03",
+     "fame": 27
+    },
+    {
+     "name": "Jonathan David",
+     "position": "ATA",
+     "number": 10,
+     "birthDate": "2000-01-14",
+     "fame": 42
+    },
+    {
+     "name": "Tani Oluwaseyi",
+     "position": "ATA",
+     "number": 12,
+     "birthDate": "2000-05-15",
+     "fame": 28
+    },
+    {
+     "name": "Jacen Russell-Rowe",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "2002-09-13",
+     "fame": 13
+    },
+    {
+     "name": "Charles-Andreas Brym",
+     "position": "ATA",
+     "number": 23,
+     "birthDate": "1998-08-08",
+     "fame": 15
+    }
+   ]
+  },
+  "nt-egypt": {
+   "source": "https://en.wikipedia.org/wiki/Egypt_national_football_team",
+   "revision": 1388110916,
+   "manager": "Ali Maher",
+   "players": [
+    {
+     "name": "Mostafa Shobeir",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "2000-05-15",
+     "fame": 23
+    },
+    {
+     "name": "Mohamed Alaa",
+     "position": "GOL",
+     "number": 26,
+     "birthDate": "1999-01-01",
+     "fame": 16
+    },
+    {
+     "name": "Abdelaziz El Balouti",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "El Mahdy Soliman",
+     "position": "GOL",
+     "number": 16,
+     "birthDate": "1986-11-30",
+     "fame": 17
+    },
+    {
+     "name": "Ramy Rabia",
+     "position": "DEF",
+     "number": 5,
+     "defRole": "ZAG",
+     "birthDate": "1993-05-20",
+     "fame": 29
+    },
+    {
+     "name": "Mohamed Hany",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1996-01-25",
+     "fame": 25
+    },
+    {
+     "name": "Ahmed Fatouh",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "1998-03-22",
+     "fame": 23
+    },
+    {
+     "name": "Mohamed Abdelmonem",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "ZAG",
+     "birthDate": "1999-02-01",
+     "fame": 24
+    },
+    {
+     "name": "Hossam Abdelmaguid",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "ZAG",
+     "birthDate": "2001-04-30",
+     "fame": 22
+    },
+    {
+     "name": "Karim Hafez",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "LAT",
+     "birthDate": "1995-03-12",
+     "fame": 23
+    },
+    {
+     "name": "Tarek Alaa",
+     "position": "DEF",
+     "number": 24,
+     "defRole": "LAT",
+     "birthDate": "2002-01-05",
+     "fame": 17
+    },
+    {
+     "name": "Omar Fayed",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "ZAG",
+     "birthDate": "2003-07-04",
+     "fame": 11
+    },
+    {
+     "name": "Mohamed Salah",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1992-06-15",
+     "fame": 100
+    },
+    {
+     "name": "Zizo",
+     "position": "MEI",
+     "number": 25,
+     "birthDate": "1996-01-10",
+     "fame": 22
+    },
+    {
+     "name": "Marwan Attia",
+     "position": "MEI",
+     "number": 19,
+     "birthDate": "1998-08-12",
+     "fame": 20
+    },
+    {
+     "name": "Emam Ashour",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "1998-02-20",
+     "fame": 29
+    },
+    {
+     "name": "Mohanad Lasheen",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "1996-01-01",
+     "fame": 20
+    },
+    {
+     "name": "Ibrahim Adel",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "2001-04-23",
+     "fame": 22
+    },
+    {
+     "name": "Mahmoud Saber",
+     "position": "MEI",
+     "number": 21,
+     "birthDate": "2001-07-30",
+     "fame": 23
+    },
+    {
+     "name": "Mostafa Ziko",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "1997-04-27",
+     "fame": 28
+    },
+    {
+     "name": "Haissem Hassan",
+     "position": "MEI",
+     "number": 12,
+     "birthDate": "2002-02-08",
+     "fame": 28
+    },
+    {
+     "name": "Ali Mahmoud",
+     "position": "MEI",
+     "number": 18,
+     "birthDate": "2002-12-04",
+     "fame": 1
+    },
+    {
+     "name": "Osama Faisal",
+     "position": "ATA",
+     "number": 7,
+     "birthDate": "2001-01-01",
+     "fame": 10
+    },
+    {
+     "name": "Omar Marmoush",
+     "position": "ATA",
+     "number": 22,
+     "birthDate": "1999-02-07",
+     "fame": 45
+    },
+    {
+     "name": "Hamza Abdelkarim",
+     "position": "ATA",
+     "number": 9,
+     "birthDate": "2008-01-01",
+     "fame": 29
+    }
+   ]
+  },
+  "nt-paraguay": {
+   "source": "https://en.wikipedia.org/wiki/Paraguay_national_football_team",
+   "revision": 1387385711,
+   "manager": "Gustavo Alfaro",
+   "players": [
+    {
+     "name": "Santiago Rojas",
+     "position": "GOL",
+     "number": 1,
+     "birthDate": "1996-04-05",
+     "fame": 4
+    },
+    {
+     "name": "Orlando Gill",
+     "position": "GOL",
+     "number": 12,
+     "birthDate": "2000-06-11",
+     "fame": 27
+    },
+    {
+     "name": "Gastón Olveira",
+     "position": "GOL",
+     "number": 22,
+     "birthDate": "1993-04-21",
+     "fame": 20
+    },
+    {
+     "name": "Facundo Lirussi",
+     "position": "GOL",
+     "fame": 0
+    },
+    {
+     "name": "Alan Benítez",
+     "position": "DEF",
+     "number": 2,
+     "defRole": "LAT",
+     "birthDate": "1994-01-25",
+     "fame": 10
+    },
+    {
+     "name": "Omar Alderete",
+     "position": "DEF",
+     "number": 3,
+     "defRole": "LAT",
+     "birthDate": "1996-12-26",
+     "fame": 31
+    },
+    {
+     "name": "Juan Cáceres",
+     "position": "DEF",
+     "number": 4,
+     "defRole": "LAT",
+     "birthDate": "2000-06-01",
+     "fame": 20
+    },
+    {
+     "name": "Clever Ferreira",
+     "position": "DEF",
+     "number": 5,
+     "fame": 0
+    },
+    {
+     "name": "Júnior Alonso",
+     "position": "DEF",
+     "number": 6,
+     "defRole": "LAT",
+     "birthDate": "1993-02-09",
+     "fame": 25
+    },
+    {
+     "name": "Mateo Gamarra",
+     "position": "DEF",
+     "number": 13,
+     "defRole": "LAT",
+     "birthDate": "2000-10-20",
+     "fame": 6
+    },
+    {
+     "name": "Gustavo Gómez",
+     "position": "DEF",
+     "number": 15,
+     "defRole": "ZAG",
+     "birthDate": "1993-05-06",
+     "fame": 39
+    },
+    {
+     "name": "Mauro Coronel",
+     "position": "DEF",
+     "number": 25,
+     "fame": 0
+    },
+    {
+     "name": "Alexandro Maidana",
+     "position": "DEF",
+     "number": 26,
+     "defRole": "LAT",
+     "birthDate": "2005-07-26",
+     "fame": 21
+    },
+    {
+     "name": "Eduardo Delmas",
+     "position": "MEI",
+     "number": 7,
+     "fame": 0
+    },
+    {
+     "name": "Diego Gómez",
+     "position": "MEI",
+     "number": 8,
+     "birthDate": "2003-03-27",
+     "fame": 33
+    },
+    {
+     "name": "Miguel Almirón",
+     "position": "MEI",
+     "number": 10,
+     "birthDate": "1994-02-10",
+     "fame": 38
+    },
+    {
+     "name": "Maurício Magalhães",
+     "position": "MEI",
+     "number": 11,
+     "birthDate": "2001-06-22",
+     "fame": 27
+    },
+    {
+     "name": "Braian Ojeda",
+     "position": "MEI",
+     "number": 14,
+     "birthDate": "2000-06-27",
+     "fame": 22
+    },
+    {
+     "name": "Damián Bobadilla",
+     "position": "MEI",
+     "number": 16,
+     "birthDate": "2001-07-11",
+     "fame": 27
+    },
+    {
+     "name": "Hugo Cuenca",
+     "position": "MEI",
+     "number": 17,
+     "birthDate": "2005-01-08",
+     "fame": 9
+    },
+    {
+     "name": "Mathías Villasanti",
+     "position": "MEI",
+     "number": 20,
+     "birthDate": "1997-01-24",
+     "fame": 12
+    },
+    {
+     "name": "Matías Galarza",
+     "position": "MEI",
+     "number": 23,
+     "birthDate": "2002-02-11",
+     "fame": 25
+    },
+    {
+     "name": "Hugo Benítez",
+     "position": "ATA",
+     "number": 9,
+     "fame": 0
+    },
+    {
+     "name": "Allan Wlk",
+     "position": "ATA",
+     "number": 18,
+     "birthDate": "2003-03-01",
+     "fame": 6
+    },
+    {
+     "name": "Julio Enciso",
+     "position": "ATA",
+     "number": 19,
+     "birthDate": "2004-01-23",
+     "fame": 38
+    },
+    {
+     "name": "Robert Morales",
+     "position": "ATA",
+     "number": 21,
+     "birthDate": "1999-03-17",
+     "fame": 8
+    },
+    {
+     "name": "Gustavo Caballero",
+     "position": "ATA",
+     "number": 24,
+     "birthDate": "2001-09-21",
+     "fame": 18
+    }
+   ]
+  },
+  "nt-ivory-coast": {
+   "source": "https://en.wikipedia.org/wiki/Ivory_Coast_national_football_team",
+   "revision": 1387660415,
+   "manager": "Hervé Renard",
+   "players": [
+    {
+     "name": "Yahia Fofana",
+     "position": "GOL",
+     "birthDate": "2000-08-21",
+     "fame": 28
+    },
+    {
+     "name": "Alban Lafont",
+     "position": "GOL",
+     "birthDate": "1999-01-23",
+     "fame": 33
+    },
+    {
+     "name": "Mohamed Koné",
+     "position": "GOL",
+     "birthDate": "2002-03-07",
+     "fame": 19
+    },
+    {
+     "name": "Evan Ndicka",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-08-20",
+     "fame": 34
+    },
+    {
+     "name": "Ousmane Diomande",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2003-12-04",
+     "fame": 30
+    },
+    {
+     "name": "Hassane Kamara",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1994-03-05",
+     "fame": 16
+    },
+    {
+     "name": "Luck Zogbé",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2005-03-24",
+     "fame": 9
+    },
+    {
+     "name": "Kassoum Ouattara",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2004-10-14",
+     "fame": 14
+    },
+    {
+     "name": "Oumar Solet",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "2000-02-07",
+     "fame": 21
+    },
+    {
+     "name": "Abdoul Ouattara",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2005-10-22",
+     "fame": 7
+    },
+    {
+     "name": "Franck Kessié",
+     "position": "MEI",
+     "birthDate": "1996-12-19",
+     "fame": 52
+    },
+    {
+     "name": "Ibrahim Sangaré",
+     "position": "MEI",
+     "birthDate": "1997-12-02",
+     "fame": 30
+    },
+    {
+     "name": "Christ Inao Oulaï",
+     "position": "MEI",
+     "birthDate": "2006-04-06",
+     "fame": 22
+    },
+    {
+     "name": "Malick Yalcouyé",
+     "position": "MEI",
+     "birthDate": "2005-11-18",
+     "fame": 13
+    },
+    {
+     "name": "Patrick Zabi",
+     "position": "MEI",
+     "birthDate": "2006-09-24",
+     "fame": 7
+    },
+    {
+     "name": "Yaya Kader Fofana",
+     "position": "MEI",
+     "birthDate": "2004-06-12",
+     "fame": 7
+    },
+    {
+     "name": "Abdoulaye Kanté",
+     "position": "MEI",
+     "birthDate": "2005-07-09",
+     "fame": 2
+    },
+    {
+     "name": "Jean Ives Valou",
+     "position": "MEI",
+     "birthDate": "2005-12-22",
+     "fame": 2
+    },
+    {
+     "name": "Nicolas Pépé",
+     "position": "ATA",
+     "birthDate": "1995-05-29",
+     "fame": 46
+    },
+    {
+     "name": "Oumar Diakité",
+     "position": "ATA",
+     "birthDate": "2003-12-20",
+     "fame": 24
+    },
+    {
+     "name": "Amad Diallo",
+     "position": "ATA",
+     "birthDate": "2002-07-11",
+     "fame": 45
+    },
+    {
+     "name": "Yan Diomande",
+     "position": "ATA",
+     "birthDate": "2006-11-14",
+     "fame": 41
+    },
+    {
+     "name": "Bazoumana Touré",
+     "position": "ATA",
+     "birthDate": "2006-03-02",
+     "fame": 24
+    },
+    {
+     "name": "Elye Wahi",
+     "position": "ATA",
+     "birthDate": "2003-01-02",
+     "fame": 28
+    },
+    {
+     "name": "Martial Godo",
+     "position": "ATA",
+     "birthDate": "2003-03-14",
+     "fame": 9
+    }
+   ]
+  },
+  "nt-saudi-arabia": {
+   "source": "https://en.wikipedia.org/wiki/Saudi_Arabia_national_football_team",
+   "revision": 1387597112,
+   "manager": "Georgios Donis",
+   "players": [
+    {
+     "name": "Mohammed Al-Owais",
+     "position": "GOL",
+     "birthDate": "1991-10-10",
+     "fame": 32
+    },
+    {
+     "name": "Abdulquddus Atiah",
+     "position": "GOL",
+     "birthDate": "1997-03-01",
+     "fame": 5
+    },
+    {
+     "name": "Hassan Al-Tambakti",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1999-02-09",
+     "fame": 26
+    },
+    {
+     "name": "Saud Abdulhamid",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1999-07-18",
+     "fame": 30
+    },
+    {
+     "name": "Abdulelah Al-Amri",
+     "position": "DEF",
+     "defRole": "ZAG",
+     "birthDate": "1997-01-15",
+     "fame": 29
+    },
+    {
+     "name": "Nawaf Boushal",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1999-09-16",
+     "fame": 20
+    },
+    {
+     "name": "Ali Lajami",
+     "position": "DEF",
+     "birthDate": "1996-04-25",
+     "fame": 23
+    },
+    {
+     "name": "Moteb Al-Harbi",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2000-02-19",
+     "fame": 17
+    },
+    {
+     "name": "Mohammed Abu Al-Shamat",
+     "position": "ATA",
+     "birthDate": "2002-08-11",
+     "fame": 17
+    },
+    {
+     "name": "Mohammed Mahzari",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2002-01-01",
+     "fame": 2
+    },
+    {
+     "name": "Faris Abdi",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "1999-05-19",
+     "fame": 9
+    },
+    {
+     "name": "Abdulmalik Al-Oyayari",
+     "position": "DEF",
+     "defRole": "LAT",
+     "birthDate": "2003-11-10",
+     "fame": 4
+    },
+    {
+     "name": "Sultan Tankar",
+     "position": "DEF",
+     "fame": 0
+    },
+    {
+     "name": "Abdullah Al-Khateeb",
+     "position": "DEF",
+     "birthDate": "1995-03-12",
+     "fame": 2
+    },
+    {
+     "name": "Mohamed Kanno",
+     "position": "MEI",
+     "birthDate": "1994-09-22",
+     "fame": 31
+    },
+    {
+     "name": "Nasser Al-Dawsari",
+     "position": "MEI",
+     "birthDate": "1998-12-19",
+     "fame": 25
+    },
+    {
+     "name": "Abdullah Al-Khaibari",
+     "position": "MEI",
+     "birthDate": "1996-08-16",
+     "fame": 24
+    },
+    {
+     "name": "Musab Al-Juwayr",
+     "position": "MEI",
+     "birthDate": "2003-06-20",
+     "fame": 19
+    },
+    {
+     "name": "Mukhtar Ali",
+     "position": "MEI",
+     "birthDate": "1997-10-30",
+     "fame": 19
+    },
+    {
+     "name": "Ziyad Al-Johani",
+     "position": "MEI",
+     "birthDate": "2001-11-11",
+     "fame": 21
+    },
+    {
+     "name": "Turki Al-Ammar",
+     "position": "MEI",
+     "birthDate": "1999-09-23",
+     "fame": 13
+    },
+    {
+     "name": "Mohammed al-Qahtani",
+     "position": "MEI",
+     "birthDate": "2002-07-23",
+     "fame": 8
+    },
+    {
+     "name": "Ahmed Al-Ghamdi",
+     "position": "MEI",
+     "birthDate": "2001-09-20",
+     "fame": 7
+    },
+    {
+     "name": "Firas Al-Buraikan",
+     "position": "ATA",
+     "birthDate": "2000-05-14",
+     "fame": 26
+    },
+    {
+     "name": "Abdullah Al-Hamdan",
+     "position": "ATA",
+     "birthDate": "1999-09-12",
+     "fame": 21
+    },
+    {
+     "name": "Marwan Al-Sahafi",
+     "position": "ATA",
+     "birthDate": "2004-02-17",
+     "fame": 15
+    },
+    {
+     "name": "Sultan Mandash",
+     "position": "ATA",
+     "birthDate": "1994-10-17",
+     "fame": 15
+    },
+    {
+     "name": "Mohammed Al-Kuwaykibi",
+     "position": "ATA",
+     "birthDate": "1994-12-02",
+     "fame": 9
+    },
+    {
+     "name": "Abdullah Al-Salem",
+     "position": "ATA",
+     "birthDate": "1992-12-19",
+     "fame": 6
+    }
+   ]
+  }
+ }
+}

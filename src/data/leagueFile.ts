@@ -25,6 +25,8 @@ export interface LeagueFilePlayer {
   position: Position
   age: number
   overall: number
+  /** Número da camisa (opcional). */
+  number?: number
   star?: boolean
   /** 2 habilidades da lista da posição (opcional: sem elas o jogo sorteia). */
   skills?: SkillId[]

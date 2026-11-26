@@ -102,6 +102,8 @@ export interface PlayerDraft {
   foot?: Foot
   /** Defensores: lateral ou zagueiro (sem isso o elenco é equilibrado automaticamente). */
   defRole?: DefRole
+  /** Número da camisa (ex.: convocados reais); sem ele o jogo escolhe um. */
+  number?: number
 }
 
 type Rng = ReturnType<typeof createRng>
@@ -201,6 +203,7 @@ export function buildPlayer(draft: PlayerDraft, id: string, morale: number): Pla
     skills: skillsFor(draft, id),
     foot: isFoot(draft.foot) ? draft.foot : playerFoot({ id }),
     ...(draft.position === 'DEF' && isDefRole(draft.defRole) ? { defRole: draft.defRole } : {}),
+    ...(Number.isInteger(draft.number) && draft.number! >= 1 && draft.number! <= 99 ? { number: draft.number } : {}),
   }
 }
 

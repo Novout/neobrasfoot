@@ -124,10 +124,18 @@ export function countryOf(team: Pick<Team, 'country'> | null | undefined) {
  * Evita cair no mesmo intervalo de uma fase da Copa (`avoid`), quando dá.
  */
 export function libertadoresSchedule(leagueRounds: number, avoid: number[] = []): number[] {
+  return stageSchedule(STAGE_TIMING, leagueRounds, avoid)
+}
+
+/**
+ * Rodadas do campeonato jogadas antes de cada etapa de um torneio, pela fração da temporada (`timing`)
+ * em que cada etapa acontece. Fica fora dos intervalos ocupados (`avoid`) quando dá.
+ */
+export function stageSchedule(timing: number[], leagueRounds: number, avoid: number[] = []): number[] {
   const last = Math.max(1, leagueRounds - 1)
   const busy = new Set(avoid)
   const schedule: number[] = []
-  for (const share of STAGE_TIMING) {
+  for (const share of timing) {
     let r = Math.min(last, Math.max(1, Math.round(share * leagueRounds), schedule.at(-1) ?? 1))
     while (busy.has(r) && r < last) r++
     schedule.push(r)
@@ -148,18 +156,28 @@ function shuffle<T>(list: T[], random: () => number): T[] {
   return copy
 }
 
+/** Regra de separação no sorteio: a chave de cada time (país, continente) e quantos da mesma chave cabem num grupo. */
+export interface DrawRule {
+  keyOf: (team: Team) => string
+  maxPerGroup: (key: string) => number
+}
+
+/** Libertadores: no máximo um clube de cada país por grupo. */
+const COUNTRY_RULE: DrawRule = { keyOf: (t) => countryOf(t), maxPerGroup: () => 1 }
+
 /**
  * Sorteio dos grupos por potes (os 8 mais fortes como cabeças de chave, e assim por diante): cada grupo recebe
- * um clube de cada pote, sem dois clubes do mesmo país no mesmo grupo (busca com retrocesso sobre a ordem sorteada).
- * Se não houver como separar todos os países, sorteia sem a restrição.
+ * um time de cada pote, respeitando a regra de separação (por padrão, sem dois clubes do mesmo país no mesmo
+ * grupo), com busca com retrocesso sobre a ordem sorteada. Se não houver como, sorteia sem a restrição.
  */
-export function drawGroups(participants: Team[], random: () => number = Math.random): LibertadoresGroup[] {
+export function drawGroups(participants: Team[], random: () => number = Math.random, rule: DrawRule = COUNTRY_RULE): LibertadoresGroup[] {
   const ranked = [...participants].sort((a, b) => b.reputation - a.reputation)
-  // Dentro de cada pote, a ordem é sorteada; os mais "difíceis" (países com mais clubes) vão primeiro.
+  const keyOf = rule.keyOf
+  // Dentro de cada pote, a ordem é sorteada; os mais "difíceis" (chaves com mais times) vão primeiro.
   const countryCount = new Map<string, number>()
-  for (const t of ranked) countryCount.set(countryOf(t), (countryCount.get(countryOf(t)) ?? 0) + 1)
+  for (const t of ranked) countryCount.set(keyOf(t), (countryCount.get(keyOf(t)) ?? 0) + 1)
   const order = Array.from({ length: GROUP_SIZE }, (_, i) => ranked.slice(i * GROUP_COUNT, (i + 1) * GROUP_COUNT))
-    .flatMap((pot) => shuffle(pot, random).sort((a, b) => countryCount.get(countryOf(b))! - countryCount.get(countryOf(a))!))
+    .flatMap((pot) => shuffle(pot, random).sort((a, b) => countryCount.get(keyOf(b))! - countryCount.get(keyOf(a))!))
   const groups: Team[][] = Array.from({ length: GROUP_COUNT }, () => [])
   const groupOrder = shuffle([...groups.keys()], random)
   let steps = 0
@@ -171,8 +189,9 @@ export function drawGroups(participants: Team[], random: () => number = Math.ran
     const pot = Math.floor(k / GROUP_COUNT)
     for (const g of groupOrder) {
       const group = groups[g]!
-      // Um clube por pote em cada grupo, e nada de país repetido.
-      if (group.length !== pot || group.some((t) => countryOf(t) === countryOf(team))) continue
+      // Um time por pote em cada grupo, sem passar do limite da mesma chave (país ou continente).
+      const key = keyOf(team)
+      if (group.length !== pot || group.filter((t) => keyOf(t) === key).length >= rule.maxPerGroup(key)) continue
       group.push(team)
       if (place(k + 1)) return true
       group.pop()
@@ -194,10 +213,12 @@ const GROUP_PAIRINGS: [number, number][][] = [
   [[0, 1], [2, 3]],
 ]
 
-export function groupRoundsFor(groups: LibertadoresGroup[]): CupTie[][] {
+/** Jogos da fase de grupos por rodada: turno e returno (6 rodadas) ou só turno (3, como na Copa do Mundo). */
+export function groupRoundsFor(groups: LibertadoresGroup[], doubleRoundRobin = true): CupTie[][] {
   const firstLeg = GROUP_PAIRINGS.map((pairs) =>
     groups.flatMap((g) => pairs.map(([h, a]) => emptyTie(g.teamIds[h]!, g.teamIds[a]!))),
   )
+  if (!doubleRoundRobin) return firstLeg
   const secondLeg = firstLeg.map((ties) => ties.map((t) => emptyTie(t.awayId, t.homeId)))
   return [...firstLeg, ...secondLeg]
 }
@@ -304,20 +325,22 @@ export function nextKnockoutRound(previous: CupRound, random: () => number = Mat
   return { name: roundName(ties.length), ties }
 }
 
-export const isGroupStage = (state: Pick<LibertadoresState, 'stage'>) => state.stage < GROUP_ROUNDS
+/** Rodadas da fase de grupos do torneio (6 na Libertadores, 3 na Copa do Mundo). */
+export const groupRoundCount = (state: Pick<LibertadoresState, 'groupRounds'>) => state.groupRounds.length
+export const isGroupStage = (state: Pick<LibertadoresState, 'stage' | 'groupRounds'>) => state.stage < groupRoundCount(state)
 export const isFinished = (state: Pick<LibertadoresState, 'championId'>) => state.championId !== null
 
 /** Jogos da etapa atual. */
 export function currentTies(state: LibertadoresState): CupTie[] {
   if (isFinished(state)) return []
   if (isGroupStage(state)) return state.groupRounds[state.stage] ?? []
-  return state.knockout[state.stage - GROUP_ROUNDS]?.ties ?? []
+  return state.knockout[state.stage - groupRoundCount(state)]?.ties ?? []
 }
 
-/** Nome de uma etapa: "Fase de grupos · 3ª rodada", "Oitavas de final"... */
-export function stageName(stage: number) {
-  if (stage < GROUP_ROUNDS) return `${GROUP_STAGE_NAME} · ${stage + 1}ª rodada`
-  return roundName(2 ** (STAGE_COUNT - 1 - stage))
+/** Nome de uma etapa: "Fase de grupos · 3ª rodada", "Oitavas de final"... (`groupRounds`: rodadas dos grupos). */
+export function stageName(stage: number, groupRounds = GROUP_ROUNDS) {
+  if (stage < groupRounds) return `${GROUP_STAGE_NAME} · ${stage + 1}ª rodada`
+  return roundName(2 ** (groupRounds + 3 - stage))
 }
 
 /** Grupo de um clube (ou null se ele não disputa). */

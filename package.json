@@ -13,6 +13,7 @@
     "generate-pwa-assets": "pwa-assets-generator",
     "update-brasileirao": "node scripts/fetch-brasileirao-squads.mjs",
     "update-laliga": "node scripts/fetch-brasileirao-squads.mjs --liga=espanha",
+    "update-selecoes": "node scripts/fetch-brasileirao-squads.mjs --liga=selecoes",
     "update-escudos": "node scripts/fetch-brasileirao-crests.mjs",
     "patch": "generi log patch",
     "minor": "generi log minor",

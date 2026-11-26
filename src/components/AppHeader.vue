@@ -26,7 +26,7 @@ function goToMenu() {
         <strong>{{ game.managedTeam.name }}</strong>
         <small>
           {{ game.managerName }} · Temporada {{ game.currentYear }} · Próximo:
-          <span :class="{ 'cup-next': game.nextEvent === 'cup' || game.nextEvent === 'libertadores' }">{{ game.nextEventLabel }}</span>
+          <span :class="{ 'cup-next': game.nextEvent === 'cup' || game.nextEvent === 'libertadores' || game.nextEvent === 'worldcup' }">{{ game.nextEventLabel }}</span>
           <template v-if="game.nextEventDate"> · {{ formatDate(game.nextEventDate) }}</template>
         </small>
       </div>
@@ -64,6 +64,13 @@ function goToMenu() {
       <RouterLink :to="{ name: 'libertadores' }">
         Libertadores
         <span v-if="game.nextEvent === 'libertadores'" class="nav-badge nav-badge--build" title="Próximo jogo é da Libertadores">🌎</span>
+      </RouterLink>
+      <RouterLink :to="{ name: 'world-cup' }">
+        Copa do Mundo
+        <span v-if="game.nextEvent === 'worldcup' && game.coachingNational" class="nav-badge nav-badge--build" title="Próximo jogo é da sua seleção">🌍</span>
+        <span v-else-if="game.nationalOffers.length" class="nav-badge" :title="`${game.nationalOffers.length} convite(s) de seleção`">
+          {{ game.nationalOffers.length }}
+        </span>
       </RouterLink>
       <RouterLink :to="{ name: 'pre-match' }">Pré-jogo</RouterLink>
       <RouterLink v-if="match.isReady" :to="{ name: 'matches' }">Partidas</RouterLink>

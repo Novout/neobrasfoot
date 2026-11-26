@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import CountryTag from '../components/CountryTag.vue'
 import TeamBadge from '../components/TeamBadge.vue'
+import TournamentBoard from '../components/TournamentBoard.vue'
 import { inRound, roundName } from '../data/cup'
 import { DIVISION_LABELS, isForeignDivision } from '../data/divisions'
-import {
-  BRAZIL_SPOTS, COUNTRY_NAMES, countryOf, GROUP_QUALIFIERS, GROUP_ROUNDS, groupOf, groupTable, LIBERTADORES_NAME, LIBERTADORES_PRIZES,
-  STAGE_COUNT, stageName,
-} from '../data/libertadores'
+import { BRAZIL_SPOTS, GROUP_QUALIFIERS, groupOf, LIBERTADORES_NAME, LIBERTADORES_PRIZES, stageName } from '../data/libertadores'
 import { useGameStore } from '../stores/game'
-import type { CupTie } from '../types/game'
 import { formatMoney } from '../utils/random'
 
 const game = useGameStore()
@@ -17,46 +14,6 @@ const game = useGameStore()
 const lib = computed(() => game.libertadores)
 const myId = computed(() => game.managedTeamId)
 const myGroup = computed(() => (lib.value && myId.value ? groupOf(lib.value, myId.value) : null))
-
-const groups = computed(() => {
-  const l = lib.value
-  if (!l) return []
-  return l.groups.map((g, i) => ({
-    ...g,
-    table: groupTable(l, i),
-    mine: g === myGroup.value,
-    // Jogos do grupo, rodada a rodada.
-    rounds: l.groupRounds.map((ties) => ties.filter((t) => g.teamIds.includes(t.homeId))),
-  }))
-})
-
-/** Grupos abertos para ver os jogos (o do seu clube começa aberto). */
-const openGroups = ref(new Set<string>(myGroup.value ? [myGroup.value.name] : []))
-const isOpen = (name: string) => openGroups.value.has(name)
-function toggle(name: string) {
-  const next = new Set(openGroups.value)
-  if (next.has(name)) next.delete(name)
-  else next.add(name)
-  openGroups.value = next
-}
-
-/** Mata-mata: fases sorteadas e futuras (vazias) para desenhar a chave completa. */
-const bracket = computed(() => {
-  const l = lib.value
-  if (!l) return []
-  return Array.from({ length: STAGE_COUNT - GROUP_ROUNDS }, (_, i) => {
-    const stage = GROUP_ROUNDS + i
-    const tieCount = 2 ** (STAGE_COUNT - 1 - stage)
-    return {
-      stage,
-      name: roundName(tieCount),
-      tieCount,
-      ties: l.knockout[i]?.ties ?? null,
-      afterLeagueRound: l.schedule[stage],
-      isCurrent: !game.libertadoresFinished && l.stage === stage,
-    }
-  })
-})
 
 const status = computed(() => {
   const s = game.managedLibertadoresStatus
@@ -92,20 +49,6 @@ const prizes = computed(() => [
   { label: 'Vice-campeão', value: LIBERTADORES_PRIZES.runnerUp },
 ])
 
-function teamLabel(id: string) {
-  const t = game.getTeam(id)
-  return t ? `${t.name} · ${COUNTRY_NAMES[countryOf(t)]}` : ''
-}
-
-function sideClass(tie: CupTie, teamId: string) {
-  return {
-    winner: tie.winnerId === teamId,
-    loser: tie.winnerId !== null && tie.winnerId !== teamId,
-    mine: teamId === myId.value,
-  }
-}
-
-const isMine = (tie: CupTie) => tie.homeId === myId.value || tie.awayId === myId.value
 </script>
 
 <template>
@@ -140,95 +83,7 @@ const isMine = (tie: CupTie) => tie.homeId === myId.value || tie.awayId === myId
       </table>
     </section>
 
-    <h2 class="section-title">
-      Fase de grupos
-      <small class="muted">rodadas após as rodadas {{ lib.schedule.slice(0, GROUP_ROUNDS).join(', ') }} do campeonato</small>
-    </h2>
-    <section class="groups">
-      <article v-for="g in groups" :key="g.name" class="card group" :class="{ 'group--mine': g.mine }">
-        <header class="group__header">
-          <h3>Grupo {{ g.name }}</h3>
-          <button class="btn btn--sm btn--ghost" @click="toggle(g.name)">{{ isOpen(g.name) ? 'Ocultar jogos' : 'Ver jogos' }}</button>
-        </header>
-        <table class="group__table">
-          <thead>
-            <tr>
-              <th>#</th><th>Clube</th><th class="num">J</th><th class="num">V</th><th class="num">E</th><th class="num">D</th>
-              <th class="num">SG</th><th class="num">P</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(row, i) in g.table"
-              :key="row.teamId"
-              :class="{ qualified: i < GROUP_QUALIFIERS, mine: row.teamId === myId }"
-            >
-              <td>{{ i + 1 }}</td>
-              <td class="club" :title="teamLabel(row.teamId)">
-                <TeamBadge :team="game.getTeam(row.teamId)!" :size="20" />
-                <span class="club__name">{{ game.getTeam(row.teamId)?.name }}</span>
-                <CountryTag :team="game.getTeam(row.teamId)" />
-              </td>
-              <td class="num">{{ row.played }}</td>
-              <td class="num">{{ row.wins }}</td>
-              <td class="num">{{ row.draws }}</td>
-              <td class="num">{{ row.losses }}</td>
-              <td class="num">{{ row.goalsFor - row.goalsAgainst }}</td>
-              <td class="num"><strong>{{ row.points }}</strong></td>
-            </tr>
-          </tbody>
-        </table>
-        <ol v-if="isOpen(g.name)" class="group__rounds">
-          <li v-for="(ties, r) in g.rounds" :key="r" :class="{ current: lib.stage === r && !game.libertadoresFinished }">
-            <span class="muted round-label">{{ r + 1 }}ª</span>
-            <span v-for="(t, k) in ties" :key="k" class="game" :class="{ 'game--mine': isMine(t) }">
-              {{ game.getTeam(t.homeId)?.shortName }}
-              <strong>{{ t.homeGoals ?? '' }} x {{ t.awayGoals ?? '' }}</strong>
-              {{ game.getTeam(t.awayId)?.shortName }}
-            </span>
-          </li>
-        </ol>
-      </article>
-    </section>
-
-    <h2 class="section-title">Mata-mata</h2>
-    <section class="bracket">
-      <div v-for="col in bracket" :key="col.stage" class="bracket__col" :class="{ current: col.isCurrent }">
-        <header>
-          <strong>{{ col.name }}</strong>
-          <small class="muted">após a rodada {{ col.afterLeagueRound }}</small>
-        </header>
-        <div class="bracket__ties">
-          <template v-if="col.ties">
-            <article v-for="(tie, i) in col.ties" :key="i" class="tie" :class="{ 'tie--mine': isMine(tie) }">
-              <div
-                v-for="side in (['home', 'away'] as const)"
-                :key="side"
-                class="tie__side"
-                :class="sideClass(tie, side === 'home' ? tie.homeId : tie.awayId)"
-              >
-                <template v-for="team in [game.getTeam(side === 'home' ? tie.homeId : tie.awayId)]" :key="team?.id">
-                  <TeamBadge v-if="team" :team="team" :size="20" />
-                  <span class="tie__name" :title="team ? teamLabel(team.id) : ''">
-                    {{ team?.shortName }} <CountryTag :team="team" />
-                  </span>
-                  <span class="tie__score">
-                    {{ side === 'home' ? (tie.homeGoals ?? '') : (tie.awayGoals ?? '') }}
-                    <small v-if="tie.penalties" class="muted">({{ side === 'home' ? tie.penalties.home : tie.penalties.away }})</small>
-                  </span>
-                </template>
-              </div>
-            </article>
-          </template>
-          <template v-else>
-            <article v-for="i in col.tieCount" :key="i" class="tie tie--empty">
-              <div class="tie__side muted">A definir</div>
-              <div class="tie__side muted">A definir</div>
-            </article>
-          </template>
-        </div>
-      </div>
-    </section>
+    <TournamentBoard :state="lib" :my-id="myId" :finished="game.libertadoresFinished" />
   </div>
 </template>
 
@@ -275,165 +130,5 @@ const isMine = (tie: CupTie) => tie.homeId === myId.value || tie.awayId === myId
   width: auto;
   min-width: 280px;
   font-size: 0.85rem;
-}
-.section-title {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  margin: 0.5rem 0 0;
-}
-.section-title small {
-  font-size: 0.8rem;
-  font-weight: 400;
-}
-.groups {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 0.75rem;
-  align-items: start;
-}
-.group {
-  padding: 0.75rem;
-}
-.group--mine {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent);
-}
-.group__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.4rem;
-}
-.group__header h3 {
-  margin: 0;
-}
-.group__table {
-  font-size: 0.82rem;
-}
-.group__table td,
-.group__table th {
-  padding: 0.25rem 0.3rem;
-}
-.group__table tr td:first-child {
-  border-left: 3px solid transparent;
-}
-.group__table tr.qualified td:first-child {
-  border-left-color: var(--good);
-}
-.group__table tr.mine td {
-  color: var(--accent);
-  font-weight: 700;
-}
-.club {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  max-width: 170px;
-}
-.club__name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.group__rounds {
-  list-style: none;
-  margin: 0.6rem 0 0;
-  padding: 0.5rem 0 0;
-  border-top: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.78rem;
-}
-.group__rounds li {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  align-items: baseline;
-}
-.group__rounds li.current .round-label {
-  color: var(--accent);
-  font-weight: 700;
-}
-.round-label {
-  width: 1.6rem;
-}
-.game--mine {
-  color: var(--accent);
-}
-.bracket {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(150px, 1fr));
-  gap: 0.75rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-}
-.bracket__col {
-  display: flex;
-  flex-direction: column;
-  min-width: 150px;
-}
-.bracket__col header {
-  display: flex;
-  flex-direction: column;
-  padding: 0.4rem 0.6rem;
-  margin-bottom: 0.5rem;
-  border-radius: 6px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
-.bracket__col.current header {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.bracket__ties {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  gap: 0.35rem;
-}
-.tie {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-  font-size: 0.82rem;
-}
-.tie--mine {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent);
-}
-.tie--empty {
-  opacity: 0.45;
-}
-.tie__side {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.25rem 0.45rem;
-  min-height: 1.8rem;
-}
-.tie__side + .tie__side {
-  border-top: 1px solid var(--border);
-}
-.tie__name {
-  flex: 1;
-  white-space: nowrap;
-}
-.tie__score {
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-.tie__side.winner {
-  font-weight: 700;
-}
-.tie__side.loser {
-  opacity: 0.5;
-}
-.tie__side.mine .tie__name {
-  color: var(--accent);
 }
 </style>

@@ -21,7 +21,7 @@ const outSelection = ref<string | null>(match.injuryBreak ? 'vaga' : null)
 const inSelection = ref<string | null>(null)
 
 const m = computed(() => match.managedMatch)
-const myId = computed(() => game.managedTeamId ?? '')
+const myId = computed(() => game.lineupTeamId ?? '')
 const opponent = computed(() => (m.value ? game.getTeam(m.value.homeId === myId.value ? m.value.awayId : m.value.homeId) : null))
 const score = computed(() => {
   if (!m.value) return ''
@@ -76,7 +76,7 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
         <h2 v-if="match.injuryBreak">🩹 {{ match.injuryBreak.playerName }} se lesionou ({{ clockLabel(match.injuryBreak.minute, match.injuryBreak.extra) }})</h2>
         <h2 v-else>⏸ Intervalo</h2>
         <p class="muted">
-          <TeamBadge :team="game.managedTeam!" :size="20" /> {{ game.managedTeam?.shortName }}
+          <TeamBadge :team="game.lineupTeam!" :size="20" /> {{ game.lineupTeam?.shortName }}
           <strong class="score">{{ score }}</strong>
           {{ opponent.shortName }} <TeamBadge :team="opponent" :size="20" />
         </p>
@@ -91,7 +91,7 @@ const styles = Object.keys(PLAY_STYLES) as PlayStyle[]
             v-for="s in styles"
             :key="s"
             class="btn btn--sm"
-            :class="{ 'btn--ghost': game.tactic.style !== s }"
+            :class="{ 'btn--ghost': game.lineupTactic.style !== s }"
             @click="game.setStyle(s)"
           >
             {{ PLAY_STYLES[s].label }}

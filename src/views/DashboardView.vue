@@ -76,7 +76,8 @@ function changeNumber(p: Player, event: Event) {
   )
 }
 
-const isHome = computed(() => game.nextFixture?.homeId === game.managedTeamId)
+/** Mando do próximo jogo, do ponto de vista do time em campo (o clube, ou a sua seleção na Copa). */
+const isHome = computed(() => game.nextFixture?.homeId === game.lineupTeamId)
 
 // Divisão exibida na tabela; acompanha a do clube até o usuário escolher outra.
 const viewedDivision = ref<DivisionId | null>(null)
@@ -242,19 +243,43 @@ function standingPoints(row: { wins: number; draws: number }) {
           <button class="btn" @click="watchCupRound">Acompanhar a rodada da Copa</button>
         </template>
         <template v-else-if="game.nextOpponent">
-          <h3 :class="{ 'cup-title': game.nextEvent === 'cup', 'libertadores-title': game.nextEvent === 'libertadores' }">{{ game.nextEventLabel }}</h3>
+          <h3 :class="{ 'cup-title': game.nextEvent === 'cup', 'libertadores-title': game.nextEvent === 'libertadores' || game.nextEvent === 'worldcup' }">
+            {{ game.nextEventLabel }}
+          </h3>
+          <p v-if="game.coachingNational" class="national-note">🌍 Jogo da sua seleção: {{ game.lineupTeam?.name }}</p>
           <p v-if="game.nextEventDate" class="muted match-date">
             📅 {{ formatDate(game.nextEventDate, true) }} ·
             <RouterLink :to="{ name: 'calendar' }">ver calendário</RouterLink>
           </p>
           <div class="versus">
-            <TeamBadge :team="isHome ? game.managedTeam : game.nextOpponent" :size="48" />
+            <TeamBadge :team="isHome ? game.lineupTeam! : game.nextOpponent" :size="48" />
             <span class="muted">x</span>
-            <TeamBadge :team="isHome ? game.nextOpponent : game.managedTeam" :size="48" />
+            <TeamBadge :team="isHome ? game.nextOpponent : game.lineupTeam!" :size="48" />
           </div>
           <p class="muted">{{ isHome ? 'Em casa' : 'Fora de casa' }} contra <strong>{{ game.nextOpponent.name }}</strong></p>
           <button class="btn" @click="router.push({ name: 'pre-match' })">Ir para o pré-jogo</button>
         </template>
+      </div>
+
+      <!-- Seleção: convites para a Copa do Mundo ou o trabalho atual (só em ano de Copa). -->
+      <div v-if="game.worldCup && (game.nationalOffers.length || game.nationalJob)" class="card national">
+        <h3>🌍 Seleção</h3>
+        <template v-if="game.nationalJob">
+          <p class="national__job">
+            <TeamBadge :team="game.getTeam(game.nationalJob.teamId)!" :size="28" />
+            Você treina o <strong>{{ game.getTeam(game.nationalJob.teamId)?.name }}</strong> na Copa do Mundo.
+          </p>
+        </template>
+        <template v-else>
+          <p class="muted small-note">
+            {{ game.nationalOffers.length }} seleç{{ game.nationalOffers.length === 1 ? 'ão quer' : 'ões querem' }} você na Copa do
+            Mundo, sem deixar o clube:
+            {{ game.nationalOffers.map((id) => game.getTeam(id)?.name).join(', ') }}.
+          </p>
+        </template>
+        <RouterLink class="btn btn--sm" :class="{ 'btn--ghost': game.nationalJob }" :to="{ name: 'world-cup' }">
+          {{ game.nationalJob ? 'Ver a Copa do Mundo' : 'Responder aos convites' }}
+        </RouterLink>
       </div>
 
       <div class="card">
@@ -539,6 +564,17 @@ a.tag {
 }
 .libertadores-title {
   color: #fb923c;
+}
+.national-note {
+  margin: -0.3rem 0 0.4rem;
+  font-size: 0.82rem;
+  color: var(--accent);
+}
+.national__job {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
 }
 .table-header {
   display: flex;

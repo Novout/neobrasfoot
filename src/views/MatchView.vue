@@ -30,7 +30,8 @@ const EVENT_ICONS: Record<MatchEventType, string> = { gol: '⚽', amarelo: '🟨
 
 /** Rodada de copa (Copa do Brasil ou Libertadores) reúne clubes de todas as séries: sem abas de divisão. */
 const isCup = computed(() => !!match.matches[0] && match.matches[0].competition !== 'league')
-const cupIcon = computed(() => (match.matches[0]?.competition === 'libertadores' ? '🌎 ' : '🏆 '))
+const CUP_ICONS: Record<string, string> = { cup: '🏆 ', libertadores: '🌎 ', worldcup: '🌍 ' }
+const cupIcon = computed(() => CUP_ICONS[match.matches[0]?.competition ?? 'cup'] ?? '🏆 ')
 
 /** Jogo do seu clube, em destaque no topo com todos os lances. */
 const myMatch = computed(() => match.matches.find((m) => isMine(m)) ?? null)
@@ -142,7 +143,7 @@ function occupancy(venue: MatchVenue) {
 }
 
 function isMine(m: { homeId: string; awayId: string }) {
-  return m.homeId === game.managedTeamId || m.awayId === game.managedTeamId
+  return m.homeId === game.lineupTeamId || m.awayId === game.lineupTeamId
 }
 
 /** Situação do relógio de um jogo: acréscimos anunciados ou tempo já encerrado enquanto outros seguem. */
@@ -165,7 +166,7 @@ watch(
   (count, before) => {
     if (count <= before) return
     const last = myGoals.value[count - 1]!
-    if (last.teamId === game.managedTeamId) playGoalFor()
+    if (last.teamId === game.lineupTeamId) playGoalFor()
     else playGoalAgainst()
   },
 )
