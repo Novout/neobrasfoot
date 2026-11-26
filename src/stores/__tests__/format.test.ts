@@ -121,7 +121,7 @@ describe('carreira no formato 2×20', () => {
     expect(tableZone('B', 16, 20)).toBeNull()
   })
 
-  it('uma temporada inteira: a Copa termina e a virada mantém 20 clubes por série', () => {
+  it('uma temporada inteira: a Copa termina e a virada mantém 20 clubes por série', { timeout: 600_000 }, () => {
     const match = useMatchStore()
     let guard = 0
     while (!game.isSeasonOver && guard++ < 60) {

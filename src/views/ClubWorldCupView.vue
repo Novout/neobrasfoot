@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import CountryTag from '../components/CountryTag.vue'
 import TeamBadge from '../components/TeamBadge.vue'
 import { CHAMPIONS_NAME } from '../data/champions'
-import { CLUB_WORLD_CUP_NAME, CLUB_WORLD_CUP_PRIZES, GUEST_CLUBS } from '../data/clubWorldCup'
+import { CLUB_WORLD_CUP_NAME, CLUB_WORLD_CUP_PRIZES, GUEST_CONFEDERATION_LABELS, guestConfederation } from '../data/clubWorldCup'
 import { formatDate } from '../data/calendar'
 import { LIBERTADORES_NAME } from '../data/libertadores'
 import { useGameStore } from '../stores/game'
@@ -19,11 +19,11 @@ const myId = computed(() => game.managedTeamId)
 const entrants = computed(() => {
   const w = cwc.value
   if (!w) return []
-  const region = (id: string) => GUEST_CLUBS.find((c) => c.id === id)?.region
+  const confed = (id: string) => guestConfederation(id)
   return [
     { label: `Campeão da ${LIBERTADORES_NAME}`, id: game.libertadores?.championId ?? null },
     { label: `Campeão da ${CHAMPIONS_NAME}`, id: game.champions?.championId ?? null },
-    ...w.guests.map((id) => ({ label: region(id) === 'asia' ? 'Convidado da Arábia Saudita' : 'Convidado da África', id })),
+    ...w.guests.map((id) => ({ label: `Convidado da ${confed(id) ? GUEST_CONFEDERATION_LABELS[confed(id)!] : '?'}`, id })),
   ]
 })
 
@@ -78,8 +78,9 @@ const isMine = (tie: CupTie) => tie.homeId === myId.value || tie.awayId === myId
       <div>
         <h1>🌐 {{ CLUB_WORLD_CUP_NAME }} {{ game.currentYear }}</h1>
         <p class="muted">
-          Em dezembro, depois do campeonato: os campeões da {{ LIBERTADORES_NAME }} e da {{ CHAMPIONS_NAME }}, um clube da Arábia
-          Saudita e um da África. Semifinais e final em jogo único; empate vai para os pênaltis.
+          Em dezembro, depois do campeonato: os campeões da {{ LIBERTADORES_NAME }} e da {{ CHAMPIONS_NAME }} e dois convidados de
+          confederações diferentes, sorteados entre clubes da CONCACAF, CAF, AFC e OFC. Semifinais e final em jogo único; empate vai
+          para os pênaltis.
         </p>
         <p :class="status.tone"><strong>{{ status.text }}</strong></p>
         <p v-if="!cwc.rounds.length" class="muted small">As semifinais são sorteadas quando os dois campeões continentais forem conhecidos.</p>

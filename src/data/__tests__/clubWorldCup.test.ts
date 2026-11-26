@@ -1,33 +1,40 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { describe, expect, it } from 'vitest'
 import { seasonCalendar } from '../calendar'
-import { createClubWorldCup, createGuestTeams, drawFinal, drawSemifinals, GUEST_CLUBS, pickGuests } from '../clubWorldCup'
+import { createClubWorldCup, createGuestTeams, drawFinal, drawSemifinals, GUEST_CLUBS, guestConfederation, pickGuests } from '../clubWorldCup'
 import { setLeagueBase, setLeagueFormat } from '../league'
 import { createRng } from '../../utils/random'
 import { useGameStore } from '../../stores/game'
 import { useMatchStore } from '../../stores/match'
 
 describe('Mundial de Clubes: convidados e chave', () => {
-  it('8 clubes reais da Arábia Saudita e da África, com elenco, técnico e estádio', () => {
+  it('convidados reais da CONCACAF, CAF, AFC e OFC, com elenco, técnico e estádio', () => {
     const teams = createGuestTeams()
-    expect(teams).toHaveLength(8)
+    expect(teams).toHaveLength(GUEST_CLUBS.length)
     for (const t of teams) {
       expect(t.players.length, t.id).toBeGreaterThanOrEqual(16)
       expect(t.stadiumName, t.id).toBeTruthy()
       expect(t.country, t.id).toBeTruthy()
       expect(t.crest, t.id).toBeUndefined()
     }
-    expect(GUEST_CLUBS.filter((c) => c.region === 'asia')).toHaveLength(4)
-    expect(GUEST_CLUBS.filter((c) => c.region === 'africa')).toHaveLength(4)
+    for (const confed of ['CONCACAF', 'CAF', 'AFC', 'OFC'] as const) {
+      expect(GUEST_CLUBS.filter((c) => c.region === confed).length, confed).toBeGreaterThanOrEqual(3)
+    }
   })
 
-  it('um convidado árabe e um africano; cada campeão continental pega um convidado na semifinal', () => {
+  it('dois convidados de confederações diferentes; todas aparecem com o tempo; cada campeão pega um convidado', () => {
     const rng = createRng(3)
-    for (let i = 0; i < 20; i++) {
-      const [asia, africa] = pickGuests(rng.next)
-      expect(GUEST_CLUBS.find((c) => c.id === asia)?.region).toBe('asia')
-      expect(GUEST_CLUBS.find((c) => c.id === africa)?.region).toBe('africa')
+    const seen = new Set<string>()
+    for (let i = 0; i < 60; i++) {
+      const [a, b] = pickGuests(rng.next)
+      const ca = guestConfederation(a!)
+      const cb = guestConfederation(b!)
+      expect(ca).toBeTruthy()
+      expect(ca).not.toBe(cb)
+      seen.add(ca!)
+      seen.add(cb!)
     }
+    expect([...seen].sort()).toEqual(['AFC', 'CAF', 'CONCACAF', 'OFC'])
     const state = createClubWorldCup(1, ['sa-al-hilal', 'af-al-ahly'], 38)
     expect(state.schedule).toEqual([38, 38])
     const semis = drawSemifinals(state, 'flamengo', 'en-man-city', rng.next)
@@ -60,7 +67,7 @@ describe('Mundial de Clubes na carreira', () => {
     const match = useMatchStore()
     game.startCareer('juventude', 'Técnico')
     expect(game.clubWorldCup).not.toBeNull()
-    expect(game.guestTeams).toHaveLength(8)
+    expect(game.guestTeams).toHaveLength(GUEST_CLUBS.length)
     let guard = 0
     while (!game.isSeasonOver && guard++ < 70) {
       expect(game.nextEvent).not.toBe('clubworld')

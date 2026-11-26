@@ -41,6 +41,8 @@ export const COUNTRY_NAMES: Record<string, string> = {
   PER: 'Peru', BOL: 'Bolívia', VEN: 'Venezuela',
   ESP: 'Espanha', ENG: 'Inglaterra', GER: 'Alemanha', ITA: 'Itália', FRA: 'França', POR: 'Portugal', NED: 'Holanda',
   BEL: 'Bélgica', SCO: 'Escócia', AUT: 'Áustria', TUR: 'Turquia',
+  KSA: 'Arábia Saudita', JPN: 'Japão', KOR: 'Coreia do Sul', EGY: 'Egito', RSA: 'África do Sul', TUN: 'Tunísia',
+  MAR: 'Marrocos', MEX: 'México', USA: 'Estados Unidos', NZL: 'Nova Zelândia', NCL: 'Nova Caledônia',
 }
 
 /** País dos clubes das ligas estrangeiras do jogo, pela divisão (as séries brasileiras são do Brasil). */

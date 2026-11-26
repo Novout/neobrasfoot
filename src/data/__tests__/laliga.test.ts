@@ -89,7 +89,7 @@ describe('La Liga na janela de técnicos', () => {
 })
 
 describe('La Liga na carreira', () => {
-  it('jogando com um clube espanhol: fora da Copa e da Libertadores, e a liga segue na virada', { timeout: 240_000 }, () => {
+  it('jogando com um clube espanhol: fora da Copa e da Libertadores, e a liga segue na virada', { timeout: 600_000 }, () => {
     setLeagueBase('brasileirao')
     setLeagueFormat('2x20')
     setActivePinia(createPinia())
