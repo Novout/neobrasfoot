@@ -28,6 +28,22 @@ const shelf = computed(() =>
   [...(selected.value?.manager.trophies ?? [])].sort((a, b) => trophyPoints(b) - trophyPoints(a) || b.season - a.season),
 )
 
+/**
+ * Clube de um técnico ou de uma taça: da liga, estrangeiro da Libertadores ou da Série C (fora da liga, no 2×20).
+ * Pode não existir mais (ex.: liga trocada); a tela mostra só o que encontrar.
+ */
+function teamOf(id: string | null | undefined) {
+  if (!id) return null
+  return game.getTeam(id) ?? game.reserveTeams.find((t) => t.id === id) ?? null
+}
+
+/** Série do clube; quem está na Série C (fora da liga) aparece assim. */
+function divisionLabel(id: string) {
+  const team = teamOf(id)
+  if (!team) return ''
+  return game.reserveTeams.some((t) => t.id === id) ? 'Série C (fora da liga)' : DIVISION_LABELS[team.division]
+}
+
 const KEYS = ['libertadores', 'A', 'ESP', 'cup', 'B', 'C', 'D'] as const
 const KEY_LABELS: Record<(typeof KEYS)[number], string> = { libertadores: 'Lib', A: 'A', ESP: 'Liga', cup: 'Copa', B: 'B', C: 'C', D: 'D' }
 </script>
@@ -43,13 +59,13 @@ const KEY_LABELS: Record<(typeof KEYS)[number], string> = { libertadores: 'Lib',
           </h1>
           <p class="muted">
             <template v-if="selected.manager.teamId">
-              Técnico do <strong>{{ game.getTeam(selected.manager.teamId)?.name }}</strong> ·
+              Técnico do <strong>{{ teamOf(selected.manager.teamId)?.name }}</strong> ·
             </template>
             {{ selectedPosition }}º no ranking · {{ selected.points }} pontos · {{ selected.total }}
             troféu{{ selected.total === 1 ? '' : 's' }}
           </p>
         </div>
-        <TeamBadge v-if="selected.manager.teamId" :team="game.getTeam(selected.manager.teamId)!" :size="56" />
+        <TeamBadge v-if="teamOf(selected.manager.teamId)" :team="teamOf(selected.manager.teamId)!" :size="56" />
       </header>
 
       <div class="shelf">
@@ -64,7 +80,7 @@ const KEY_LABELS: Record<(typeof KEYS)[number], string> = { libertadores: 'Lib',
           <strong>{{ TROPHY_STYLE[trophyKey(t)].name }}</strong>
           <small>Temporada {{ t.season }}</small>
           <small class="trophy__team">
-            <TeamBadge :team="game.getTeam(t.teamId)!" :size="16" /> {{ game.getTeam(t.teamId)?.shortName }}
+            <TeamBadge v-if="teamOf(t.teamId)" :team="teamOf(t.teamId)!" :size="16" /> {{ teamOf(t.teamId)?.shortName }}
           </small>
         </article>
         <p v-if="!shelf.length" class="empty muted">
@@ -103,10 +119,10 @@ const KEY_LABELS: Record<(typeof KEYS)[number], string> = { libertadores: 'Lib',
             <td>{{ i + 1 }}</td>
             <td>{{ row.manager.name }}<span v-if="row.manager.isPlayer" class="you">você</span></td>
             <td>
-              <span v-if="row.manager.teamId" class="club">
-                <TeamBadge :team="game.getTeam(row.manager.teamId)!" :size="20" />
-                {{ game.getTeam(row.manager.teamId)?.name }}
-                <small class="muted">{{ DIVISION_LABELS[game.getTeam(row.manager.teamId)!.division] }}</small>
+              <span v-if="teamOf(row.manager.teamId)" class="club">
+                <TeamBadge :team="teamOf(row.manager.teamId)!" :size="20" />
+                {{ teamOf(row.manager.teamId)?.name }}
+                <small class="muted">{{ divisionLabel(row.manager.teamId!) }}</small>
               </span>
             </td>
             <td v-for="k in KEYS" :key="k" class="num" :class="{ muted: !row.counts[k] }">{{ row.counts[k] || '–' }}</td>
