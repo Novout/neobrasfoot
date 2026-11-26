@@ -118,19 +118,19 @@ function standingPoints(row: { wins: number; draws: number }) {
           </div>
         </div>
 
-        <table>
+        <table class="squad">
           <thead>
             <tr>
               <th class="num" title="Número da camisa (clique para trocar)">Nº</th>
               <th>Pos</th>
               <th>Nome</th>
-              <th class="num">Idade</th>
+              <th class="num col-age">Idade</th>
               <th class="num">OVR</th>
-              <th>Energia</th>
-              <th>Moral</th>
-              <th class="num">Salário</th>
-              <th class="num">Valor</th>
-              <th>Ações</th>
+              <th class="col-energy">Energia</th>
+              <th class="col-morale">Moral</th>
+              <th class="num col-salary">Salário</th>
+              <th class="num col-value">Valor</th>
+              <th class="actions-head"><span class="sr-only">Ações</span></th>
             </tr>
           </thead>
           <tbody>
@@ -172,31 +172,31 @@ function standingPoints(row: { wins: number; draws: number }) {
                   💰 {{ transfers.offersByPlayer[p.id]!.length }} proposta(s)
                 </RouterLink>
               </td>
-              <td class="num">{{ p.age }}</td>
+              <td class="num col-age">{{ p.age }}</td>
               <td class="num"><strong>{{ p.overall }}</strong></td>
-              <td><StatBar :value="p.energy" /></td>
-              <td><StatBar :value="p.morale" /></td>
-              <td class="num">{{ formatMoney(p.salary) }}</td>
-              <td class="num">{{ formatMoney(marketValue(p)) }}</td>
+              <td class="col-energy"><StatBar :value="p.energy" /></td>
+              <td class="col-morale"><StatBar :value="p.morale" /></td>
+              <td class="num col-salary">{{ formatMoney(p.salary) }}</td>
+              <td class="num col-value">{{ formatMoney(marketValue(p)) }}</td>
+              <!-- Ações em ícones (o nome de cada uma fica no title/aria-label) para a tabela caber sem rolagem. -->
               <td class="actions">
                 <button
-                  class="btn btn--sm"
+                  class="btn btn--sm icon-btn"
                   :disabled="game.trainedThisRound.includes(p.id) || !canTrain(p)"
-                  :title="`Chance de evoluir; gasta ${trainingEnergyCost(p)} de energia (1x por rodada)`"
+                  :title="`Treinar: chance de evoluir; gasta ${trainingEnergyCost(p)} de energia (1x por rodada)`"
+                  aria-label="Treinar"
                   @click="game.trainPlayer(p.id)"
                 >
-                  Treinar
-                </button>
-                <button class="btn btn--sm btn--ghost" :disabled="p.energy >= 100" title="+25 energia" @click="game.restPlayer(p.id)">
-                  Descansar
+                  🏋️
                 </button>
                 <button
                   v-if="!p.loan"
-                  class="btn btn--sm btn--ghost"
-                  :title="p.forSale ? 'Retirar da venda' : 'Colocar à venda pelo valor de mercado (ajuste o preço no Mercado)'"
+                  class="btn btn--sm btn--ghost icon-btn"
+                  :title="p.forSale ? 'Retirar da venda' : 'Vender: colocar à venda pelo valor de mercado (ajuste o preço no Mercado)'"
+                  :aria-label="p.forSale ? 'Retirar da venda' : 'Vender'"
                   @click="game.toggleForSale(p.id)"
                 >
-                  {{ p.forSale ? 'Retirar' : 'Vender' }}
+                  {{ p.forSale ? '↩️' : '💰' }}
                 </button>
               </td>
             </tr>
@@ -341,8 +341,63 @@ function standingPoints(row: { wins: number; draws: number }) {
     grid-template-columns: 1fr;
   }
 }
+/* A largura da coluna principal decide quais colunas do elenco cabem (container query). */
 .dashboard__main {
-  overflow-x: auto;
+  container-type: inline-size;
+  min-width: 0;
+}
+.squad th,
+.squad td {
+  padding: 0.4rem 0.3rem;
+}
+.squad :deep(.stat-bar) {
+  width: 56px;
+}
+.squad .actions-head {
+  width: 1%;
+}
+.icon-btn {
+  min-width: 2.2rem;
+  padding: 0.3rem 0.55rem;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+/* Sem espaço para tudo: some primeiro o menos usado (moral e salário), depois idade e valor, por último a energia. */
+@container (max-width: 760px) {
+  .squad .col-morale,
+  .squad .col-salary {
+    display: none;
+  }
+}
+@container (max-width: 600px) {
+  .squad .col-age,
+  .squad .col-value {
+    display: none;
+  }
+}
+@container (max-width: 440px) {
+  .squad .col-energy {
+    display: none;
+  }
+  /* Celular: os botões de ação ficam um embaixo do outro e o número da camisa mais estreito. */
+  .squad .actions {
+    white-space: normal;
+  }
+  .squad .actions > button {
+    display: block;
+    margin: 0 0 0.2rem;
+  }
+  .shirt-number {
+    width: 2rem;
+  }
 }
 .dashboard__side {
   display: flex;
@@ -404,7 +459,7 @@ function standingPoints(row: { wins: number; draws: number }) {
 .actions > * + * {
   margin-left: 0.25rem;
 }
-/* Treinar, Descansar e Vender só aparecem com o mouse sobre a linha (o aviso de propostas fica sempre visível). */
+/* Treinar e Vender só aparecem com o mouse sobre a linha (o aviso de propostas fica sempre visível). */
 .actions > button {
   opacity: 0;
   transition: opacity 0.12s;
