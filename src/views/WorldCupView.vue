@@ -53,7 +53,7 @@ function squadAverage(teamId: string) {
   <div class="wc">
     <section class="card wc__header">
       <div>
-        <h1>🌍 {{ WORLD_CUP_NAME }}<template v-if="wc"> {{ game.currentYear }}</template></h1>
+        <h1>🌍 {{ wc ? `${WORLD_CUP_NAME} ${game.currentYear}` : WORLD_CUP_NAME }}</h1>
         <p class="muted">
           32 seleções com os convocados reais, a cada 4 anos, em junho e julho. Fase de grupos em turno único (passam os 2
           primeiros de cada grupo) e depois mata-mata em jogo único até a final; empate vai para os pênaltis.

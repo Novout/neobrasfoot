@@ -90,7 +90,7 @@ describe('Libertadores: dados e sorteio', () => {
   it('etapas: grupos, oitavas, quartas, semifinal e final; calendário sem bater com a Copa', () => {
     expect(STAGE_COUNT).toBe(10)
     expect(stageName(0)).toBe('Fase de grupos · 1ª rodada')
-    expect([6, 7, 8, 9].map(stageName)).toEqual(['Oitavas de final', 'Quartas de final', 'Semifinal', 'Final'])
+    expect([6, 7, 8, 9].map((s) => stageName(s))).toEqual(['Oitavas de final', 'Quartas de final', 'Semifinal', 'Final'])
     for (const [rounds, prelim] of [[14, false], [38, true]] as const) {
       const cup = cupSchedule(rounds, prelim)
       const lib = libertadoresSchedule(rounds, cup)

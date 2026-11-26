@@ -74,7 +74,9 @@ describe('Copa do Mundo: seleções e regras', () => {
     }
     const rep = (id: string) => NATIONS.find((n) => n.id === id)!.reputation
     expect(Math.max(...[...top].map(rep))).toBeGreaterThanOrEqual(92)
-    expect(Math.max(...[...modest].map(rep))).toBeLessThanOrEqual(72)
+    // Abaixo do nível de todas: chamam as mais modestas (as 6 de menor reputação).
+    const weakest = [...NATIONS].sort((a, b) => a.reputation - b.reputation).slice(0, 6).map((n) => n.id)
+    expect([...modest].every((id) => weakest.includes(id))).toBe(true)
     expect(nationalTeamOffers(80)).toHaveLength(3)
   })
 })
