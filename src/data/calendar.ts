@@ -89,7 +89,7 @@ export function cupDates(league: IsoDate[], schedule: number[]): IsoDate[] {
   return schedule.map((afterRounds) => midweekDate(league, afterRounds))
 }
 
-export type CalendarKind = 'league' | 'cup' | 'libertadores' | 'worldcup'
+export type CalendarKind = 'league' | 'cup' | 'libertadores' | 'champions' | 'worldcup'
 
 export interface CalendarEntry {
   kind: CalendarKind
@@ -108,20 +108,22 @@ export function seasonCalendar(
   cupSchedule: number[],
   libertadoresSchedule: number[] = [],
   worldCupSchedule: number[] = [],
+  championsSchedule: number[] = [],
 ): CalendarEntry[] {
   const league = leagueDates(year, leagueRounds)
   const slots = new Map<number, number>()
-  const midweek = (kind: 'cup' | 'libertadores' | 'worldcup', schedule: number[]) =>
+  const midweek = (kind: Exclude<CalendarKind, 'league'>, schedule: number[]) =>
     schedule.map((afterRounds, index) => {
       const slot = slots.get(afterRounds) ?? 0
       slots.set(afterRounds, slot + 1)
       return { kind, index, date: midweekDate(league, afterRounds, slot) }
     })
-  const order: Record<CalendarKind, number> = { cup: 0, libertadores: 1, worldcup: 2, league: 3 }
+  const order: Record<CalendarKind, number> = { cup: 0, libertadores: 1, champions: 2, worldcup: 3, league: 4 }
   return [
     ...league.map((date, index) => ({ kind: 'league' as const, index, date })),
     ...midweek('cup', cupSchedule),
     ...midweek('libertadores', libertadoresSchedule),
+    ...midweek('champions', championsSchedule),
     ...midweek('worldcup', worldCupSchedule),
   ].sort((a, b) => a.date.localeCompare(b.date) || order[a.kind] - order[b.kind] || a.index - b.index)
 }

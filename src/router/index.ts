@@ -81,6 +81,12 @@ const router = createRouter({
       meta: { requiresCareer: true, title: 'Copa do Brasil' },
     },
     {
+      path: '/champions',
+      name: 'champions',
+      component: () => import('../views/ChampionsView.vue'),
+      meta: { requiresCareer: true, title: 'Liga dos Campeões' },
+    },
+    {
       path: '/copa-do-mundo',
       name: 'world-cup',
       component: () => import('../views/WorldCupView.vue'),

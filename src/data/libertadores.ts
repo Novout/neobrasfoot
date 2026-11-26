@@ -1,4 +1,4 @@
-import type { CupRound, CupTie, LibertadoresGroup, LibertadoresState, Team } from '../types/game'
+import type { CupRound, CupTie, DivisionId, LibertadoresGroup, LibertadoresState, Team } from '../types/game'
 import { createRng, hashString } from '../utils/random'
 import { roundName } from './cup'
 import { generateSquadFor } from './teams'
@@ -39,7 +39,12 @@ export const LIBERTADORES_PRIZES = {
 export const COUNTRY_NAMES: Record<string, string> = {
   BRA: 'Brasil', ARG: 'Argentina', URU: 'Uruguai', PAR: 'Paraguai', CHI: 'Chile', ECU: 'Equador', COL: 'Colômbia',
   PER: 'Peru', BOL: 'Bolívia', VEN: 'Venezuela',
+  ESP: 'Espanha', ENG: 'Inglaterra', GER: 'Alemanha', ITA: 'Itália', FRA: 'França', POR: 'Portugal', NED: 'Holanda',
+  BEL: 'Bélgica', SCO: 'Escócia', AUT: 'Áustria', TUR: 'Turquia',
 }
+
+/** País dos clubes das ligas estrangeiras do jogo, pela divisão (as séries brasileiras são do Brasil). */
+const DIVISION_COUNTRY: Partial<Record<DivisionId, string>> = { ESP: 'ESP', ENG: 'ENG', GER: 'GER' }
 
 type ClubSeed = Pick<Team, 'id' | 'name' | 'shortName' | 'primaryColor' | 'secondaryColor' | 'reputation' | 'stadiumName'> & {
   country: string
@@ -114,8 +119,8 @@ export function createContinentalTeams(): Team[] {
 }
 
 /** País do clube: o informado nos estrangeiros; os da liga são do Brasil. */
-export function countryOf(team: Pick<Team, 'country'> | null | undefined) {
-  return team?.country ?? 'BRA'
+export function countryOf(team: (Pick<Team, 'country'> & { division?: DivisionId }) | null | undefined) {
+  return team?.country ?? (team?.division && DIVISION_COUNTRY[team.division]) ?? 'BRA'
 }
 
 

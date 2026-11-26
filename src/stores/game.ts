@@ -8,8 +8,8 @@ import {
 } from '../data/confidence'
 import { generateFixtures, withByeRounds } from '../data/fixtures'
 import {
-  BRAZIL_SPOTS, createContinentalTeams, createLibertadores, currentTies as libertadoresTies, drawRoundOf16, GROUP_ROUNDS,
-  groupOf, groupTable, isGroupStage, LIBERTADORES_NAME, LIBERTADORES_PRIZES, nextKnockoutRound, quickScore,
+  BRAZIL_SPOTS, createContinentalTeams, createLibertadores, currentTies as libertadoresTies, drawRoundOf16,
+  groupOf, groupRoundCount, groupTable, isGroupStage, LIBERTADORES_NAME, LIBERTADORES_PRIZES, nextKnockoutRound, quickScore,
   stageName,
 } from '../data/libertadores'
 import {
@@ -19,6 +19,9 @@ import { LOAN_DEVELOPMENT_AGE, LOAN_DEVELOPMENT_CHANCE } from '../data/loans'
 import { baseReserveTeams, leagueReserveTeams, leagueTeams } from '../data/league'
 import { balanceDefRoles, defenseFits, defenseSplit, defRoleOf, DEF_ROLE_MISFIT } from '../data/defense'
 import { assignShirtNumbers, changeShirtNumber } from '../data/shirtNumbers'
+import {
+  CHAMPIONS_NAME, CHAMPIONS_PRIZES, CHAMPIONS_SPOTS_PER_LEAGUE, createChampions, createEuropeanTeams,
+} from '../data/champions'
 import {
   createNationalTeams, createWorldCup, isWorldCupYear, nationalTeamOffers, WORLD_CUP_GROUP_ROUNDS, WORLD_CUP_NAME,
 } from '../data/worldCup'
@@ -42,7 +45,7 @@ import {
 import {
   DIVISION_LABELS, DIVISIONS, divisionAbove, divisionBelow, MAX_PLAYER_OVERALL, MIN_PLAYER_OVERALL, PROMOTION_SPOTS,
   RELEGATION_SPOTS, REPUTATION_SWING, tableZone, formatOfTeams, setActiveFormat, ACTIVE_FORMAT, setBottomRelegation,
-  isForeignDivision, LEAGUE_DIVISIONS, setForeignDivisions,
+  FOREIGN_DIVISIONS, isForeignDivision, LEAGUE_DIVISIONS, setForeignDivisions,
 } from '../data/divisions'
 import {
   assignStarsToLegacyTeams, createTeamsWithCustom, CUSTOM_TEAM_ID, teamsByDivision, type CustomTeamDraft,
@@ -55,6 +58,9 @@ import { clamp, createRng, formatMoney, hashString } from '../utils/random'
 import { persistRefs, updateSaveSummary } from '../utils/storage'
 import { defaultStartYear, seasonCalendar, seasonYear as yearOfSeason, type CalendarEntry, type IsoDate } from '../data/calendar'
 import { loanHeadline, matchHeadlines, MAX_HEADLINES, saleHeadline, type Headline } from '../data/headlines'
+
+/** Torneios de clubes com grupos e mata-mata. */
+type ClubTournament = 'libertadores' | 'champions'
 
 export const MIN_SQUAD_SIZE = 16
 export const MAX_SQUAD_SIZE = 30
@@ -213,6 +219,12 @@ export const useGameStore = defineStore('game', () => {
   const continentalTeams = ref<Team[]>([])
   /** Classificados do Brasil para a próxima Libertadores (definidos na virada da temporada). */
   const libertadoresQualified = ref<string[]>([])
+  /** Liga dos Campeões da temporada (só com ligas estrangeiras na carreira). */
+  const champions = ref<LibertadoresState | null>(null)
+  /** Clubes europeus da Liga dos Campeões que não disputam as ligas do jogo. */
+  const europeanTeams = ref<Team[]>([])
+  /** Classificados das ligas estrangeiras para a próxima Liga dos Campeões (definidos na virada da temporada). */
+  const championsQualified = ref<string[]>([])
   /** Copa do Mundo da temporada (só nos anos de Copa: 2030, 2034...). */
   const worldCup = ref<LibertadoresState | null>(null)
   /** Seleções da Copa do Mundo (não disputam a liga). */
@@ -241,7 +253,7 @@ export const useGameStore = defineStore('game', () => {
     transferOffers, transferHistory, negotiationAttempts, stadium, cup, jobOffers, managers, trophiesAwardedSeason,
     confidence, confidenceLog, dismissal, headlines, academy, calendarStartYear, leagueResults, reserveTeams,
     seasonStats, bestXIHistory, libertadores, continentalTeams, libertadoresQualified,
-    worldCup, nationalTeams, nationalJob, nationalOffers, nationalTactic,
+    worldCup, nationalTeams, nationalJob, nationalOffers, nationalTactic, champions, europeanTeams, championsQualified,
   }, 2)
 
   // O formato da liga (4×8 ou 2×20) vem dos próprios clubes da carreira salva.
@@ -304,12 +316,21 @@ export const useGameStore = defineStore('game', () => {
   const leagueFinished = computed(() => round.value >= totalRounds.value)
   const libertadoresFinished = computed(() => !libertadores.value || libertadores.value.championId !== null)
   const worldCupFinished = computed(() => !worldCup.value || worldCup.value.championId !== null)
+  const championsFinished = computed(() => !champions.value || champions.value.championId !== null)
+  /** A etapa atual da Liga dos Campeões é de mata-mata. */
+  const championsKnockout = computed(() => !!champions.value && !isGroupStage(champions.value))
   /** A etapa atual da Copa do Mundo é de mata-mata. */
   const worldCupKnockout = computed(() => !!worldCup.value && !isGroupStage(worldCup.value))
   /** A etapa atual da Libertadores é de mata-mata (empate vai para os pênaltis). */
   const libertadoresKnockout = computed(() => !!libertadores.value && !isGroupStage(libertadores.value))
   const isSeasonOver = computed(
-    () => hasCareer.value && leagueFinished.value && cupFinished.value && libertadoresFinished.value && worldCupFinished.value,
+    () =>
+      hasCareer.value &&
+      leagueFinished.value &&
+      cupFinished.value &&
+      libertadoresFinished.value &&
+      championsFinished.value &&
+      worldCupFinished.value,
   )
 
   /**
@@ -321,10 +342,12 @@ export const useGameStore = defineStore('game', () => {
     const c = cup.value
     const l = libertadores.value
     const w = worldCup.value
-    // Em ordem de prioridade (empate no mesmo intervalo: Copa do Brasil, depois Libertadores, depois Copa do Mundo).
+    const ucl = champions.value
+    // Em ordem de prioridade (empate no mesmo intervalo: Copa do Brasil, Libertadores, Liga dos Campeões, Copa do Mundo).
     const pending: [Competition, number][] = []
     if (c && !cupFinished.value) pending.push(['cup', c.schedule[c.currentRound]!])
     if (l && !libertadoresFinished.value) pending.push(['libertadores', l.schedule[l.stage]!])
+    if (ucl && !championsFinished.value) pending.push(['champions', ucl.schedule[ucl.stage]!])
     if (w && !worldCupFinished.value) pending.push(['worldcup', w.schedule[w.stage]!])
     const due = pending.filter(([, at]) => round.value >= at || leagueFinished.value)
     if (due.length) return due.reduce((best, cur) => (cur[1] < best[1] ? cur : best))[0]
@@ -339,6 +362,9 @@ export const useGameStore = defineStore('game', () => {
     if (nextEvent.value === 'worldcup') {
       return worldCup.value ? libertadoresTies(worldCup.value).map((t) => ({ homeId: t.homeId, awayId: t.awayId })) : []
     }
+    if (nextEvent.value === 'champions') {
+      return champions.value ? libertadoresTies(champions.value).map((t) => ({ homeId: t.homeId, awayId: t.awayId })) : []
+    }
     return fixtures.value[round.value] ?? []
   })
 
@@ -347,6 +373,7 @@ export const useGameStore = defineStore('game', () => {
     if (nextEvent.value === 'cup') return `${CUP_NAME} · ${currentCupRound.value?.name ?? ''}`
     if (nextEvent.value === 'libertadores') return `${LIBERTADORES_NAME} · ${stageName(libertadores.value?.stage ?? 0)}`
     if (nextEvent.value === 'worldcup') return `${WORLD_CUP_NAME} · ${stageName(worldCup.value?.stage ?? 0, WORLD_CUP_GROUP_ROUNDS)}`
+    if (nextEvent.value === 'champions') return `${CHAMPIONS_NAME} · ${stageName(champions.value?.stage ?? 0)}`
     if (nextEvent.value === 'league') return `${DIVISION_LABELS[managedTeam.value?.division ?? 'A']} · Rodada ${round.value + 1}`
     return 'Temporada encerrada'
   })
@@ -409,6 +436,7 @@ export const useGameStore = defineStore('game', () => {
       cup.value?.schedule ?? [],
       libertadores.value?.schedule ?? [],
       worldCup.value?.schedule ?? [],
+      champions.value?.schedule ?? [],
     ),
   )
   /** Data do próximo compromisso (rodada do campeonato ou fase da Copa). */
@@ -422,7 +450,9 @@ export const useGameStore = defineStore('game', () => {
           ? (cup.value?.currentRound ?? 0)
           : event === 'libertadores'
             ? (libertadores.value?.stage ?? 0)
-            : (worldCup.value?.stage ?? 0)
+            : event === 'champions'
+              ? (champions.value?.stage ?? 0)
+              : (worldCup.value?.stage ?? 0)
     return calendar.value.find((e) => e.kind === event && e.index === index)?.date ?? null
   })
 
@@ -443,21 +473,9 @@ export const useGameStore = defineStore('game', () => {
     }
     return { state: 'alive' as const, roundName: c.rounds[c.currentRound]?.name ?? '' }
   })
-  /** Situação do clube gerenciado na Libertadores desta temporada. */
-  const managedLibertadoresStatus = computed(() => {
-    const l = libertadores.value
-    const id = managedTeamId.value
-    if (!l || !id || !groupOf(l, id)) return { state: 'absent' as const, stageName: '' }
-    if (l.championId === id) return { state: 'champion' as const, stageName: 'Final' }
-    if (l.stage >= GROUP_ROUNDS) {
-      const alive = l.knockout.every((r) => r.ties.some((t) => (t.homeId === id || t.awayId === id) && (!t.winnerId || t.winnerId === id)))
-      if (!alive) {
-        const out = l.knockout.find((r) => r.ties.some((t) => (t.homeId === id || t.awayId === id) && t.winnerId && t.winnerId !== id))
-        return { state: 'eliminated' as const, stageName: out?.name ?? 'Fase de grupos' }
-      }
-    }
-    return { state: 'alive' as const, stageName: stageName(l.stage) }
-  })
+  /** Situação do clube gerenciado na Libertadores e na Liga dos Campeões desta temporada. */
+  const managedLibertadoresStatus = computed(() => clubTournamentStatus('libertadores'))
+  const managedChampionsStatus = computed(() => clubTournamentStatus('champions'))
   const nextFixture = computed(
     () => currentFixtures.value.find((f) => f.homeId === lineupTeamId.value || f.awayId === lineupTeamId.value) ?? null,
   )
@@ -534,6 +552,7 @@ export const useGameStore = defineStore('game', () => {
       teams.value.find((t) => t.id === id) ??
       continentalTeams.value.find((t) => t.id === id) ??
       nationalTeams.value.find((t) => t.id === id) ??
+      europeanTeams.value.find((t) => t.id === id) ??
       null
     )
   }
@@ -598,6 +617,7 @@ export const useGameStore = defineStore('game', () => {
     negotiationAttempts.value = {}
     jobOffers.value = []
     libertadoresQualified.value = []
+    championsQualified.value = []
     startSeason()
     const team = managedTeam.value!
     budget.value = team.reputation * 100_000
@@ -640,6 +660,7 @@ export const useGameStore = defineStore('game', () => {
     reserveTeams.value.forEach((t) => assignShirtNumbers(t.players))
     cup.value = createCup(cupTeams(), season.value, 0, totalRounds)
     startLibertadores(0)
+    startChampions(0)
     // A Copa do Mundo só existe nos anos de Copa (2030, 2034...).
     if (isWorldCupYear(currentYear.value)) startWorldCup(0)
     else clearWorldCup()
@@ -835,6 +856,10 @@ export const useGameStore = defineStore('game', () => {
     }
     // Vagas na próxima Libertadores: os primeiros da Série A, antes do acesso e do rebaixamento.
     libertadoresQualified.value = divisionStandings(DIVISIONS[0]).slice(0, BRAZIL_SPOTS).map((r) => r.teamId)
+    // Vagas na próxima Liga dos Campeões: os primeiros de cada liga estrangeira.
+    championsQualified.value = FOREIGN_DIVISIONS.flatMap((d) =>
+      divisionStandings(d).slice(0, CHAMPIONS_SPOTS_PER_LEAGUE).map((r) => r.teamId),
+    )
     // Emprestados voltam antes de qualquer troca de clube ou de série.
     returnAllLoans()
     applyPromotionsAndRelegations()
@@ -1375,6 +1400,7 @@ export const useGameStore = defineStore('game', () => {
     if (matches[0]?.competition === 'cup') return applyCupResults(matches)
     if (matches[0]?.competition === 'libertadores') return applyLibertadoresResults(matches)
     if (matches[0]?.competition === 'worldcup') return applyWorldCupResults(matches)
+    if (matches[0]?.competition === 'champions') return applyClubTournamentResults('champions', matches)
     // Público calculado com a posição na tabela antes da rodada.
     const gateCtx = gateContext.value
     for (const m of matches) {
@@ -1620,20 +1646,51 @@ export const useGameStore = defineStore('game', () => {
     announceSeasonEnd()
   }
 
-  // --- Libertadores ---
+  // --- Libertadores e Liga dos Campeões (torneios de clubes com grupos e mata-mata) ---
+
+  /** Estado, nome, ícone, premiação e clubes de fora da liga de cada torneio de clubes. */
+  function clubTournament(kind: ClubTournament) {
+    return kind === 'libertadores'
+      ? { state: libertadores, name: LIBERTADORES_NAME, icon: '🌎', prizes: LIBERTADORES_PRIZES, outsiders: continentalTeams }
+      : { state: champions, name: CHAMPIONS_NAME, icon: '⭐', prizes: CHAMPIONS_PRIZES, outsiders: europeanTeams }
+  }
+
+  /** Situação do clube gerenciado num torneio de clubes. */
+  function clubTournamentStatus(kind: ClubTournament) {
+    const l = clubTournament(kind).state.value
+    const id = managedTeamId.value
+    if (!l || !id || !groupOf(l, id)) return { state: 'absent' as const, stageName: '' }
+    const rounds = groupRoundCount(l)
+    if (l.championId === id) return { state: 'champion' as const, stageName: 'Final' }
+    if (l.stage >= rounds) {
+      const alive = l.knockout.every((r) => r.ties.some((t) => (t.homeId === id || t.awayId === id) && (!t.winnerId || t.winnerId === id)))
+      if (!alive) {
+        const out = l.knockout.find((r) => r.ties.some((t) => (t.homeId === id || t.awayId === id) && t.winnerId && t.winnerId !== id))
+        return { state: 'eliminated' as const, stageName: out?.name ?? 'Fase de grupos' }
+      }
+    }
+    return { state: 'alive' as const, stageName: stageName(l.stage, rounds) }
+  }
+
+  function applyLibertadoresResults(matches: LiveMatch[], quick = false) {
+    applyClubTournamentResults('libertadores', matches, quick)
+  }
 
   /**
-   * Resultados de uma etapa da Libertadores: atualiza os grupos ou o mata-mata, paga os prêmios do clube
+   * Resultados de uma etapa de um torneio de clubes: atualiza os grupos ou o mata-mata, paga os prêmios do clube
    * gerenciado e prepara a etapa seguinte. `quick` = etapa simulada na hora, sem o seu clube (sem desgaste nem cartões).
    */
-  function applyLibertadoresResults(matches: LiveMatch[], quick = false) {
-    const l = libertadores.value
+  function applyClubTournamentResults(kind: ClubTournament, matches: LiveMatch[], quick = false) {
+    const info = clubTournament(kind)
+    const l = info.state.value
     if (!l || l.championId) return
+    const { name, icon, prizes } = info
     const ties = libertadoresTies(l)
     const groupStage = isGroupStage(l)
+    const rounds = groupRoundCount(l)
     const stage = l.stage
-    const label = stageName(stage)
-    const knockoutRound = groupStage ? null : l.knockout[stage - GROUP_ROUNDS]!
+    const label = stageName(stage, rounds)
+    const knockoutRound = groupStage ? null : l.knockout[stage - rounds]!
     const isFinal = knockoutRound?.ties.length === 1
     const gateCtx = gateContext.value
     const id = managedTeamId.value
@@ -1664,39 +1721,35 @@ export const useGameStore = defineStore('game', () => {
         const opp = getTeam(isHome ? tie.awayId : tie.homeId)!
         const pens = tie.penalties ? ` (pênaltis ${tie.penalties.home} x ${tie.penalties.away})` : ''
         const score = `${m.homeGoals} x ${m.awayGoals}${pens}`
-        collectMatchIncome(isHome, opp.id, gateCtx, 'libertadores', m.venue)
+        collectMatchIncome(isHome, opp.id, gateCtx, kind, m.venue)
         if (groupStage) {
           if (stage === 0) {
-            budget.value += LIBERTADORES_PRIZES.entry
-            addNews(`🌎 Estreia na ${LIBERTADORES_NAME}: cota de participação de ${formatMoney(LIBERTADORES_PRIZES.entry)}.`)
+            budget.value += prizes.entry
+            addNews(`${icon} Estreia na ${name}: cota de participação de ${formatMoney(prizes.entry)}.`)
           }
           const verb = tie.winnerId === id ? 'vitória' : tie.winnerId ? 'derrota' : 'empate'
-          const prize = tie.winnerId === id ? LIBERTADORES_PRIZES.groupWin : tie.winnerId ? 0 : LIBERTADORES_PRIZES.groupDraw
+          const prize = tie.winnerId === id ? prizes.groupWin : tie.winnerId ? 0 : prizes.groupDraw
           budget.value += prize
-          addNews(`🌎 ${LIBERTADORES_NAME}: ${verb} contra o ${opp.name} (${score})${prize ? `, prêmio de ${formatMoney(prize)}` : ''}.`)
-          if (tie.winnerId === id) changeConfidence(1, 2, `Vitória na ${LIBERTADORES_NAME} contra o ${opp.name}`)
-          else if (tie.winnerId) changeConfidence(-1, -1, `Derrota na ${LIBERTADORES_NAME} para o ${opp.name}`)
+          addNews(`${icon} ${name}: ${verb} contra o ${opp.name} (${score})${prize ? `, prêmio de ${formatMoney(prize)}` : ''}.`)
+          if (tie.winnerId === id) changeConfidence(1, 2, `Vitória na ${name} contra o ${opp.name}`)
+          else if (tie.winnerId) changeConfidence(-1, -1, `Derrota na ${name} para o ${opp.name}`)
         } else {
-          const prize = LIBERTADORES_PRIZES.knockout[stage - GROUP_ROUNDS] ?? 0
+          const prize = prizes.knockout[stage - rounds] ?? 0
           if (tie.winnerId === id) {
             budget.value += prize
-            changeConfidence(
-              isFinal ? 15 : 3,
-              isFinal ? 20 : 4,
-              isFinal ? `Campeão da ${LIBERTADORES_NAME}!` : `Classificação na ${LIBERTADORES_NAME} contra o ${opp.name}`,
-            )
+            changeConfidence(isFinal ? 15 : 3, isFinal ? 20 : 4, isFinal ? `Campeão da ${name}!` : `Classificação na ${name} contra o ${opp.name}`)
             addNews(
               isFinal
-                ? `🏆 CAMPEÃO DA ${LIBERTADORES_NAME.toUpperCase()}! Vitória sobre o ${opp.name}: ${score}. Prêmio de ${formatMoney(prize)}.`
-                : `🌎 ${LIBERTADORES_NAME}: classificado contra o ${opp.name} (${score}). Prêmio de ${formatMoney(prize)}.`,
+                ? `🏆 CAMPEÃO DA ${name.toUpperCase()}! Vitória sobre o ${opp.name}: ${score}. Prêmio de ${formatMoney(prize)}.`
+                : `${icon} ${name}: classificado contra o ${opp.name} (${score}). Prêmio de ${formatMoney(prize)}.`,
             )
           } else {
-            if (isFinal) budget.value += LIBERTADORES_PRIZES.runnerUp
-            changeConfidence(-2, -3, `Eliminação na ${LIBERTADORES_NAME} para o ${opp.name}`)
+            if (isFinal) budget.value += prizes.runnerUp
+            changeConfidence(-2, -3, `Eliminação na ${name} para o ${opp.name}`)
             addNews(
               isFinal
-                ? `🌎 ${LIBERTADORES_NAME}: vice-campeão após perder para o ${opp.name} (${score}). Prêmio de ${formatMoney(LIBERTADORES_PRIZES.runnerUp)}.`
-                : `🌎 ${LIBERTADORES_NAME}: eliminado pelo ${opp.name} ${inRound(label)} (${score}).`,
+                ? `${icon} ${name}: vice-campeão após perder para o ${opp.name} (${score}). Prêmio de ${formatMoney(prizes.runnerUp)}.`
+                : `${icon} ${name}: eliminado pelo ${opp.name} ${inRound(label)} (${score}).`,
             )
           }
         }
@@ -1707,7 +1760,7 @@ export const useGameStore = defineStore('game', () => {
       matchHeadlines(matches, {
         season: season.value,
         round: round.value + 1,
-        context: () => `${LIBERTADORES_NAME} · ${label}`,
+        context: () => `${name} · ${label}`,
         teamName: (teamId) => getTeam(teamId)?.name ?? '?',
         // Entre países não há "série abaixo": só vale a diferença de força.
         division: () => undefined,
@@ -1718,13 +1771,13 @@ export const useGameStore = defineStore('game', () => {
 
     if (groupStage) {
       l.stage++
-      if (l.stage === GROUP_ROUNDS) {
+      if (l.stage === rounds) {
         l.knockout.push(drawRoundOf16(l))
-        announceGroupStageEnd()
+        announceGroupStageEnd(kind)
       }
     } else if (isFinal) {
       l.championId = knockoutRound!.ties[0]!.winnerId
-      if (l.championId !== id) addNews(`🌎 ${getTeam(l.championId!)?.name} conquista a ${LIBERTADORES_NAME}!`)
+      if (l.championId !== id) addNews(`${icon} ${getTeam(l.championId!)?.name} conquista a ${name}!`)
     } else {
       l.knockout.push(nextKnockoutRound(knockoutRound!))
       l.stage++
@@ -1732,37 +1785,38 @@ export const useGameStore = defineStore('game', () => {
 
     if (quick) return
     relineupAiTeams()
-    continentalTeams.value.forEach((t) => applyLineup(t, AI_TACTIC.formation))
+    info.outsiders.value.forEach((t) => applyLineup(t, AI_TACTIC.formation))
     simulateTournamentsWithoutUser()
     announceSeasonEnd()
   }
 
   /** Fim da fase de grupos: avisa se o clube gerenciado passou ou caiu. */
-  function announceGroupStageEnd() {
-    const l = libertadores.value
+  function announceGroupStageEnd(kind: ClubTournament) {
+    const { state, name, icon } = clubTournament(kind)
+    const l = state.value
     const id = managedTeamId.value
     const group = l && id ? groupOf(l, id) : null
     if (!l || !id || !group) return
     const table = groupTable(l, l.groups.indexOf(group))
     const position = table.findIndex((r) => r.teamId === id) + 1
     if (position <= 2) {
-      addNews(`🌎 ${LIBERTADORES_NAME}: seu time terminou em ${position}º no Grupo ${group.name} e está nas oitavas!`)
-      changeConfidence(3, 4, `Classificado às oitavas da ${LIBERTADORES_NAME}`)
+      addNews(`${icon} ${name}: seu time terminou em ${position}º no Grupo ${group.name} e está nas oitavas!`)
+      changeConfidence(3, 4, `Classificado às oitavas da ${name}`)
     } else {
-      addNews(`🌎 ${LIBERTADORES_NAME}: seu time terminou em ${position}º no Grupo ${group.name} e está eliminado.`)
-      changeConfidence(-4, -5, `Eliminado na fase de grupos da ${LIBERTADORES_NAME}`)
+      addNews(`${icon} ${name}: seu time terminou em ${position}º no Grupo ${group.name} e está eliminado.`)
+      changeConfidence(-4, -5, `Eliminado na fase de grupos da ${name}`)
     }
   }
 
   /**
-   * Etapas da Libertadores sem o clube gerenciado (fora do torneio ou já eliminado) são simuladas na hora,
+   * Etapas de um torneio de clubes sem o clube gerenciado (fora do torneio ou já eliminado) são simuladas na hora,
    * sem precisar acompanhar os jogos.
    */
-  function simulateLibertadoresWithoutManaged() {
+  function simulateClubTournamentWithoutManaged(kind: ClubTournament) {
     let changed = false
     for (let guard = 0; guard < 20; guard++) {
-      const l = libertadores.value
-      if (!l || nextEvent.value !== 'libertadores') return changed
+      const l = clubTournament(kind).state.value
+      if (!l || nextEvent.value !== kind) return changed
       const ties = libertadoresTies(l)
       const id = managedTeamId.value
       if (ties.some((t) => t.homeId === id || t.awayId === id)) return changed
@@ -1772,8 +1826,8 @@ export const useGameStore = defineStore('game', () => {
         const homeSide = { attack: home.attack * homeAdvantage(t.homeId), defense: home.defense }
         const score = quickScore(homeSide, away)
         return {
-          id: `libertadores-${season.value}-${l.stage}-${i}-sim`,
-          competition: 'libertadores',
+          id: `${kind}-${season.value}-${l.stage}-${i}-sim`,
+          competition: kind,
           knockout: !isGroupStage(l),
           penalties: null,
           homeId: t.homeId,
@@ -1787,10 +1841,51 @@ export const useGameStore = defineStore('game', () => {
           events: [],
         }
       })
-      applyLibertadoresResults(matches, true)
+      applyClubTournamentResults(kind, matches, true)
       changed = true
     }
     return changed
+  }
+
+  /**
+   * Liga dos Campeões da temporada: os primeiros de cada liga estrangeira do jogo (La Liga, Premier League,
+   * Bundesliga) e 20 clubes de outras ligas da Europa. Só existe quando a carreira tem ligas estrangeiras (2×20).
+   * `playedRounds` empurra o calendário quando ela começa com o campeonato em andamento (saves antigos).
+   */
+  function startChampions(playedRounds: number) {
+    const leagues = FOREIGN_DIVISIONS.filter((d) => teams.value.some((t) => t.division === d))
+    if (!leagues.length) {
+      champions.value = null
+      europeanTeams.value = []
+      return
+    }
+    europeanTeams.value = createEuropeanTeams()
+    europeanTeams.value.forEach((t) => {
+      applyLineup(t, AI_TACTIC.formation)
+      assignShirtNumbers(t.players)
+    })
+    // Classificados da temporada anterior; sem eles (1ª temporada), os de maior reputação de cada liga.
+    const qualified = leagues.flatMap((d) => {
+      const saved = championsQualified.value.map((id) => getTeam(id)).filter((t): t is Team => !!t && t.division === d)
+      const pool = saved.length === CHAMPIONS_SPOTS_PER_LEAGUE ? saved : teamsByDivision(teams.value, d).sort((a, b) => b.reputation - a.reputation)
+      return pool.slice(0, CHAMPIONS_SPOTS_PER_LEAGUE)
+    })
+    champions.value = createChampions(
+      [...qualified, ...europeanTeams.value].slice(0, 32),
+      season.value,
+      fixtures.value.length,
+      [...(cup.value?.schedule ?? []), ...(libertadores.value?.schedule ?? [])],
+      playedRounds,
+      // Sorteio com gerador próprio: não mexe na sequência de Math.random usada pelas partidas.
+      createRng(hashString(`champions-${season.value}`) ^ Date.now()).next,
+    )
+    championsQualified.value = []
+    const id = managedTeamId.value
+    if (id && qualified.some((t) => t.id === id)) {
+      const group = groupOf(champions.value, id)!
+      const rivals = group.teamIds.filter((x) => x !== id).map((x) => getTeam(x)?.name).join(', ')
+      addNews(`⭐ ${CHAMPIONS_NAME}: seu time caiu no Grupo ${group.name}, com ${rivals}.`)
+    }
   }
 
   // --- Copa do Mundo ---
@@ -2031,9 +2126,10 @@ export const useGameStore = defineStore('game', () => {
   /** Simula na hora as etapas da Libertadores e da Copa do Mundo que não têm jogo do técnico (em qualquer ordem). */
   function simulateTournamentsWithoutUser() {
     for (let guard = 0; guard < 30; guard++) {
-      const lib = simulateLibertadoresWithoutManaged()
+      const lib = simulateClubTournamentWithoutManaged('libertadores')
+      const ucl = simulateClubTournamentWithoutManaged('champions')
       const wc = simulateWorldCupWithoutUser()
-      if (!lib && !wc) return
+      if (!lib && !ucl && !wc) return
     }
   }
 
@@ -2055,6 +2151,7 @@ export const useGameStore = defineStore('game', () => {
     for (const division of LEAGUE_DIVISIONS) give(divisionStandings(division)[0]?.teamId, { kind: 'league', division })
     give(cup.value?.championId, { kind: 'cup' })
     give(libertadores.value?.championId, { kind: 'libertadores' })
+    give(champions.value?.championId, { kind: 'champions' })
     // Seleções não têm técnico na prateleira: a taça só vai para você, se for campeão com a sua seleção.
     const wcChampion = worldCup.value?.championId
     if (wcChampion && wcChampion === nationalJob.value?.teamId) {
@@ -2171,6 +2268,10 @@ export const useGameStore = defineStore('game', () => {
 
   // Saves anteriores à Libertadores: cria a da temporada atual, encaixada nas rodadas restantes.
   if (hasCareer.value && !libertadores.value && fixtures.value.length) startLibertadores(round.value)
+  // Saves anteriores à Liga dos Campeões (com ligas estrangeiras): cria a desta temporada nas rodadas restantes.
+  if (hasCareer.value && !champions.value && fixtures.value.length && teams.value.some((t) => isForeignDivision(t.division))) {
+    startChampions(round.value)
+  }
   // Saves anteriores à Copa do Mundo, num ano de Copa: cria a desta temporada, encaixada nas rodadas restantes.
   if (hasCareer.value && !worldCup.value && fixtures.value.length && isWorldCupYear(currentYear.value)) startWorldCup(round.value)
   // Saves com a Libertadores em andamento sem o seu clube: põe em dia as etapas que já passaram.
@@ -2182,6 +2283,7 @@ export const useGameStore = defineStore('game', () => {
     hasCareer, managedTeam, starters, totalRounds, isSeasonOver, currentFixtures, nextFixture, nextOpponent,
     nextEvent, nextEventLabel, leagueFinished, cupFinished, currentCupRound, managedCupStatus,
     libertadores, continentalTeams, libertadoresQualified, libertadoresFinished, libertadoresKnockout, managedLibertadoresStatus,
+    champions, europeanTeams, championsQualified, championsFinished, championsKnockout, managedChampionsStatus,
     worldCup, nationalTeams, nationalJob, nationalOffers, nationalTactic, worldCupFinished, worldCupKnockout, nationalJobStatus,
     canAcceptNationalJob, acceptNationalJob, declineNationalOffers, managerPrestige, startWorldCup,
     lineupTeamId, lineupTeam, lineupTactic, coachingNational,

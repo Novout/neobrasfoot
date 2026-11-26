@@ -227,6 +227,10 @@ function standingPoints(row: { wins: number; draws: number }) {
             Campeão da Copa do Brasil: <strong>{{ game.getTeam(game.cup.championId)?.name }}</strong>
             <span v-if="game.cup.championId === game.managedTeamId" class="good"> 🏆</span>
           </p>
+          <p v-if="game.champions?.championId">
+            Campeão da Liga dos Campeões: <strong>{{ game.getTeam(game.champions.championId)?.name }}</strong>
+            <span v-if="game.champions.championId === game.managedTeamId" class="good"> 🏆</span>
+          </p>
           <p v-if="game.libertadores?.championId">
             Campeão da Libertadores: <strong>{{ game.getTeam(game.libertadores.championId)?.name }}</strong>
             <span v-if="game.libertadores.championId === game.managedTeamId" class="good"> 🏆</span>
@@ -249,7 +253,7 @@ function standingPoints(row: { wins: number; draws: number }) {
           <button class="btn" @click="watchCupRound">Acompanhar a rodada</button>
         </template>
         <template v-else-if="game.nextOpponent">
-          <h3 :class="{ 'cup-title': game.nextEvent === 'cup', 'libertadores-title': game.nextEvent === 'libertadores' || game.nextEvent === 'worldcup' }">
+          <h3 :class="{ 'cup-title': game.nextEvent === 'cup', 'libertadores-title': game.nextEvent === 'libertadores' || game.nextEvent === 'worldcup', 'champions-title': game.nextEvent === 'champions' }">
             {{ game.nextEventLabel }}
           </h3>
           <p v-if="game.coachingNational" class="national-note">🌍 Jogo da sua seleção: {{ game.lineupTeam?.name }}</p>
@@ -570,6 +574,9 @@ a.tag {
 }
 .libertadores-title {
   color: #fb923c;
+}
+.champions-title {
+  color: #38bdf8;
 }
 .national-note {
   margin: -0.3rem 0 0.4rem;

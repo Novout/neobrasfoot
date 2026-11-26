@@ -129,7 +129,7 @@ export interface PenaltyKick {
   scored: boolean
 }
 
-export type Competition = 'league' | 'cup' | 'libertadores' | 'worldcup'
+export type Competition = 'league' | 'cup' | 'libertadores' | 'champions' | 'worldcup'
 
 export interface PenaltyScore {
   home: number
@@ -259,7 +259,7 @@ export interface Dismissal {
   reason: string
 }
 
-export type TrophyKind = 'league' | 'cup' | 'libertadores' | 'worldcup'
+export type TrophyKind = 'league' | 'cup' | 'libertadores' | 'champions' | 'worldcup'
 
 export interface Trophy {
   kind: TrophyKind

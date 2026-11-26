@@ -122,12 +122,17 @@ function play() {
     </section>
 
     <aside class="prematch__side">
-      <div v-if="game.nextOpponent" class="card versus" :class="{ 'versus--cup': game.nextEvent === 'cup' || game.nextEvent === 'libertadores' }">
+      <div v-if="game.nextOpponent" class="card versus" :class="{ 'versus--cup': game.nextEvent !== null && game.nextEvent !== 'league' }">
         <h3>{{ game.nextEventLabel }}</h3>
-        <p v-if="game.nextEvent === 'cup' || (game.nextEvent === 'libertadores' && game.libertadoresKnockout)" class="muted small">
+        <p v-if="game.nextEvent === 'cup' ||
+            (game.nextEvent === 'libertadores' && game.libertadoresKnockout) ||
+            (game.nextEvent === 'champions' && game.championsKnockout) ||
+            (game.nextEvent === 'worldcup' && game.worldCupKnockout)" class="muted small">
           Jogo único: se empatar, decide nos pênaltis.
         </p>
-        <p v-else-if="game.nextEvent === 'libertadores'" class="muted small">Fase de grupos: passam os 2 primeiros de cada grupo.</p>
+        <p v-else-if="game.nextEvent === 'libertadores' || game.nextEvent === 'champions' || game.nextEvent === 'worldcup'" class="muted small">
+          Fase de grupos: passam os 2 primeiros de cada grupo.
+        </p>
         <div class="versus__teams">
           <div>
             <TeamBadge :team="game.lineupTeam" :size="56" />

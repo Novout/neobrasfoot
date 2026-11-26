@@ -3,8 +3,8 @@ import { computed } from 'vue'
 import { COUNTRY_NAMES, countryOf } from '../data/libertadores'
 import type { Team } from '../types/game'
 
-/** Sigla do país de um clube (ARG, URU...), para a Libertadores. Clubes da liga são do Brasil. */
-const props = defineProps<{ team: Pick<Team, 'country'> | null | undefined }>()
+/** Sigla do país de um clube (ARG, URU...), para a Libertadores e a Liga dos Campeões. Clubes das séries são do Brasil. */
+const props = defineProps<{ team: Pick<Team, 'country' | 'division'> | null | undefined }>()
 const code = computed(() => countryOf(props.team))
 </script>
 
