@@ -156,7 +156,7 @@ describe('carreira no formato 2×20', () => {
     expect(game.teams.filter((t) => t.division === 'A')).toHaveLength(20)
     expect(game.teams.filter((t) => t.division === 'B')).toHaveLength(20)
     expect(game.fixtures).toHaveLength(38)
-  }, 240_000)
+  })
 
   it('começa com a Série C: 4 clubes reais com elenco, técnico e escudo', () => {
     expect(game.reserveTeams.map((t) => t.id).sort()).toEqual(['athletic-mg', 'botafogo-sp', 'ferroviaria', 'volta-redonda'])
