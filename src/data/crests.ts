@@ -1,4 +1,8 @@
 import crests from './templates/brasileirao-crests.json'
+import premierCrests from './templates/premier-crests.json'
+import bundesligaCrests from './templates/bundesliga-crests.json'
+import laligaCrests from './templates/laliga-crests.json'
+import nationalCrests from './templates/selecoes-crests.json'
 
 /**
  * Escudo de um clube: um link de imagem (https://...), um caminho dentro do jogo (ex.: "escudos/flamengo.png",
@@ -11,10 +15,23 @@ export const MAX_CREST_LENGTH = 200_000
 /** Lado, em pixels, das imagens de escudo enviadas no editor (são reduzidas para este tamanho). */
 export const CREST_SIZE = 128
 
+/** Id do clube -> caminho do escudo baixado no jogo (public/escudos/<id>.png), pelo registro de uma liga. */
+function crestPaths(manifest: unknown): Record<string, Crest> {
+  return Object.fromEntries(
+    Object.keys((manifest as { clubs: Record<string, unknown> }).clubs).map((id) => [id, `escudos/${id}.png`]),
+  )
+}
+
 /** Escudos baixados para o template Brasileirão (id do clube -> caminho no jogo). */
-export const BRASILEIRAO_CRESTS: Record<string, Crest> = Object.fromEntries(
-  Object.keys((crests as { clubs: Record<string, unknown> }).clubs).map((id) => [id, `escudos/${id}.png`]),
-)
+export const BRASILEIRAO_CRESTS: Record<string, Crest> = crestPaths(crests)
+/** Escudos baixados das ligas europeias (`npm run update-escudos-premier` / `-bundesliga` / `-laliga`). */
+export const PREMIER_CRESTS: Record<string, Crest> = crestPaths(premierCrests)
+export const BUNDESLIGA_CRESTS: Record<string, Crest> = crestPaths(bundesligaCrests)
+export const LALIGA_CRESTS: Record<string, Crest> = crestPaths(laligaCrests)
+/** Escudos das seleções da Copa do Mundo (`npm run update-escudos-selecoes`). */
+export const NATIONAL_CRESTS: Record<string, Crest> = crestPaths(nationalCrests)
+/** Todos os escudos baixados, de qualquer liga. */
+export const ALL_CRESTS: Record<string, Crest> = { ...BRASILEIRAO_CRESTS, ...PREMIER_CRESTS, ...BUNDESLIGA_CRESTS, ...LALIGA_CRESTS }
 
 export function isValidCrest(value: unknown): value is Crest {
   if (typeof value !== 'string') return false

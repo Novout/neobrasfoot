@@ -26,8 +26,8 @@ describe('Copa do Mundo: seleções e regras', () => {
     for (const t of teams) {
       expect(t.players.length, t.id).toBeGreaterThanOrEqual(16)
       expect(t.country, t.id).toBeTruthy()
-      // Sem escudo: o distintivo usa as cores.
-      expect(t.crest, t.id).toBeUndefined()
+      // Escudo real da federação, baixado da Wikipédia (public/escudos/<id>.png).
+      expect(t.crest, t.id).toBe(`escudos/${t.id}.png`)
     }
     const count = (c: string) => NATIONS.filter((n) => n.confederation === c).length
     expect(count('UEFA')).toBe(13)

@@ -1,10 +1,12 @@
 import type { Team } from '../../types/game'
+import { PREMIER_CRESTS } from '../crests'
 import { foreignLeagueTeams, type ForeignClub, type ForeignSquads } from './foreignLeague'
 import squads from './premier-squads.json'
 
 /**
  * Premier League (1ª divisão inglesa), temporada 2026–27: 20 clubes, 38 rodadas, em paralelo às séries no 2×20.
  * Elencos, técnicos e estádios reais: premier-squads.json (`npm run update-premier`).
+ * Escudos: public/escudos/<id>.png (`npm run update-escudos-premier`).
  */
 
 export const PREMIER_LEAGUE_NAME = 'Premier League'
@@ -35,5 +37,5 @@ const CLUBS: ForeignClub[] = [
 
 /** Clubes da Premier League com elenco, técnico e estádio reais. */
 export function premierLeagueTeams(): Team[] {
-  return foreignLeagueTeams(PREMIER_LEAGUE_NAME, 'ENG', CLUBS, squads as ForeignSquads)
+  return foreignLeagueTeams(PREMIER_LEAGUE_NAME, 'ENG', CLUBS, squads as ForeignSquads, PREMIER_CRESTS)
 }

@@ -1,0 +1,86 @@
+{
+ "fetchedAt": "2026-11-27",
+ "size": 128,
+ "clubs": {
+  "en-arsenal": {
+   "file": "Arsenal FC.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Arsenal_FC.svg"
+  },
+  "en-aston-villa": {
+   "file": "Aston Villa FC new crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Aston_Villa_FC_new_crest.svg"
+  },
+  "en-bournemouth": {
+   "file": "AFC Bournemouth (2013).svg",
+   "source": "https://en.wikipedia.org/wiki/File:AFC_Bournemouth_(2013).svg"
+  },
+  "en-brentford": {
+   "file": "Brentford FC crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Brentford_FC_crest.svg"
+  },
+  "en-brighton": {
+   "file": "Brighton and Hove Albion FC crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Brighton_and_Hove_Albion_FC_crest.svg"
+  },
+  "en-chelsea": {
+   "file": "Chelsea FC.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Chelsea_FC.svg"
+  },
+  "en-coventry": {
+   "file": "Coventry City FC crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Coventry_City_FC_crest.svg"
+  },
+  "en-crystal-palace": {
+   "file": "Crystal Palace FC logo (2022).svg",
+   "source": "https://en.wikipedia.org/wiki/File:Crystal_Palace_FC_logo_(2022).svg"
+  },
+  "en-everton": {
+   "file": "Everton FC logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Everton_FC_logo.svg"
+  },
+  "en-fulham": {
+   "file": "Fulham FC.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Fulham_FC_(shield).svg"
+  },
+  "en-hull": {
+   "file": "Hull City A.F.C. logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Hull_City_A.F.C._logo.svg"
+  },
+  "en-ipswich": {
+   "file": "Ipswich Town.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Ipswich_Town.svg"
+  },
+  "en-leeds": {
+   "file": "Leeds United F.C. logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Leeds_United_F.C._logo.svg"
+  },
+  "en-liverpool": {
+   "file": "Liverpool FC.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Liverpool_FC.svg"
+  },
+  "en-man-city": {
+   "file": "Manchester City FC badge.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Manchester_City_FC_badge.svg"
+  },
+  "en-man-united": {
+   "file": "Manchester United FC crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Manchester_United_FC_crest.svg"
+  },
+  "en-newcastle": {
+   "file": "Newcastle United FC 2026 crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Newcastle_United_FC_2026_crest.svg"
+  },
+  "en-nottingham-forest": {
+   "file": "Nottingham Forest F.C. logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Nottingham_Forest_F.C._logo.svg"
+  },
+  "en-sunderland": {
+   "file": "Logo Sunderland.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Logo_Sunderland.svg"
+  },
+  "en-tottenham": {
+   "file": "Tottenham Hotspur.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Tottenham_Hotspur.svg"
+  }
+ }
+}

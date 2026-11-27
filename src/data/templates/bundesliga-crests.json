@@ -1,0 +1,78 @@
+{
+ "fetchedAt": "2026-11-27",
+ "size": 128,
+ "clubs": {
+  "de-bayern": {
+   "file": "FC Bayern München logo (2024).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:FC_Bayern_M%C3%BCnchen_logo_(2024).svg"
+  },
+  "de-dortmund": {
+   "file": "Borussia Dortmund logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Borussia_Dortmund_logo.svg"
+  },
+  "de-leverkusen": {
+   "file": "Bayer 04 Leverkusen logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Bayer_04_Leverkusen_logo.svg"
+  },
+  "de-leipzig": {
+   "file": "RB Leipzig 2014 logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:RB_Leipzig_2014_logo.svg"
+  },
+  "de-stuttgart": {
+   "file": "VfB Stuttgart 1893 Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:VfB_Stuttgart_1893_Logo.svg"
+  },
+  "de-frankfurt": {
+   "file": "Eintracht Frankfurt crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Eintracht_Frankfurt_crest.svg"
+  },
+  "de-freiburg": {
+   "file": "SC Freiburg logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:SC_Freiburg_logo.svg"
+  },
+  "de-gladbach": {
+   "file": "Borussia Mönchengladbach logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Borussia_M%C3%B6nchengladbach_logo.svg"
+  },
+  "de-hoffenheim": {
+   "file": "Logo TSG Hoffenheim.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Logo_TSG_Hoffenheim.svg"
+  },
+  "de-werder": {
+   "file": "SV-Werder-Bremen-Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:SV-Werder-Bremen-Logo.svg"
+  },
+  "de-mainz": {
+   "file": "1. FSV Mainz 05 logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:1._FSV_Mainz_05_logo.svg"
+  },
+  "de-union-berlin": {
+   "file": "1. FC Union Berlin Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:1._FC_Union_Berlin_Logo.svg"
+  },
+  "de-augsburg": {
+   "file": "FC Augsburg logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:FC_Augsburg_logo.svg"
+  },
+  "de-koln": {
+   "file": "Wappen 1 FC Koeln.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:1._FC_Koeln_Logo_2014%E2%80%93.svg"
+  },
+  "de-hamburg": {
+   "file": "HSV-Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Hamburger_SV_logo.svg"
+  },
+  "de-schalke": {
+   "file": "FC Schalke 04 Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:FC_Schalke_04_Logo.svg"
+  },
+  "de-paderborn": {
+   "file": "SC Paderborn 07 Logo new.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:SC_Paderborn_07_Logo_new.svg"
+  },
+  "de-elversberg": {
+   "file": "SV Elversberg Logo 2021.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:SV_Elversberg_Logo_2021.svg"
+  }
+ }
+}

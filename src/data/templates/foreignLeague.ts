@@ -5,7 +5,7 @@ import { realSquadFrom, type RawPlayer } from './brasileirao'
 /**
  * Ligas estrangeiras com clubes reais (La Liga, Premier League, Bundesliga): disputadas em paralelo às séries
  * brasileiras no formato 2×20, fora da pirâmide (ninguém sobe nem cai) e fora da Copa do Brasil e da Libertadores.
- * Sem escudos: o distintivo usa as cores do clube.
+ * Escudo: o baixado para a liga, quando há (La Liga, Premier League e Bundesliga); sem ele, o distintivo usa as cores do clube.
  *
  * Elencos, técnicos e estádios reais vêm do arquivo baixado da Wikipédia/Wikidata para cada liga
  * (`npm run update-laliga`, `update-premier`, `update-bundesliga`). Idade e OVR são calculados como no Brasileirão.
@@ -23,7 +23,13 @@ export interface ForeignSquads {
  * Clubes de uma liga estrangeira, com elenco, técnico e estádio reais (nova cópia a cada chamada).
  * O estádio da ficha do clube na Wikipédia tem prioridade; `stadiumName` fica como reserva.
  */
-export function foreignLeagueTeams(name: string, division: DivisionId, clubs: ForeignClub[], squads: ForeignSquads): Team[] {
+export function foreignLeagueTeams(
+  name: string,
+  division: DivisionId,
+  clubs: ForeignClub[],
+  squads: ForeignSquads,
+  crests: Record<string, string> = {},
+): Team[] {
   return teamsFromLeagueFile({
     format: LEAGUE_FORMAT,
     version: LEAGUE_FORMAT_VERSION,
@@ -35,6 +41,7 @@ export function foreignLeagueTeams(name: string, division: DivisionId, clubs: Fo
         division,
         stadiumName: raw?.stadium ?? t.stadiumName,
         ...(raw?.manager ? { manager: raw.manager } : {}),
+        ...(crests[t.id] ? { crest: crests[t.id] } : {}),
         players: realSquadFrom(raw?.players, t.id, t.reputation, squads.fetchedAt),
       }
     }),

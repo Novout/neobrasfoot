@@ -1,0 +1,86 @@
+{
+ "fetchedAt": "2026-11-27",
+ "size": 128,
+ "clubs": {
+  "es-real-madrid": {
+   "file": "Real Madrid CF.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Real_Madrid_CF.svg"
+  },
+  "es-barcelona": {
+   "file": "FC Barcelona (crest).svg",
+   "source": "https://en.wikipedia.org/wiki/File:FC_Barcelona_(crest).svg"
+  },
+  "es-atletico-madrid": {
+   "file": "Atletico Madrid Logo 2024.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Atletico_Madrid_Logo_2024.svg"
+  },
+  "es-athletic": {
+   "file": "Club Athletic Bilbao logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Club_Athletic_Bilbao_logo.svg"
+  },
+  "es-villarreal": {
+   "file": "Villarreal CF logo-en.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Villarreal_CF_logo-en.svg"
+  },
+  "es-real-sociedad": {
+   "file": "Real Sociedad logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Real_Sociedad_logo.svg"
+  },
+  "es-betis": {
+   "file": "Real Betis 2022 logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Real_Betis_2022_logo.svg"
+  },
+  "es-sevilla": {
+   "file": "Sevilla_FC_logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Sevilla_FC_logo.svg"
+  },
+  "es-valencia": {
+   "file": "Valenciacf.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Valenciacf.svg"
+  },
+  "es-celta": {
+   "file": "RC Celta de Vigo logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:RC_Celta_de_Vigo_logo.svg"
+  },
+  "es-osasuna": {
+   "file": "CA Osasuna 2024 crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:CA_Osasuna_2024_crest.svg"
+  },
+  "es-rayo": {
+   "file": "Rayo Vallecano logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Rayo_Vallecano_logo.svg"
+  },
+  "es-getafe": {
+   "file": "Getafe logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Getafe_logo.svg"
+  },
+  "es-espanyol": {
+   "file": "RCD Espanyol crest.svg",
+   "source": "https://en.wikipedia.org/wiki/File:RCD_Espanyol_crest.svg"
+  },
+  "es-alaves": {
+   "file": "Deportivo Alaves logo (2020).svg",
+   "source": "https://en.wikipedia.org/wiki/File:Deportivo_Alaves_logo_(2020).svg"
+  },
+  "es-deportivo": {
+   "file": "RC Deportivo A Coruña logo 2026.svg",
+   "source": "https://en.wikipedia.org/wiki/File:RC_Deportivo_A_Coru%C3%B1a_logo_2026.svg"
+  },
+  "es-elche": {
+   "file": "Elche CF logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Elche_CF_logo.svg"
+  },
+  "es-malaga": {
+   "file": "Málaga CF.svg",
+   "source": "https://en.wikipedia.org/wiki/File:M%C3%A1laga_CF.svg"
+  },
+  "es-racing": {
+   "file": "Racing de Santander logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Racing_de_Santander_logo.svg"
+  },
+  "es-levante": {
+   "file": "Levante Unión Deportiva, S.A.D. logo.svg",
+   "source": "https://en.wikipedia.org/wiki/File:Levante_Uni%C3%B3n_Deportiva,_S.A.D._logo.svg"
+  }
+ }
+}

@@ -1,4 +1,5 @@
 import type { Team } from '../../types/game'
+import { BUNDESLIGA_CRESTS } from '../crests'
 import { foreignLeagueTeams, type ForeignClub, type ForeignSquads } from './foreignLeague'
 import squads from './bundesliga-squads.json'
 
@@ -6,6 +7,7 @@ import squads from './bundesliga-squads.json'
  * Bundesliga (1ª divisão alemã), temporada 2026–27: 18 clubes e 34 rodadas, como a real. Disputada em paralelo
  * às séries no 2×20 (38 rodadas): as 4 rodadas a mais são folgas espalhadas pela temporada.
  * Elencos, técnicos e estádios reais: bundesliga-squads.json (`npm run update-bundesliga`).
+ * Escudos: public/escudos/<id>.png (`npm run update-escudos-bundesliga`).
  */
 
 export const BUNDESLIGA_NAME = 'Bundesliga'
@@ -34,5 +36,5 @@ const CLUBS: ForeignClub[] = [
 
 /** Clubes da Bundesliga com elenco, técnico e estádio reais. */
 export function bundesligaTeams(): Team[] {
-  return foreignLeagueTeams(BUNDESLIGA_NAME, 'GER', CLUBS, squads as ForeignSquads)
+  return foreignLeagueTeams(BUNDESLIGA_NAME, 'GER', CLUBS, squads as ForeignSquads, BUNDESLIGA_CRESTS)
 }

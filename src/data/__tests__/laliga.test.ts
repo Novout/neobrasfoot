@@ -17,8 +17,8 @@ describe('La Liga: clubes e elencos reais', () => {
     for (const t of teams) {
       expect(t.players.length, t.id).toBeGreaterThanOrEqual(16)
       expect(t.managerName, t.id).toBeTruthy()
-      // Sem escudo: o distintivo usa as cores.
-      expect(t.crest, t.id).toBeUndefined()
+      // Escudo real baixado da Wikipédia (public/escudos/<id>.png).
+      expect(t.crest, t.id).toBe(`escudos/${t.id}.png`)
     }
     // Elenco real (não gerado): os nomes vêm dos dados baixados.
     const madrid = teams.find((t) => t.id === 'es-real-madrid')!

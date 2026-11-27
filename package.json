@@ -19,6 +19,10 @@
     "update-champions": "node scripts/fetch-brasileirao-squads.mjs --liga=europa",
     "update-mundial": "node scripts/fetch-brasileirao-squads.mjs --liga=mundial",
     "update-escudos": "node scripts/fetch-brasileirao-crests.mjs",
+    "update-escudos-premier": "node scripts/fetch-brasileirao-crests.mjs --liga=inglaterra",
+    "update-escudos-bundesliga": "node scripts/fetch-brasileirao-crests.mjs --liga=alemanha",
+    "update-escudos-laliga": "node scripts/fetch-brasileirao-crests.mjs --liga=espanha",
+    "update-escudos-selecoes": "node scripts/fetch-brasileirao-crests.mjs --liga=selecoes",
     "patch": "generi log patch",
     "minor": "generi log minor",
     "major": "generi log major"

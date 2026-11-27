@@ -10,14 +10,15 @@ import { useGameStore } from '../../stores/game'
 import { useMatchStore } from '../../stores/match'
 
 describe('Premier League e Bundesliga: clubes reais', () => {
-  it('Premier League: 20 clubes com elenco, técnico e estádio reais', () => {
+  it('Premier League: 20 clubes com elenco, técnico, estádio e escudo reais', () => {
     const teams = premierLeagueTeams()
     expect(teams).toHaveLength(20)
     expect(teams.every((t) => t.division === 'ENG')).toBe(true)
     for (const t of teams) {
       expect(t.players.length, t.id).toBeGreaterThanOrEqual(16)
       expect(t.stadiumName, t.id).toBeTruthy()
-      expect(t.crest, t.id).toBeUndefined()
+      // Escudo real baixado da Wikipédia (public/escudos/<id>.png).
+      expect(t.crest, t.id).toBe(`escudos/${t.id}.png`)
     }
     // O estádio vem da ficha do clube na Wikipédia, quando ela informa.
     const fromData = (premierSquads as { clubs: Record<string, { stadium?: string }> }).clubs['en-man-united']?.stadium
@@ -25,10 +26,11 @@ describe('Premier League e Bundesliga: clubes reais', () => {
     expect(teams.filter((t) => t.managerName).length).toBeGreaterThanOrEqual(18)
   })
 
-  it('Bundesliga: os 18 clubes reais', () => {
+  it('Bundesliga: os 18 clubes reais, com escudo', () => {
     const teams = bundesligaTeams()
     expect(teams).toHaveLength(18)
     expect(teams.every((t) => t.division === 'GER' && t.players.length >= 16)).toBe(true)
+    expect(teams.every((t) => t.crest === `escudos/${t.id}.png`)).toBe(true)
     expect(tableZone('GER', 1, 18)).toBe('champion')
     expect(tableZone('GER', 18, 18)).toBeNull()
   })

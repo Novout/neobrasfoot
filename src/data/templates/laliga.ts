@@ -1,12 +1,13 @@
 import type { Team } from '../../types/game'
 import type { LeagueFileTeam } from '../leagueFile'
+import { LALIGA_CRESTS } from '../crests'
 import { foreignLeagueTeams, type ForeignSquads } from './foreignLeague'
 import squads from './laliga-squads.json'
 
 /**
  * La Liga (1ª divisão espanhola), temporada 2026–27: disputada em paralelo às séries brasileiras no formato 2×20
  * (também 20 clubes e 38 rodadas). Fica fora da pirâmide (ninguém sobe nem cai) e fora da Copa do Brasil e da
- * Libertadores. Sem escudos: o distintivo usa as cores do clube.
+ * Libertadores. Escudos reais: public/escudos/<id>.png (`npm run update-escudos-laliga`).
  *
  * Elencos e técnicos reais: laliga-squads.json, baixado da Wikipédia/Wikidata por `npm run update-laliga`.
  * Idade e OVR são calculados como no Brasileirão (estimativas do jogo).
@@ -44,5 +45,5 @@ export const LALIGA_SQUADS_DATE: string = squads.fetchedAt
 
 /** Clubes da La Liga com elenco e técnico reais (nova cópia a cada chamada). */
 export function laLigaTeams(): Team[] {
-  return foreignLeagueTeams(LALIGA_NAME, 'ESP', TEAMS, squads as ForeignSquads)
+  return foreignLeagueTeams(LALIGA_NAME, 'ESP', TEAMS, squads as ForeignSquads, LALIGA_CRESTS)
 }

@@ -29,7 +29,7 @@ import {
   createNationalTeams, createWorldCup, isWorldCupYear, nationalTeamOffers, WORLD_CUP_GROUP_ROUNDS, WORLD_CUP_NAME,
 } from '../data/worldCup'
 import { bestEleven, recordMatch, type BestXIEntry, type BestXIRecord, type PlayerSeasonStats } from '../data/seasonStats'
-import { BRASILEIRAO_CRESTS } from '../data/crests'
+import { ALL_CRESTS } from '../data/crests'
 import { createManagers, trophyLabel, trophyPoints } from '../data/trophies'
 import { applyProgression, createAcademy, renewSquad } from '../data/youth'
 import { generateJobOffers, reviewSeason } from '../data/managerMarket'
@@ -305,7 +305,7 @@ export const useGameStore = defineStore('game', () => {
   }
   // Carreiras do Brasileirão anteriores aos escudos: os clubes reais ganham o escudo baixado.
   if (hasCareer.value) {
-    for (const t of teams.value) if (t.crest === undefined && BRASILEIRAO_CRESTS[t.id]) t.crest = BRASILEIRAO_CRESTS[t.id]
+    for (const t of teams.value) if (t.crest === undefined && ALL_CRESTS[t.id]) t.crest = ALL_CRESTS[t.id]
   }
   // Saves anteriores à lista da base (ou de outro clube): gera a lista do clube atual.
   if (hasCareer.value && managedTeamId.value && academy.value?.teamId !== managedTeamId.value) refreshAcademy()

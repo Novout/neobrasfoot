@@ -3,6 +3,7 @@ import { LEAGUE_FORMAT, LEAGUE_FORMAT_VERSION, teamsFromLeagueFile, type LeagueF
 import { drawGroups, groupRoundsFor, stageSchedule, type DrawRule } from './libertadores'
 import { realSquadFrom, type RawPlayer } from './templates/brasileirao'
 import squads from './templates/selecoes-squads.json'
+import { NATIONAL_CRESTS } from './crests'
 
 /**
  * Copa do Mundo: 32 seleções reais, a cada 4 anos (2030, 2034...), no meio do ano (junho e julho).
@@ -10,7 +11,8 @@ import squads from './templates/selecoes-squads.json'
  * Usa o mesmo motor de grupos e mata-mata da Libertadores; o estado tem o mesmo formato.
  *
  * Elencos e técnicos reais (convocados, com o número da camisa): selecoes-squads.json, baixado da
- * Wikipédia/Wikidata por `npm run update-selecoes`. Sem escudos: o distintivo usa as cores da seleção.
+ * Wikipédia/Wikidata por `npm run update-selecoes`. Escudos das federações: public/escudos/<id>.png
+ * (`npm run update-escudos-selecoes`).
  */
 
 export const WORLD_CUP_NAME = 'Copa do Mundo'
@@ -112,6 +114,7 @@ export function createNationalTeams(): Team[] {
       // A série não vale para seleções (não disputam a liga).
       division: 'A',
       ...(RAW[t.id]?.manager ? { manager: RAW[t.id]!.manager } : {}),
+      ...(NATIONAL_CRESTS[t.id] ? { crest: NATIONAL_CRESTS[t.id] } : {}),
       players: realSquadFrom(RAW[t.id]?.players, t.id, t.reputation, NATIONAL_SQUADS_DATE),
     })),
   })
